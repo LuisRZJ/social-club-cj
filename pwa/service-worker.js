@@ -7,6 +7,7 @@ self.addEventListener('install', event => {
         '/',
         '/index.html',
         '/pwa/manifest.json',
+        '/icons/Logo-CGN.png',
         // Agrega aquí otros archivos necesarios
       ]);
     })
