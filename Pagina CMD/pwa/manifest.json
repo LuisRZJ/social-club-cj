@@ -1,0 +1,16 @@
+{
+  "name": "Pagina CMD",
+  "short_name": "CMD",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1976d2",
+  "description": "Aplicación Progresiva de Pagina CMD",
+  "icons": [
+    {
+      "src": "../icons/Logo CGN.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
