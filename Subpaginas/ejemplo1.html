@@ -28,6 +28,16 @@
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/pwa/manifest.json">
+    <meta name="theme-color" content="#1976d2">
+    <link rel="icon" type="image/png" href="/icons/Logo-CGN.png">
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/pwa/service-worker.js');
+        });
+      }
+    </script>
     <style>
         /* Estilos personalizados adicionales si son necesarios */
         body {
@@ -309,7 +319,7 @@
             });
         });
 
-        // Actualizar el año actual en el pie de página
+        // Actualizar el año currentYear en el pie de página
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
         // Pequeña animación para las tarjetas al hacer scroll (opcional)
