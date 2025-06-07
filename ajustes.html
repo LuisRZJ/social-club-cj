@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Ajustes | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Estilos base de la página de contacto */
+    /* Fuente Inter */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFF5EB;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    /* Contenedor principal del contenido */
+    .content-container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      flex: 1;
+    }
+    /* Estilos para los encabezados de sección */
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    /* Estilos para los párrafos de información */
+    .info-text {
+      color: #4B5563;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    /* Botones de navegación horizontales */
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .nav-button {
+      background-color: #FFD1A9;
+      color: #374151;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nav-button:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    .nav-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .nav-button i {
+      margin-right: 0.5rem;
+    }
+    /* Pie de página */
+    footer {
+      background-color: #FFF5EB;
+      padding: 2.5rem 1rem;
+      border-top: 1px solid #E5E7EB;
+      margin-top: auto;
+      position: relative;
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2.5rem;
+    }
+    .footer-section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: #FFD1A9;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .footer-links a {
+      color: #4B5563;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .footer-links a:hover {
+      color: #1D4ED8;
+      transform: translateX(5px);
+    }
+    .footer-links a i {
+      margin-right: 0.75rem;
+      color: #FFD1A9;
+      width: 20px;
+      text-align: center;
+    }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid #E5E7EB;
+      text-align: center;
+      color: #4B5563;
+      font-size: 0.9rem;
+    }
+    .copyright {
+      font-weight: 600;
+      color: #1F2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .copyright span {
+      color: #FFD1A9;
+    }
+    /* Botón "Volver arriba" en el pie de página */
+    .back-to-top {
+      position: absolute;
+      top: -25px;
+      right: 20px;
+      background-color: #FFD1A9;
+      color: #374151;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    .back-to-top:hover {
+      background-color: #ffb07a;
+      transform: translateY(-3px);
+    }
+    .back-to-top:active {
+      transform: translateY(0);
+    }
+    
+    /* Nuevo estilo para el ícono del pie de página */
+    .cgn-icon {
+      height: 50px;
+      width: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    .cgn-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Responsive para móviles */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .nav-button {
+        width: 100%;
+      }
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      .back-to-top {
+        top: -20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      .cgn-icon {
+        height: 50px;
+        width: 100px;
+      }
+    }
+
+    /* Estilos específicos para la página de ajustes */
+    /* Header */
+    .header-comunidad {
+      background-color: #FFF5EB;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .header-logo {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .header-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1F2937;
+    }
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 24px;
+      width: 30px;
+      padding: 0;
+    }
+    .menu-bar {
+      height: 3px;
+      width: 100%;
+      background-color: #1F2937;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .menu-toggle.activo .menu-bar:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+    .menu-toggle.activo .menu-bar:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-toggle.activo .menu-bar:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+    .menu-desplegable {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+    .menu-desplegable.abierto {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    .menu-desplegable ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+    .menu-desplegable li {
+      padding: 0;
+    }
+    .menu-desplegable a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      color: #4B5563;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .menu-desplegable a:hover {
+      background-color: #FFD1A9;
+      color: #1F2937;
+      padding-left: 1.75rem;
+    }
+
+    /* Estilos específicos para la página de ajustes */
+    .ajustes-header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      background: #FFD1A9;
+      color: #374151;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .h1-ajustes {
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #1e293b;
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      color: #64748b;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .progress-container {
+      margin: 40px 0;
+    }
+    
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background: #f1f5f9;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      width: 35%;
+      background: #FFB07A;
+      border-radius: 4px;
+      position: relative;
+    }
+    
+    .progress-fill::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    .features-section {
+      margin: 50px 0 30px;
+    }
+    
+    .section-title-ajustes {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: #1e293b;
+      text-align: center;
+      position: relative;
+      padding-bottom: 15px;
+    }
+    
+    .section-title-ajustes::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: #FFB07A;
+      border-radius: 2px;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+    
+    .feature-card {
+      background: #ffffff;
+      border: 1px solid #E5E7EB;
+      border-radius: 10px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      border-color: #FFD1A9;
+    }
+    
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: #FFF5EB;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+      color: #FF7D33;
+      font-size: 1.8rem;
+    }
+    
+    .feature-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #1e293b;
+    }
+    
+    .feature-card p {
+      font-size: 0.95rem;
+      color: #64748b;
+      line-height: 1.7;
+    }
+    
+    .development-status {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 50px;
+    }
+    
+    .status-in-progress {
+      background: #fff5eb;
+      color: #b45309;
+      border: 1px solid #FFD1A9;
+    }
+    
+    .status-planned {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+    
+    .status-completed {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+    
+    .development-note {
+      background: #FFF5EB;
+      border-left: 4px solid #FFB07A;
+      padding: 20px;
+      border-radius: 0 6px 6px 0;
+      margin-top: 40px;
+      font-size: 0.95rem;
+      color: #a86b2d;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.png">
+</head>
+<body class="text-gray-800">
+  <header class="header-comunidad">
+    <div class="header-content">
+      <img src="/icons/Logo-CGN.png" alt="Logo Comunidad" class="header-logo">
+      <span class="header-title">CGN</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <nav class="menu-desplegable" id="menuDesplegable">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="socios.html">Socios</a></li>
+        <li><a href="ajustes.html">Ajustes</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <div class="content-container">
+    <div class="ajustes-header">
+      <span class="status-badge">EN DESARROLLO</span>
+      <h1 class="h1-ajustes">Panel de Ajustes del Proyecto</h1>
+      <p class="subtitle">Estamos desarrollando nuevas funcionalidades para mejorar su experiencia aquí. Pronto nuevas versiones con todas las características avanzadas.</p>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-info">
+        <span>Estado de desarrollo</span>
+        <span>35% Completado</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+    
+    <div class="features-section">
+      <h2 class="section-title-ajustes">Funcionalidades en Desarrollo</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="development-status status-in-progress">En Progreso</div>
+          <div class="feature-icon">
+            <i class="fas fa-users-cog"></i>
+          </div>
+          <h3>Gestión de Permisos</h3>
+          <p>Control detallado de roles y permisos de usuario con niveles de acceso personalizables para cada integrante del equipo y área funcional en la comunidad.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="development-status status-completed">Probando</div>
+          <div class="feature-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3>Configuración de Notificaciones</h3>
+          <p>Personalización de alertas y notificaciones por correo, app móvil o SMS para eventos críticos de la comunidad y actualizaciones importantes.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="development-status status-in-progress">En Progreso</div>
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>Seguridad y Privacidad</h3>
+          <p>Configuración avanzada de políticas de seguridad, autenticación de dos factores, y controles de privacidad de datos.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="development-status status-planned">Próximamente</div>
+          <div class="feature-icon">
+            <i class="fas fa-plug"></i>
+          </div>
+          <h3>Integraciones</h3>
+          <p>Conexiones con herramientas externas para la visualización de datos importantes directo desde aquí.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="development-status status-in-progress">En Progreso</div>
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>Reportes Personalizados</h3>
+          <p>Creación y programación de reportes personalizados con métricas específicas de cada grupo en la comunidad para análisis avanzados.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="development-status status-planned">Próximamente</div>
+          <div class="feature-icon">
+            <i class="fa-solid fa-circle-half-stroke"></i>
+          </div>
+          <h3>Configuración de tema</h3>
+          <p>Capacidad para personalizar la apariencia de la plataforma activando el modo oscuro para una experiencia visual más cómoda y adaptada a tus preferencias.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="development-note">
+      <p><strong>Nota del equipo de I+D:</strong> Estamos trabajando activamente para completar estas funcionalidades. La versión final de esta página incluirá todas las características enumeradas con opciones adicionales para una experiencia completa. :)</p>
+    </div>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+        <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="categorias.html" class="nav-button">
+        <i class="fas fa-list"></i> Ver Categorías
+      </a>
+    </div>
+  </div>
+
+  <!-- Pie de página con botón "Volver arriba" -->
+  <footer>
+    <!-- Botón "Volver arriba" -->
+    <div class="back-to-top" id="backToTopBtn" title="Volver arriba">
+      <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <div class="footer-links">
+          <a href="index.html"><i class="fas fa-home"></i> Página principal</a>
+          <a href="#"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+          <a href="#"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+          <a href="#"><i class="fas fa-user-shield"></i> Ser administrador</a>
+          <a href="#"><i class="fas fa-book"></i> Reglas generales</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Comunidad</h3>
+        <div class="footer-links">
+          <a href="#"><i class="fab fa-discord"></i> Servidor Discord</a>
+          <a href="#"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+          <a href="#"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+          <a href="#"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+          <a href="redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">
+        <img src="imagenes/bandera-jal.png" 
+             alt="Logo Comunidad CGN" 
+             class="cgn-icon">
+        Comunidad CGN | <span id="currentYear">2022-2025</span>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Actualizar año actual en el pie de página
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentYearElement = document.getElementById('currentYear');
+      const currentYear = new Date().getFullYear();
+      currentYearElement.textContent = `2022-${currentYear}`;
+      
+      // Botón "Volver" inteligente
+      const backButton = document.getElementById('backButton');
+      backButton.addEventListener('click', function() {
+        // Comprobar si hay una página anterior en el historial
+        if (document.referrer && document.referrer !== window.location.href) {
+          window.history.back();
+        } else {
+          // Si no hay historial previo, redirigir a la página de inicio
+          window.location.href = 'index.html';
+        }
+      });
+      
+      // Botón "Volver arriba"
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Menú hamburguesa
+      const menuToggle = document.getElementById('menuToggle');
+      const menuDesplegable = document.getElementById('menuDesplegable');
+      menuToggle.addEventListener('click', () => {
+        menuDesplegable.classList.toggle('abierto');
+        menuToggle.classList.toggle('activo');
+      });
+      document.addEventListener('click', (e) => {
+        if (!menuDesplegable.contains(e.target) && !menuToggle.contains(e.target)) {
+          menuDesplegable.classList.remove('abierto');
+          menuToggle.classList.remove('activo');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
