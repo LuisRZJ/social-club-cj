@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Política de Privacidad | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFF5EB;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    
+    .content-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      flex: 1;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .nav-button {
+      background-color: #FFD1A9;
+      color: #374151;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .nav-button:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .nav-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-button i {
+      margin-right: 0.5rem;
+    }
+    
+    footer {
+      background-color: #FFF5EB;
+      padding: 2.5rem 1rem;
+      border-top: 1px solid #E5E7EB;
+      margin-top: auto;
+      position: relative;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2.5rem;
+    }
+    
+    .footer-section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: #FFD1A9;
+    }
+    
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .footer-links a {
+      color: #4B5563;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+      color: #d8971d;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 0.75rem;
+      color: #FFD1A9;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid #E5E7EB;
+      text-align: center;
+      color: #4B5563;
+      font-size: 0.9rem;
+    }
+    
+    .copyright {
+      font-weight: 600;
+      color: #1F2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .copyright span {
+      color: #FFD1A9;
+    }
+    
+    .back-to-top {
+      position: absolute;
+      top: -25px;
+      right: 20px;
+      background-color: #FFD1A9;
+      color: #374151;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .back-to-top:hover {
+      background-color: #ffb07a;
+      transform: translateY(-3px);
+    }
+    
+    .back-to-top:active {
+      transform: translateY(0);
+    }
+    
+    .cgn-icon {
+      height: 50px;
+      width: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .cgn-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Header completo con menú desplegable */
+    .header-comunidad {
+      background-color: #FFF5EB;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .header-logo {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: #FFD1A9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    
+    .header-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1F2937;
+    }
+    
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 24px;
+      width: 30px;
+      padding: 0;
+    }
+    
+    .menu-bar {
+      height: 3px;
+      width: 100%;
+      background-color: #1F2937;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+    
+    .menu-desplegable {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    
+    .menu-desplegable.abierto {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .menu-desplegable ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+    
+    .menu-desplegable li {
+      padding: 0;
+    }
+    
+    .menu-desplegable a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      color: #4B5563;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    
+    .menu-desplegable a:hover {
+      background-color: #FFD1A9;
+      color: #1F2937;
+      padding-left: 1.75rem;
+    }
+    
+    /* Título principal */
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #FFD1A9;
+      position: relative;
+    }
+    
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: #ffb07a;
+    }
+    
+    /* Estilos para el contenido de privacidad */
+    .privacy-content {
+      margin-top: 2rem;
+      line-height: 1.6;
+      color: #4B5563;
+    }
+    
+    .clause-section {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .clause-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 1rem;
+    }
+    
+    .clause-text {
+      padding-left: 1.8rem;
+    }
+    
+    .clause-text p {
+      margin-bottom: 0.8rem;
+    }
+    
+    .highlight {
+      background-color: #FFF5EB;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      border-left: 4px solid #FFD1A9;
+      margin: 1.5rem 0;
+    }
+    
+    .clause-list {
+      padding-left: 1.8rem;
+      margin: 1rem 0;
+    }
+    
+    .clause-list li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    
+    .clause-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #FFD1A9;
+      font-weight: bold;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-button {
+        width: 100%;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .back-to-top {
+        top: -20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      
+      .cgn-icon {
+        height: 50px;
+        width: 100px;
+      }
+      
+      .page-title {
+        font-size: 2rem;
+      }
+      
+      .clause-title {
+        font-size: 1.2rem;
+      }
+    }
+
+    /* Barra de progreso de scroll - Ahora dentro del header */
+    #scroll-progress-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background-color: rgba(255, 209, 169, 0.2);
+      z-index: 99; /* Reducir z-index */
+    }
+
+    #scroll-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #FFD1A9, #ffb07a);
+      transition: width 0.1s ease;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* Aumentar z-index del menú desplegable */
+    .menu-desplegable {
+      z-index: 100; /* Mayor que la barra de progreso */
+    }
+
+    /* Ajustar posición del header */
+    .header-comunidad {
+      position: sticky;
+      top: 0;
+      z-index: 98; /* Menor que la barra */
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.png">
+</head>
+<body class="text-gray-800">
+
+  <header class="header-comunidad">
+    <div class="header-content">
+      <img src="/icons/Logo-CGN.png" alt="Logo Comunidad" class="header-logo">
+      <span class="header-title">CGN</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <nav class="menu-desplegable" id="menuDesplegable">
+      <ul>
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/faq.html">FAQ</a></li>
+        <li><a href="/socios.html">Socios</a></li>
+        <li><a href="/ajustes.html">Ajustes</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <!-- Barra de progreso de scroll -->
+<div id="scroll-progress-container">
+  <div id="scroll-progress-bar"></div>
+</div>
+
+  </header>
+  
+  <div class="content-container">
+    <h1 class="page-title">Política de Privacidad</h1>
+    
+   
+    
+    <!-- Contenido de política de privacidad -->
+    <div class="privacy-content">
+      <div class="clause-section">
+        <h2 class="clause-title">Cláusula preliminar</h2>
+        <div class="clause-text">
+          <p>En <strong>C</strong>lub <strong>G</strong>ami<strong>n</strong>g (CGN) nos comprometemos a proteger la privacidad de nuestros miembros. Esta política describe cómo recopilamos, usamos y protegemos la información personal que obtenemos a través de nuestros servicios, incluyendo nuestro servidor de Discord, grupos de WhatsApp y Telegram, Signal y servidor de Minecraft Bedrock. Al utilizar nuestra comunidad y sus servicios, aceptas las prácticas descritas en esta política.</p>
+          
+          <div class="highlight">
+            <p><strong>🔐 Jurisdicción y legislación aplicable</strong><br>Este sistema de moderación opera bajo las leyes mexicanas de protección de datos (LFPDPPP), y está administrado por individuos sin ánimo de lucro. Al unirse a la comunidad y aceptar sus reglas, el usuario acepta someterse a la jurisdicción de los tribunales competentes en Guadalajara, Jalisco, México, para cualquier disputa legal que pudiera surgir.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="clause-section">
+        <h2 class="clause-title">📜 1. Reglas del Grupo & Política de Moderación</h2>
+        <div class="clause-text">
+          <p>Para mantener un ambiente seguro y agradable para todos los miembros, recopilamos y procesamos cierta información relacionada con tu actividad en la comunidad:</p>
+          
+          <ul class="clause-list">
+            <li><strong>Reglas:</strong> Este grupo se rige por un código de conducta basado en el respeto, la no discriminación, y la prohibición de spam, publicidad no solicitada o contenido sensible.</li>
+            <li><strong>Régimen de sanciones:</strong> Cualquier incumplimiento será sancionado según su gravedad, pudiendo incluir advertencias, silenciamientos temporales o expulsión.</li>
+            <li><strong>Registro de sanciones:</strong> En caso de infracción, el sistema podrá registrar los siguientes datos en una base comunitaria compartida con otros grupos aliados:
+            <br>
+            <strong>1. </strong>Nombre de usuario (username)
+            <br>
+            <strong>2. </strong>ID de Telegram (si aplica)
+            <br>
+            <strong>3. </strong>Fecha y hora de la infracción
+            <br>
+            <strong>4. </strong>Tipo o categoría de la falta
+            <br>
+            <strong>5. </strong>Nombre del grupo donde ocurrió</li>
+            
+          </ul>
+          
+          <p>🔒 Esta base es utilizada exclusivamente para fines de moderación interna y prevención de reincidencias. No se compartirá con terceros ni se usará con fines comerciales.</p>
+          <p>🕓 La información no se elimina automáticamente al abandonar el grupo. Sin embargo, el usuario puede solicitar la eliminación de su registro manualmente, bajo un proceso de verificación de identidad descrito en nuestra política.</p>
+          <p>✅ Al permancer en la comunidad, entendemos que estas de a cuerdo con las reglas de la comunidad y esta política. En caso contrario puedes abandonar los grupos.</p>
+        </div>
+      </div>
+      
+      <div class="clause-section">
+        <h2 class="clause-title">👥 2. Usuarios Preexistentes</h2>
+        <div class="clause-text">
+          <p>Si eras miembro de CGN antes de la implementación de esta política (17 de junio de 2025):</p>
+          
+          <ul class="clause-list">
+            <li>Tus datos históricos de actividad permanecen en nuestros registros, pero se rigen por esta nueva política.</li>
+            <li>Tienes el derecho solicitar la eliminación de tus datos personales en cualquier momento, sujeto a limitaciones legítimas.</li>
+            <li>Se te aplicarán las mismas protecciones de privacidad que a los nuevos miembros.</li>
+          </ul>
+          
+          <p>Si no estás de acuerdo con esta política, puedes solicitar la eliminación de tus datos asociados y/o salir de la comunidad.</p>
+        </div>
+      </div>
+      
+      <div class="clause-section">
+        <h2 class="clause-title">🗃️ 3. Base de Datos de Infracciones</h2>
+        <div class="clause-text">
+          <p>Mantenemos una base de datos de infracciones para garantizar la seguridad y consistencia en nuestras acciones moderativas:</p>
+          
+          <ul class="clause-list">
+            <li>Registramos infracciones de normas, incluyendo fecha, tipo de infracción, y sanción aplicada.</li>
+            <li>Los datos se almacenan de forma segura y solo son accesibles para el equipo de moderación.</li>
+            <li>Las infracciones con 180 días de antiguedad o más son aptas para su eliminación de la base de datos.</li>
+            <li>Las infracciones graves (acoso, spam o que involucren a administradores) pueden mantenerse indefinidamente.</li>
+          </ul>
+          
+          <p>Esta base de datos nos permite aplicar sanciones apropiadas y consistentes, y proteger a la comunidad de usuarios problemáticos recurrentes.</p>
+        </div>
+      </div>
+      
+      <div class="clause-section">
+        <h2 class="clause-title">🗑️ 4. Política de Eliminación de Datos por Solicitud</h2>
+        <div class="clause-text">
+          <p>Respetamos tu derecho a controlar tu información personal:</p>
+          
+          <ul class="clause-list">
+            <li>Puedes solicitar la eliminación de tus datos personales en cualquier momento contactando a nuestro equipo de soporte.</li>
+            <li>Responderemos a tu solicitud dentro de un plazo máximo de 3 días.</li>
+            <li>Algunos datos pueden retenerse por razones legítimas (registros de moderación, obligaciones legales, seguridad de la comunidad).</li>
+            <li>La eliminación de datos puede resultar en la pérdida de acceso a ciertos servicios o funciones de la comunidad, en función de los servicios en los que se usaban.</li>
+          </ul>
+          
+          <div class="highlight">
+            <p><strong>Importante</strong><br>Los datos no se eliminan de forma automatica, necesitas hablar con soporte por medio de la página de contacto.<br>En el caso de la base de datos, esta es de acceso restringido, pero puedes consultar registros individuales de forma libre.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="clause-section">
+        <h2 class="clause-title">📌 5. Consideraciones Adicionales</h2>
+        <div class="clause-text">
+          <p>Otras consideraciones importantes sobre nuestra política de privacidad:</p>
+          
+          <ul class="clause-list">
+            <li><strong>Menores de edad:</strong> No recopilamos intencionalmente datos de menores de 13 años. Si descubrimos que hemos recopilado dichos datos, los eliminaremos inmediatamente.</li>
+            <li><strong>Cambios en la política:</strong> Actualizamos esta política periódicamente. Te notificaremos con la suficiente antelación si ocurre alguna actualización.</li>
+            <li><strong>Transferencias de datos:</strong> Como comunidad global, tus datos pueden procesarse fuera de tu país de residencia, siempre con protecciones adecuadas.</li>
+            <li><strong>Seguridad:</strong> Implementamos medidas técnicas y organizativas para proteger tus datos contra acceso no autorizado o pérdida.</li>
+          </ul>
+          
+          <p>Para preguntas o preocupaciones sobre esta política, contacta con nosotros desde la página de contacto.</p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Botones de navegación horizontales -->
+     <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="back-to-top" id="backToTopBtn" title="Volver arriba">
+      <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <div class="footer-links">
+          <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+          <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+          <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+          <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+          <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Comunidad</h3>
+        <div class="footer-links">
+          <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+          <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+          <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+          <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+          <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">
+        <img src="/imagenes/bandera-jal.png" 
+             alt="Logo Comunidad CGN" 
+             class="cgn-icon">
+        Comunidad CGN | <span id="currentYear">2022-2025</span>
+      </p>
+    </div>
+  </footer>
+
+   <!-- PARTE AUXILIAR, FALTA DE JS -->
+   <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Actualizar año en footer
+      const currentYear = new Date().getFullYear();
+      document.getElementById('currentYear').textContent = `2022-${currentYear}`;
+      
+      // Botón "Volver" inteligente
+      const backButton = document.getElementById('backButton');
+      backButton.addEventListener('click', function() {
+        // Comprobar si hay una página anterior en el historial
+        if (document.referrer && document.referrer !== window.location.href) {
+          window.history.back();
+        } else {
+          // Si no hay historial previo, redirigir a la página de inicio
+          window.location.href = '/index.html';
+        }
+      });
+
+      // Botón "Volver arriba"
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Menú desplegable
+      const menuToggle = document.getElementById('menuToggle');
+      const menuDesplegable = document.getElementById('menuDesplegable');
+      
+      // Abrir/cerrar menú al hacer clic en el botón
+      menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menuDesplegable.classList.toggle('abierto');
+        menuToggle.classList.toggle('activo');
+      });
+      
+      // Cerrar menú al hacer clic fuera
+      document.addEventListener('click', function(e) {
+        if (!menuDesplegable.contains(e.target) && !menuToggle.contains(e.target)) {
+          menuDesplegable.classList.remove('abierto');
+          menuToggle.classList.remove('activo');
+        }
+      });
+      
+      // Prevenir que el clic en el menú lo cierre
+      menuDesplegable.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+      
+      // Barra de progreso de scroll
+      const scrollProgressBar = document.getElementById('scroll-progress-bar');
+
+      function updateScrollProgress() {
+        // Calcular el progreso del scroll
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercentage = (scrollTop / scrollHeight) * 100;
+        
+        // Actualizar el ancho de la barra de progreso
+        scrollProgressBar.style.width = scrollPercentage + '%';
+        
+        // Cambiar color cuando esté cerca del final
+        if (scrollPercentage > 90) {
+          scrollProgressBar.style.background = 'linear-gradient(90deg, #ffb07a, #ff7b54)';
+        } else {
+          scrollProgressBar.style.background = 'linear-gradient(90deg, #FFD1A9, #ffb07a)';
+        }
+      }
+
+      // Actualizar al cargar y al hacer scroll
+      window.addEventListener('load', updateScrollProgress);
+      window.addEventListener('scroll', updateScrollProgress);
+      window.addEventListener('resize', updateScrollProgress);
+
+      // Calcular altura del header automáticamente
+      function setProgressBarPosition() {
+        const header = document.querySelector('.header-comunidad');
+        if (header) {
+          const headerHeight = header.offsetHeight;
+          document.getElementById('scroll-progress-container').style.top = headerHeight + 'px';
+        }
+      }
+
+      // Llamar al cargar y al redimensionar
+      window.addEventListener('load', function() {
+        setProgressBarPosition();
+        updateScrollProgress();
+      });
+      window.addEventListener('resize', setProgressBarPosition);
+    });
+  </script>
+</body>
+</html>
