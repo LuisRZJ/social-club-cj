@@ -1,0 +1,2323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Donaciones | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFF5EB;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    
+    .content-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      flex: 1;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    
+    .nav-button {
+      background-color: #FFD1A9;
+      color: #374151;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .nav-button:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .nav-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-button i {
+      margin-right: 0.5rem;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2.5rem;
+    }
+    
+    .footer-section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: #FFD1A9;
+    }
+    
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .footer-links a {
+      color: #4B5563;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+      color: #d8971d;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 0.75rem;
+      color: #FFD1A9;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid #E5E7EB;
+      text-align: center;
+      color: #4B5563;
+      font-size: 0.9rem;
+    }
+    
+    .copyright {
+      font-weight: 600;
+      color: #1F2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .copyright span {
+      color: #FFD1A9;
+    }
+    
+    .back-to-top {
+      position: absolute;
+      top: -25px;
+      right: 20px;
+      background-color: #FFD1A9;
+      color: #374151;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .back-to-top:hover {
+      background-color: #ffb07a;
+      transform: translateY(-3px);
+    }
+    
+    .back-to-top:active {
+      transform: translateY(0);
+    }
+    
+    .cgn-icon {
+      height: 50px;
+      width: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .cgn-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Header completo con menú desplegable */
+    .header-comunidad {
+      background-color: #FFF5EB;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .header-logo {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .header-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1F2937;
+    }
+    
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 24px;
+      width: 30px;
+      padding: 0;
+    }
+    
+    .menu-bar {
+      height: 3px;
+      width: 100%;
+      background-color: #1F2937;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+    
+    .menu-desplegable {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    
+    .menu-desplegable.abierto {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .menu-desplegable ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+    
+    .menu-desplegable li {
+      padding: 0;
+    }
+    
+    .menu-desplegable a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      color: #4B5563;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    
+    .menu-desplegable a:hover {
+      background-color: #FFD1A9;
+      color: #1F2937;
+      padding-left: 1.75rem;
+    }
+    
+    /* Título principal */
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #FFD1A9;
+      position: relative;
+    }
+    
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: #ffb07a;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-button {
+        width: 100%;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .back-to-top {
+        top: -20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      
+      .cgn-icon {
+        height: 50px;
+        width: 100px;
+      }
+
+      .platform-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+
+      .platform-info {
+        text-align: center;
+      }
+
+      .platform-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* QR responsivos para tablets */
+      .crypto-card .qr-image {
+        width: 180px;
+        height: 180px;
+        max-width: 100%;
+        max-height: 180px;
+        padding: 6px;
+      }
+
+      .specialized-donations .qr-image {
+        width: 120px;
+        height: 120px;
+        max-width: 100%;
+        max-height: 120px;
+        padding: 4px;
+      }
+
+      .wallet-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .qr-section {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+        justify-content: center;
+      }
+
+      .qr-modal-content {
+        min-width: 280px;
+        min-height: 180px;
+        padding: 1.5rem;
+        margin: 1rem;
+      }
+
+      .qr-modal-title {
+        font-size: 1.1rem;
+        margin-right: 2.5rem;
+        padding-right: 0.5rem;
+      }
+
+      .qr-modal-image {
+        min-width: 150px;
+        min-height: 150px;
+        padding: 0.75rem;
+      }
+
+      .qr-modal-close {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+        top: 0.75rem;
+        right: 0.75rem;
+      }
+
+      /* Estilos responsivos para redes compatibles */
+      .network-compatibility {
+        padding: 0.75rem;
+      }
+
+      .compatibility-note {
+        font-size: 0.85rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .compatible-networks {
+        gap: 0.375rem;
+      }
+
+      .network-tag {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        border-width: 1.5px;
+      }
+
+      /* Estilos responsivos para limitaciones USDT */
+      .usdt-compatibility {
+        padding: 0.75rem;
+      }
+
+      .limitation-note {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+      }
+
+      .network-limitation {
+        margin-top: 0.75rem;
+        padding-top: 0.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      /* QR responsivos para móviles pequeños */
+      .crypto-card .qr-image {
+        width: 140px;
+        height: 140px;
+        max-width: 100%;
+        max-height: 140px;
+        padding: 4px;
+      }
+
+      .specialized-donations .qr-image {
+        width: 100px;
+        height: 100px;
+        max-width: 100%;
+        max-height: 100px;
+        padding: 3px;
+      }
+
+      .qr-section {
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .wallet-container {
+        gap: 0.75rem;
+      }
+
+      /* Estilos responsivos para el modal */
+      .qr-modal-content {
+        min-width: 250px;
+        min-height: 160px;
+        padding: 1rem;
+        margin: 0.5rem;
+      }
+
+      .qr-modal-title {
+        font-size: 1rem;
+        margin-right: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .qr-modal-image {
+        min-width: 120px;
+        min-height: 120px;
+        padding: 0.5rem;
+      }
+
+      .qr-modal-close {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+        top: 0.5rem;
+        right: 0.5rem;
+      }
+
+      /* Estilos responsivos para el bloqueador Lightning */
+      .lightning-blocker {
+        padding: 1rem;
+      }
+
+      .lightning-blocker-icon {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .lightning-blocker-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .lightning-blocker-message {
+        font-size: 0.9rem;
+        max-width: 250px;
+      }
+
+      /* Estilos responsivos para redes compatibles en móviles */
+      .network-compatibility {
+        padding: 0.5rem;
+      }
+
+      .compatibility-note {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .compatible-networks {
+        gap: 0.25rem;
+      }
+
+      .network-tag {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.7rem;
+        border-width: 1px;
+      }
+
+      /* Estilos responsivos para limitaciones USDT en móviles */
+      .usdt-compatibility {
+        padding: 0.5rem;
+      }
+
+      .limitation-note {
+        font-size: 0.75rem;
+        padding: 0.5rem;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .network-limitation {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      /* QR para pantallas muy pequeñas */
+      .crypto-card .qr-image {
+        width: 120px;
+        height: 120px;
+        max-width: 100%;
+        max-height: 120px;
+        padding: 3px;
+      }
+
+      .specialized-donations .qr-image {
+        width: 80px;
+        height: 80px;
+        max-width: 100%;
+        max-height: 80px;
+        padding: 2px;
+      }
+    }
+
+   /* Barra de progreso de scroll - Ahora dentro del header */
+#scroll-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: rgba(255, 209, 169, 0.2);
+  z-index: 99; /* Reducir z-index */
+}
+
+#scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFD1A9, #ffb07a);
+  transition: width 0.1s ease;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Aumentar z-index del menú desplegable */
+.menu-desplegable {
+  z-index: 100; /* Mayor que la barra de progreso */
+}
+
+/* Ajustar posición del header */
+.header-comunidad {
+  position: sticky;
+  top: 0;
+  z-index: 98; /* Menor que la barra */
+}
+
+/* Estilos para la página de donaciones */
+.donation-intro {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.donation-intro p {
+  font-size: 1.125rem;
+  color: #4B5563;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.crypto-section {
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1F2937;
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #FFD1A9;
+}
+
+.crypto-card {
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.crypto-card:hover {
+  border-color: #FFD1A9;
+  box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.crypto-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.crypto-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFD1A9, #ffb07a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #374151;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.crypto-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.crypto-info h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 0.25rem;
+}
+
+.crypto-description {
+  color: #6B7280;
+  font-size: 0.9rem;
+}
+
+.wallet-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.qr-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #F9FAFB, #F3F4F6);
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+  min-height: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.qr-placeholder {
+  width: 150px;
+  height: 150px;
+  border: 2px dashed #D1D5DB;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F9FAFB;
+  color: #9CA3AF;
+}
+
+.qr-placeholder i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.qr-placeholder p {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.wallet-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.wallet-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.wallet-field label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.wallet-field span {
+  color: #1F2937;
+  font-weight: 500;
+}
+
+.address-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #F3F4F6;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #E5E7EB;
+}
+
+.wallet-address {
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  color: #1F2937;
+  word-break: break-all;
+  flex: 1;
+}
+
+.copy-btn {
+  background-color: #FFD1A9;
+  color: #374151;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  margin-top: 0.5rem;
+}
+
+.copy-btn:hover {
+  background-color: #ffb07a;
+  transform: scale(1.05);
+}
+
+.copy-btn:active {
+  transform: scale(0.95);
+}
+
+.risk-warning {
+  background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+  border: 2px solid #F59E0B;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.warning-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.warning-header i {
+  color: #D97706;
+  font-size: 1.5rem;
+}
+
+.warning-header h3 {
+  color: #92400E;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.warning-content p {
+  color: #78350F;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.warning-content ul {
+  color: #78350F;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.warning-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.warning-note {
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #F59E0B;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.warning-note i {
+  color: #D97706;
+}
+
+/* Estilos para la tarjeta informativa de donaciones */
+.donation-info {
+  background: linear-gradient(135deg, #E0F2FE, #B3E5FC);
+  border: 2px solid #0288D1;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.info-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.info-header i {
+  color: #0277BD;
+  font-size: 1.5rem;
+}
+
+.info-header h3 {
+  color: #01579B;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.info-content p {
+  color: #0D47A1;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.info-content ul {
+  color: #0D47A1;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.info-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.info-note {
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #0288D1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.info-note i {
+  color: #0277BD;
+}
+
+.info-action {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(2, 136, 209, 0.2);
+}
+
+.reports-btn {
+  background: linear-gradient(135deg, #FFD1A9, #ffb07a);
+  color: #374151;
+  font-weight: 600;
+  border: 2px solid #ffb07a;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reports-btn:hover {
+  background: linear-gradient(135deg, #ffb07a, #ff9a56);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  color: #1F2937;
+}
+
+.reports-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reports-btn i {
+  font-size: 1.1rem;
+}
+
+/* Estilos para la sección de donaciones especializadas */
+.specialized-donations {
+  background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+  border: 2px solid #16A34A;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.specialized-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.specialized-header i {
+  color: #15803D;
+  font-size: 1.5rem;
+}
+
+.specialized-header h3 {
+  color: #166534;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.specialized-content p {
+  color: #14532D;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.platform-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.platform-card {
+  background: white;
+  border: 1px solid #BBF7D0;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.platform-card:hover {
+  border-color: #16A34A;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.platform-icon {
+  background: linear-gradient(135deg, #16A34A, #22C55E);
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.platform-info {
+  flex: 1;
+}
+
+.platform-info h4 {
+  color: #166534;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.platform-info p {
+  color: #14532D;
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.platform-btn {
+  background: linear-gradient(135deg, #16A34A, #22C55E);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.platform-btn:hover {
+  background: linear-gradient(135deg, #15803D, #16A34A);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  color: white;
+}
+
+.platform-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.platform-btn i {
+  font-size: 0.9rem;
+}
+
+/* Estilos para las imágenes QR en las criptomonedas */
+.crypto-card .qr-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 0.5rem;
+  border: 3px solid #E5E7EB;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  object-fit: contain;
+  background-color: white;
+  padding: 8px;
+  min-width: 0;
+  min-height: 0;
+}
+
+.crypto-card .qr-image:hover {
+  border-color: #FFD1A9;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.lightning-qr.qr-image {
+  border-color: #F59E0B;
+  background-color: #FEF3C7;
+}
+
+.lightning-qr.qr-image:hover {
+  border-color: #D97706;
+  box-shadow: 0 6px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Estilos para notificaciones emergentes */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgb(16, 185, 129);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid rgba(5, 150, 105, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 300px;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification i {
+  font-size: 1.2rem;
+}
+
+.notification.success {
+  background: rgba(16, 185, 129, 0.6);
+  border-color: rgba(5, 150, 105, 0.8);
+}
+
+.notification.error {
+  background: rgba(239, 68, 68, 0.6);
+  border-color: rgba(220, 38, 38, 0.8);
+}
+
+/* Estilos para el botón de expansión de QR */
+.qr-expand-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 209, 169, 0.9);
+  color: #374151;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.qr-expand-btn:hover {
+  background: rgba(255, 176, 122, 0.95);
+  transform: scale(1.1);
+  color: #1F2937;
+}
+
+.qr-expand-btn:active {
+  transform: scale(0.95);
+}
+
+.qr-expand-btn i {
+  font-size: 0.875rem;
+}
+
+/* Contenedor QR con posición relativa para el botón */
+.qr-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #F9FAFB, #F3F4F6);
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  min-height: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Modal para QR expandido */
+.qr-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.qr-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.qr-modal-content {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 90vw;
+  max-height: 90vh;
+  min-width: 300px;
+  min-height: 200px;
+  position: relative;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.qr-modal.show .qr-modal-content {
+  transform: scale(1);
+}
+
+.qr-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #FFD1A9;
+  color: #374151;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+  z-index: 10;
+}
+
+.qr-modal-close:hover {
+  background: #ffb07a;
+  transform: scale(1.1);
+  color: #1F2937;
+}
+
+.qr-modal-close:active {
+  transform: scale(0.95);
+}
+
+.qr-modal-image {
+  max-width: 100%;
+  max-height: 70vh;
+  min-width: 200px;
+  min-height: 200px;
+  border-radius: 0.5rem;
+  border: 3px solid #E5E7EB;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  background: white;
+  padding: 1rem;
+  object-fit: contain;
+}
+
+.qr-modal-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  margin-right: 3rem;
+  color: #1F2937;
+  font-weight: 600;
+  font-size: 1.25rem;
+  padding-right: 1rem;
+}
+
+/* Bloquear scroll cuando el modal está abierto */
+body.modal-open {
+  overflow: hidden;
+}
+
+footer {
+  background-color: #FFF5EB;
+  padding: 2.5rem 1rem;
+  border-top: 1px solid #E5E7EB;
+  margin-top: auto;
+  position: relative;
+}
+
+/* Colores específicos para stablecoins */
+.usdt-icon {
+  background: linear-gradient(135deg, #22C55E, #16A34A);
+  color: white;
+}
+
+.usdt-icon:hover {
+  background: linear-gradient(135deg, #16A34A, #15803D);
+}
+
+.usdc-icon {
+  background: linear-gradient(135deg, #3B82F6, #2563EB);
+  color: white;
+}
+
+.usdc-icon:hover {
+  background: linear-gradient(135deg, #2563EB, #1D4ED8);
+}
+
+/* Estilos para Lightning Network */
+.lightning-separator {
+  text-align: center;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: linear-gradient(135deg, #F9FAFB, #F3F4F6);
+  border-radius: 0.5rem;
+  border: 1px solid #D1D5DB;
+}
+
+.lightning-separator span {
+  color: #6B7280;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.lightning-container {
+  border-top: 2px solid #E5E7EB;
+  padding-top: 1.5rem;
+  margin-top: 1rem;
+  position: relative;
+}
+
+.lightning-blocker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  padding: 2rem;
+}
+
+.lightning-blocker-content {
+  text-align: center;
+  color: white;
+}
+
+.lightning-blocker-icon {
+  font-size: 3rem;
+  color: #F59E0B;
+  margin-bottom: 1rem;
+  animation: pulse 2s infinite;
+}
+
+.lightning-blocker-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #FEF3C7;
+}
+
+.lightning-blocker-message {
+  font-size: 1rem;
+  color: #FDE68A;
+  line-height: 1.5;
+  max-width: 300px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.lightning-qr {
+  border-color: #F59E0B;
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.lightning-qr i {
+  color: #F59E0B;
+}
+
+.lightning-info {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #FEF3C7;
+  border-radius: 0.5rem;
+  border-left: 4px solid #F59E0B;
+}
+
+.lightning-info p {
+  color: #92400E;
+  font-size: 0.875rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lightning-info i {
+  color: #F59E0B;
+  font-size: 1rem;
+}
+
+/* Estilos para el QR en la sección especializada */
+.specialized-donations .qr-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.specialized-donations .qr-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 0.5rem;
+  border: 3px solid #BBF7D0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  background-color: white;
+  padding: 6px;
+  object-fit: contain;
+  min-width: 0;
+  min-height: 0;
+}
+
+.specialized-donations .qr-image:hover {
+  border-color: #16A34A;
+  box-shadow: 0 6px 12px rgba(22, 163, 74, 0.3);
+  transform: scale(1.05);
+}
+
+/* Estilos para información de redes compatibles */
+.network-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.network-primary {
+  color: #1F2937;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.network-compatibility {
+  background: linear-gradient(135deg, #E0F2FE, #B3E5FC);
+  border: 1px solid #0288D1;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.compatibility-note {
+  color: #0D47A1;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.375rem;
+}
+
+.compatibility-note i {
+  color: #0277BD;
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.compatible-networks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.network-tag {
+  background: transparent;
+  color: #0277BD;
+  border: 2px solid #0277BD;
+  padding: 0.375rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(2, 119, 189, 0.1);
+  transition: all 0.2s ease;
+}
+
+.network-tag:hover {
+  background: rgba(2, 119, 189, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(2, 119, 189, 0.2);
+  color: #01579B;
+  border-color: #01579B;
+}
+
+.usdt-compatibility {
+  background: linear-gradient(135deg, #E0F2FE, #B3E5FC);
+  border: 1px solid #0288D1;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.limitation-note {
+  color: #0D47A1;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.375rem;
+}
+
+.limitation-note i {
+  color: #0277BD;
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.network-limitation {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(2, 136, 209, 0.2);
+}
+
+.limitation-note {
+  color: #D32F2F;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: rgba(244, 67, 54, 0.05);
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  border-left: 3px solid #D32F2F;
+}
+
+.limitation-note i {
+  color: #D32F2F;
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.usdt-compatibility {
+  background: linear-gradient(135deg, #E0F2FE, #B3E5FC);
+  border: 1px solid #0288D1;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+</head>
+<body class="text-gray-800">
+
+  <!-- Contenedor para notificaciones emergentes -->
+  <div id="notification-container"></div>
+
+  <!-- Modal para QR expandido -->
+  <div class="qr-modal" id="qrModal">
+    <div class="qr-modal-content">
+      <button class="qr-modal-close" id="qrModalClose" aria-label="Cerrar modal">
+        <i class="fas fa-times"></i>
+      </button>
+      <h3 class="qr-modal-title" id="qrModalTitle">QR Code</h3>
+      <img id="qrModalImage" class="qr-modal-image" alt="QR Code expandido">
+    </div>
+  </div>
+
+  <header class="header-comunidad">
+    <div class="header-content">
+      <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+      <span class="header-title">CGN</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <nav class="menu-desplegable" id="menuDesplegable">
+      <ul>
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/faq.html">FAQ</a></li>
+        <li><a href="/socios.html">Socios</a></li>
+        <li><a href="/ajustes.html">Ajustes</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <!-- Barra de progreso de scroll -->
+<div id="scroll-progress-container">
+  <div id="scroll-progress-bar"></div>
+</div>
+
+  </header>
+  
+  <div class="content-container">
+    <h1 class="page-title">Donaciones</h1>
+    
+    <!-- Descripción principal -->
+    <div class="donation-intro">
+      <p class="text-lg text-gray-700 leading-relaxed mb-8 text-center">
+        Tu apoyo es fundamental para mantener y mejorar nuestra comunidad. 
+        Aceptamos donaciones en diferentes criptomonedas para facilitar las contribuciones 
+        desde cualquier parte del mundo.
+      </p>
+    </div>
+
+    <!-- Tarjeta informativa sobre uso de donaciones -->
+    <div class="donation-info">
+      <div class="info-header">
+        <i class="fas fa-hand-holding-heart"></i>
+        <h3>¿Cómo se utilizan las donaciones?</h3>
+      </div>
+      <div class="info-content">
+        <p><strong>Compromiso de transparencia y uso responsable:</strong></p>
+        <ul>
+          <li><strong>Infraestructura del servidor:</strong> Mantenimiento y mejora de los servidores de Discord y Minecraft para garantizar estabilidad y rendimiento óptimo.</li>
+          <li><strong>Herramientas y software:</strong> Adquisición de herramientas premium, bots y software especializado para mejorar la experiencia de la comunidad.</li>
+          <li><strong>Eventos y actividades:</strong> Organización de eventos especiales, torneos, concursos y actividades que fomenten la participación y el espíritu comunitario.</li>
+          <li><strong>Desarrollo de contenido:</strong> Creación de contenido educativo, tutoriales y recursos para ayudar a los miembros a aprovechar al máximo la comunidad.</li>
+          <li><strong>Mejoras de seguridad:</strong> Implementación de medidas de seguridad avanzadas para proteger a todos los miembros de la comunidad.</li>
+        </ul>
+        <p class="info-note">
+          <i class="fas fa-shield-alt"></i>
+          La administración se compromete a publicar reportes sobre el uso de los fondos y a responder cualquier consulta sobre la gestión de las donaciones.
+        </p>
+        <div class="info-action">
+          <a href="/Subpaginas/reportes-donaciones.html" class="reports-btn">
+            <i class="fas fa-chart-line"></i>
+            Ver Reportes de Donaciones
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de criptomonedas -->
+    <div class="crypto-section mb-12">
+      <h2 class="section-title">Criptomonedas Aceptadas</h2>
+      
+      <!-- Bitcoin -->
+      <div class="crypto-card">
+        <div class="crypto-header">
+          <div class="crypto-icon">
+            <i class="fa-brands fa-bitcoin"></i>
+          </div>
+          <div class="crypto-info">
+            <h3 class="crypto-name">Bitcoin (BTC)</h3>
+            <p class="crypto-description">La criptomoneda más establecida y ampliamente aceptada</p>
+          </div>
+        </div>
+        
+        <!-- Bitcoin On-Chain -->
+        <div class="wallet-container">
+          <div class="qr-section">
+            <img src="/imagenes/QR-wallet-btc.avif" alt="QR Bitcoin On-Chain" class="qr-image">
+            <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-wallet-btc.avif', 'Bitcoin (BTC) - On-Chain')" aria-label="Expandir QR Bitcoin">
+              <i class="fas fa-expand-alt"></i>
+            </button>
+          </div>
+          <div class="wallet-details">
+            <div class="wallet-field">
+              <label>Red:</label>
+              <span>Bitcoin (BTC) - On-Chain</span>
+            </div>
+            <div class="wallet-field">
+              <label>Dirección:</label>
+              <div class="address-container">
+                <code class="wallet-address">bc1qgjp96l4awlk2ztukqkexcs2d03wa3rmxvzsv2f</code>
+                <button class="copy-btn" onclick="copyToClipboard('bc1qgjp96l4awlk2ztukqkexcs2d03wa3rmxvzsv2f')">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Separador -->
+        <div class="lightning-separator">
+          <span>O usa Lightning Network para transacciones más rápidas y económicas</span>
+        </div>
+
+        <!-- Bitcoin Lightning -->
+        <div class="wallet-container lightning-container">
+          <div class="qr-section">
+            <img src="/imagenes/QR-wallet-btc.avif" alt="QR Bitcoin Lightning" class="qr-image lightning-qr">
+            <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'Bitcoin Lightning Network')" aria-label="Expandir QR Bitcoin Lightning">
+              <i class="fas fa-expand-alt"></i>
+            </button>
+          </div>
+          <div class="wallet-details">
+            <div class="wallet-field">
+              <label>Red:</label>
+              <span>Bitcoin Lightning Network</span>
+            </div>
+            <div class="wallet-field">
+              <label>Invoice Lightning:</label>
+              <div class="address-container">
+                <code class="wallet-address">lnbc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</code>
+                <button class="copy-btn" onclick="copyToClipboard('lnbc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh')">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+            <div class="lightning-info">
+              <p><i class="fas fa-info-circle"></i> Lightning Network permite transacciones instantáneas con comisiones mínimas</p>
+            </div>
+          </div>
+          
+          <!-- Capa de bloqueo -->
+          <div class="lightning-blocker">
+            <div class="lightning-blocker-content">
+              <div class="lightning-blocker-icon">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <h3 class="lightning-blocker-title">Próximamente</h3>
+              <p class="lightning-blocker-message">
+                Bitcoin Lightning Network estará disponible próximamente. 
+                Estamos configurando la infraestructura necesaria para ofrecer 
+                transacciones instantáneas y económicas.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ethereum -->
+      <div class="crypto-card">
+        <div class="crypto-header">
+          <div class="crypto-icon">
+            <i class="fa-brands fa-ethereum"></i>
+          </div>
+          <div class="crypto-info">
+            <h3 class="crypto-name">Ethereum (ETH)</h3>
+            <p class="crypto-description">Plataforma blockchain líder para aplicaciones descentralizadas</p>
+          </div>
+        </div>
+        <div class="wallet-container">
+          <div class="qr-section">
+            <img src="/imagenes/QR-wallet-eth.avif" alt="QR Ethereum" class="qr-image">
+            <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'Ethereum (ETH)')" aria-label="Expandir QR Ethereum">
+              <i class="fas fa-expand-alt"></i>
+            </button>
+          </div>
+          <div class="wallet-details">
+            <div class="wallet-field">
+              <label>Red:</label>
+              <span>Ethereum (ETH)</span>
+            </div>
+            <div class="wallet-field">
+              <label>Redes compatibles:</label>
+              <div class="network-info">
+                <span class="network-primary">Ethereum Mainnet</span>
+                <div class="network-compatibility">
+                  <p class="compatibility-note">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Misma dirección para todas las redes:</strong> Puedes enviar desde cualquier red de Ethereum (Polygon, Arbitrum, Optimism, BSC, etc.) usando esta misma dirección.
+                  </p>
+                  <div class="compatible-networks">
+                    <span class="network-tag">Polygon</span>
+                    <span class="network-tag">Arbitrum</span>
+                    <span class="network-tag">Optimism</span>
+                    <span class="network-tag">BSC</span>
+                    <span class="network-tag">Avalanche</span>
+                    <span class="network-tag">Fantom</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="wallet-field">
+              <label>Dirección:</label>
+              <div class="address-container">
+                <code class="wallet-address">0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D</code>
+                <button class="copy-btn" onclick="copyToClipboard('0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D')">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USDT -->
+      <div class="crypto-card">
+        <div class="crypto-header">
+          <div class="crypto-icon usdt-icon">
+            <i class="fa-solid fa-dollar-sign"></i>
+          </div>
+          <div class="crypto-info">
+            <h3 class="crypto-name">Tether (USDT)</h3>
+            <p class="crypto-description">Stablecoin vinculada al dólar estadounidense</p>
+          </div>
+        </div>
+        <div class="wallet-container">
+          <div class="qr-section">
+            <img src="/imagenes/QR-wallet-eth.avif" alt="QR USDT" class="qr-image">
+            <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'Tether (USDT)')" aria-label="Expandir QR USDT">
+              <i class="fas fa-expand-alt"></i>
+            </button>
+          </div>
+          <div class="wallet-details">
+            <div class="wallet-field">
+              <label>Red:</label>
+              <span>Ethereum (ERC-20)</span>
+            </div>
+            <div class="wallet-field">
+              <label>Redes compatibles:</label>
+              <div class="network-info">
+                <span class="network-primary">Ecosistema Ethereum</span>
+                <div class="network-compatibility usdt-compatibility">
+                  <p class="compatibility-note">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>USDT disponible en múltiples redes:</strong> Aunque USDT existe en varias blockchains, actualmente solo aceptamos depósitos desde redes del ecosistema Ethereum.
+                  </p>
+                  <div class="compatible-networks">
+                    <span class="network-tag">Ethereum</span>
+                    <span class="network-tag">Polygon</span>
+                    <span class="network-tag">Arbitrum</span>
+                    <span class="network-tag">Optimism</span>
+                    <span class="network-tag">BSC</span>
+                    <span class="network-tag">Avalanche</span>
+                  </div>
+                  <div class="network-limitation">
+                    <p class="limitation-note">
+                      <i class="fas fa-exclamation-triangle"></i>
+                      <strong>Importante:</strong> No aceptamos USDT desde Tron (TRC-20), Solana, u otras redes fuera del ecosistema Ethereum.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="wallet-field">
+              <label>Dirección:</label>
+              <div class="address-container">
+                <code class="wallet-address">0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D</code>
+                <button class="copy-btn" onclick="copyToClipboard('0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D')">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USDC -->
+      <div class="crypto-card">
+        <div class="crypto-header">
+          <div class="crypto-icon usdc-icon">
+            <i class="fa-solid fa-dollar-sign"></i>
+          </div>
+          <div class="crypto-info">
+            <h3 class="crypto-name">USD Coin (USDC)</h3>
+            <p class="crypto-description">Stablecoin regulada vinculada al dólar estadounidense</p>
+          </div>
+        </div>
+        <div class="wallet-container">
+          <div class="qr-section">
+            <img src="/imagenes/QR-wallet-eth.avif" alt="QR USDC" class="qr-image">
+            <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'USD Coin (USDC)')" aria-label="Expandir QR USDC">
+              <i class="fas fa-expand-alt"></i>
+            </button>
+          </div>
+          <div class="wallet-details">
+            <div class="wallet-field">
+              <label>Red:</label>
+              <span>Ethereum (ERC-20)</span>
+            </div>
+            <div class="wallet-field">
+              <label>Redes compatibles:</label>
+              <div class="network-info">
+                <span class="network-primary">Ecosistema Ethereum</span>
+                <div class="network-compatibility usdt-compatibility">
+                  <p class="compatibility-note">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>USDC disponible en múltiples redes:</strong> Aunque USDC existe en varias blockchains, actualmente solo aceptamos depósitos desde redes del ecosistema Ethereum.
+                  </p>
+                  <div class="compatible-networks">
+                    <span class="network-tag">Ethereum</span>
+                    <span class="network-tag">Polygon</span>
+                    <span class="network-tag">Arbitrum</span>
+                    <span class="network-tag">Optimism</span>
+                    <span class="network-tag">BSC</span>
+                    <span class="network-tag">Avalanche</span>
+                  </div>
+                  <div class="network-limitation">
+                    <p class="limitation-note">
+                      <i class="fas fa-exclamation-triangle"></i>
+                      <strong>Importante:</strong> No aceptamos USDC desde Tron (TRC-20), Solana, o otras redes fuera del ecosistema Ethereum.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="wallet-field">
+              <label>Dirección:</label>
+              <div class="address-container">
+                <code class="wallet-address">0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D</code>
+                <button class="copy-btn" onclick="copyToClipboard('0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D')">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Litecoin -->
+      <div class="crypto-card">
+        <div class="crypto-header">
+          <div class="crypto-icon">
+            <i class="fa-solid fa-litecoin-sign"></i>
+          </div>
+          <div class="crypto-info">
+            <h3 class="crypto-name">Litecoin (LTC)</h3>
+            <p class="crypto-description">Criptomoneda de transacciones rápidas y bajas comisiones</p>
+          </div>
+        </div>
+        <div class="wallet-container">
+          <div class="qr-section">
+            <img src="/imagenes/QR-wallet-ltc.avif" alt="QR Litecoin" class="qr-image">
+            <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'Litecoin (LTC)')" aria-label="Expandir QR Litecoin">
+              <i class="fas fa-expand-alt"></i>
+            </button>
+          </div>
+          <div class="wallet-details">
+            <div class="wallet-field">
+              <label>Red:</label>
+              <span>Litecoin (LTC)</span>
+            </div>
+            <div class="wallet-field">
+              <label>Dirección:</label>
+              <div class="address-container">
+                <code class="wallet-address">ltc1qgjp96l4awlk2ztukqkexcs2d03wa3rmxg72gje</code>
+                <button class="copy-btn" onclick="copyToClipboard('ltc1qgjp96l4awlk2ztukqkexcs2d03wa3rmxg72gje')">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de donaciones a través de páginas especializadas -->
+    <div class="specialized-donations">
+      <div class="specialized-header">
+        <i class="fas fa-globe"></i>
+        <h3>¿Te resulta complicado usar tu wallet?</h3>
+      </div>
+      <div class="specialized-content">
+        <p>Si no estás familiarizado con el proceso de donación por criptomonedas o prefieres una alternativa más sencilla, puedes utilizar nuestra página especializada que te guiará paso a paso.</p>
+        <div class="platform-options">
+          <div class="platform-card">
+            <div class="platform-icon">
+              <i class="fas fa-coins"></i>
+            </div>
+            <div class="platform-info">
+              <h4>Plataforma de Donaciones</h4>
+              <p>Interfaz intuitiva con guías paso a paso para realizar donaciones de forma segura y sencilla.</p>
+            </div>
+            <div class="qr-section">
+              <img src="/imagenes/QR-donaciones.avif" alt="QR para donaciones" class="qr-image">
+              <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'Plataforma de Donaciones')" aria-label="Expandir QR Plataforma">
+                <i class="fas fa-expand-alt"></i>
+              </button>
+            </div>
+            <a target="_blank" href="https://cwallet.com/t/S1UK2A7R" class="platform-btn">
+              <i class="fas fa-external-link-alt"></i>
+              Ir a la Plataforma
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tarjeta de advertencia de riesgos -->
+    <div class="risk-warning">
+      <div class="warning-header">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Advertencia Importante</h3>
+      </div>
+      <div class="warning-content">
+        <p><strong>Riesgos asociados a las transferencias de criptomonedas:</strong></p>
+        <ul>
+          <li>Las transacciones de criptomonedas son <strong>irreversibles</strong>. Una vez enviadas, no pueden ser canceladas.</li>
+          <li>Verifica <strong>múltiples veces</strong> la dirección de destino antes de enviar cualquier cantidad.</li>
+          <li>Asegúrate de usar la <strong>red correcta</strong> para cada criptomoneda (ej: ERC-20 para USDT en Ethereum).</li>
+          <li>Las donaciones son <strong>voluntarias</strong> y no garantizan beneficios especiales en la comunidad.</li>
+          <li>Considera las <strong>comisiones de red</strong> al realizar tu donación.</li>
+        </ul>
+        <p class="warning-note">
+          <i class="fas fa-info-circle"></i>
+          Si tienes dudas sobre el proceso, contacta a un administrador antes de realizar la donación.
+        </p>
+      </div>
+    </div>
+
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  </div>
+
+  <footer>
+    <div class="back-to-top" id="backToTopBtn" title="Volver arriba">
+      <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <div class="footer-links">
+          <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+          <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+          <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+          <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+          <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Comunidad</h3>
+        <div class="footer-links">
+          <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+          <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+          <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+          <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+          <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">
+        <img src="/icons/Bandera-jal.avif" 
+             alt="Logo Comunidad CGN" 
+             class="cgn-icon">
+        Comunidad CGN | <span id="currentYear">2022-2025</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Actualizar año en footer
+      const currentYear = new Date().getFullYear();
+      document.getElementById('currentYear').textContent = `2022-${currentYear}`;
+      
+       // Botón "Volver" inteligente
+       const backButton = document.getElementById('backButton');
+            backButton.addEventListener('click', function() {
+                // Comprobar si hay una página anterior en el historial
+                if (document.referrer && document.referrer !== window.location.href) {
+                    window.history.back();
+                } else {
+                    // Si no hay historial previo, redirigir a la página de inicio
+                    window.location.href = '/index.html';
+                }
+            });
+
+      // Botón "Volver arriba"
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Menú desplegable
+      const menuToggle = document.getElementById('menuToggle');
+      const menuDesplegable = document.getElementById('menuDesplegable');
+      
+      // Abrir/cerrar menú al hacer clic en el botón
+      menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menuDesplegable.classList.toggle('abierto');
+        menuToggle.classList.toggle('activo');
+      });
+      
+      // Cerrar menú al hacer clic fuera
+      document.addEventListener('click', function(e) {
+        if (!menuDesplegable.contains(e.target) && !menuToggle.contains(e.target)) {
+          menuDesplegable.classList.remove('abierto');
+          menuToggle.classList.remove('activo');
+        }
+      });
+      
+      // Prevenir que el clic en el menú lo cierre
+      menuDesplegable.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    });
+
+    // Función para copiar direcciones de wallet al portapapeles
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(function() {
+        // Mostrar notificación de éxito
+        showNotification('Dirección copiada al portapapeles', 'success');
+        
+        // Cambiar temporalmente el icono del botón
+        const button = event.target.closest('.copy-btn');
+        const originalIcon = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i>';
+        button.style.backgroundColor = '#10B981';
+        button.style.color = 'white';
+        
+        setTimeout(function() {
+          button.innerHTML = originalIcon;
+          button.style.backgroundColor = '#FFD1A9';
+          button.style.color = '#374151';
+        }, 2000);
+      }).catch(function(err) {
+        console.error('Error al copiar: ', err);
+        // Fallback para navegadores que no soportan clipboard API
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Mostrar notificación de éxito
+        showNotification('Dirección copiada al portapapeles', 'success');
+        
+        // Cambiar temporalmente el icono del botón
+        const button = event.target.closest('.copy-btn');
+        const originalIcon = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i>';
+        button.style.backgroundColor = '#10B981';
+        button.style.color = 'white';
+        
+        setTimeout(function() {
+          button.innerHTML = originalIcon;
+          button.style.backgroundColor = '#FFD1A9';
+          button.style.color = '#374151';
+        }, 2000);
+      });
+    }
+
+    // Función para mostrar notificaciones emergentes
+    function showNotification(message, type = 'success') {
+      const container = document.getElementById('notification-container');
+      
+      // Crear elemento de notificación
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        <span>${message}</span>
+      `;
+      
+      // Agregar al contenedor
+      container.appendChild(notification);
+      
+      // Mostrar con animación
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 100);
+      
+      // Ocultar después de 3 segundos
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          if (container.contains(notification)) {
+            container.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // Funciones para el modal de QR
+    function expandQR(imageSrc, title) {
+      const modal = document.getElementById('qrModal');
+      const modalImage = document.getElementById('qrModalImage');
+      const modalTitle = document.getElementById('qrModalTitle');
+      
+      // Configurar el modal
+      modalImage.src = imageSrc;
+      modalTitle.textContent = title;
+      
+      // Mostrar el modal
+      modal.classList.add('show');
+      document.body.classList.add('modal-open');
+      
+      // Enfocar el botón de cerrar para accesibilidad
+      setTimeout(() => {
+        document.getElementById('qrModalClose').focus();
+      }, 300);
+    }
+
+    function closeQRModal() {
+      const modal = document.getElementById('qrModal');
+      modal.classList.remove('show');
+      document.body.classList.remove('modal-open');
+    }
+
+    // Event listeners para el modal
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('qrModal');
+      const closeBtn = document.getElementById('qrModalClose');
+      
+      // Cerrar con el botón
+      closeBtn.addEventListener('click', closeQRModal);
+      
+      // Cerrar haciendo clic fuera del modal
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          closeQRModal();
+        }
+      });
+      
+      // Cerrar con la tecla Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+          closeQRModal();
+        }
+      });
+    });
+
+    // Barra de progreso de scroll
+    const scrollProgressBar = document.getElementById('scroll-progress-bar');
+
+    function updateScrollProgress() {
+      // Calcular el progreso del scroll
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercentage = (scrollTop / scrollHeight) * 100;
+      
+      // Actualizar el ancho de la barra de progreso
+      scrollProgressBar.style.width = scrollPercentage + '%';
+      
+      // Cambiar color cuando esté cerca del final
+      if (scrollPercentage > 90) {
+        scrollProgressBar.style.background = 'linear-gradient(90deg, #ffb07a, #ff7b54)';
+      } else {
+        scrollProgressBar.style.background = 'linear-gradient(90deg, #FFD1A9, #ffb07a)';
+      }
+    }
+
+    // Actualizar al cargar y al hacer scroll
+    window.addEventListener('load', updateScrollProgress);
+    window.addEventListener('scroll', updateScrollProgress);
+    window.addEventListener('resize', updateScrollProgress);
+
+    // Calcular altura del header automáticamente
+    function setProgressBarPosition() {
+      const header = document.querySelector('.header-comunidad');
+      if (header) {
+        const headerHeight = header.offsetHeight;
+        document.getElementById('scroll-progress-container').style.top = headerHeight + 'px';
+      }
+    }
+
+    // Llamar al cargar y al redimensionar
+    window.addEventListener('load', function() {
+      setProgressBarPosition();
+      updateScrollProgress();
+    });
+    window.addEventListener('resize', setProgressBarPosition);
+  </script>
+</body>
+</html>

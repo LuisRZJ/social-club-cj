@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Anuncio Exclusivo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+
+  <!-- Tipografía Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome 6 CDN -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    crossorigin="anonymous"
+  />
+
+  <style>
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --gray-100: #f8f8f8;
+      --gray-200: #eaeaea;
+      --gray-300: #d1d1d1;
+      --gray-500: #888888;
+      --gray-700: #444444;
+      --gray-800: #222222;
+      --background: #f8f9fa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background);
+      color: var(--gray-800);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+      gap: 0;
+      scroll-behavior: smooth;
+    }
+
+    /* Contenedor principal para delimitar el área útil */
+    .contenedor-principal {
+      background-color: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      width: calc(100% - 40px);
+      max-width: 900px;
+      margin: 80px 20px 40px;
+      padding: 40px;
+      position: relative;
+    }
+
+    .temporizador-top {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      color: var(--gray-800);
+      background-color: rgba(255, 255, 255, 0);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 10px 24px;
+      border-radius: 20px;
+      border: 1px solid var(--gray-800);
+      z-index: 999;
+      transition: opacity 0.3s ease;
+      user-select: none;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      white-space: nowrap;
+      max-width: 90vw;
+      min-width: 250px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 800px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: center;
+      max-width: 700px;
+      color: var(--gray-800);
+      line-height: 1.3;
+    }
+
+    .descripcion-principal {
+      font-size: 1.2rem;
+      color: var(--gray-500);
+      text-align: center;
+      max-width: 700px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    /* Contenedor de imagen mejorado */
+    .contenedor-imagen {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 0 40px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease;
+    }
+
+    .contenedor-imagen:hover {
+      transform: translateY(-5px);
+    }
+
+    .etiqueta-imagen {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: rgba(40, 40, 40, 0.9);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transform: translateY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .contenedor-imagen:hover .etiqueta-imagen {
+      transform: translateY(-5px);
+    }
+
+    .etiqueta-imagen i {
+      font-size: 1.1rem;
+    }
+
+    .contenedor-imagen img {
+      width: 100%;
+      height: 380px;
+      border-radius: 16px;
+      object-fit: cover;
+      object-position: left center;
+      display: block;
+      transition: transform 0.5s ease, filter 0.3s ease;
+    }
+
+    .contenedor-imagen:hover img {
+      transform: scale(1.03);
+      filter: brightness(1.05);
+    }
+
+    .marco-imagen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 2px solid var(--gray-200);
+      border-radius: 18px;
+      pointer-events: none;
+      z-index: 1;
+      animation: pulse 4s infinite;
+    }
+
+    .seccion-servicios {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      width: 100%;
+      margin: 10px 0 40px;
+    }
+
+    /* Tarjetas apiladas verticalmente */
+    .servicio {
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 40px 30px;
+      width: 100%;
+      background-color: var(--gray-100);
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .servicio:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Efecto de borde al pasar el cursor */
+    .servicio::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: var(--gray-800);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+      z-index: 1;
+    }
+
+    .servicio:hover::before {
+      transform: scaleX(1);
+    }
+
+    .servicio h3 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--gray-800);
+      text-align: center;
+    }
+
+    .servicio p {
+      font-size: 1.1rem;
+      color: var(--gray-700);
+      line-height: 1.7;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    /* Iconos de servicios */
+    .servicio i {
+      font-size: 56px;
+      color: var(--gray-800);
+      transition: color 0.3s;
+      margin-bottom: 12px;
+    }
+
+    .servicio:hover i {
+      color: var(--gray-700);
+    }
+
+    /* Botón cerrar y volver al final */
+    .botones-final {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 40px;
+    }
+
+    .btn-cerrar {
+      display: none;
+      align-self: center;
+      margin-top: 0;
+      width: 48px;
+      height: 48px;
+      border: 2px solid var(--gray-800);
+      border-radius: 50%;
+      background-color: var(--white);
+      cursor: pointer;
+      padding: 0;
+      transition: background-color 0.3s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-volver {
+      display: none;
+      align-self: center;
+      height: 48px;
+      border: 2px solid var(--gray-800);
+      border-radius: 24px;
+      background-color: var(--white);
+      cursor: pointer;
+      padding: 0 20px;
+      font-size: 1.1rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      color: var(--gray-800);
+      transition: background-color 0.3s, color 0.3s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .btn-volver i {
+      font-size: 1.2rem;
+    }
+
+    .btn-volver:hover {
+      background-color: var(--gray-800);
+      color: var(--white);
+      transform: scale(1.05);
+    }
+
+    .btn-cerrar:hover {
+      background-color: var(--gray-800);
+      transform: scale(1.1);
+    }
+
+    .btn-cerrar:hover svg {
+      fill: var(--white);
+    }
+
+    @keyframes pulse {
+      0% {
+        border-color: var(--gray-200);
+      }
+      50% {
+        border-color: var(--gray-300);
+      }
+      100% {
+        border-color: var(--gray-200);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .contenedor-principal {
+        padding: 30px;
+        margin: 70px 15px 30px;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .servicio {
+        padding: 35px 25px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .contenedor-principal {
+        padding: 24px 20px;
+        margin: 60px 10px 20px;
+        width: calc(100% - 20px);
+      }
+      
+      h1 {
+        font-size: 1.9rem;
+      }
+
+      .descripcion-principal {
+        font-size: 1.05rem;
+      }
+
+      .btn-cerrar {
+        width: 40px;
+        height: 40px;
+      }
+
+      .btn-volver {
+        height: 40px;
+        padding: 0 16px;
+      }
+
+      .btn-volver i {
+        font-size: 1.05rem;
+      }
+
+      .temporizador-top {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+      }
+      
+      .contenedor-imagen {
+        margin: 0 0 30px;
+      }
+      
+      .contenedor-imagen img {
+        height: 260px;
+      }
+      
+      .etiqueta-imagen {
+        top: 15px;
+        left: 15px;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+      }
+      
+      .servicio {
+        padding: 30px 20px;
+        gap: 16px;
+      }
+      
+      .servicio h3 {
+        font-size: 1.4rem;
+      }
+      
+      .servicio p {
+        font-size: 1.05rem;
+      }
+      
+      .servicio i {
+        font-size: 48px;
+      }
+    }
+
+    .btn-cerrar.desactivado,
+    .btn-volver.desactivado {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(0.7);
+      pointer-events: none;
+      box-shadow: none;
+      background-color: var(--gray-200);
+      color: var(--gray-500);
+    }
+    .btn-cerrar.desactivado svg {
+      fill: var(--gray-300);
+    }
+
+    /* Botón de acción principal */
+    .btn-accion-principal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #222222 0%, #444444 100%);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      padding: 18px 36px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      margin: 20px 0;
+      min-width: 200px;
+    }
+
+    .btn-accion-principal:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+      background: linear-gradient(135deg, #000000 0%, #333333 100%);
+    }
+
+    .btn-accion-principal:active {
+      transform: translateY(-1px);
+    }
+
+    .btn-accion-principal i {
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-accion-principal:hover i {
+      transform: translateX(3px);
+    }
+
+    .btn-accion-principal.desactivado {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+      transform: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 600px) {
+      .btn-accion-principal {
+        padding: 16px 28px;
+        font-size: 1rem;
+        min-width: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Temporizador fijo -->
+  <div class="temporizador-top" id="temporizador">
+    Acceso disponible en <span id="contador">5</span> segundos...
+  </div>
+
+  <!-- Contenedor principal para delimitar el área útil -->
+  <div class="contenedor-principal">
+    <!-- Contenido del anuncio -->
+    <main>
+      <h1>Titulo</h1>
+      <p class="descripcion-principal">
+        Subtitulo
+      </p>
+      
+      <!-- Contenedor de imagen mejorado -->
+      <div class="contenedor-imagen">
+        <div class="etiqueta-imagen">
+          <i class="fas fa-image"></i>
+          Imagen Destacada
+        </div>
+        <div class="marco-imagen"></div>
+        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Soluciones profesionales para tu negocio" />
+      </div>
+
+      <div class="seccion-servicios">
+        <div class="servicio">
+          <i class="fa-solid fa-palette" aria-hidden="true"></i>
+          <h3>Titulo tarjeta 1</h3>
+          <p>Subtitulo tarjeta 1</p>
+        </div>
+        <div class="servicio">
+          <i class="fa-solid fa-bullseye" aria-hidden="true"></i>
+          <h3>Titulo tarjeta 2</h3>
+          <p>Subtitulo tarjeta 2</p>
+        </div>
+        <div class="servicio">
+          <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+          <h3>Titulo tarjeta 3</h3>
+          <p>Subtitulo tarjeta 3</p>
+        </div>
+      </div>
+
+      <!-- Botón de acción principal -->
+      <div style="text-align: center; margin: 40px 0;">
+        <a href="#" class="btn-accion-principal desactivado" id="btnAccionPrincipal">
+          <i class="fa-solid fa-arrow-right"></i>
+          <span id="textoBtnAccion">Comenzar ahora</span>
+        </a>
+      </div>
+
+      <!-- Botón Cerrar y Volver al final -->
+      <div class="botones-final" style="display: flex; gap: 16px; justify-content: center; align-items: center; margin-top: 40px;">
+        <button class="btn-volver desactivado" id="volverBtn" title="Volver a la página anterior" aria-label="Volver" disabled>
+          <i class="fa-solid fa-arrow-left"></i> Volver
+        </button>
+        <button class="btn-cerrar desactivado" id="cerrarBtn" title="Cerrar anuncio" aria-label="Cerrar anuncio" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12l-4.89 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.89a1 1 0 0 0 1.41-1.41L13.41 12l4.89-4.89a1 1 0 0 0 0-1.4z"
+            />
+          </svg>
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const cerrarBtn = document.getElementById('cerrarBtn');
+    const volverBtn = document.getElementById('volverBtn');
+    const contador = document.getElementById('contador');
+    const temporizador = document.getElementById('temporizador');
+
+    // --- SISTEMA DE VERSIONES ALEATORIAS ---
+    const versiones = [
+
+      // Anuncio 1 - CryptoTab
+      {
+        titulo: "¡Mina Bitcoin mientras navegas!",
+        subtitulo: "CryptoTab Browser te permite ganar criptomonedas de forma pasiva mientras usas internet. Una forma inteligente de aprovechar el tiempo online.",
+        imagen: "../icons/CryptoTab-baner-browser.avif",
+        alt: "CryptoTab Browser - Navegador que mina Bitcoin",
+        boton: {
+          texto: "Descargar CryptoTab",
+          enlace: "https://cryptotab.farm/43028368",
+          icono: "fa-download"
+        },
+        tarjetas: [
+          { icono: "fa-coins", titulo: "Minería Pasiva", desc: "Mina Bitcoin automáticamente mientras navegas por internet. No necesitas conocimientos técnicos, solo instalar y usar normalmente." },
+          { icono: "fa-shield-alt", titulo: "Seguro y Confiable", desc: "Basado en Chromium, CryptoTab es un navegador seguro con todas las funciones que esperas: extensiones, sincronización y más." },
+          { icono: "fa-chart-line", titulo: "Ganancias Reales", desc: "Retira tus ganancias directamente a tu wallet de Bitcoin. El rendimiento varía según tu hardware y tiempo de uso." }
+        ]
+      },
+
+      // Anuncio 2 - Bitcoin Mining
+      {
+        titulo: "¡Mina Bitcoin desde tu telefono!",
+        subtitulo: "Únete a la revolución de las criptomonedas con nuestro software de minería optimizado. Gana Bitcoin de forma segura y eficiente.",
+        imagen: "../icons/Bitcoin-mining-logo.avif",
+        alt: "Bitcoin Mining - Software de minería",
+        boton: {
+          texto: "Descargar App",
+          enlace: "https://play.google.com/store/apps/details?id=bitcoin.minning.com&pcampaignid=web_share",
+          icono: "fa-download"
+        },
+        tarjetas: [
+          { icono: "fa-microchip", titulo: "Minería Optimizada +10%", desc: "Software especializado que maximiza el rendimiento de tu hardware. ¡Usa el código ZEVHLB al registrarte y obtén un aumento permanente del 10% en la velocidad de minería!" },
+          { icono: "fa-shield-alt", titulo: "Seguridad Garantizada", desc: "Minería segura con protección antivirus integrada y conexiones encriptadas para proteger tus ganancias y tu equipo." },
+          { icono: "fa-chart-line", titulo: "Monitoreo en Tiempo Real", desc: "Sigue tus ganancias en tiempo real con estadísticas detalladas, gráficos de rendimiento y alertas personalizables." }
+        ]
+      },
+
+      // Anuncio 3 - Donaciones
+      {
+        titulo: "Apoya nuestra comunidad",
+        subtitulo: "Tu contribución nos ayuda a mantener y mejorar los servidores, herramientas y eventos para todos los miembros.",
+        imagen: "../imagenes/Fondos-BS/Fondo-basico1.avif",
+        alt: "Donaciones para la comunidad CGN",
+        boton: {
+          texto: "Hacer donación",
+          enlace: "/donaciones.html",
+          icono: "fa-heart"
+        },
+        tarjetas: [
+          { icono: "fa-server", titulo: "Infraestructura", desc: "Mantenemos servidores de Discord y Minecraft con estabilidad y rendimiento óptimo para toda la comunidad." },
+          { icono: "fa-tools", titulo: "Herramientas Premium", desc: "Adquirimos bots, software especializado y herramientas que mejoran la experiencia de todos los miembros." },
+          { icono: "fa-calendar-alt", titulo: "Eventos y Actividades", desc: "Organizamos torneos, concursos y eventos especiales que fomentan la participación y el espíritu comunitario." }
+        ]
+      }
+
+    ];
+
+    // Elegir versión aleatoria
+    const version = versiones[Math.floor(Math.random() * versiones.length)];
+
+    // Actualizar título y subtítulo
+    document.querySelector('h1').textContent = version.titulo;
+    document.querySelector('.descripcion-principal').textContent = version.subtitulo;
+
+    // Actualizar imagen
+    const img = document.querySelector('.contenedor-imagen img');
+    img.src = version.imagen;
+    img.alt = version.alt;
+
+    // Actualizar tarjetas
+    const seccionServicios = document.querySelector('.seccion-servicios');
+    seccionServicios.innerHTML = '';
+    version.tarjetas.forEach(tarjeta => {
+      const div = document.createElement('div');
+      div.className = 'servicio';
+      div.innerHTML = `
+        <i class="fa-solid ${tarjeta.icono}" aria-hidden="true"></i>
+        <h3>${tarjeta.titulo}</h3>
+        <p>${tarjeta.desc}</p>
+      `;
+      seccionServicios.appendChild(div);
+    });
+
+    // Actualizar botón de acción principal
+    const btnAccionPrincipal = document.getElementById('btnAccionPrincipal');
+    const textoBtnAccion = document.getElementById('textoBtnAccion');
+    const iconoBtn = btnAccionPrincipal.querySelector('i');
+    
+    btnAccionPrincipal.href = version.boton.enlace;
+    textoBtnAccion.textContent = version.boton.texto;
+    iconoBtn.className = `fa-solid ${version.boton.icono}`;
+    // --- FIN SISTEMA DE VERSIONES ---
+
+    let tiempoRestante = 5;
+
+    const cuentaRegresiva = setInterval(() => {
+      tiempoRestante--;
+      contador.textContent = tiempoRestante;
+
+      if (tiempoRestante <= 0) {
+        clearInterval(cuentaRegresiva);
+        temporizador.innerHTML = "Desplázate al final para cerrar el anuncio";
+        cerrarBtn.classList.remove('desactivado');
+        volverBtn.classList.remove('desactivado');
+        btnAccionPrincipal.classList.remove('desactivado');
+        cerrarBtn.disabled = false;
+        volverBtn.disabled = false;
+      }
+    }, 1000);
+
+    function getParametroDestino() {
+      const params = new URLSearchParams(window.location.search);
+      let destino = params.get('destino');
+      if (destino) {
+        destino = decodeURIComponent(destino);
+      }
+      return destino;
+    }
+
+    cerrarBtn.addEventListener('click', () => {
+      const destino = getParametroDestino();
+      if (destino) {
+        window.location.href = destino;
+      } else {
+        window.location.href = '/';
+      }
+    });
+
+    volverBtn.addEventListener('click', () => {
+      window.history.back();
+    });
+  </script>
+</body>
+</html>

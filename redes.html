@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FFD1A9">
+    <title>Comunidad CGN | Redes</title>
+    <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+    
+    <!-- Iconos Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">    
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes e iconos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #FF6B00;
+            --secondary: #FFD1A9;
+            --accent: #5EB476;
+            --dark: #374151;
+            --light: #FFF5EB;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            scroll-behavior: smooth;
+            color: var(--dark);
+        }
+        
+        /* Contenedor principal del contenido */
+        .content-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            background-color: white;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 5px 10px -5px rgba(0, 0, 0, 0.04);
+            flex: 1;
+            text-align: center;
+        }
+        
+        /* Títulos */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--secondary);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+        
+        /* Logo y título */
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 100%;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 5px 10px -5px rgba(0, 0, 0, 0.04);
+            object-fit: contain;
+            margin: 0 auto 1rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary), #d8681d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        
+        .quote {
+            color: var(--accent);
+            font-style: italic;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            position: relative;
+            display: inline-block;
+            padding: 0 1rem;
+        }
+        
+        .quote::before, .quote::after {
+            content: '"';
+            color: var(--secondary);
+            font-size: 2rem;
+            position: absolute;
+            top: -0.8rem;
+        }
+        
+        .quote::before {
+            left: -0.5rem;
+        }
+        
+        .quote::after {
+            right: -0.5rem;
+        }
+        
+        /* Nuevo diseño para botones sociales */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .social-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .social-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+        
+        .social-card.youtube::before {
+            background: linear-gradient(to right, #FF0000, #FF6B6B);
+        }
+        
+        .social-card.twitter::before {
+            background: linear-gradient(to right, #000000, #434343);
+        }
+        
+        .social-card.share::before {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+        }
+        
+        .social-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            font-size: 2.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-card:hover .social-icon {
+            transform: scale(1.1);
+        }
+        
+        .social-card.youtube .social-icon {
+            background: rgba(255, 0, 0, 0.1);
+            color: #FF0000;
+        }
+        
+        .social-card.twitter .social-icon {
+            background: rgba(0, 0, 0, 0.1);
+            color: #000000;
+        }
+        
+        .social-card.share .social-icon {
+            background: rgba(255, 107, 0, 0.1);
+            color: var(--primary);
+        }
+        
+        .social-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .social-desc {
+            color: #6B7280;
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+        
+        .social-button {
+            background: white;
+            border: 2px solid;
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .social-card.youtube .social-button {
+            border-color: #FF0000;
+            color: #FF0000;
+        }
+        
+        .social-card.twitter .social-button {
+            border-color: #000000;
+            color: #000000;
+        }
+        
+        .social-card.share .social-button {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .social-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .social-card.youtube .social-button:hover {
+            background: #FF0000;
+            color: white;
+        }
+        
+        .social-card.twitter .social-button:hover {
+            background: #000000;
+            color: white;
+        }
+        
+        .social-card.share .social-button:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Botones de enlaces */
+        .link-button {
+            background-color: white;
+            border: 1px solid #E5E7EB;
+            padding: 1.2rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            font-size: 1.1rem;
+            color: var(--dark);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            transition: all 0.3s ease;
+            margin-bottom: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .link-button:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .link-button i {
+            margin-right: 1rem;
+            font-size: 1.4rem;
+            min-width: 36px;
+            text-align: center;
+        }
+        
+        .links-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.9rem;
+            margin-top: 1.5rem;
+        }
+        
+        /* Botones de navegación */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+        
+        .nav-button {
+            background-color: var(--secondary);
+            color: var(--dark);
+            font-weight: 600;
+            padding: 0.9rem 2rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            border: none;
+            text-align: center;
+            min-width: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        
+        .nav-button:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-button i {
+            margin-right: 0.7rem;
+            font-size: 1.2rem;
+        }
+        
+        /* Pie de página */
+        footer {
+            background-color: var(--light);
+            padding: 3rem 1rem 1.5rem;
+            border-top: 1px solid #E5E7EB;
+            margin-top: auto;
+            position: relative;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        
+        .footer-links a {
+            color: #4B5563;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .footer-links a i {
+            margin-right: 0.75rem;
+            color: var(--primary);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 1px solid #E5E7EB;
+            text-align: center;
+            color: #4B5563;
+            font-size: 0.95rem;
+        }
+        
+        .copyright {
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .copyright span {
+            color: var(--primary);
+        }
+        
+        /* Botón "Volver arriba" */
+        .back-to-top {
+            position: absolute;
+            top: -25px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            border: none;
+        }
+        
+        .back-to-top:hover {
+            background: #e65a00;
+            transform: translateY(-5px) scale(1.1);
+        }
+        
+        .cgn-icon {
+            height: 50px;
+            width: 100px;
+            border-radius: 4px;
+            object-fit: cover;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .cgn-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            
+            .social-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-button {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-to-top {
+                top: -20px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="content-container">
+        <img src="/icons/Logo-canal.avif" alt="Logo Comunidad CGN" class="logo">
+        <h1 class="page-title">Comunidad CGN</h1>
+        <strong class="quote">Eres lo que haces, no lo que dices que harás.</strong>
+        
+        <!-- Nuevo diseño para botones sociales -->
+        <div class="social-grid">
+            <div class="social-card youtube">
+                <div class="social-icon">
+                    <i class="bi bi-youtube"></i>
+                </div>
+                <div class="social-title">YouTube</div>
+                <div class="social-desc">Sigue nuestro canal</div>
+                <a href="https://youtube.com/@cgz8836?si=WGuWev3Fw7tKmUle" class="social-button">
+                    <i class="bi bi-box-arrow-up-right"></i> Visitar
+                </a>
+            </div>
+            
+            <div class="social-card twitter">
+                <div class="social-icon">
+                    <i class="bi bi-twitter-x"></i>
+                </div>
+                <div class="social-title">Twitter/X</div>
+                <div class="social-desc">Síguenos en X</div>
+                <a href="https://x.com/LuisMz07244222?t=T6AHQdt3m83l2kD-nElxVA&s=09" class="social-button">
+                    <i class="bi bi-box-arrow-up-right"></i> Visitar
+                </a>
+            </div>
+            
+            <div class="social-card share">
+                <div class="social-icon">
+                    <i class="bi bi-share"></i>
+                </div>
+                <div class="social-title">Compartir</div>
+                <div class="social-desc">Comparte esta página</div>
+                <button id="shareButton" class="social-button">
+                    <i class="bi bi-share-fill"></i> Compartir
+                </button>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Enlaces Importantes</h2>
+        
+        <div class="links-container">
+            <button onclick="window.location.href='https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V'" class="link-button">
+                <i style="color:green" class="bi bi-whatsapp"></i> Canal en WhatsApp
+            </button>
+            
+            <button onclick="window.location.href='https://chat.whatsapp.com/J7p7KuGgukKAb9EB6l2oNF'" class="link-button">
+                <i style="color:green" class="bi bi-whatsapp"></i> Grupo de avisos
+            </button>
+            
+            <button onclick="window.location.href='https://canal-telegram.vercel.app/'" class="link-button">
+                <i style="color:#0088CC" class="bi bi-telegram"></i> Canal en Telegram
+            </button>
+            
+            <button onclick="window.location.href='https://t.me/+rq9bHVWmtMY5ZDRh'" class="link-button">
+                <i style="color:#0088CC" class="bi bi-telegram"></i> Grupo principal
+            </button>
+            
+            <button onclick="window.location.href='http://discord.gg/UvbjCF4sRw'" class="link-button">
+                <i style="color:#5865F2" class="bi bi-discord"></i> Servidor Discord
+            </button>
+            
+            <button onclick="window.location.href='https://bit.ly/Info-servidor'" class="link-button">
+                <i style="color:green" class="bi bi-controller"></i> Servidor minecraft
+            </button>
+            
+            <button onclick="window.location.href='https://club-gaming-cj.tebex.io/'" class="link-button">
+                <i style="color:#EBB93E" class="bi bi-person-hearts"></i> Sé usuario VIP
+            </button>
+            
+            <button onclick="window.location.href='https://social-club-cj.vercel.app/'" class="link-button">
+                <i style="color:#000000" class="bi bi-file-break"></i> La página
+            </button>
+            
+            <button onclick="window.location.href='https://bit.ly/Comunidad-cgn'" class="link-button">
+                <i style="color:#FF9300" class="bi bi-substack"></i> El blog
+            </button>
+            
+            <button onclick="window.location.href='https://club-gaming.jimdofree.com/'" class="link-button">
+                <i style="color:#A9A9A9" class="bi bi-archive"></i> La página 0
+            </button>
+        </div>
+        
+        <!-- Botones de navegación -->
+        <div class="nav-buttons">
+            <div id="backButton" class="nav-button">
+                <i class="fas fa-arrow-left"></i> Volver
+            </div>
+            <a href="/categorias.html" class="nav-button">
+                <i class="fas fa-list"></i> Ver Categorías
+            </a>
+        </div>
+    </div>
+
+    <!-- Pie de página con botón "Volver arriba" -->
+    <footer>
+        <!-- Botón "Volver arriba" -->
+        <div class="back-to-top" id="backToTopBtn" title="Volver arriba">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+        
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Recursos</h3>
+                <div class="footer-links">
+                    <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+                    <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+                    <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+                    <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+                    <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Comunidad</h3>
+                <div class="footer-links">
+                    <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+                    <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+                    <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+                    <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+                    <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="copyright">
+                <img src="/icons/Bandera-jal.avif" 
+                     alt="Logo Comunidad CGN" 
+                     class="cgn-icon">
+                Comunidad CGN | <span id="currentYear">2022-2025</span>
+            </p>
+        </div>
+    </footer>
+
+     <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+    <script>
+        // Actualizar año actual en el pie de página
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentYearElement = document.getElementById('currentYear');
+            const currentYear = new Date().getFullYear();
+            currentYearElement.textContent = `2022-${currentYear}`;
+            
+            // Botón "Volver" inteligente
+            const backButton = document.getElementById('backButton');
+            backButton.addEventListener('click', function() {
+                if (document.referrer && document.referrer !== window.location.href) {
+                    window.history.back();
+                } else {
+                    window.location.href = '/index.html';
+                }
+            });
+            
+            // Botón "Volver arriba"
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Funcionalidad para compartir
+            const shareButton = document.getElementById('shareButton');
+            shareButton.addEventListener('click', async () => {
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: document.title,
+                            text: '¡Mira la increíble página de links de la comunidad CGN!',
+                            url: window.location.href
+                        });
+                    } catch (error) {
+                        console.error('Error al compartir la página', error);
+                    }
+                } else {
+                    alert('Tu navegador no soporta la función de compartir. Copia la URL manualmente.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
