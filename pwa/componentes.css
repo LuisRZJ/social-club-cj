@@ -4557,15 +4557,17 @@ footer {
       transition: color 0.3s ease;
     }
   
-    .quote {
-      color: #5EB476;
-      font-style: italic;
-      margin-bottom: 2rem;
-      font-size: 1.2rem;
-      position: relative;
-      display: inline-block;
-      padding: 0 1rem;
-    }
+   .quote {
+  color: #5EB476;
+  font-style: italic;
+  margin: 2rem auto;
+  font-size: 1.2rem;
+  position: relative;
+  display: block;
+  width: fit-content;
+  padding: 0 1rem;
+}
+
     .quote::before, .quote::after {
       content: '"';
       color: #FFD1A9;
@@ -4805,19 +4807,6 @@ footer {
     }
     [data-theme="dark"] .back-to-top i {
       color: #1F2937 !important;
-    }
-  
-    @media (prefers-color-scheme: dark) {
-      /* Repetimos lo mismo que en [data-theme="dark"] para detección automática */
-      body {
-        background-color: #111827;
-        color: #F9FAFB;
-      }
-      .content-container22 {
-        background-color: #1F2937;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      }
-      /* ...y así sucesivamente para cada bloque anterior... */
     }
   
     /* --------------------- */
