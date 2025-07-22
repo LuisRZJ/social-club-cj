@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analizador de Grupo</title>
+    <style>
+        .chat-top-table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .chat-top-table th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        .chat-top-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .chat-top-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .chat-top-table tr:hover {
+            background-color: #e9f7fe;
+        }
+        .error {
+            color: #d32f2f;
+            padding: 15px;
+            border: 1px solid #ffcdd2;
+            background-color: #ffebee;
+            border-radius: 4px;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+        .header {
+            text-align: center;
+            margin: 20px 0;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="header">TOP 10 Participantes Activos</h1>
+    <div id="resultado-chat"></div>
+
+    <script src="/clasificaciones/WA/estadisticas.js"></script>
+    <script>
+        // Configuración específica para este tipo de archivos
+        config.excludeKeywords = [
+            'solicitó unirse', 
+            'salió del grupo', 
+            'se unió', 
+            'omitido>', 
+            'null',
+            'solicitud'
+        ];
+        
+        window.onload = () => analizarChat('../datos/WA/🌐MINECRAFT COMMUNITY 2.0🔰 (1).txt', 'resultado-chat');
+    </script>
+</body>
+</html>
