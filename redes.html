@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FFD1A9" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1F2937" media="(prefers-color-scheme: dark)">
+    <title>Comunidad CGN | Redes</title>
+    <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+    <link rel="stylesheet" href="/pwa/temas.css">
+    <link rel="stylesheet" href="/pwa/componentes.css">
+    <link rel="stylesheet" href="/pwa/estilos.css">
+    
+    <!-- Iconos Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">    
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes e iconos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+</head>
+<body class="text-gray-800">
+    <div class="loading-overlay" id="loadingOverlay">
+      <div style="position: relative;">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">Cargando scripts...</div>
+      </div>
+      <div class="loading-version">V2.1</div>
+    </div>
+    <div class="main-content" id="mainContent">
+    <div class="content-container">
+        <img src="/icons/Logo-canal.avif" alt="Logo Comunidad CGN" class="logo">
+        <h1 class="page-title">Comunidad CGN</h1>
+        <strong class="quote">Sin tiempo para descansos</strong>
+        
+        <!-- Nuevo diseño para botones sociales -->
+        <div class="social-grid">
+            <div class="social-card youtube">
+                <div class="social-icon">
+                    <i class="bi bi-youtube"></i>
+                </div>
+                <div class="social-title">YouTube</div>
+                <div class="social-desc">Sigue nuestro canal</div>
+                <a href="https://youtube.com/@cgz8836?si=WGuWev3Fw7tKmUle" class="social-button">
+                    <i class="bi bi-box-arrow-up-right"></i> Visitar
+                </a>
+            </div>
+            
+            <div class="social-card twitter">
+                <div class="social-icon">
+                    <i class="bi bi-twitter-x"></i>
+                </div>
+                <div class="social-title">Twitter/X</div>
+                <div class="social-desc">Síguenos en X</div>
+                <a href="https://x.com/LuisMz07244222?t=T6AHQdt3m83l2kD-nElxVA&s=09" class="social-button">
+                    <i class="bi bi-box-arrow-up-right"></i> Visitar
+                </a>
+            </div>
+            
+            <div class="social-card share">
+                <div class="social-icon">
+                    <i class="bi bi-share"></i>
+                </div>
+                <div class="social-title">Compartir</div>
+                <div class="social-desc">Comparte esta página</div>
+                <button id="shareBtn" class="social-button">
+                    <i class="bi bi-share-fill"></i> Compartir
+                </button>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Enlaces Importantes</h2>
+        
+        <div class="links-container">
+            <button onclick="window.location.href='https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V'" class="link-button">
+                <i style="color:green" class="bi bi-whatsapp"></i> Canal en WhatsApp
+            </button>
+            
+            <button onclick="window.location.href='https://chat.whatsapp.com/J7p7KuGgukKAb9EB6l2oNF'" class="link-button">
+                <i style="color:green" class="bi bi-whatsapp"></i> Grupo de avisos
+            </button>
+            
+            <button onclick="window.location.href='https://canal-telegram.vercel.app/'" class="link-button">
+                <i style="color:#0088CC" class="bi bi-telegram"></i> Canal en Telegram
+            </button>
+            
+            <button onclick="window.location.href='https://t.me/+rq9bHVWmtMY5ZDRh'" class="link-button">
+                <i style="color:#0088CC" class="bi bi-telegram"></i> Grupo principal
+            </button>
+            
+            <button onclick="window.location.href='http://discord.gg/UvbjCF4sRw'" class="link-button">
+                <i style="color:#5865F2" class="bi bi-discord"></i> Servidor Discord
+            </button>
+            
+            <button onclick="window.location.href='https://bit.ly/Info-servidor'" class="link-button">
+                <i style="color:green" class="bi bi-controller"></i> Servidor minecraft
+            </button>
+            
+            <button onclick="window.location.href='https://club-gaming-cj.tebex.io/'" class="link-button">
+                <i style="color:#EBB93E" class="bi bi-person-hearts"></i> Sé usuario VIP
+            </button>
+            
+            <button onclick="window.location.href='https://social-club-cj.vercel.app/'" class="link-button">
+                <i style="color:#000000" class="bi bi-file-break"></i> La página
+            </button>
+            
+            <button onclick="window.location.href='https://bit.ly/Comunidad-cgn'" class="link-button">
+                <i style="color:#FF9300" class="bi bi-substack"></i> El blog
+            </button>
+            
+            <button onclick="window.location.href='https://club-gaming.jimdofree.com/'" class="link-button">
+                <i style="color:#A9A9A9" class="bi bi-archive"></i> La página 0
+            </button>
+        </div>
+        
+        <!-- Botones de navegación -->
+        <div class="nav-buttons">
+            <div id="backButton" class="nav-button">
+                <i class="fas fa-arrow-left"></i> Volver
+            </div>
+            <a href="/categorias.html" class="nav-button">
+                <i class="fas fa-list"></i> Ver Categorías
+            </a>
+        </div>
+    </div>
+
+    <!-- Pie de página con botón "Volver arriba" -->
+    <footer>
+        <!-- Botón "Volver arriba" -->
+        <div class="back-to-top" id="backToTopBtn" title="Volver arriba">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+        
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Recursos</h3>
+                <div class="footer-links">
+                    <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+                    <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+                    <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+                    <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+                    <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Comunidad</h3>
+                <div class="footer-links">
+                    <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+                    <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+                    <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+                    <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+                    <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="copyright">
+                <img src="/icons/Bandera-jal.avif" 
+                     alt="Logo Comunidad CGN" 
+                     class="cgn-icon">
+                Comunidad CGN | <span id="currentYear">2022-2025</span>
+            </p>
+        </div>
+    </footer>
+
+     <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+  </div>
+    <!-- Cargar JS centralizado -->
+    <script src="/pwa/javascript.js"></script>
+</body>
+</html>

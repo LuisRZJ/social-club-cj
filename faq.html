@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Preguntas Frecuentes | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFF5EB;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    
+    .content-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      flex: 1;
+      margin-bottom: 20px;
+    }
+    /* Estilos para los encabezados de sección */
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    /* Estilos para los párrafos de información */
+    .info-text {
+      color: #4B5563;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    /* Botones de navegación horizontales */
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .nav-button {
+      background-color: #FFD1A9;
+      color: #374151;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .nav-button:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    .nav-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .nav-button i {
+      margin-right: 0.5rem;
+    }
+    footer {
+      background-color: #FFF5EB;
+      padding: 2.5rem 1rem;
+      border-top: 2px solid #E5E7EB;
+      margin-top: auto;
+      position: relative;
+      margin-bottom: 35px; /* Espacio de la bandera respecto al final */
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2.5rem;
+    }
+    .footer-section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: #FFD1A9;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .footer-links a {
+      color: #4B5563;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+    .footer-links a:hover {
+      color: #d8971d;
+      transform: translateX(5px);
+    }
+    .footer-links a i {
+      margin-right: 0.75rem;
+      color: #FFD1A9;
+      width: 20px;
+      text-align: center;
+    }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 2px solid #E5E7EB;
+      text-align: center;
+      color: #4B5563;
+      font-size: 0.9rem;
+    }
+    .copyright {
+      font-weight: 600;
+      color: #1F2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .copyright span {
+      color: #FFD1A9;
+    }
+    /* Botón "Volver arriba" en el pie de página */
+    .back-to-top {
+      position: absolute;
+      top: -25px;
+      right: 20px;
+      background-color: #FFD1A9;
+      color: #374151;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    .back-to-top:hover {
+      background-color: #ffb07a;
+      transform: translateY(-3px);
+    }
+    .back-to-top:active {
+      transform: translateY(0);
+    }
+    
+    /* Nuevo estilo para el ícono del pie de página */
+    .cgn-icon {
+      height: 50px;
+      width: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    .cgn-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Responsive para móviles */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .nav-button {
+        width: 100%;
+      }
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      .back-to-top {
+        top: -20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      .cgn-icon {
+        height: 50px;
+        width: 100px;
+      }
+    }
+
+    /* Estilos específicos para la página FAQ */
+    /* Header */
+    .header-comunidad {
+      background-color: #FFF5EB;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .header-logo {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .header-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1F2937;
+    }
+    
+    .header-legend {
+      font-weight: 700;
+      font-style: italic;
+      font-size: 0.75rem;
+      color: #115c2c;
+      margin-left: 0.5rem;
+    }
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 24px;
+      width: 30px;
+      padding: 0;
+    }
+    .menu-bar {
+      height: 3px;
+      width: 100%;
+      background-color: #1F2937;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .menu-toggle.activo .menu-bar:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+    .menu-toggle.activo .menu-bar:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-toggle.activo .menu-bar:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+    .menu-desplegable {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+    .menu-desplegable.abierto {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    .menu-desplegable ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+    .menu-desplegable li {
+      padding: 0;
+    }
+    .menu-desplegable a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      color: #4B5563;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .menu-desplegable a:hover {
+      background-color: #FFD1A9;
+      color: #1F2937;
+      padding-left: 1.75rem;
+    }
+
+    /* Acordeón FAQ */
+    .faq-container {
+      margin-top: 1rem;
+    }
+    .h2-faq {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .accordion {
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    .accordion-item {
+      border-bottom: 1px solid #E5E7EB;
+    }
+    .accordion-item:last-child {
+      border-bottom: none;
+    }
+    .accordion-item-header {
+      padding: 1.25rem 1.5rem;
+      background-color: #FFD1A9;
+      color: #1F2937;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+    .accordion-item-header:hover {
+      background-color: #ffb07a;
+    }
+    .accordion-item-header::after {
+      content: '\f107';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      font-size: 1.25rem;
+      transition: transform 0.3s ease;
+    }
+    .accordion-item.open .accordion-item-header::after {
+      transform: rotate(180deg);
+    }
+    .accordion-item-content {
+      padding: 0 1.5rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      background-color: #f9fafb;
+      color: #4B5563;
+      line-height: 1.6;
+    }
+    .accordion-item.open .accordion-item-content {
+      padding: 1rem 1.5rem 1.5rem;
+      max-height: 500px;
+    }
+    
+    .accordion-item-content.dark-theme {
+      background-color: #2d2d35 !important;
+      color: #f3f4f6 !important;
+    }
+    
+    /* Estilos para enlaces dentro del acordeón */
+    .accordion-item-content a {
+      color: #d8971d;
+      text-decoration: underline;
+      transition: color 0.2s;
+      word-break: break-all;
+    }
+    .accordion-item-content a:hover {
+      color: #ffb07a;
+      text-decoration: underline;
+    }
+    .accordion-item-content.dark-theme a {
+      color: #FFD1A9;
+      text-decoration: underline;
+    }
+    .accordion-item-content.dark-theme a:hover {
+      color: #ffb07a;
+      text-decoration: underline;
+    }
+    .contact-note {
+      max-width: 420px;
+      margin: 0 auto 24px auto;
+      padding: 0 8px;
+      text-align: left;
+      color: #a86b2d;
+      font-size: 0.98rem;
+      background-color: #fff5eb;
+      border-left: 4px solid #FFD1A9;
+      padding: 1rem;
+      border-radius: 0 0.375rem 0.375rem 0;
+    }
+    
+    .contact-note.dark-theme {
+      color: #ffb07a !important;
+      background-color: rgba(60, 48, 40, 0.8) !important;
+      border-left: 4px solid #FFD1A9 !important;
+    }
+
+
+     /* Título principal */
+     .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #FFD1A9;
+      position: relative;
+    }
+    
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: #ffb07a;
+    }
+
+
+    /* Barra de progreso de scroll - Ahora dentro del header */
+#scroll-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: rgba(255, 209, 169, 0.2);
+  z-index: 99; /* Reducir z-index */
+}
+
+#scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFD1A9, #ffb07a);
+  transition: width 0.1s ease;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Aumentar z-index del menú desplegable */
+.menu-desplegable {
+  z-index: 100; /* Mayor que la barra de progreso */
+}
+
+/* Ajustar posición del header */
+.header-comunidad {
+  position: sticky;
+  top: 0;
+  z-index: 98; /* Menor que la barra */
+}
+
+/* Rectángulo gris fijo en la parte inferior */
+.bottom-fixed-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 50;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  transition: all 0.3s ease;
+}
+
+/* Panel expandido */
+.bottom-fixed-bar.expanded {
+  height: 100vh;
+  bottom: 0;
+  top: auto;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Contenedor para el contenido expandido */
+.expanded-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 0;
+}
+
+.bottom-fixed-bar.expanded .expanded-content {
+  display: flex;
+}
+
+/* Ajustar botones cuando está expandido */
+.bottom-fixed-bar.expanded .right-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  gap: 8px;
+}
+
+.bottom-fixed-bar.expanded .open-chat-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+/* Botón volver arriba dentro del rectángulo fijo */
+.back-to-top-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.back-to-top-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.back-to-top-fixed:active {
+  transform: translateY(0);
+}
+
+/* Botón ir al final dentro del rectángulo fijo */
+.go-to-bottom-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.go-to-bottom-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.go-to-bottom-fixed:active {
+  transform: translateY(0);
+}
+
+/* Contenedor para los botones de la izquierda */
+.left-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Botón compartir dentro del rectángulo fijo */
+.share-btn-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.share-btn-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.share-btn-fixed:active {
+  transform: translateY(0);
+}
+
+/* Separador vertical del panel de acciones */
+.action-separator {
+  width: 2px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin-left: 12px;
+  margin-right: 5px;
+  border-radius: 1px;
+}
+
+/* Botón ver más dentro del rectángulo fijo */
+.view-more-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  min-width: 80px;
+  height: 35px;
+  border-radius: 17.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-right: 15px;
+  gap: 5px;
+}
+
+.view-more-fixed.expanded {
+  min-width: 100px;
+}
+
+/* Contenedor para las acciones de la derecha */
+.right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Panel de expansión - elemento separado */
+.panel-expansion {
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 98;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 20px;
+}
+
+.panel-expansion.expanded {
+  height: calc(100vh - 60px);
+  padding: 8px 20px 20px 20px;
+}
+
+.panel-expansion.expanded .expanded-content {
+  display: flex;
+}
+
+/* Estilos para el contenedor de noticias */
+.news-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.3);
+  border-radius: 0;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  margin-bottom: 0;
+  overflow: hidden;
+  z-index: 99;
+}
+
+.news-container .title {
+  position: absolute;
+  background-color: rgb(255, 209, 169);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 3.8px;
+  color: #374151;
+  font-size: 1rem;
+  z-index: 200;
+  border-radius: 6px;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+}
+
+.news-container ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  animation: scroll 120s infinite linear;
+  padding-left: 80px;
+}
+
+.news-container ul li {
+  white-space: nowrap;
+  padding: 10px 24px;
+  color: white;
+  position: relative;
+}
+
+.news-container ul li::after {
+  content: "";
+  width: 1px;
+  height: 100%;
+  background: #b8b8b8;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.news-container ul li:last-child::after {
+  display: none;
+}
+
+.news-container ul li a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-container ul li a:hover {
+  text-decoration: underline;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-10200px);
+  }
+}
+
+.news-separator {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  margin: 100px 0 8px 0;
+  z-index: 100;
+}
+
+.news-separator-top, .news-separator-bottom {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  z-index: 100;
+}
+
+.news-separator-top {
+  margin: 50px 0 8px 0;
+}
+
+.news-separator-bottom {
+  margin: 0px 0 8px 0;
+}
+
+.categories-section-panel {
+  width: 100%;
+  margin: -20px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.categories-title-panel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 12px;
+  margin-left: 0;
+  letter-spacing: 0.5px;
+  background: rgba(255, 168, 54, 0.92);
+  padding: 12px 24px 12px 24px;
+  border-radius: 0px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.10);
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  max-width: none;
+  z-index: 101;
+}
+.categories-tags-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.category-tag-panel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.07);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.category-tag-panel:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.category-tag-panel i {
+  font-size: 1.1em;
+  margin-right: 4px;
+}
+
+/* --- Botones de tema --- */
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  position: relative;
+  min-width: 140px;
+}
+.theme-btn:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.theme-btn .theme-indicator {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #d1d5db;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border 0.2s;
+}
+.theme-btn.active .theme-indicator {
+  background: #22c55e;
+  border: 2px solid #16a34a;
+}
+
+/* Estilo para el popup de ayuda de tema */
+.theme-help-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  color: #1F2937;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 28px 24px 18px 24px;
+  z-index: 9999;
+  min-width: 320px;
+  max-width: 90vw;
+  font-size: 1rem;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.2s;
+}
+.theme-help-popup.active {
+  display: flex;
+}
+.theme-help-popup .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #374151;
+  cursor: pointer;
+}
+.theme-help-popup ul {
+  margin: 0 0 0 0.5em;
+  padding: 0;
+  list-style: none;
+}
+.theme-help-popup ul li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -60%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+
+  </style>
+  <style id="dark-theme-style">
+    /* Modo oscuro general */
+    body.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+    }
+    .content-container.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 4px 12px -1px rgba(0,0,0,0.45), 0 2px 4px -1px rgba(0,0,0,0.30);
+      color: #f3f4f6 !important;
+    }
+    .header-comunidad.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+    .header-title.dark-theme {
+      color: #f3f4f6 !important;
+    }
+    .header-legend.dark-theme {
+      color: #18813f !important;
+    }
+    .menu-desplegable.dark-theme {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    .page-title.dark-theme {
+      color: #f3f4f6 !important;
+      border-bottom: 3px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme {
+      background-color: #23232a !important;
+      color: #FFD1A9 !important;
+      border: 1px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    footer.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+      border-top: 2px solid #bb4b004b !important;
+    }
+    .footer-section.dark-theme h3 {
+      color: #FFD1A9 !important;
+    }
+    .footer-links.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .footer-links.dark-theme a:hover {
+      color: #ffb07a !important;
+    }
+    .footer-links.dark-theme a i {
+      color: #FFD1A9 !important;
+    }
+    .footer-bottom.dark-theme {
+      color: #FFD1A9 !important;
+      border-top: 2px solid #bb4b004b !important;
+    }
+    .copyright.dark-theme {
+      color: #929292b0 !important;
+    }
+    .copyright.dark-theme span {
+      color: #FFD1A9 !important;
+    }
+    .bottom-fixed-bar.dark-theme {
+      background-color: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .panel-expansion.dark-theme {
+      background-color: rgba(24,24,27,0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .news-container.dark-theme {
+      background: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .categories-title-panel.dark-theme {
+      background: rgba(60, 48, 40, 0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme {
+      background: rgba(60, 60, 40, 0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.dark-theme {
+      background: rgba(60,60,40,0.85) !important;
+      color: #FFD1A9 !important;
+      border: 2px solid #FFD1A9 !important;
+    }
+    .theme-btn.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.active .theme-indicator {
+      background: #22c55e !important;
+      border: 2px solid #16a34a !important;
+    }
+    .theme-help-popup.dark-theme {
+      background: #23232a !important;
+      color: #FFD1A9 !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    }
+    .theme-help-popup.dark-theme .close-btn {
+      color: #FFD1A9 !important;
+    }
+    .theme-help-popup.dark-theme ul li span {
+      color: #FFD1A9 !important;
+    }
+    /* Separadores */
+    .action-separator.dark-theme,
+    .news-separator-top.dark-theme,
+    .news-separator-bottom.dark-theme {
+      background-color: rgba(255,209,169,0.25) !important;
+    }
+    .menu-toggle.dark-theme .menu-bar {
+      background-color: #f3f4f6 !important;
+    }
+    /* Mayor especificidad para sobrescribir estilos del modo claro */
+    body.dark-theme .footer-links a {
+      color: #929292b0 !important;
+    }
+    body.dark-theme .footer-links a:hover {
+      color: #ffb07a !important;
+    }
+    body.dark-theme .footer-links a i {
+      color: #FFD1A9 !important;
+    }
+    /* Icono de interrogación en modo oscuro */
+    body.dark-theme #themeHelpBtn {
+      color: #f3f4f6 !important;
+    }
+    body.dark-theme #themeHelpBtn i {
+      color: #f3f4f6 !important;
+    }
+    /* Bandera del pie de página en modo oscuro */
+    body.dark-theme .cgn-icon {
+      border: 1px solid rgba(255, 209, 169, 0.3) !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+</head>
+<body class="text-gray-800">
+  <header class="header-comunidad">
+    <div class="header-content">
+      <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+      <span class="header-title">CGN</span>
+      <span class="header-legend">Sin tiempo para descansos</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <nav class="menu-desplegable" id="menuDesplegable">
+      <ul>
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/faq.html">FAQ</a></li>
+        <li><a href="/socios.html">Socios</a></li>
+        <li><a href="/ajustes.html">Ajustes</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+
+     <!-- Barra de progreso de scroll -->
+<div id="scroll-progress-container">
+  <div id="scroll-progress-bar"></div>
+</div>
+
+  </header>
+  
+  <div class="content-container">
+    <section class="faq-container">
+      <h2 class="h2-faq page-title">Preguntas Frecuentes</h2>
+      <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+          <div class="accordion-item-header">¿Qué es CGN?</div>
+          <div class="accordion-item-content">CGN es una comunidad dedicada a compartir conocimiento y recursos sobre tecnología, juegos y desarrollo personal. Nuestro objetivo es crear un espacio donde los miembros puedan aprender, colaborar y crecer juntos.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-item-header">¿Que idiomas se admiten?</div>
+          <div class="accordion-item-content">Español principalmente. Así nosotros le podremos garantizar una correcta moderación de nuestro lado. Aunque no lo restringimos, te recomendamos mucho usar el español al hablar.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-item-header">¿Cuáles son las reglas de la comunidad?</div>
+          <div class="accordion-item-content">Nuestras reglas las podrás conocer en nuestra entrada dedicada a ellas, Las <a href="/Subpaginas/reglas-generales.html">🔗 Reglas generales.</a> Ahí están todas las reglas aplicables de la comunidad.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-item-header">¿Qué debo hacer si tengo un problema con otro miembro?</div>
+          <div class="accordion-item-content">Solo debes de ponerte en contacto con el admin. del grupo que más prefieras. Ellos se hacen cargo de este tipo de situaciones.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-item-header">¿Cómo puedo contribuir a la comunidad?</div>
+          <div class="accordion-item-content">Puedes conocer todas las formas en que puedes colaborar con nosotros visitando la sección correspondiente dentro de esta página. Para acceder, dirígete desde la <strong>página de categorías</strong> y desplázate hasta la sección "Comunidad", donde encontrarás los detalles.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-item-header">¿Hay algún requisito para participar en los eventos de la comunidad?</div>
+          <div class="accordion-item-content"><strong class="underline1">¡Ninguno!</strong><br><br>
+            Todos los miembros de la comunidad pueden participar libremente en los eventos que se lleguen a organizar. No existen requisitos previos ni restricciones de ningún tipo.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-item-header">¿Qué debo hacer si encuentro un error en la página web o en alguna divición de la comunidad?</div>
+          <div class="accordion-item-content">Puedes reportar errores como estos por medio del correo de contacto, accesible desde la página de Contacto.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-item-header">¿Hay alguna forma de obtener ayuda si estoy teniendo dificultades en algo relacionado con la comunidad?</div>
+          <div class="accordion-item-content">Si necesitas apoyo o estás enfrentando alguna dificultad relacionada con la comunidad, puedes comunicarte directamente con el equipo de soporte o con los administradores.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-item-header">¿Cómo puedo mantenerme actualizado sobre las novedades y eventos de la comunidad?</div>
+          <div class="accordion-item-content">Puedes hacerlo de diferentes maneras. Puedes seguir los canales oficiales, puedes visitar esta página de vez en cuando o puedes unirte al servidor de discord. Ya que en este se suele dar prioridad a la hora de avisos importantes.</div>
+        </div>
+      </div>
+    </section>
+    
+    <br>
+    <div class="contact-note">
+      <p>¿No encontraste la respuesta a tu pregunta? Puedes ponerte en contacto con los administradores desde la página de <strong>Contacto</strong>.</p>
+    </div>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+        <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+        <i class="fas fa-list"></i> Ver Categorías
+      </a>
+    </div>
+  </div>
+
+  <!-- Pie de página -->
+  <footer>
+    
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <div class="footer-links">
+          <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+          <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+          <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+          <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+          <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Comunidad</h3>
+        <div class="footer-links">
+          <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+          <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+          <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+          <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+          <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">
+        <img src="/icons/Bandera-jal.avif" 
+             alt="Logo Comunidad CGN" 
+             class="cgn-icon">
+        Comunidad CGN | <span id="currentYear">2022-2025</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Rectángulo gris fijo en la parte inferior -->
+  <div class="bottom-fixed-bar">
+    <div class="left-actions">
+      <button title="Abrir chat" class="open-chat-btn" onclick="openChat()">
+        <i class="fas fa-comments"></i>Ayuda
+      </button>
+      <button title="Compartir página" class="share-btn-fixed" id="shareBtn" onclick="sharePage()">
+        <i class="fas fa-share-alt"></i>
+      </button>
+    </div>
+    <div class="right-actions">
+      <div class="action-separator"></div>
+      <div class="view-more-fixed" id="viewMoreBtn" title="panel de acciones" onclick="togglePanel()">
+        <i class="fas fa-ellipsis-h"></i>
+        <span id="viewMoreText">Ver más</span>
+      </div>
+      <button class="back-to-top-fixed" id="backToTopFixedBtn" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="go-to-bottom-fixed" id="goToBottomBtn" title="Ir al final">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Panel de expansión separado -->
+  <div class="panel-expansion" id="panelExpansion">
+    <!-- Contenedor para el contenido expandido -->
+    <div class="expanded-content">
+      <!-- Contenedor de noticias -->
+      <div class='news-container'>
+        <div class='title'>
+          Novedades
+        </div>
+
+        <ul>
+          <!-- Las noticias se cargarán dinámicamente desde noticias.json -->
+        </ul>
+      </div>
+      <div class="news-separator-top"></div>
+      
+      <!-- Sección de categorías -->
+      <div class="categories-section-panel">
+        <div class="categories-title-panel">Categorías</div>
+        <div class="categories-tags-panel">
+          <a href="/categorias-comunidad.html" class="category-tag-panel comunidad"><i class="fas fa-users"></i> Comunidad</a>
+          <a href="/categorias-mc.html" class="category-tag-panel minecraft"><i class="fas fa-cube"></i> Minecraft</a>
+          <a href="/categorias-reglas.html" class="category-tag-panel reglas"><i class="fas fa-book"></i> Reglas</a>
+          <a href="/categorias-admins.html" class="category-tag-panel administracion"><i class="fas fa-user-shield"></i> Administración</a>
+        </div>
+      </div>
+      <div class="news-separator-bottom"></div>
+      
+      <!-- Sección de tema -->
+      <div class="theme-section-panel" style="width:100%; margin: 0 0 10px 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+        <div class="categories-title-panel" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center; text-align: center;">
+          <span style="display: flex; align-items: center; gap: 8px;">
+            Tema
+            <button id="themeHelpBtn" type="button" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #374151; font-size: 1.1em; display: flex; align-items: center;">
+              <i class="fas fa-question-circle"></i>
+            </button>
+          </span>
+        </div>
+        <div class="theme-buttons-panel" style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+          <button class="theme-btn" title="Automático" type="button">
+            <i class="fas fa-adjust"></i> Automático
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Eficiencia" type="button">
+            <i class="fas fa-bolt"></i> Eficiencia
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Claro" type="button">
+            <i class="fas fa-sun"></i> Claro
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Oscuro" type="button">
+            <i class="fas fa-moon"></i> Oscuro
+            <span class="theme-indicator"></span>
+          </button>
+        </div>
+        <div class="action-separator" style="position: relative; left: 50%; transform: translateX(-50%); width: 100vw; height: 4px; background-color: rgba(255,255,255,0.3); margin: 14px 0 0 0; border-radius: 2px; z-index: 100;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay que contiene el chat modal -->
+  <div class="overlay" id="chatOverlay">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="header-left">
+          <div class="header-image">
+            <img src="/icons/bot-hecks.avif" alt="Logo de soporte" id="chatImage">
+          </div>
+          <div class="header-title">Soporte CGN</div>
+        </div>
+        <div class="header-buttons">
+          <button class="header-btn" onclick="toggleMaximize()" title="Maximizar/Minimizar chat">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="header-btn" onclick="clearChat()" title="Borrar chat">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="header-btn" onclick="closeChat()" title="Cerrar chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-footer" id="chatFooter"></div>
+    </div>
+  </div>
+
+  <!-- Popup de ayuda para Tema -->
+  <div class="theme-help-popup" id="themeHelpPopup">
+    <button class="close-btn" id="closeThemeHelp" title="Cerrar ayuda"><i class="fas fa-times"></i></button>
+    <strong>¿Cómo funcionan los modos de tema?</strong>
+    <ul>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-adjust"></i> <b>Automático</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Cambia entre modo claro y oscuro automáticamente según la hora del día (oscuro de noche, claro de día).</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-bolt"></i> <b>Eficiencia</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Activa el modo oscuro si el ahorro de energía está activo en tu dispositivo.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-sun"></i> <b>Claro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema claro en la página.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-moon"></i> <b>Oscuro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema oscuro en la página.</span>
+      </li>
+    </ul>
+  </div>
+
+   <!-- PARTE AUXILIAR, FALTA DE JS -->
+   <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <script src="/pwa/noticias.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Actualizar año en footer
+      const currentYear = new Date().getFullYear();
+      document.getElementById('currentYear').textContent = `2022-${currentYear}`;
+      
+       // Botón "Volver" inteligente
+       const backButton = document.getElementById('backButton');
+            backButton.addEventListener('click', function() {
+                // Comprobar si hay una página anterior en el historial
+                if (document.referrer && document.referrer !== window.location.href) {
+                    window.history.back();
+                } else {
+                    // Si no hay historial previo, redirigir a la página de inicio
+                    window.location.href = '/index.html';
+                }
+            });
+
+      // Botón "Volver arriba" del panel fijo
+      const backToTopFixedBtn = document.getElementById('backToTopFixedBtn');
+      backToTopFixedBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Botón "Ir al final"
+      const goToBottomBtn = document.getElementById('goToBottomBtn');
+      goToBottomBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Menú desplegable
+      const menuToggle = document.getElementById('menuToggle');
+      const menuDesplegable = document.getElementById('menuDesplegable');
+      
+      // Abrir/cerrar menú al hacer clic en el botón
+      menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menuDesplegable.classList.toggle('abierto');
+        menuToggle.classList.toggle('activo');
+      });
+      
+      // Cerrar menú al hacer clic fuera
+      document.addEventListener('click', function(e) {
+        if (!menuDesplegable.contains(e.target) && !menuToggle.contains(e.target)) {
+          menuDesplegable.classList.remove('abierto');
+          menuToggle.classList.remove('activo');
+        }
+      });
+      
+      // Prevenir que el clic en el menú lo cierre
+      menuDesplegable.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+      
+      // Acordeón FAQ
+      document.querySelectorAll('.accordion-item-header').forEach(header => {
+        header.addEventListener('click', function() {
+          const item = this.parentElement;
+          item.classList.toggle('open');
+        });
+      });
+    });
+
+
+   // Barra de progreso de scroll
+const scrollProgressBar = document.getElementById('scroll-progress-bar');
+
+function updateScrollProgress() {
+  // Calcular el progreso del scroll
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrollPercentage = (scrollTop / scrollHeight) * 100;
+  
+  // Actualizar el ancho de la barra de progreso
+  scrollProgressBar.style.width = scrollPercentage + '%';
+  
+  // Cambiar color cuando esté cerca del final
+  if (scrollPercentage > 90) {
+    scrollProgressBar.style.background = 'linear-gradient(90deg, #ffb07a, #ff7b54)';
+  } else {
+    scrollProgressBar.style.background = 'linear-gradient(90deg, #FFD1A9, #ffb07a)';
+  }
+}
+
+// Actualizar al cargar y al hacer scroll
+window.addEventListener('load', updateScrollProgress);
+window.addEventListener('scroll', updateScrollProgress);
+window.addEventListener('resize', updateScrollProgress);
+
+// Calcular altura del header automáticamente
+function setProgressBarPosition() {
+  const header = document.querySelector('.header-comunidad');
+  if (header) {
+    const headerHeight = header.offsetHeight;
+    document.getElementById('scroll-progress-container').style.top = headerHeight + 'px';
+  }
+}
+
+// Llamar al cargar y al redimensionar
+window.addEventListener('load', function() {
+  setProgressBarPosition();
+  updateScrollProgress();
+});
+window.addEventListener('resize', setProgressBarPosition);
+
+// Función para expandir/contraer el panel de acciones
+function togglePanel() {
+  const panelExpansion = document.getElementById('panelExpansion');
+  const viewMoreBtn = document.getElementById('viewMoreBtn');
+  const viewMoreText = document.getElementById('viewMoreText');
+  const viewMoreIcon = document.querySelector('#viewMoreBtn i');
+  
+  if (panelExpansion.classList.contains('expanded')) {
+    // Contraer el panel
+    panelExpansion.classList.remove('expanded');
+    viewMoreBtn.classList.remove('expanded');
+    viewMoreText.textContent = 'Ver más';
+    viewMoreIcon.className = 'fas fa-ellipsis-h';
+    document.body.style.overflow = '';
+  } else {
+    // Expandir el panel
+    panelExpansion.classList.add('expanded');
+    viewMoreBtn.classList.add('expanded');
+    viewMoreText.textContent = 'Ver menos';
+    viewMoreIcon.className = 'fas fa-compress';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+// Función para verificar si el panel está expandido
+function isPanelExpanded() {
+  return document.getElementById('panelExpansion').classList.contains('expanded');
+}
+
+// Función para establecer el overflow correcto basado en el estado del panel
+function setCorrectOverflow() {
+  if (isPanelExpanded()) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
+
+// Función para compartir la página
+function sharePage() {
+  const pageTitle = document.title || 'CGN - Comunidad Gaming Network';
+  const pageUrl = window.location.href;
+  
+  // Verificar si la API Web Share está disponible
+  if (navigator.share) {
+    navigator.share({
+      title: pageTitle,
+      url: pageUrl,
+      text: '¡Mira esta página de la Comunidad Gaming Network!'
+    }).catch((error) => {
+      console.log('Error al compartir:', error);
+      // Fallback: copiar URL al portapapeles
+      fallbackShare();
+    });
+  } else {
+    // Fallback para navegadores que no soportan Web Share API
+    fallbackShare();
+  }
+}
+
+// Función de respaldo para compartir
+function fallbackShare() {
+  const pageUrl = window.location.href;
+  
+  // Intentar copiar al portapapeles
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(pageUrl).then(() => {
+      // Mostrar notificación de éxito
+      showShareNotification('¡URL copiada al portapapeles!');
+    }).catch(() => {
+      // Si falla clipboard, mostrar URL en alert
+      alert('Comparte esta URL: ' + pageUrl);
+    });
+  } else {
+    // Fallback final: mostrar URL en alert
+    alert('Comparte esta URL: ' + pageUrl);
+  }
+}
+
+// Función para mostrar notificación de compartir
+function showShareNotification(message) {
+  // Crear elemento de notificación
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 209, 169, 0.95);
+    color: #374151;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  `;
+  notification.textContent = message;
+  
+  // Agregar al DOM
+  document.body.appendChild(notification);
+  
+  // Animar entrada
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Remover después de 3 segundos
+  setTimeout(() => {
+    notification.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
+// --- Tema: solo un botón activo a la vez ---
+document.addEventListener('DOMContentLoaded', function() {
+  const themeBtns = document.querySelectorAll('.theme-btn');
+  const body = document.body;
+  const contentContainer = document.querySelector('.content-container');
+  const header = document.querySelector('.header-comunidad');
+  const headerTitle = document.querySelector('.header-title');
+  const headerLegend = document.querySelector('.header-legend');
+  const menuDesplegable = document.getElementById('menuDesplegable');
+  const pageTitle = document.querySelector('.page-title');
+  const navButtons = document.querySelectorAll('.nav-button');
+  const footer = document.querySelector('footer');
+  const footerSections = document.querySelectorAll('.footer-section');
+  const footerLinks = document.querySelectorAll('.footer-links a');
+  const footerBottom = document.querySelector('.footer-bottom');
+  const copyright = document.querySelector('.copyright');
+  const bottomFixedBar = document.querySelector('.bottom-fixed-bar');
+  const panelExpansion = document.querySelector('.panel-expansion');
+  const newsContainer = document.querySelector('.news-container');
+  const categoriesTitlePanel = document.querySelectorAll('.categories-title-panel');
+  const categoryTagPanel = document.querySelectorAll('.category-tag-panel');
+  const themeBtnsAll = document.querySelectorAll('.theme-btn');
+  const themeHelpPopup = document.getElementById('themeHelpPopup');
+  const actionSeparators = document.querySelectorAll('.action-separator');
+  const newsSeparators = document.querySelectorAll('.news-separator-top, .news-separator-bottom');
+  const menuToggle = document.getElementById('menuToggle');
+  const contactNote = document.querySelector('.contact-note');
+  const accordionContents = document.querySelectorAll('.accordion-item-content');
+
+  themeBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      themeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Guardar preferencia en localStorage
+      let theme = btn.textContent.trim().toLowerCase();
+      if (theme.includes('oscuro')) {
+        localStorage.setItem('preferencia-tema', 'oscuro');
+      } else if (theme.includes('claro')) {
+        localStorage.setItem('preferencia-tema', 'claro');
+      } else if (theme.includes('automático') || theme.includes('automatico')) {
+        localStorage.setItem('preferencia-tema', 'automatico');
+      } else if (theme.includes('eficiencia')) {
+        localStorage.setItem('preferencia-tema', 'eficiencia');
+      }
+
+      // Lógica de tema
+      function setDarkTheme(active) {
+        if (active) {
+          body.classList.add('dark-theme');
+          if(contentContainer) contentContainer.classList.add('dark-theme');
+          if(header) header.classList.add('dark-theme');
+          if(headerTitle) headerTitle.classList.add('dark-theme');
+          if(headerLegend) headerLegend.classList.add('dark-theme');
+          if(menuDesplegable) menuDesplegable.classList.add('dark-theme');
+          if(pageTitle) pageTitle.classList.add('dark-theme');
+          navButtons.forEach(el => el.classList.add('dark-theme'));
+                  if(footer) footer.classList.add('dark-theme');
+        footerSections.forEach(el => el.classList.add('dark-theme'));
+        footerLinks.forEach(el => el.classList.add('dark-theme'));
+        if(footerBottom) footerBottom.classList.add('dark-theme');
+        if(copyright) copyright.classList.add('dark-theme');
+        if(menuToggle) menuToggle.classList.add('dark-theme');
+        if(bottomFixedBar) bottomFixedBar.classList.add('dark-theme');
+          if(panelExpansion) panelExpansion.classList.add('dark-theme');
+          if(newsContainer) newsContainer.classList.add('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.add('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.add('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.add('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.add('dark-theme');
+          actionSeparators.forEach(el => el.classList.add('dark-theme'));
+          newsSeparators.forEach(el => el.classList.add('dark-theme'));
+          if(contactNote) contactNote.classList.add('dark-theme');
+          accordionContents.forEach(el => el.classList.add('dark-theme'));
+        } else {
+          body.classList.remove('dark-theme');
+          if(contentContainer) contentContainer.classList.remove('dark-theme');
+          if(header) header.classList.remove('dark-theme');
+          if(headerTitle) headerTitle.classList.remove('dark-theme');
+          if(headerLegend) headerLegend.classList.remove('dark-theme');
+          if(menuDesplegable) menuDesplegable.classList.remove('dark-theme');
+          if(pageTitle) pageTitle.classList.remove('dark-theme');
+          navButtons.forEach(el => el.classList.remove('dark-theme'));
+                  if(footer) footer.classList.remove('dark-theme');
+        footerSections.forEach(el => el.classList.remove('dark-theme'));
+        footerLinks.forEach(el => el.classList.remove('dark-theme'));
+        if(footerBottom) footerBottom.classList.remove('dark-theme');
+        if(copyright) copyright.classList.remove('dark-theme');
+        if(menuToggle) menuToggle.classList.remove('dark-theme');
+        if(bottomFixedBar) bottomFixedBar.classList.remove('dark-theme');
+          if(panelExpansion) panelExpansion.classList.remove('dark-theme');
+          if(newsContainer) newsContainer.classList.remove('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.remove('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.remove('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.remove('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.remove('dark-theme');
+          actionSeparators.forEach(el => el.classList.remove('dark-theme'));
+          newsSeparators.forEach(el => el.classList.remove('dark-theme'));
+          if(contactNote) contactNote.classList.remove('dark-theme');
+          accordionContents.forEach(el => el.classList.remove('dark-theme'));
+        }
+      }
+
+      if (theme.includes('oscuro')) {
+        setDarkTheme(true);
+      } else if (theme.includes('claro')) {
+        setDarkTheme(false);
+      } else if (theme.includes('automático') || theme.includes('automatico')) {
+        // Automático: modo oscuro de 20:00 a 7:00, claro el resto
+        const hour = new Date().getHours();
+        if (hour >= 20 || hour < 7) {
+          setDarkTheme(true);
+        } else {
+          setDarkTheme(false);
+        }
+      } else if (theme.includes('eficiencia')) {
+        // Eficiencia: modo oscuro si el ahorro de energía está activo
+        if (navigator.getBattery) {
+          navigator.getBattery().then(function(battery) {
+            if (battery && battery.savePower) {
+              setDarkTheme(true);
+            } else if (battery && battery.dischargingTime === Infinity && battery.charging) {
+              setDarkTheme(false);
+            } else if (battery && battery.charging === false && battery.level < 0.2) {
+              setDarkTheme(true);
+            } else if (battery && battery.level < 0.15) {
+              setDarkTheme(true);
+            } else {
+              setDarkTheme(false);
+            }
+          }).catch(function() {
+            setDarkTheme(false);
+          });
+        } else if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          // fallback: si el usuario tiene preferencias de ahorro de energía
+          setDarkTheme(true);
+        } else {
+          setDarkTheme(false);
+        }
+      }
+    });
+  });
+
+  // Al cargar la página, aplicar la preferencia guardada
+  function activarTemaGuardado() {
+    const temaGuardado = localStorage.getItem('preferencia-tema');
+    if (!temaGuardado) return;
+    let btnToClick = null;
+    themeBtns.forEach(btn => {
+      let theme = btn.textContent.trim().toLowerCase();
+      if (
+        (temaGuardado === 'oscuro' && theme.includes('oscuro')) ||
+        (temaGuardado === 'claro' && theme.includes('claro')) ||
+        (temaGuardado === 'automatico' && (theme.includes('automático') || theme.includes('automatico'))) ||
+        (temaGuardado === 'eficiencia' && theme.includes('eficiencia'))
+      ) {
+        btnToClick = btn;
+      }
+    });
+    if (btnToClick) btnToClick.click();
+  }
+  activarTemaGuardado();
+});
+
+// --- Popup de ayuda para Tema ---
+document.addEventListener('DOMContentLoaded', function() {
+  const helpBtn = document.getElementById('themeHelpBtn');
+  const helpPopup = document.getElementById('themeHelpPopup');
+  const closeHelp = document.getElementById('closeThemeHelp');
+  
+  if (helpBtn && helpPopup && closeHelp) {
+    helpBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      helpPopup.classList.add('active');
+    });
+    
+    closeHelp.addEventListener('click', function() {
+      helpPopup.classList.remove('active');
+    });
+    
+    // Cerrar al hacer clic fuera del popup
+    document.addEventListener('mousedown', function(e) {
+      if (helpPopup.classList.contains('active') && !helpPopup.contains(e.target) && e.target !== helpBtn) {
+        helpPopup.classList.remove('active');
+      }
+    });
+  }
+});
+
+  </script>
+</body>
+</html>

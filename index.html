@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidad CGN | Inicio</title>
+    <link rel="manifest" href="/pwa/manifest.json">
+    <meta name="theme-color" content="#FFD1A9">
+    <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+    <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+    <link rel="stylesheet" href="/pwa/estilos.css">
+    <link rel="stylesheet" href="/pwa/temas.css">
+    <link rel="stylesheet" href="/pwa/componentes.css">
+    <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+
+        /* Solución para el desbordamiento */
+        html, body {
+            overflow-x: hidden;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        
+        
+        .logo-comunidad {
+            height: 120px;
+            width: 120px;
+            margin: 0 auto var(--spacing-lg);
+            border-radius: var(--radius-full);
+            object-fit: cover;
+            border: 3px solid var(--color-primary);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        h1 {
+            font-size: var(--text-4xl);
+            font-weight: var(--font-bold);
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+        
+
+/* Clase para ocultar scroll del body cuando modal está abierto */
+body.modal-open {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* Ocultar scrollbar en webkit browsers */
+body.modal-open::-webkit-scrollbar {
+    display: none;
+}
+
+/* Ocultar scrollbar en Firefox */
+body.modal-open {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+/* Deshabilitar scroll durante la carga */
+body.loading-active {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+</head>
+<body class="text-gray-800">
+    <!-- Overlay de carga -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div style="position: relative;">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loadingText">Cargando scripts...</div>
+        </div>
+        <div class="loading-version">V2.1</div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="main-content" id="mainContent">
+    <header class="header-comunidad">
+        <div class="header-content">
+            <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+            <span class="header-title">CGN</span>
+        </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+            <span class="menu-bar"></span>
+            <span class="menu-bar"></span>
+            <span class="menu-bar"></span>
+        </button>
+        <nav class="menu-desplegable" id="menuDesplegable">
+            <ul>
+                <li><a href="/anuncios/anuncio.html?destino=%2Findex.html">Inicio</a></li>
+                <li><a href="/anuncios/anuncio.html?destino=%2Ffaq.html">FAQ</a></li>
+                <li><a href="/anuncios/anuncio.html?destino=%2Fsocios.html">Socios</a></li>
+                <li><a href="/anuncios/anuncio.html?destino=%2Fajustes.html">Ajustes</a></li>
+                <li><a href="/anuncios/anuncio.html?destino=%2Fcontacto.html">Contacto</a></li>
+                <li><a href="/anuncios/anuncio.html?destino=%2Flas-mejoras.html">Las Mejoras</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="main-container">
+        <!-- NUEVO CONTENEDOR DE BIENVENIDA ESTILO TARJETA SOBRE FONDO -->
+        <div class="contenedor-bienvenida-gdl">
+          <img src="/imagenes/IMG-IA/Vistas-edificio2.avif" alt="No deberías ver esto..." class="bienvenida-gdl-fondo">
+          <div class="bienvenida-gdl-overlay">
+            <div class="bienvenida-gdl-tarjeta">
+              <div class="bienvenida-gdl-titulo">¡Hola! Buenas {timestrap}, ¿Qué tal?</div>
+              <div class="bienvenida-gdl-info">Guadalajara - {timestrap} p.m.</div>
+              <div class="bienvenida-gdl-cede">
+                <span class="bienvenida-gdl-cede-span">
+                  <i class="fa-solid fa-house"></i> Cede
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- FIN NUEVO CONTENEDOR DE BIENVENIDA -->
+
+        <!--
+        <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="logo-comunidad">
+        <h1>Bienvenido a la Comunidad CGN</h1>
+        <div class="subtitle">
+            Un espacio para compartir, aprender y conectar con personas afines. 
+            Únete a nuestra comunidad de entusiastas de la tecnología, gaming y desarrollo.
+        </div> -->
+
+        <!-- Aviso PWA -->
+        <div id="install-prompt">
+            ¡Te recomendamos instalar nuestra PWA para una mejor experiencia!
+        </div>
+        
+        <!-- Tarjeta Emergente de Instalación PWA -->
+        <div id="install-modal" class="install-modal">
+            <div class="install-modal-content">
+                <div class="install-modal-header">
+                    <h2><i class="fas fa-mobile-alt"></i> Instala nuestra PWA</h2>
+                    <button class="install-modal-close" id="installModalClose" title="Cerrar instrucciones de instalación">×</button>
+                </div>
+                
+                <div class="install-modal-body">
+                    <div class="install-steps">
+                        <div class="install-section">
+                            <h3><i class="fas fa-mobile-alt"></i> Para Móviles</h3>
+                            <div class="step-list">
+                                <div class="step">
+                                    <span class="step-number">1</span>
+                                    <span class="step-text">Abre el menú de tu navegador (⋮)</span>
+                                </div>
+                                <div class="step">
+                                    <span class="step-number">2</span>
+                                    <span class="step-text">Selecciona "Agregar a pantalla de inicio"</span>
+                                </div>
+                                <div class="step">
+                                    <span class="step-number">3</span>
+                                    <span class="step-text">Confirma la instalación</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="install-section">
+                            <h3><i class="fas fa-desktop"></i> Para PC</h3>
+                            <div class="step-list">
+                                <div class="step">
+                                    <span class="step-number">1</span>
+                                    <span class="step-text">Haz clic en el ícono de instalación en la barra de direcciones</span>
+                                </div>
+                                <div class="step">
+                                    <span class="step-number">2</span>
+                                    <span class="step-text">O busca "Instalar página como app", en el menú de tu navegador (⋮)</span>
+                                </div>
+                                <div class="step">
+                                    <span class="step-number">3</span>
+                                    <span class="step-text">Selecciona la opción "Instalar página como app"</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="install-benefits">
+                            <div class="benefits-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="benefits-text">
+                                <h4>¿Por qué instalar la PWA?</h4>
+                                <p>Disfruta de una experiencia más rápida, acceso offline y notificaciones instantáneas. ¡Como una app nativa pero sin ocupar espacio en tu dispositivo!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="install-modal-footer">
+                    <!-- Botón eliminado - solo se puede cerrar con el botón X -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Contador Regresivo para Inauguración del Servidor MC -->
+        <div class="countdown-wrapper">
+            <div id="countdown-container"></div>
+        </div>
+
+        <div class="botones-comunidad">
+            <a href="/anuncios/anuncio.html?destino=%2Fcategorias.html" class="boton-comunidad" style="background-color: #DBEAFE; color: #1E40AF; border: 2px solid #3B82F6;">
+                <i class="fas fa-list"></i>ㅤVer categorías
+            </a>
+            <a href="/anuncios/anuncio.html?destino=https%3A%2F%2Fredes-cgn.vercel.app%2F" class="boton-comunidad" style="background-color: #D1FAE5; color: #065F46; border: 2px solid #10B981;">
+                <i class="fas fa-share-alt"></i>ㅤRedes
+            </a>
+        </div>
+        
+        <!-- Carrusel de Novedades - Solucionado -->
+        <div class="carrusel-container">
+            <h2 class="carrusel-titulo">🔥 Recursos populares</h2>
+            <div class="carrusel" id="carrusel">
+                <!-- Tarjeta 1 -->
+                <div class="tarjeta-novedad">
+                    <div class="tarjeta-imagen" style="background-color: #a9cbff7e;">
+                        <i class="fa-solid fa-globe fa-3x"></i>
+                    </div>
+                    <div class="tarjeta-contenido">
+                        <h3 class="tarjeta-titulo">Conoce los grupos</h3>
+                        <p class="tarjeta-descripcion">Participa en los grupos más relevantes y activos, conoce a gente con tus mismos intereses.</p>
+                        <a href="/anuncios/anuncio.html?destino=%2FSubpaginas%2Fgrupos-cmd.html" class="tarjeta-enlace">Ver página</a>
+                    </div>
+                </div>
+                
+                <!-- Tarjeta 2 -->
+                <div class="tarjeta-novedad">
+                    <div class="tarjeta-imagen" style="background-color: #85ff7a7c;">
+                        <i class="fa-solid fa-medal fa-3x"></i>
+                    </div>
+                    <div class="tarjeta-contenido">
+                        <h3 class="tarjeta-titulo">Analisis de actividad</h3>
+                        <p class="tarjeta-descripcion">Conoce la actividad de cualquier grupo con nuestro preciso algoritmo de analisis.</p>
+                        <a href="/anuncios/anuncio.html?destino=%2FSubpaginas%2Festadisticas.html" class="tarjeta-enlace">Ver página</a>
+                    </div>
+                </div>
+                
+                <!-- Tarjeta 3 -->
+                <div class="tarjeta-novedad">
+                    <div class="tarjeta-imagen" style="background-color: #ff9e5e80;">
+                        <i class="fa-solid fa-file-invoice fa-3x"></i>
+                    </div>
+                    <div class="tarjeta-contenido">
+                        <h3 class="tarjeta-titulo">Las reglas</h3>
+                        <p class="tarjeta-descripcion">Conoce las reglas de la comunidad, solo unos minutos y evita alguna eliminación. 🛂</p>
+                        <a href="/anuncios/anuncio.html?destino=%2FSubpaginas%2Freglas-generales.html" class="tarjeta-enlace">Ver página</a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4 -->
+                <div class="tarjeta-novedad">
+                    <div class="tarjeta-imagen" style="background-color: #5ef4ff80;">
+                        <i class="fa-solid fa-database fa-3x"></i>
+                    </div>
+                    <div class="tarjeta-contenido">
+                        <h3 class="tarjeta-titulo">Conoce la base de datos</h3>
+                        <p class="tarjeta-descripcion"><strong>¿Notas a alguien actuando raro?</strong><br>Ahora puedes corroborar las sospechas gracias a la base de datos de la comunidad.</p>
+                        <a href="/anuncios/anuncio.html?destino=%2Fbase-de-datos.html" class="tarjeta-enlace">Ver página</a>
+                    </div>
+                </div>
+                
+               
+
+            </div>
+            
+            <div class="carrusel-controles">
+                <div class="carrusel-control activo" data-index="0"></div>
+                <div class="carrusel-control" data-index="1"></div>
+                <div class="carrusel-control" data-index="2"></div>
+                <div class="carrusel-control" data-index="3"></div>
+            </div>
+        </div>
+        
+        <!-- Botón de Tablas de clasificación -->
+        <div style="display: flex; justify-content: center; margin-bottom: 2rem; position: relative;">
+            <a href="/anuncios/anuncio.html?destino=%2Fclasificaciones%2Fpanel.html" class="boton-comunidad" style="background-color: #FEE2E2; color: #991B1B; border: 2px solid #DC2626;">
+                <i class="fas fa-trophy"></i>ㅤTablas de clasificación
+            </a>
+            <span class="etiqueta-nuevo">¡Nuevo!</span>
+        </div>
+
+        <div class="seccion-futuro">
+            <h2>Próximamente en CGN</h2>
+            <ul>
+                <li>Noticias y anuncios exclusivos de la comunidad</li>
+                <li>Calendario de eventos y actividades programadas</li>
+                <li>Recursos y guías para nuevos miembros</li>
+                <li>Galería de proyectos destacados por miembros</li>
+            </ul>
+        </div>
+
+        <!--  Sección de apoyo a la comunidad  -->
+        <div class="seccion-futuro seccion-apoyo">
+            <h2>Apoya a la Comunidad</h2>
+            <p class="apoyo-texto">
+                Tu apoyo nos ayuda a mantener y mejorar la comunidad. Cada contribución hace la diferencia.
+            </p>
+            <div class="apoyo-botones">
+              <!-- Widget original oculto -->
+              <div class="ccwallet__tipbox__button" data-code="DXLMKFEO" data-button-type="button" data-button-text=" Apoya el Proyecto" data-button-style="white" style="display:none;"></div>
+              <!-- Botón personalizado -->
+              <a href="/anuncios/anuncio.html?destino=/donaciones.html" class="boton-comunidad boton-apoyo">💖 Apoya el Proyecto</a>
+            </div>
+        </div>
+    </div>
+
+
+      <!-- ========== Tarjeta Publicitaria Corregida ========== -->
+      <div id="tarjeta-publicidad" class="tarjeta-publicidad">
+
+        <!-- Contenedor principal para la información (logo, texto, etc.) -->
+        <div class="publicidad-principal">
+            <!-- ¡NUEVO! Botón "X" como un elemento flex normal a la izquierda -->
+            <button id="cerrar-publicidad" class="boton-cerrar" aria-label="Cerrar publicidad">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="publicidad-icono">
+                <i class="fa-solid fa-wand-magic-sparkles fa-2x"></i>
+            </div>
+            <div class="publicidad-texto">
+                <h3 class="publicidad-titulo">¡Página actualizada a la v2.1!</h3>
+                <p class="publicidad-descripcion">Revisa todos los cambios.</p>
+            </div>
+        </div>
+
+        <!-- Contenedor para los botones de acción -->
+        <div class="publicidad-acciones">
+            <a href="/anuncios/anuncio.html?destino=%2Flas-mejoras%2Fact-1001.html" class="boton-publicidad">Ver cambios</a>
+        </div>
+    </div>
+    <!-- ========== Fin Tarjeta Publicitaria ========== -->
+
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Recursos</h3>
+                <div class="footer-links">
+                 <a href="/anuncios/anuncio.html?destino=%2Findex.html"><i class="fas fa-home"></i> Página principal</a>
+                 <a href="/anuncios/anuncio.html?destino=%2FSubpaginas%2Fservidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+                 <a href="/anuncios/anuncio.html?destino=%2FSubpaginas%2Fservidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+                 <a href="/anuncios/anuncio.html?destino=%2FSubpaginas%2Fser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+                 <a href="/anuncios/anuncio.html?destino=%2FSubpaginas%2Freglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Comunidad</h3>
+                <div class="footer-links">
+                  <a href="/anuncios/anuncio.html?destino=https%3A%2F%2Fdiscord.gg%2FFBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+                  <a href="/anuncios/anuncio.html?destino=https%3A%2F%2Ft.me%2FCGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+                  <a href="/anuncios/anuncio.html?destino=https%3A%2F%2Fwhatsapp.com%2Fchannel%2F0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+                  <a href="/anuncios/anuncio.html?destino=https%3A%2F%2Ft.me%2Fcommunity_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+                  <a href="/anuncios/anuncio.html?destino=%2Fredes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="copyright">
+                <img src="/icons/Bandera-jal.avif" 
+                     alt="Logo Comunidad CGN" 
+                     class="cgn-icon">
+                Comunidad CGN | <span id="currentYear">2022-2025</span>
+            </p>
+        </div>
+    </footer>
+
+
+     <!-- Rectángulo gris fijo en la parte inferior -->
+  <div class="bottom-fixed-bar">
+    <div class="left-actions">
+      <button title="Abrir chat" class="open-chat-btn" onclick="openChat()">
+        <i class="fas fa-comments"></i>Ayuda
+      </button>
+      <button title="Compartir página" class="share-btn-fixed" id="shareBtn" onclick="sharePage()">
+        <i class="fas fa-share-alt"></i>
+      </button>
+    </div>
+    <div class="right-actions">
+      <div class="action-separator"></div>
+      <div class="view-more-fixed" id="viewMoreBtn" title="panel de acciones" onclick="togglePanel()">
+        <i class="fas fa-ellipsis-h"></i>
+        <span id="viewMoreText">Ver más</span>
+      </div>
+      <div class="back-to-top-fixed" id="backToTopBtn" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+      <div class="go-to-bottom-fixed" id="goToBottomBtn" title="Ir al final">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de expansión separado -->
+  <div class="panel-expansion" id="panelExpansion">
+    <!-- Contenedor para el contenido expandido -->
+    <div class="expanded-content">
+      <!-- Contenedor de noticias -->
+      <div class='news-container'>
+        <div class='title'>
+          Novedades
+        </div>
+
+        <ul>
+          <!-- Las noticias se cargarán dinámicamente desde noticias.json -->
+        </ul>
+      </div>
+      <div class="news-separator-top"></div>
+      
+      <!-- Sección de categorías -->
+      <div class="categories-section-panel">
+        <div class="categories-title-panel">Categorías</div>
+        <div class="categories-tags-panel">
+          <a href="/categorias-comunidad.html" class="category-tag-panel comunidad"><i class="fas fa-users"></i> Comunidad</a>
+          <a href="/categorias-mc.html" class="category-tag-panel minecraft"><i class="fas fa-cube"></i> Minecraft</a>
+          <a href="/categorias-reglas.html" class="category-tag-panel reglas"><i class="fas fa-book"></i> Reglas</a>
+          <a href="/categorias-admins.html" class="category-tag-panel administracion"><i class="fas fa-user-shield"></i> Administración</a>
+        </div>
+      </div>
+      <div class="news-separator-bottom"></div>
+      
+      <!-- Sección de tema -->
+      <div class="theme-section-panel" style="width:100%; margin: 0 0 10px 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+        <div class="categories-title-panel" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center; text-align: center;">
+          <span style="display: flex; align-items: center; gap: 8px;">
+            Tema
+            <button id="themeHelpBtn" type="button" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: var(--popup-text-color); font-size: var(--font-size-7xl); display: flex; align-items: center;">
+              <i class="fas fa-question-circle"></i>
+            </button>
+          </span>
+        </div>
+        <div class="theme-buttons-panel" style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+          <button class="theme-btn" title="Automático" type="button">
+            <i class="fas fa-adjust"></i> Automático
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Eficiencia" type="button">
+            <i class="fas fa-bolt"></i> Eficiencia
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Claro" type="button">
+            <i class="fas fa-sun"></i> Claro
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Oscuro" type="button">
+            <i class="fas fa-moon"></i> Oscuro
+            <span class="theme-indicator"></span>
+          </button>
+        </div>
+        <div class="action-separator" style="position: relative; left: 50%; transform: translateX(-50%); width: 100vw; height: 4px; background-color: rgba(255,255,255,0.3); margin: 14px 0 0 0; border-radius: 2px; z-index: 100;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay que contiene el chat modal -->
+  <div class="overlay" id="chatOverlay">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="header-left">
+          <div class="header-image">
+            <img src="/icons/bot-hecks.avif" alt="Logo de soporte" id="chatImage">
+          </div>
+          <div class="header-title">Soporte CGN</div>
+        </div>
+        <div class="header-buttons">
+          <button class="header-btn" onclick="toggleMaximize()" title="Maximizar/Minimizar chat">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="header-btn" onclick="clearChat()" title="Borrar chat">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="header-btn" onclick="closeChat()" title="Cerrar chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-footer" id="chatFooter"></div>
+    </div>
+  </div>
+
+  <!-- Popup de ayuda para Tema -->
+  <div class="theme-help-popup" id="themeHelpPopup">
+    <button class="close-btn" id="closeThemeHelp" title="Cerrar ayuda"><i class="fas fa-times"></i></button>
+    <strong>¿Cómo funcionan los modos de tema?</strong>
+    <ul>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-adjust"></i> <b>Automático</b></span>
+        <span style="font-size: 0.97em; color: var(--popup-text-color); margin-left: 1.7em;">Cambia entre modo claro y oscuro automáticamente según la hora del día (oscuro de noche, claro de día).</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-bolt"></i> <b>Eficiencia</b></span>
+        <span style="font-size: 0.97em; color: var(--popup-text-color); margin-left: 1.7em;">Activa el modo oscuro si el ahorro de energía está activo en tu dispositivo.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-sun"></i> <b>Claro</b></span>
+        <span style="font-size: 0.97em; color: var(--popup-text-color); margin-left: 1.7em;">Fuerza el tema claro en la página.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-moon"></i> <b>Oscuro</b></span>
+        <span style="font-size: 0.97em; color: var(--popup-text-color); margin-left: 1.7em;">Fuerza el tema oscuro en la página.</span>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+      </noscript>
+       
+      <script src="/HECKS-BOT/javascript.js"></script>
+      <script src="/pwa/noticias.js"></script>
+      <script src="/pwa/javascript.js"></script>
+      <script src="/pwa/contador.js"></script>
+
+    <script>
+        // Actualizar año actual en el pie de página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Array de imágenes disponibles para el fondo
+            const imagenesFondo = [
+                '/imagenes/IMG-IA/Vistas-edificio1.avif',
+                '/imagenes/IMG-IA/Vistas-edificio2.avif',
+                '/imagenes/IMG-IA/Vistas-edificio3.avif',
+                '/imagenes/IMG-IA/Vistas-edificio4.avif',
+                '/imagenes/Fondos-BS/Fondo-basico1.avif',
+                '/imagenes/Fondos-BS/Fondo-basico2.avif',
+                '/imagenes/Fondos-BS/Fondo-basico3.avif',
+                '/imagenes/Fondos-BS/Fondo-basico4.avif',
+                '/imagenes/Fondos-BS/Fondo-basico5.avif',
+                '/imagenes/Fondos-BS/Fondo-basico6.avif',
+                '/imagenes/Ambiente/Ospicio-cabañas-GDL.avif',
+                '/imagenes/Ambiente/Paisaje-vacio.avif',
+                '/icons/Bandera-jal.avif'
+            ];
+
+            // Función para seleccionar imagen inicial
+            function seleccionarImagenInicial() {
+                const imagenFondo = document.querySelector('.bienvenida-gdl-fondo');
+                // Seleccionar una imagen aleatoria del array
+                const imagenInicial = imagenesFondo[Math.floor(Math.random() * imagenesFondo.length)];
+                imagenFondo.src = imagenInicial;
+                return imagenInicial; // Retornamos la imagen inicial para referencia
+            }
+
+            // Función para cambiar la imagen de fondo
+            function cambiarImagenFondo(imagenActual) {
+                const imagenFondo = document.querySelector('.bienvenida-gdl-fondo');
+                
+                // Filtrar la imagen actual para no repetirla
+                const imagenesDisponibles = imagenesFondo.filter(img => img !== imagenActual);
+                
+                // Seleccionar una imagen aleatoria de las disponibles
+                const nuevaImagen = imagenesDisponibles[Math.floor(Math.random() * imagenesDisponibles.length)];
+                
+                // Aplicar transición suave
+                imagenFondo.style.opacity = '0';
+                setTimeout(() => {
+                    imagenFondo.src = nuevaImagen;
+                    imagenFondo.style.opacity = '1';
+                }, 500);
+
+                return nuevaImagen; // Retornamos la nueva imagen para la siguiente iteración
+            }
+
+            // Función para actualizar el saludo y la hora de Guadalajara
+            function actualizarSaludoYHora() {
+                // Obtener la hora actual en Guadalajara
+                const opciones = {
+                    timeZone: 'America/Mexico_City',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                };
+                
+                const horaGDL = new Date().toLocaleTimeString('es-MX', opciones);
+                const horaActual = new Date().toLocaleTimeString('es-MX', {
+                    timeZone: 'America/Mexico_City',
+                    hour: 'numeric',
+                    hour12: false
+                });
+                
+                // Determinar el saludo según la hora
+                let saludo;
+                if (horaActual >= 5 && horaActual < 12) {
+                    saludo = '¡Hola! Buenos días, ¿Qué tal?';
+                } else if (horaActual >= 12 && horaActual < 19) {
+                    saludo = '¡Hola! Buenas tardes, ¿Qué tal?';
+                } else {
+                    saludo = '¡Hola! Buenas noches, ¿Qué tal?';
+                }
+                
+                // Actualizar los elementos en el DOM
+                document.querySelector('.bienvenida-gdl-titulo').textContent = saludo;
+                document.querySelector('.bienvenida-gdl-info').textContent = `Guadalajara - ${horaGDL}`;
+
+                // Calcular el tiempo hasta el siguiente minuto
+                const ahora = new Date();
+                const segundosHastaSiguienteMinuto = 60 - ahora.getSeconds();
+                
+                // Programar la siguiente actualización al inicio del siguiente minuto
+                setTimeout(() => {
+                    actualizarSaludoYHora();
+                }, segundosHastaSiguienteMinuto * 1000);
+            }
+            
+            // Inicializar la imagen y comenzar el ciclo de cambios
+            let imagenActual = seleccionarImagenInicial();
+            
+            // Cambiar imagen cada 30 segundos
+            setInterval(() => {
+                imagenActual = cambiarImagenFondo(imagenActual);
+            }, 30000);
+            
+            // Ejecutar la función al cargar la página
+            actualizarSaludoYHora();
+            
+            const currentYearElement = document.getElementById('currentYear');
+            const currentYear = new Date().getFullYear();
+            currentYearElement.textContent = `2022-${currentYear}`;
+            
+
+            // Registro del Service Worker para PWA
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/pwa/service-worker.js');
+                });
+            }
+            
+            
+            // Carrusel de novedades simplificado
+            const carrusel = document.getElementById('carrusel');
+            const controles = document.querySelectorAll('.carrusel-control');
+            
+            // Event listeners para los controles
+            controles.forEach(control => {
+                control.addEventListener('click', () => {
+                    const index = parseInt(control.getAttribute('data-index'));
+                    
+                    // Actualizar controles
+                    controles.forEach(c => c.classList.remove('activo'));
+                    control.classList.add('activo');
+                    
+                    // Desplazar carrusel
+                    carrusel.scrollTo({
+                        left: index * carrusel.offsetWidth,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Actualizar controles al desplazar manualmente
+            carrusel.addEventListener('scroll', () => {
+                const scrollPosition = carrusel.scrollLeft;
+                const cardWidth = carrusel.offsetWidth;
+                const currentIndex = Math.round(scrollPosition / cardWidth);
+                
+                controles.forEach((control, i) => {
+                    control.classList.toggle('activo', i === currentIndex);
+                });
+            });
+        });
+
+ // Codigo tarjeta de publicidad //
+ //                              //
+        document.addEventListener('DOMContentLoaded', function () {
+const tarjetaPublicidad = document.getElementById('tarjeta-publicidad');
+const botonCerrar = document.getElementById('cerrar-publicidad');
+
+if (tarjetaPublicidad && botonCerrar) {
+    botonCerrar.addEventListener('click', function () {
+        tarjetaPublicidad.classList.add('oculta');
+
+        setTimeout(() => {
+            tarjetaPublicidad.style.display = 'none';
+        }, 500); // Coincide con la duración de la transición en CSS
+    });
+
+    console.log('✅ Tarjeta de publicidad inicializada correctamente');
+} else {
+    console.warn('⚠️ Elementos necesarios no encontrados: verifique los IDs "tarjeta-publicidad" y/o "cerrar-publicidad"');
+}
+
+});
+
+    </script>
+
+    </div> <!-- Cierre del main-content -->
+
+</body>
+</html>

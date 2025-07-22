@@ -1,0 +1,3057 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Base de datos | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFF5EB;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    
+    .content-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      flex: 1;
+      margin-bottom: 20px;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    
+    .nav-button {
+      background-color: #FFD1A9;
+      color: #374151;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .nav-button:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .nav-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-button i {
+      margin-right: 0.5rem;
+    }
+    
+    footer {
+      background-color: #FFF5EB;
+      padding: 2.5rem 1rem;
+      border-top: 2px solid #E5E7EB;
+      margin-top: auto;
+      position: relative;
+      margin-bottom: 35px; /* Espacio de la bandera respecto al final */
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2.5rem;
+    }
+    
+    .footer-section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: #FFD1A9;
+    }
+    
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .footer-links a {
+      color: #4B5563;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+      color: #d8971d;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 0.75rem;
+      color: #FFD1A9;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 2px solid #E5E7EB;
+      text-align: center;
+      color: #4B5563;
+      font-size: 0.9rem;
+    }
+    
+    .copyright {
+      font-weight: 600;
+      color: #1F2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .copyright span {
+      color: #FFD1A9;
+    }
+    
+    .back-to-top {
+      position: absolute;
+      top: -25px;
+      right: 20px;
+      background-color: #FFD1A9;
+      color: #374151;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .back-to-top:hover {
+      background-color: #ffb07a;
+      transform: translateY(-3px);
+    }
+    
+    .back-to-top:active {
+      transform: translateY(0);
+    }
+    
+    .cgn-icon {
+      height: 50px;
+      width: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .cgn-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Header completo con menú desplegable */
+    .header-comunidad {
+      background-color: #FFF5EB;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 98;
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .header-logo {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .header-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1F2937;
+    }
+    
+    .header-legend {
+      font-weight: 700;
+      font-style: italic;
+      font-size: 0.75rem;
+      color: #115c2c;
+      margin-left: 0.5rem;
+    }
+    
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 24px;
+      width: 30px;
+      padding: 0;
+    }
+    
+    .menu-bar {
+      height: 3px;
+      width: 100%;
+      background-color: #1F2937;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+    
+    .menu-desplegable {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    
+    .menu-desplegable.abierto {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .menu-desplegable ul {
+      list-style: none;
+      padding: 1rem 0;
+      margin: 0;
+    }
+    
+    .menu-desplegable li {
+      padding: 0;
+    }
+    
+    .menu-desplegable a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      color: #4B5563;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+    
+    .menu-desplegable a:hover {
+      background-color: #FFD1A9;
+      color: #1F2937;
+      padding-left: 1.75rem;
+    }
+    
+    /* Título principal */
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #FFD1A9;
+      position: relative;
+    }
+    
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: #ffb07a;
+    }
+    
+    /* Contenedor de búsqueda */
+    .search-container {
+      margin: 2rem 0;
+      text-align: center;
+    }
+    
+    #search-form {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    #search-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 2px solid #d8971d;
+      border-radius: 0.375rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: #ffffff;
+      color: #374151;
+    }
+    
+    #search-input:focus {
+      outline: none;
+      border-color: #d8971d;
+      box-shadow: 0 0 0 3px rgba(216, 151, 29, 0.3);
+    }
+    
+    #search-input:hover {
+      border-color: #d8971d;
+      box-shadow: 0 2px 4px rgba(216, 151, 29, 0.2);
+    }
+    
+    #search-input::placeholder {
+      color: #6B7280;
+    }
+    
+    #search-form button {
+      padding: 0.75rem 1.5rem;
+      background-color: #FFD1A9;
+      color: #374151;
+      border: 2px solid #d8971d;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    #search-form button:hover {
+      background-color: #ffb07a;
+      border-color: #d8971d;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Contenedor de login */
+    .login-container {
+      background-color: rgb(255, 255, 255);
+      padding: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      margin: 2rem auto;
+      max-width: 500px;
+      text-align: center;
+    }
+    
+    .login-container h2 {
+      color: #374151;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    
+    .login-container p {
+      color: #4B5563;
+      margin-bottom: 1.5rem;
+    }
+    
+    #login-form {
+      display: flex;
+      gap: 1rem;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    #password-input {
+      flex: 1 !important;
+      padding: 0.75rem 1rem !important;
+      border: 2px solid #d8971d !important;
+      border-radius: 0.375rem !important;
+      font-size: 1rem !important;
+      background-color: #fff !important;
+      transition: all 0.3s ease !important;
+      color: #374151 !important;
+    }
+    
+    #password-input:focus {
+      outline: none !important;
+      border-color: #d8971d !important;
+      box-shadow: 0 0 0 3px rgba(216, 151, 29, 0.3) !important;
+    }
+    
+    #password-input:hover {
+      border-color: #d8971d !important;
+      box-shadow: 0 2px 4px rgba(216, 151, 29, 0.2) !important;
+    }
+    
+    #password-input::placeholder {
+      color: #6B7280 !important;
+    }
+    
+    #login-form button {
+      padding: 0.75rem 1.5rem;
+      background-color: #FFD1A9;
+      color: #374151;
+      border: 2px solid #d8971d;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    #login-form button:hover {
+      background-color: #ffb07a;
+      border-color: #d8971d;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Tabla de datos */
+    .table-container {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+      margin: 2rem 0;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    thead tr {
+      background-color: #FFD1A9;
+      color: #374151;
+    }
+    
+    th, td {
+      padding: 1rem 1.5rem;
+      text-align: left;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    
+    tbody tr:hover {
+      background-color: rgba(255, 209, 169, 0.1);
+      cursor: pointer;
+    }
+    
+    /* Mensajes de error */
+    .error-message {
+      color: #dc2626;
+      font-weight: 500;
+      margin-top: 0.5rem;
+      height: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .error-message.visible {
+      opacity: 1;
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .modal-overlay.visible {
+      display: flex;
+      opacity: 1;
+    }
+    
+    .modal-content {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    
+    .modal-overlay.visible .modal-content {
+      transform: scale(1);
+    }
+    
+    .close-button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      color: #4B5563;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .close-button:hover {
+      color: #374151;
+    }
+    
+    .modal-content h2 {
+      color: #374151;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    
+    #modal-body p {
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #E5E7EB;
+      color: #4B5563;
+    }
+    
+    #modal-body p:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    #modal-body strong {
+      color: #374151;
+      margin-right: 0.5rem;
+    }
+    
+    /* Avisos de privacidad */
+    .privacy-notice,
+    .data-removal-notice {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 0 1rem;
+      color: #4B5563;
+      font-size: 0.9rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .privacy-notice a,
+    .data-removal-notice a {
+      color: #FFD1A9;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    
+    .privacy-notice a:hover,
+    .data-removal-notice a:hover {
+      color: #ffb07a;
+      text-decoration: underline;
+    }
+    
+    /* Estilos para la sección de Metadata */
+    .metadata-container {
+      margin: 2rem 0;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .metadata-card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid #E5E7EB;
+    }
+    
+    .metadata-header {
+      background: linear-gradient(135deg, #FFD1A9, #ffb07a);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: #374151;
+    }
+    
+    .metadata-header i {
+      font-size: 1.5rem;
+      color: #374151;
+    }
+    
+    .metadata-header h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    
+    .metadata-content {
+      padding: 1.5rem;
+    }
+    
+    .metadata-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .metadata-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .metadata-label {
+      font-size: 0.875rem;
+      color: #6B7280;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .metadata-value {
+      font-size: 1rem;
+      color: #374151;
+      font-weight: 600;
+    }
+    
+    .metadata-description {
+      background-color: #F9FAFB;
+      padding: 1rem;
+      border-radius: 0.375rem;
+      border-left: 4px solid #FFD1A9;
+      margin-bottom: 1.5rem;
+      color: #4B5563;
+      font-style: italic;
+    }
+    
+    .metadata-stats h4 {
+      color: #374151;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+    
+    .stat-item {
+      background-color: #F9FAFB;
+      padding: 1rem;
+      border-radius: 0.375rem;
+      text-align: center;
+      border: 1px solid #E5E7EB;
+      transition: all 0.3s ease;
+    }
+    
+    .stat-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #FFD1A9;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 0.875rem;
+      color: #6B7280;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    
+    /* Estilos para las incidencias más frecuentes */
+    .top-incidents-container {
+      margin-top: 2rem;
+    }
+    
+    .top-incidents-title {
+      color: #374151;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .top-incidents-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    
+    .incident-card {
+      background-color: #F9FAFB;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #E5E7EB;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .incident-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .incident-rank {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: linear-gradient(135deg, #FFD1A9, #ffb07a);
+      color: #374151;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.875rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .incident-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+      padding-right: 2rem;
+    }
+    
+    .incident-count {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #FFD1A9;
+      margin-bottom: 0.5rem;
+    }
+    
+    .incident-percentage {
+      font-size: 0.875rem;
+      color: #6B7280;
+      font-weight: 500;
+    }
+    
+    /* Responsive para metadata */
+    @media (max-width: 768px) {
+      .metadata-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .top-incidents-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .metadata-header {
+        padding: 1rem;
+      }
+      
+      .metadata-content {
+        padding: 1rem;
+      }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .content-container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-button {
+        width: 100%;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .back-to-top {
+        top: -20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      
+      .cgn-icon {
+        height: 50px;
+        width: 100px;
+      }
+      
+      #search-form,
+      #login-form {
+        flex-direction: column;
+      }
+      
+      #search-input,
+      #password-input {
+        width: 100%;
+      }
+      
+      th, td {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .modal-content {
+        padding: 1.5rem;
+      }
+    }
+
+   /* Barra de progreso de scroll - Ahora dentro del header */
+#scroll-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: rgba(255, 209, 169, 0.2);
+  z-index: 99; /* Reducir z-index */
+}
+
+#scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFD1A9, #ffb07a);
+  transition: width 0.1s ease;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Aumentar z-index del menú desplegable */
+.menu-desplegable {
+  z-index: 100; /* Mayor que la barra de progreso */
+}
+
+/* Rectángulo gris fijo en la parte inferior */
+.bottom-fixed-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 50;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  transition: all 0.3s ease;
+}
+
+/* Panel expandido */
+.bottom-fixed-bar.expanded {
+  height: 100vh;
+  bottom: 0;
+  top: auto;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Contenedor para el contenido expandido */
+.expanded-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 0;
+}
+
+.bottom-fixed-bar.expanded .expanded-content {
+  display: flex;
+}
+
+/* Ajustar botones cuando está expandido */
+.bottom-fixed-bar.expanded .right-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  gap: 8px;
+}
+
+.bottom-fixed-bar.expanded .open-chat-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+/* Botón volver arriba dentro del rectángulo fijo */
+.back-to-top-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.back-to-top-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.back-to-top-fixed:active {
+  transform: translateY(0);
+}
+
+/* Botón ir al final dentro del rectángulo fijo */
+.go-to-bottom-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.go-to-bottom-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.go-to-bottom-fixed:active {
+  transform: translateY(0);
+}
+
+/* Contenedor para los botones de la izquierda */
+.left-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Botón compartir dentro del rectángulo fijo */
+.share-btn-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.share-btn-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.share-btn-fixed:active {
+  transform: translateY(0);
+}
+
+/* Separador vertical del panel de acciones */
+.action-separator {
+  width: 2px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin-left: 12px;
+  margin-right: 5px;
+  border-radius: 1px;
+}
+
+/* Botón ver más dentro del rectángulo fijo */
+.view-more-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  min-width: 80px;
+  height: 35px;
+  border-radius: 17.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-right: 15px;
+  gap: 5px;
+}
+
+.view-more-fixed.expanded {
+  min-width: 100px;
+}
+
+/* Contenedor para las acciones de la derecha */
+.right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Panel expandido - elemento separado */
+.panel-expansion {
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 98;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 20px;
+}
+
+.panel-expansion.expanded {
+  height: calc(100vh - 60px);
+  padding: 8px 20px 20px 20px;
+}
+
+.panel-expansion.expanded .expanded-content {
+  display: flex;
+}
+
+/* Estilos para el contenedor de noticias */
+.news-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.3);
+  border-radius: 0;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  margin-bottom: 0;
+  overflow: hidden;
+  z-index: 99;
+}
+
+.news-container .title {
+  position: absolute;
+  background-color: rgb(255, 209, 169);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 3.8px;
+  color: #374151;
+  font-size: 1rem;
+  z-index: 200;
+  border-radius: 6px;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+}
+
+.news-container ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  animation: scroll 120s infinite linear;
+  padding-left: 80px;
+}
+
+.news-container ul li {
+  white-space: nowrap;
+  padding: 10px 24px;
+  color: white;
+  position: relative;
+}
+
+.news-container ul li::after {
+  content: "";
+  width: 1px;
+  height: 100%;
+  background: #b8b8b8;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.news-container ul li:last-child::after {
+  display: none;
+}
+
+.news-container ul li a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-container ul li a:hover {
+  text-decoration: underline;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-10200px);
+  }
+}
+
+.news-separator {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  margin: 100px 0 8px 0;
+  z-index: 100;
+}
+
+.news-separator-top, .news-separator-bottom {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  z-index: 100;
+}
+
+.news-separator-top {
+  margin: 50px 0 8px 0;
+}
+
+.news-separator-bottom {
+  margin: 0px 0 8px 0;
+}
+
+.categories-section-panel {
+  width: 100%;
+  margin: -20px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.categories-title-panel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 12px;
+  margin-left: 0;
+  letter-spacing: 0.5px;
+  background: rgba(255, 168, 54, 0.92);
+  padding: 12px 24px 12px 24px;
+  border-radius: 0px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.10);
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  max-width: none;
+  z-index: 101;
+}
+.categories-tags-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.category-tag-panel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.07);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.category-tag-panel:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.category-tag-panel i {
+  font-size: 1.1em;
+  margin-right: 4px;
+}
+
+/* --- Botones de tema --- */
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  position: relative;
+  min-width: 140px;
+}
+.theme-btn:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.theme-btn .theme-indicator {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #d1d5db;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border 0.2s;
+}
+.theme-btn.active .theme-indicator {
+  background: #22c55e;
+  border: 2px solid #16a34a;
+}
+
+/* Estilo para el popup de ayuda de tema */
+.theme-help-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  color: #1F2937;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 28px 24px 18px 24px;
+  z-index: 9999;
+  min-width: 320px;
+  max-width: 90vw;
+  font-size: 1rem;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.2s;
+}
+.theme-help-popup.active {
+  display: flex;
+}
+.theme-help-popup .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #374151;
+  cursor: pointer;
+}
+.theme-help-popup ul {
+  margin: 0 0 0 0.5em;
+  padding: 0;
+  list-style: none;
+}
+.theme-help-popup ul li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -60%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* === NUEVA CLASE PARA BLOQUEAR EL SCROLL === */
+/* Se aplicará al <body> cuando el modal esté activo */
+    body.modal-open {
+    overflow: hidden;
+}
+/* =========================================== */
+
+.hidden { display: none !important; }
+
+/* ... (el resto del archivo CSS no necesita cambios) ... */
+
+.container { max-width: 1200px; margin: 40px auto; padding: 20px; }
+header { text-align: center; margin-bottom: 20px; }
+header h1 { font-size: 2.5rem; font-weight: 600; color: var(--primary-color); }
+header p { font-size: 1.1rem; color: #666; }
+.search-container { margin-bottom: 30px; text-align: center; }
+#search-form { display: flex; justify-content: center; gap: 10px; }
+
+.error-message { color: var(--error-color); font-weight: 600; margin-top: 10px; height: 20px; opacity: 0; transition: opacity 0.3s ease-in-out; }
+.error-message.visible { opacity: 1; }
+.login-container { background-color: #fff; padding: 30px; border-radius: 10px; box-shadow: var(--shadow); margin: 40px auto; max-width: 500px; text-align: center; }
+.login-container h2 { color: var(--header-bg); margin-bottom: 10px; }
+.login-container p { margin-bottom: 20px; color: #666; }
+#login-form { display: flex; gap: 10px; }
+
+.table-container { background-color: #ffffff; border-radius: 10px; box-shadow: var(--shadow); overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead tr { background-color: var(--header-bg); color: #ffffff; text-align: left; font-weight: 600; }
+th, td { padding: 15px 20px; text-align: left; white-space: nowrap; }
+tbody tr { border-bottom: 1px solid var(--border-color); transition: background-color 0.3s ease; }
+tbody tr:nth-of-type(even) { background-color: #f9f9f9; }
+tbody tr:last-of-type { border-bottom: 2px solid var(--primary-color); }
+tbody tr:hover { background-color: #e9ecef; cursor: pointer; }
+.privacy-notice { text-align: center; margin-top: 40px; padding: 0 20px; font-size: 0.9rem; color: #666; }
+.data-removal-notice { text-align: center; margin-top: 15px; padding: 0 20px; font-size: 0.9rem; color: #666; max-width: 800px; margin-left: auto; margin-right: auto; }
+.privacy-notice a, .data-removal-notice a { color: var(--primary-color); text-decoration: none; font-weight: 600; }
+.privacy-notice a:hover, .data-removal-notice a:hover { text-decoration: underline; }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: none; align-items: center; justify-content: center; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; }
+.modal-overlay.visible { display: flex; opacity: 1; }
+.modal-content { background-color: white; padding: 30px 40px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); width: 90%; max-width: 500px; position: relative; transform: scale(0.9); transition: transform 0.3s ease; }
+.modal-overlay.visible .modal-content { transform: scale(1); }
+.close-button { position: absolute; top: 10px; right: 15px; font-size: 2rem; color: #aaa; cursor: pointer; transition: color 0.2s; }
+.close-button:hover { color: #333; }
+.modal-content h2 { margin-bottom: 20px; color: var(--primary-color); }
+#modal-body p { font-size: 1.1rem; margin-bottom: 10px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
+#modal-body p:last-child { border-bottom: none; }
+#modal-body strong { color: var(--header-bg); margin-right: 10px; }
+
+@media (max-width: 768px) {
+    #search-form, #login-form { flex-direction: column; }
+    #search-input, #password-input { width: 100%; }
+    th, td { padding: 12px 15px; font-size: 0.9rem; }
+}
+
+  </style>
+  <style id="dark-theme-style">
+    /* Modo oscuro general */
+    body.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+    }
+    .content-container.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 4px 12px -1px rgba(0,0,0,0.45), 0 2px 4px -1px rgba(0,0,0,0.30);
+      color: #f3f4f6 !important;
+    }
+    .header-comunidad.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+    .header-title.dark-theme {
+      color: #f3f4f6 !important;
+    }
+    .header-legend.dark-theme {
+      color: #18813f !important;
+    }
+    .menu-desplegable.dark-theme {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    .page-title.dark-theme {
+      color: #f3f4f6 !important;
+      border-bottom: 3px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme {
+      background-color: #23232a !important;
+      color: #FFD1A9 !important;
+      border: 1px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    footer.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+      border-top: 2px solid #bb4b004b !important;
+    }
+    .footer-section.dark-theme h3 {
+      color: #FFD1A9 !important;
+    }
+    .footer-links.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .footer-links.dark-theme a:hover {
+      color: #ffb07a !important;
+    }
+    .footer-links.dark-theme a i {
+      color: #FFD1A9 !important;
+    }
+    .footer-bottom.dark-theme {
+      color: #FFD1A9 !important;
+      border-top: 2px solid #bb4b004b !important;
+    }
+    .copyright.dark-theme {
+      color: #929292b0 !important;
+    }
+    .copyright.dark-theme span {
+      color: #FFD1A9 !important;
+    }
+    .bottom-fixed-bar.dark-theme {
+      background-color: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .panel-expansion.dark-theme {
+      background-color: rgba(24,24,27,0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .news-container.dark-theme {
+      background: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .categories-title-panel.dark-theme {
+      background: rgba(60, 48, 40, 0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme {
+      background: rgba(60, 60, 40, 0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.dark-theme {
+      background: rgba(60,60,40,0.85) !important;
+      color: #FFD1A9 !important;
+      border: 2px solid #FFD1A9 !important;
+    }
+    .theme-btn.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.active .theme-indicator {
+      background: #22c55e !important;
+      border: 2px solid #16a34a !important;
+    }
+    .theme-help-popup.dark-theme {
+      background: #23232a !important;
+      color: #FFD1A9 !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    }
+    .theme-help-popup.dark-theme .close-btn {
+      color: #FFD1A9 !important;
+    }
+    .theme-help-popup.dark-theme ul li span {
+      color: #FFD1A9 !important;
+    }
+    /* Separadores */
+    .action-separator.dark-theme,
+    .news-separator-top.dark-theme,
+    .news-separator-bottom.dark-theme {
+      background-color: rgba(255,209,169,0.25) !important;
+    }
+    .menu-toggle.dark-theme .menu-bar {
+      background-color: #f3f4f6 !important;
+    }
+    /* Mayor especificidad para sobrescribir estilos del modo claro */
+    body.dark-theme .footer-links a {
+      color: #929292b0 !important;
+    }
+    body.dark-theme .footer-links a:hover {
+      color: #ffb07a !important;
+    }
+    body.dark-theme .footer-links a i {
+      color: #FFD1A9 !important;
+    }
+    /* Icono de interrogación en modo oscuro */
+    body.dark-theme #themeHelpBtn {
+      color: #f3f4f6 !important;
+    }
+    body.dark-theme #themeHelpBtn i {
+      color: #f3f4f6 !important;
+    }
+    /* Bandera del pie de página en modo oscuro */
+    body.dark-theme .cgn-icon {
+      border: 1px solid rgba(255, 209, 169, 0.3) !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* === ESTILOS PARA ELEMENTOS ESPECÍFICOS DE LA BASE DE DATOS === */
+    
+    /* Campo de búsqueda en modo oscuro */
+    body.dark-theme #search-input {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+      border: 2px solid #d8971d !important;
+    }
+    
+    body.dark-theme #search-input:focus {
+      border-color: #FFD1A9 !important;
+      box-shadow: 0 0 0 3px rgba(216, 151, 29, 0.4) !important;
+    }
+    
+    body.dark-theme #search-input:hover {
+      border-color: #FFD1A9 !important;
+      box-shadow: 0 2px 4px rgba(216, 151, 29, 0.3) !important;
+    }
+    
+    body.dark-theme #search-input::placeholder {
+      color: #9CA3AF !important;
+    }
+    
+    /* Botón de búsqueda en modo oscuro */
+    body.dark-theme #search-form button {
+      background-color: #FFD1A9 !important;
+      color: #23232a !important;
+      border: 2px solid #d8971d !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    body.dark-theme #search-form button:hover {
+      background-color: #ffb07a !important;
+      border-color: #d8971d !important;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* Contenedor de metadata en modo oscuro */
+    body.dark-theme .metadata-container {
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .metadata-card {
+      background-color: #23232a !important;
+      border-color: #4B5563 !important;
+    }
+    
+    body.dark-theme .metadata-header {
+      background: linear-gradient(135deg, #FFD1A9, #ffb07a) !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .metadata-header i {
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .metadata-label {
+      color: #9CA3AF !important;
+    }
+    
+    body.dark-theme .metadata-value {
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .metadata-description {
+      background-color: #1F2937 !important;
+      color: #D1D5DB !important;
+      border-left-color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme .stat-item {
+      background-color: #1F2937 !important;
+      border-color: #4B5563 !important;
+    }
+    
+    body.dark-theme .stat-item:hover {
+      background-color: #374151 !important;
+    }
+    
+    body.dark-theme .stat-number {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme .stat-label {
+      color: #9CA3AF !important;
+    }
+    
+    /* Campo de contraseña en modo oscuro */
+    body.dark-theme #password-input {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+      border: 2px solid #d8971d !important;
+    }
+    
+    body.dark-theme #password-input:focus {
+      border-color: #FFD1A9 !important;
+      box-shadow: 0 0 0 3px rgba(216, 151, 29, 0.4) !important;
+    }
+    
+    body.dark-theme #password-input:hover {
+      border-color: #FFD1A9 !important;
+      box-shadow: 0 2px 4px rgba(216, 151, 29, 0.3) !important;
+    }
+    
+    body.dark-theme #password-input::placeholder {
+      color: #9CA3AF !important;
+    }
+    
+    /* Botón de login en modo oscuro */
+    body.dark-theme #login-form button {
+      background-color: #FFD1A9 !important;
+      color: #23232a !important;
+      border: 2px solid #d8971d !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    body.dark-theme #login-form button:hover {
+      background-color: #ffb07a !important;
+      border-color: #d8971d !important;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* Contenedor de login en modo oscuro */
+    body.dark-theme .login-container {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .login-container h2 {
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .login-container p {
+      color: #D1D5DB !important;
+    }
+    
+    /* Tabla en modo oscuro */
+    body.dark-theme .table-container {
+      background-color: #23232a !important;
+    }
+    
+    body.dark-theme table thead tr {
+      background-color: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme table tbody tr {
+      color: #f3f4f6 !important;
+      border-bottom-color: #4B5563 !important;
+    }
+    
+    body.dark-theme table tbody tr:nth-of-type(even) {
+      background-color: #1F2937 !important;
+    }
+    
+    body.dark-theme table tbody tr:hover {
+      background-color: #374151 !important;
+    }
+    
+    /* Leyendas de privacidad en modo oscuro */
+    body.dark-theme .privacy-notice {
+      color: #D1D5DB !important;
+    }
+    
+    body.dark-theme .privacy-notice a {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme .privacy-notice a:hover {
+      color: #ffb07a !important;
+    }
+    
+    body.dark-theme .data-removal-notice {
+      color: #D1D5DB !important;
+    }
+    
+    body.dark-theme .data-removal-notice a {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme .data-removal-notice a:hover {
+      color: #ffb07a !important;
+    }
+    
+    /* Mensajes de error en modo oscuro */
+    body.dark-theme .error-message {
+      color: #F87171 !important;
+    }
+    
+    /* Modal en modo oscuro */
+    body.dark-theme .modal-content {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .modal-content h2 {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme #modal-body p {
+      color: #D1D5DB !important;
+      border-bottom-color: #4B5563 !important;
+    }
+    
+    body.dark-theme #modal-body strong {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme .close-button {
+      color: #9CA3AF !important;
+    }
+    
+    body.dark-theme .close-button:hover {
+      color: #f3f4f6 !important;
+    }
+    
+    /* Título "Incidentes por Plataforma" en modo oscuro */
+    body.dark-theme .metadata-stats h4 {
+      color: #FFD1A9 !important;
+    }
+    
+    /* Incidencias más frecuentes en modo oscuro */
+    body.dark-theme .top-incidents-title {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme .incident-card {
+      background-color: #1F2937 !important;
+      border-color: #4B5563 !important;
+    }
+    
+    body.dark-theme .incident-card:hover {
+      background-color: #374151 !important;
+    }
+    
+    body.dark-theme .incident-title {
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .incident-count {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme .incident-percentage {
+      color: #9CA3AF !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+</head>
+<body class="text-gray-800">
+
+  <header class="header-comunidad">
+    <div class="header-content">
+      <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+      <span class="header-title">CGN</span>
+      <span class="header-legend">Sin tiempo para descansos</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <nav class="menu-desplegable" id="menuDesplegable">
+      <ul>
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/faq.html">FAQ</a></li>
+        <li><a href="/socios.html">Socios</a></li>
+        <li><a href="/ajustes.html">Ajustes</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <!-- Barra de progreso de scroll -->
+<div id="scroll-progress-container">
+  <div id="scroll-progress-bar"></div>
+</div>
+
+  </header>
+  
+  <div class="content-container">
+    <h1 class="page-title">La Base de Datos</h1>
+    <p>Visualización de la gran mayoría de incumplimientos a las normas de la comunidad, por motivos informativos y de seguridad para nuestros usuarios.
+      <br><br><strong>Nota:</strong> Los nombres de usuario pueden diferir al real si el usuario opta por actualizarlo. Además, en el caso de buscar por número, se recomienda copiar y pegar de la app de procedencia para evitar errores de formato.
+    </p>
+
+    <!-- BASE DE DATOS -->
+
+    <div class="search-container">
+        <form id="search-form">
+            <input type="text" id="search-input" placeholder="Buscar por Nombre de usuario o número...">
+            <button type="submit">Buscar</button>
+        </form>
+        <p id="search-error-message" class="error-message"></p>
+    </div>
+
+    <!-- Sección de Metadata -->
+    <div class="metadata-container" id="metadata-container">
+        <div class="metadata-card">
+            <div class="metadata-header">
+                <i class="fas fa-database"></i>
+                <h3>Información de la Base de Datos</h3>
+            </div>
+            <div class="metadata-content">
+                <div class="metadata-row">
+                    <div class="metadata-item">
+                        <span class="metadata-label">Administrador:</span>
+                        <span class="metadata-value" id="admin-value">-</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Total de Registros:</span>
+                        <span class="metadata-value" id="total-value">-</span>
+                    </div>
+                </div>
+                <div class="metadata-row">
+                    <div class="metadata-item">
+                        <span class="metadata-label">Última Actualización:</span>
+                        <span class="metadata-value" id="update-value">-</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Versión:</span>
+                        <span class="metadata-value" id="version-value">-</span>
+                    </div>
+                </div>
+                <div class="metadata-row">
+                    <div class="metadata-item">
+                        <span class="metadata-label">Contacto:</span>
+                        <span class="metadata-value" id="contacto-value">-</span>
+                    </div>
+                </div>
+                <div class="metadata-description" id="description-value">
+                    -
+                </div>
+                <div class="metadata-stats">
+                    <h4>Incidentes por Plataforma:</h4>
+                    <div class="stats-grid" id="stats-grid">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+                
+                <!-- Sección de incidencias más frecuentes -->
+                <div class="top-incidents-container">
+                    <h4 class="top-incidents-title">Incidencias más frecuentes:</h4>
+                    <div class="top-incidents-grid" id="top-incidents-grid">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-container" id="login-container">
+        <h2>Acceso al Registro Completo</h2>
+        <p>Ingrese la contraseña para ver todos los registros.</p>
+        <form id="login-form">
+            <input type="password" id="password-input" placeholder="Contraseña...">
+            <button type="submit">Desbloquear</button>
+        </form>
+        <p id="login-error-message" class="error-message"></p>
+    </div>
+  
+
+
+    <div class="table-container hidden" id="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre de usuario o número</th>
+                    <th>Grupo</th>
+                    <th>Fecha del incumplimiento</th>
+                    <th>Incumplimiento</th>
+                    <th>Justificación</th>
+                </tr>
+            </thead>
+            <tbody id="database-body"></tbody>
+        </table>
+    </div>
+</main>
+
+<div class="privacy-notice">
+    <p>
+        Los datos personales se manejan en conformidad con la <a href="/Legal/politica-de-privacidad.html">política de datos personales</a>.
+    </p>
+</div>
+
+<!-- === LEYENDA DE ELIMINACIÓN DE DATOS === -->
+<div class="data-removal-notice">
+    <p>
+        Si encuentra sus datos en este registro y desea solicitar su retirada, primero debe verificar que es apto revisando nuestra política de datos. Si cumple con los requisitos, puede solicitar la eliminación a través de la <a href="/contacto.html">página de contacto</a>.
+    </p>
+</div>
+<!-- ============================================= -->
+
+
+<div id="user-modal" class="modal-overlay">
+<div class="modal-content">
+    <span class="close-button">×</span>
+    <h2>Detalles de la Sanción</h2>
+    <div id="modal-body"></div>
+</div>
+</div>
+
+
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <div class="footer-links">
+          <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+          <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+          <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+          <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+          <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Comunidad</h3>
+        <div class="footer-links">
+          <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+          <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+          <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+          <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+          <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">
+        <img src="/icons/Bandera-jal.avif" 
+             alt="Logo Comunidad CGN" 
+             class="cgn-icon">
+        Comunidad CGN | <span id="currentYear">2022-2025</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Rectángulo gris fijo en la parte inferior -->
+  <div class="bottom-fixed-bar">
+    <div class="left-actions">
+      <button title="Abrir chat" class="open-chat-btn" onclick="openChat()">
+        <i class="fas fa-comments"></i>Ayuda
+      </button>
+      <button title="Compartir página" class="share-btn-fixed" id="shareBtn" onclick="sharePage()">
+        <i class="fas fa-share-alt"></i>
+      </button>
+    </div>
+    <div class="right-actions">
+      <div class="action-separator"></div>
+      <div class="view-more-fixed" id="viewMoreBtn" title="panel de acciones" onclick="togglePanel()">
+        <i class="fas fa-ellipsis-h"></i>
+        <span id="viewMoreText">Ver más</span>
+      </div>
+      <div class="back-to-top-fixed" id="backToTopFixedBtn" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+      <div class="go-to-bottom-fixed" id="goToBottomBtn" title="Ir al final">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de expansión separado -->
+  <div class="panel-expansion" id="panelExpansion">
+    <!-- Contenedor para el contenido expandido -->
+    <div class="expanded-content">
+      <!-- Contenedor de noticias -->
+      <div class='news-container'>
+        <div class='title'>
+          Novedades
+        </div>
+
+        <ul>
+          <!-- Las noticias se cargarán dinámicamente desde noticias.json -->
+        </ul>
+      </div>
+      <div class="news-separator-top"></div>
+      
+      <!-- Sección de categorías -->
+      <div class="categories-section-panel">
+        <div class="categories-title-panel">Categorías</div>
+        <div class="categories-tags-panel">
+          <a href="/categorias-comunidad.html" class="category-tag-panel comunidad"><i class="fas fa-users"></i> Comunidad</a>
+          <a href="/categorias-mc.html" class="category-tag-panel minecraft"><i class="fas fa-cube"></i> Minecraft</a>
+          <a href="/categorias-reglas.html" class="category-tag-panel reglas"><i class="fas fa-book"></i> Reglas</a>
+          <a href="/categorias-admins.html" class="category-tag-panel administracion"><i class="fas fa-user-shield"></i> Administración</a>
+        </div>
+      </div>
+      <div class="news-separator-bottom"></div>
+      
+      <!-- Sección de tema -->
+      <div class="theme-section-panel" style="width:100%; margin: 0 0 10px 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+        <div class="categories-title-panel" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center; text-align: center;">
+          <span style="display: flex; align-items: center; gap: 8px;">
+            Tema
+            <button id="themeHelpBtn" type="button" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #374151; font-size: 1.1em; display: flex; align-items: center;">
+              <i class="fas fa-question-circle"></i>
+            </button>
+          </span>
+        </div>
+        <div class="theme-buttons-panel" style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+          <button class="theme-btn" title="Automático" type="button">
+            <i class="fas fa-adjust"></i> Automático
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Eficiencia" type="button">
+            <i class="fas fa-bolt"></i> Eficiencia
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Claro" type="button">
+            <i class="fas fa-sun"></i> Claro
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Oscuro" type="button">
+            <i class="fas fa-moon"></i> Oscuro
+            <span class="theme-indicator"></span>
+          </button>
+        </div>
+        <div class="action-separator" style="position: relative; left: 50%; transform: translateX(-50%); width: 100vw; height: 4px; background-color: rgba(255,255,255,0.3); margin: 14px 0 0 0; border-radius: 2px; z-index: 100;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay que contiene el chat modal -->
+  <div class="overlay" id="chatOverlay">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="header-left">
+          <div class="header-image">
+            <img src="/icons/bot-hecks.avif" alt="Logo de soporte" id="chatImage">
+          </div>
+          <div class="header-title">Soporte CGN</div>
+        </div>
+        <div class="header-buttons">
+          <button class="header-btn" onclick="toggleMaximize()" title="Maximizar/Minimizar chat">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="header-btn" onclick="clearChat()" title="Borrar chat">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="header-btn" onclick="closeChat()" title="Cerrar chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-footer" id="chatFooter"></div>
+    </div>
+  </div>
+
+  <!-- Popup de ayuda para Tema -->
+  <div class="theme-help-popup" id="themeHelpPopup">
+    <button class="close-btn" id="closeThemeHelp" title="Cerrar ayuda"><i class="fas fa-times"></i></button>
+    <strong>¿Cómo funcionan los modos de tema?</strong>
+    <ul>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-adjust"></i> <b>Automático</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Cambia entre modo claro y oscuro automáticamente según la hora del día (oscuro de noche, claro de día).</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-bolt"></i> <b>Eficiencia</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Activa el modo oscuro si el ahorro de energía está activo en tu dispositivo.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-sun"></i> <b>Claro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema claro en la página.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-moon"></i> <b>Oscuro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema oscuro en la página.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <script src="/pwa/noticias.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Actualizar año en footer
+      const currentYear = new Date().getFullYear();
+      document.getElementById('currentYear').textContent = `2022-${currentYear}`;
+      
+       // Botón "Volver" inteligente
+       const backButton = document.getElementById('backButton');
+            backButton.addEventListener('click', function() {
+                // Comprobar si hay una página anterior en el historial
+                if (document.referrer && document.referrer !== window.location.href) {
+                    window.history.back();
+                } else {
+                    // Si no hay historial previo, redirigir a la página de inicio
+                    window.location.href = '/index.html';
+                }
+            });
+
+      // Botón "Volver arriba" - ahora en el panel de acciones
+      const backToTopFixedBtn = document.getElementById('backToTopFixedBtn');
+      backToTopFixedBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Botón "Ir al final"
+      const goToBottomBtn = document.getElementById('goToBottomBtn');
+      goToBottomBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Menú desplegable
+      const menuToggle = document.getElementById('menuToggle');
+      const menuDesplegable = document.getElementById('menuDesplegable');
+      
+      // Abrir/cerrar menú al hacer clic en el botón
+      menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menuDesplegable.classList.toggle('abierto');
+        menuToggle.classList.toggle('activo');
+      });
+      
+      // Cerrar menú al hacer clic fuera
+      document.addEventListener('click', function(e) {
+        if (!menuDesplegable.contains(e.target) && !menuToggle.contains(e.target)) {
+          menuDesplegable.classList.remove('abierto');
+          menuToggle.classList.remove('activo');
+        }
+      });
+      
+      // Prevenir que el clic en el menú lo cierre
+      menuDesplegable.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+
+      // Barra de progreso de scroll
+      const scrollProgressBar = document.getElementById('scroll-progress-bar');
+
+      function updateScrollProgress() {
+        // Calcular el progreso del scroll
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercentage = (scrollTop / scrollHeight) * 100;
+        
+        // Actualizar el ancho de la barra de progreso
+        scrollProgressBar.style.width = scrollPercentage + '%';
+        
+        // Cambiar color cuando esté cerca del final
+        if (scrollPercentage > 90) {
+          scrollProgressBar.style.background = 'linear-gradient(90deg, #ffb07a, #ff7b54)';
+        } else {
+          scrollProgressBar.style.background = 'linear-gradient(90deg, #FFD1A9, #ffb07a)';
+        }
+      }
+
+      // Actualizar al cargar y al hacer scroll
+      window.addEventListener('load', updateScrollProgress);
+      window.addEventListener('scroll', updateScrollProgress);
+      window.addEventListener('resize', updateScrollProgress);
+
+      // Calcular altura del header automáticamente
+      function setProgressBarPosition() {
+        const header = document.querySelector('.header-comunidad');
+        if (header) {
+          const headerHeight = header.offsetHeight;
+          document.getElementById('scroll-progress-container').style.top = headerHeight + 'px';
+        }
+      }
+
+      // Llamar al cargar y al redimensionar
+      window.addEventListener('load', function() {
+        setProgressBarPosition();
+        updateScrollProgress();
+      });
+      window.addEventListener('resize', setProgressBarPosition);
+
+      // Resto del código específico de la base de datos
+      const CORRECT_PASSWORD = '2022'; 
+      let databaseData = [];
+
+      // Función para expandir/contraer el panel de acciones
+      window.togglePanel = function() {
+        console.log('togglePanel llamado');
+        const panelExpansion = document.getElementById('panelExpansion');
+        const viewMoreBtn = document.getElementById('viewMoreBtn');
+        const viewMoreText = document.getElementById('viewMoreText');
+        const viewMoreIcon = document.querySelector('#viewMoreBtn i');
+        
+        console.log('panelExpansion:', panelExpansion);
+        console.log('viewMoreBtn:', viewMoreBtn);
+        
+        if (panelExpansion.classList.contains('expanded')) {
+          // Contraer el panel
+          panelExpansion.classList.remove('expanded');
+          viewMoreBtn.classList.remove('expanded');
+          viewMoreText.textContent = 'Ver más';
+          viewMoreIcon.className = 'fas fa-ellipsis-h';
+          document.body.style.overflow = '';
+        } else {
+          // Expandir el panel
+          panelExpansion.classList.add('expanded');
+          viewMoreBtn.classList.add('expanded');
+          viewMoreText.textContent = 'Ver menos';
+          viewMoreIcon.className = 'fas fa-compress';
+          document.body.style.overflow = 'hidden';
+        }
+      }
+
+      // Función para verificar si el panel está expandido
+      window.isPanelExpanded = function() {
+        return document.getElementById('panelExpansion').classList.contains('expanded');
+      }
+
+      // Función para establecer el overflow correcto basado en el estado del panel
+      window.setCorrectOverflow = function() {
+        if (window.isPanelExpanded()) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+        }
+      }
+
+      // Función para compartir la página
+      window.sharePage = function() {
+        console.log('sharePage llamado');
+        const pageTitle = document.title || 'CGN - Comunidad Gaming Network';
+        const pageUrl = window.location.href;
+        
+        console.log('pageTitle:', pageTitle);
+        console.log('pageUrl:', pageUrl);
+        console.log('navigator.share disponible:', !!navigator.share);
+        
+        // Verificar si la API Web Share está disponible
+        if (navigator.share) {
+          navigator.share({
+            title: pageTitle,
+            url: pageUrl,
+            text: '¡Mira esta página de la Comunidad Gaming Network!'
+          }).then(() => {
+            console.log('Contenido compartido exitosamente');
+          }).catch((error) => {
+            console.log('Error al compartir:', error);
+            // Fallback: copiar URL al portapapeles
+            window.fallbackShare();
+          });
+        } else {
+          // Fallback para navegadores que no soportan Web Share API
+          console.log('Web Share API no disponible, usando fallback');
+          window.fallbackShare();
+        }
+      }
+
+      // Función de respaldo para compartir
+      window.fallbackShare = function() {
+        const pageUrl = window.location.href;
+        
+        // Intentar copiar al portapapeles
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(pageUrl).then(() => {
+            // Mostrar notificación de éxito
+            window.showShareNotification('¡URL copiada al portapapeles!');
+          }).catch(() => {
+            // Si falla clipboard, mostrar URL en alert
+            alert('Comparte esta URL: ' + pageUrl);
+          });
+        } else {
+          // Fallback final: mostrar URL en alert
+          alert('Comparte esta URL: ' + pageUrl);
+        }
+      }
+
+      // Función para mostrar notificación de compartir
+      window.showShareNotification = function(message) {
+        // Crear elemento de notificación
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background-color: rgba(255, 209, 169, 0.95);
+          color: #374151;
+          padding: 12px 20px;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          z-index: 10000;
+          font-size: 14px;
+          font-weight: 500;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          transform: translateX(100%);
+          transition: transform 0.3s ease;
+        `;
+        notification.textContent = message;
+        
+        // Agregar al DOM
+        document.body.appendChild(notification);
+        
+        // Animar entrada
+        setTimeout(() => {
+          notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Remover después de 3 segundos
+        setTimeout(() => {
+          notification.style.transform = 'translateX(100%)';
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.parentNode.removeChild(notification);
+            }
+          }, 300);
+        }, 3000);
+      }
+
+      // Función para cargar datos desde el archivo JSON
+      async function cargarDatosDesdeJSON() {
+          try {
+              const response = await fetch('/pwa/bases-de-datos/base-de-datos-admin.json');
+              if (!response.ok) {
+                  throw new Error('No se pudo cargar la base de datos');
+              }
+              const data = await response.json();
+              databaseData = data.registros;
+              
+              // Cargar y mostrar metadata
+              cargarMetadata(data.metadata);
+              
+              renderTable(databaseData);
+          } catch (error) {
+              console.error('Error al cargar la base de datos:', error);
+              // Mostrar mensaje de error al usuario
+              const tableContainer = document.getElementById('table-container');
+              tableContainer.innerHTML = '<div style="text-align: center; padding: 2rem; color: #dc2626;">Error al cargar la base de datos. Por favor, inténtelo más tarde.</div>';
+              tableContainer.classList.remove('hidden');
+          }
+      }
+
+      // Función para cargar y mostrar metadata
+      function cargarMetadata(metadata) {
+          if (!metadata) return;
+          
+          // Llenar información básica
+          document.getElementById('admin-value').textContent = metadata.administrador || 'No disponible';
+          document.getElementById('total-value').textContent = metadata.totalRegistros || '0';
+          document.getElementById('update-value').textContent = formatDate(metadata.ultimaActualizacion) || 'No disponible';
+          document.getElementById('version-value').textContent = metadata.version || '1.0';
+          document.getElementById('contacto-value').textContent = metadata.contacto || 'No disponible';
+          document.getElementById('description-value').textContent = metadata.descripcion || 'Sin descripción disponible';
+          
+          // Calcular estadísticas automáticamente desde los datos reales
+          const estadisticasCalculadas = calcularEstadisticasPorPlataforma(databaseData);
+          
+          // Llenar estadísticas por plataforma
+          const statsGrid = document.getElementById('stats-grid');
+          statsGrid.innerHTML = '';
+          
+          // Ordenar las estadísticas de forma descendente (más incidentes primero)
+          const estadisticasOrdenadas = Object.entries(estadisticasCalculadas)
+              .sort(([,a], [,b]) => b - a); // Ordenar por cantidad descendente
+          
+          estadisticasOrdenadas.forEach(([platform, count]) => {
+              const statItem = document.createElement('div');
+              statItem.className = 'stat-item';
+              
+              // Función para formatear el nombre de la plataforma
+              const formatPlatformName = (platformName) => {
+                  // Mapeo específico para casos conocidos
+                  const platformMap = {
+                      'discord': 'Discord',
+                      'telegram': 'Telegram',
+                      'signal': 'Signal',
+                      'juegoInterno': 'Juego Interno',
+                      'juego interno': 'Juego Interno',
+                      'whatsapp': 'WhatsApp',
+                      'instagram': 'Instagram',
+                      'facebook': 'Facebook',
+                      'twitter': 'Twitter',
+                      'minecraft': 'Minecraft',
+                      'servidor mc': 'Servidor MC',
+                      'servidorMc': 'Servidor MC'
+                  };
+                  
+                  // Si existe en el mapeo, usar ese valor
+                  if (platformMap[platformName.toLowerCase()]) {
+                      return platformMap[platformName.toLowerCase()];
+                  }
+                  
+                  // Si no, aplicar formato general (camelCase a palabras separadas)
+                  return platformName
+                      .replace(/([A-Z])/g, ' $1') // Agregar espacio antes de mayúsculas
+                      .replace(/^./, str => str.toUpperCase()) // Primera letra mayúscula
+                      .trim(); // Eliminar espacios extra
+              };
+              
+              statItem.innerHTML = `
+                  <span class="stat-number">${count}</span>
+                  <span class="stat-label">${formatPlatformName(platform)}</span>
+              `;
+              statsGrid.appendChild(statItem);
+          });
+          
+          // Cargar y mostrar incidencias más frecuentes
+          cargarIncidenciasMasFrecuentes();
+      }
+      
+      // Función para cargar y mostrar las incidencias más frecuentes
+      function cargarIncidenciasMasFrecuentes() {
+          const incidenciasCalculadas = calcularIncidenciasMasFrecuentes(databaseData);
+          const topIncidentsGrid = document.getElementById('top-incidents-grid');
+          
+          if (!topIncidentsGrid) return;
+          
+          topIncidentsGrid.innerHTML = '';
+          
+          // Tomar solo el top 3
+          const top3Incidencias = incidenciasCalculadas.slice(0, 3);
+          
+          top3Incidencias.forEach((incidencia, index) => {
+              const incidentCard = document.createElement('div');
+              incidentCard.className = 'incident-card';
+              
+              const rank = index + 1;
+              const percentage = ((incidencia.count / databaseData.length) * 100).toFixed(1);
+              
+              incidentCard.innerHTML = `
+                  <div class="incident-rank">${rank}</div>
+                  <div class="incident-title">${incidencia.infraction}</div>
+                  <div class="incident-count">${incidencia.count}</div>
+                  <div class="incident-percentage">${percentage}% del total</div>
+              `;
+              
+              topIncidentsGrid.appendChild(incidentCard);
+          });
+      }
+      
+      // Función para calcular las incidencias más frecuentes
+      function calcularIncidenciasMasFrecuentes(datos) {
+          const incidencias = {};
+          
+          // Recorrer todos los registros y contar por tipo de incumplimiento
+          datos.forEach(registro => {
+              const infraction = registro.infraction;
+              
+              if (infraction) {
+                  // Normalizar el texto de la incidencia
+                  const infractionNormalizada = infraction.trim();
+                  
+                  if (incidencias[infractionNormalizada]) {
+                      incidencias[infractionNormalizada]++;
+                  } else {
+                      incidencias[infractionNormalizada] = 1;
+                  }
+              }
+          });
+          
+          // Convertir a array y ordenar por cantidad descendente
+          const incidenciasArray = Object.entries(incidencias).map(([infraction, count]) => ({
+              infraction,
+              count
+          }));
+          
+          return incidenciasArray.sort((a, b) => b.count - a.count);
+      }
+
+      // Función para calcular estadísticas por plataforma automáticamente
+      function calcularEstadisticasPorPlataforma(datos) {
+          const estadisticas = {};
+          
+          // Recorrer todos los registros y contar por grupo/plataforma
+          datos.forEach(registro => {
+              const plataforma = registro.group;
+              
+              if (plataforma) {
+                  // Normalizar el nombre de la plataforma para evitar duplicados
+                  const plataformaNormalizada = normalizarNombrePlataforma(plataforma);
+                  
+                  if (estadisticas[plataformaNormalizada]) {
+                      estadisticas[plataformaNormalizada]++;
+                  } else {
+                      estadisticas[plataformaNormalizada] = 1;
+                  }
+              }
+          });
+          
+          return estadisticas;
+      }
+
+      // Función para normalizar nombres de plataforma
+      function normalizarNombrePlataforma(nombre) {
+          // Convertir a minúsculas y eliminar espacios extra
+          let normalizado = nombre.toLowerCase().trim();
+          
+          // Mapeo de variaciones comunes
+          const mapeoVariaciones = {
+              'juego interno': 'juegoInterno',
+              'servidor mc': 'servidorMc',
+              'servidor minecraft': 'servidorMc',
+              'minecraft': 'servidorMc',
+              'mc': 'servidorMc',
+              'ds': 'discord',
+              'tg': 'telegram',
+              'wa': 'whatsapp',
+              'ig': 'instagram',
+              'fb': 'facebook'
+          };
+          
+          // Aplicar mapeo si existe
+          if (mapeoVariaciones[normalizado]) {
+              return mapeoVariaciones[normalizado];
+          }
+          
+          // Si no hay mapeo, convertir espacios a camelCase
+          return normalizado.replace(/\s+(\w)/g, (match, letter) => letter.toUpperCase());
+      }
+
+      // Función para renderizar la tabla
+      function renderTable(data) {
+          const tbody = document.getElementById('database-body');
+          tbody.innerHTML = '';
+          
+          // Ordenar por fecha más reciente primero
+          const sortedData = [...data].sort((a, b) => new Date(b.sanctionDate) - new Date(a.sanctionDate));
+          
+          sortedData.forEach((record, index) => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                  <td>${index + 1}</td>
+                  <td>${record.identifier}</td>
+                  <td>${record.group}</td>
+                  <td>${formatDate(record.sanctionDate)}</td>
+                  <td>${record.infraction}</td>
+                  <td>${record.justification}</td>
+              `;
+              
+              // Agregar evento click para mostrar modal
+              row.addEventListener('click', () => {
+                  showModal(record);
+              });
+              
+              tbody.appendChild(row);
+          });
+      }
+
+      // Función para mostrar modal con detalles
+      function showModal(record) {
+          const modal = document.getElementById('user-modal');
+          const modalBody = document.getElementById('modal-body');
+          
+          modalBody.innerHTML = `
+              <p><strong>ID:</strong> ${record.id}</p>
+              <p><strong>Usuario/Número:</strong> ${record.identifier}</p>
+              <p><strong>Grupo:</strong> ${record.group}</p>
+              <p><strong>Fecha:</strong> ${formatDate(record.sanctionDate)}</p>
+              <p><strong>Incumplimiento:</strong> ${record.infraction}</p>
+              <p><strong>Justificación:</strong> ${record.justification}</p>
+          `;
+          
+          modal.classList.add('visible');
+          document.body.classList.add('modal-open');
+      }
+
+      // Función para ocultar modal
+      function hideModal() {
+          const modal = document.getElementById('user-modal');
+          modal.classList.remove('visible');
+          document.body.classList.remove('modal-open');
+      }
+
+      // Función para mostrar error
+      function showError(element, message) {
+          element.textContent = message;
+          element.classList.add('visible');
+          setTimeout(() => { element.classList.remove('visible'); }, 3000);
+      }
+
+      // Event listeners
+      const closeButton = document.querySelector('.close-button');
+      closeButton.addEventListener('click', hideModal);
+      
+      // Cerrar modal al hacer clic fuera
+      document.getElementById('user-modal').addEventListener('click', function(e) {
+          if (e.target === this) {
+              hideModal();
+          }
+      });
+
+      // Cerrar modal con Escape
+      document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+              hideModal();
+          }
+      });
+
+      // Cargar datos al iniciar la página
+      cargarDatosDesdeJSON();
+
+      // --- REFERENCIAS A ELEMENTOS DEL DOM ---
+      const tableContainer = document.getElementById('table-container');
+      const searchForm = document.getElementById('search-form');
+      const searchInput = document.getElementById('search-input');
+      const searchErrorMessage = document.getElementById('search-error-message');
+      const loginContainer = document.getElementById('login-container');
+      const loginForm = document.getElementById('login-form');
+      const passwordInput = document.getElementById('password-input');
+      const loginErrorMessage = document.getElementById('login-error-message');
+
+      // === FUNCIÓN AUXILIAR PARA FORMATEAR LA FECHA ===
+      function formatDate(dateString) {
+          const [year, month, day] = dateString.split('-');
+          const shortYear = year.slice(-2);
+          return `${day}/${month}/${shortYear}`;
+      }
+
+      // --- LÓGICA DE LOGIN ---
+      loginForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          if (passwordInput.value === CORRECT_PASSWORD) {
+              loginContainer.classList.add('hidden');
+              tableContainer.classList.remove('hidden');
+          } else {
+              showError(loginErrorMessage, 'Contraseña incorrecta. Inténtelo de nuevo.');
+              passwordInput.value = '2022';
+          }
+      });
+
+      // --- LÓGICA DE BÚSQUEDA ---
+      searchForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const searchTerm = searchInput.value.trim();
+          searchErrorMessage.classList.remove('visible');
+          
+          if (!searchTerm) {
+              showError(searchErrorMessage, "Por favor, ingrese un nombre o número para buscar.");
+              return;
+          }
+          
+          const userRecords = databaseData.filter(
+              record => record.identifier.toLowerCase() === searchTerm.toLowerCase()
+          );
+          
+          if (userRecords.length > 0) {
+              const mostRecentRecord = userRecords[0]; 
+              const reoccurrences = userRecords.length - 1; 
+              showSanctionModal(mostRecentRecord, reoccurrences);
+          } else {
+              showError(searchErrorMessage, `No se encontró ninguna sanción para "${searchTerm}".`);
+          }
+          searchInput.value = '';
+      });
+
+      // --- MODAL DE BÚSQUEDA ---
+      function showSanctionModal(record, reoccurrences) {
+          const modalBody = document.getElementById('modal-body');
+          
+          modalBody.innerHTML = `
+              <p><strong>Usuario/Número:</strong> ${record.identifier}</p>
+              <p><strong>Grupo (más reciente):</strong> ${record.group}</p>
+              <p><strong>Reincidencias:</strong> ${reoccurrences > 0 ? reoccurrences : 'Ninguna'}</p>
+              <hr>
+              <p><strong>Incumplimiento más reciente:</strong> ${record.infraction}</p>
+              <p><strong>Justificación más reciente:</strong> ${record.justification}</p>
+              <p><strong>Fecha (reciente):</strong> ${formatDate(record.sanctionDate)}</p>
+          `;
+          
+          const modal = document.getElementById('user-modal');
+          modal.classList.add('visible');
+          document.body.classList.add('modal-open');
+      }
+    });
+
+    // --- Tema: solo un botón activo a la vez ---
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeBtns = document.querySelectorAll('.theme-btn');
+      const body = document.body;
+      const contentContainer = document.querySelector('.content-container');
+      const header = document.querySelector('.header-comunidad');
+      const headerTitle = document.querySelector('.header-title');
+      const headerLegend = document.querySelector('.header-legend');
+      const menuDesplegable = document.getElementById('menuDesplegable');
+      const pageTitle = document.querySelector('.page-title');
+      const navButtons = document.querySelectorAll('.nav-button');
+      const footer = document.querySelector('footer');
+      const footerSections = document.querySelectorAll('.footer-section');
+      const footerLinks = document.querySelectorAll('.footer-links a');
+      const footerBottom = document.querySelector('.footer-bottom');
+      const copyright = document.querySelector('.copyright');
+      const bottomFixedBar = document.querySelector('.bottom-fixed-bar');
+      const panelExpansion = document.querySelector('.panel-expansion');
+      const newsContainer = document.querySelector('.news-container');
+      const categoriesTitlePanel = document.querySelectorAll('.categories-title-panel');
+      const categoryTagPanel = document.querySelectorAll('.category-tag-panel');
+      const themeBtnsAll = document.querySelectorAll('.theme-btn');
+      const themeHelpPopup = document.getElementById('themeHelpPopup');
+      const actionSeparators = document.querySelectorAll('.action-separator');
+      const newsSeparators = document.querySelectorAll('.news-separator-top, .news-separator-bottom');
+      const menuToggle = document.getElementById('menuToggle');
+      const searchInput = document.getElementById('search-input');
+      const searchForm = document.getElementById('search-form');
+      const metadataContainer = document.querySelector('.metadata-container');
+      const metadataCard = document.querySelector('.metadata-card');
+      const metadataHeader = document.querySelector('.metadata-header');
+      const metadataLabel = document.querySelectorAll('.metadata-label');
+      const metadataValue = document.querySelectorAll('.metadata-value');
+      const metadataDescription = document.querySelector('.metadata-description');
+      const statItem = document.querySelectorAll('.stat-item');
+      const statNumber = document.querySelectorAll('.stat-number');
+      const statLabel = document.querySelectorAll('.stat-label');
+      const passwordInput = document.getElementById('password-input');
+      const loginForm = document.getElementById('login-form');
+      const loginContainer = document.querySelector('.login-container');
+      const tableContainer = document.querySelector('.table-container');
+      const privacyNotice = document.querySelector('.privacy-notice');
+      const dataRemovalNotice = document.querySelector('.data-removal-notice');
+      const errorMessage = document.querySelectorAll('.error-message');
+      const modalContent = document.querySelector('.modal-content');
+      const modalBody = document.querySelector('#modal-body');
+      const closeButton = document.querySelector('.close-button');
+      const topIncidentsTitle = document.querySelector('.top-incidents-title');
+      const topIncidentsGrid = document.querySelector('.top-incidents-grid');
+
+      themeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          themeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          // Guardar preferencia en localStorage
+          let theme = btn.textContent.trim().toLowerCase();
+          if (theme.includes('oscuro')) {
+            localStorage.setItem('preferencia-tema', 'oscuro');
+          } else if (theme.includes('claro')) {
+            localStorage.setItem('preferencia-tema', 'claro');
+          } else if (theme.includes('automático') || theme.includes('automatico')) {
+            localStorage.setItem('preferencia-tema', 'automatico');
+          } else if (theme.includes('eficiencia')) {
+            localStorage.setItem('preferencia-tema', 'eficiencia');
+          }
+
+          // Lógica de tema
+          function setDarkTheme(active) {
+            if (active) {
+              body.classList.add('dark-theme');
+              if(contentContainer) contentContainer.classList.add('dark-theme');
+              if(header) header.classList.add('dark-theme');
+              if(headerTitle) headerTitle.classList.add('dark-theme');
+              if(headerLegend) headerLegend.classList.add('dark-theme');
+              if(menuDesplegable) menuDesplegable.classList.add('dark-theme');
+              if(pageTitle) pageTitle.classList.add('dark-theme');
+              navButtons.forEach(el => el.classList.add('dark-theme'));
+                      if(footer) footer.classList.add('dark-theme');
+            footerSections.forEach(el => el.classList.add('dark-theme'));
+            footerLinks.forEach(el => el.classList.add('dark-theme'));
+            if(footerBottom) footerBottom.classList.add('dark-theme');
+            if(copyright) copyright.classList.add('dark-theme');
+            if(menuToggle) menuToggle.classList.add('dark-theme');
+            if(bottomFixedBar) bottomFixedBar.classList.add('dark-theme');
+              if(panelExpansion) panelExpansion.classList.add('dark-theme');
+              if(newsContainer) newsContainer.classList.add('dark-theme');
+              categoriesTitlePanel.forEach(el => el.classList.add('dark-theme'));
+              categoryTagPanel.forEach(el => el.classList.add('dark-theme'));
+              themeBtnsAll.forEach(el => el.classList.add('dark-theme'));
+              if(themeHelpPopup) themeHelpPopup.classList.add('dark-theme');
+                        actionSeparators.forEach(el => el.classList.add('dark-theme'));
+          newsSeparators.forEach(el => el.classList.add('dark-theme'));
+          if(searchInput) searchInput.classList.add('dark-theme');
+          if(searchForm) searchForm.classList.add('dark-theme');
+          if(metadataContainer) metadataContainer.classList.add('dark-theme');
+          if(metadataCard) metadataCard.classList.add('dark-theme');
+          if(metadataHeader) metadataHeader.classList.add('dark-theme');
+          metadataLabel.forEach(el => el.classList.add('dark-theme'));
+          metadataValue.forEach(el => el.classList.add('dark-theme'));
+          if(metadataDescription) metadataDescription.classList.add('dark-theme');
+          statItem.forEach(el => el.classList.add('dark-theme'));
+          statNumber.forEach(el => el.classList.add('dark-theme'));
+          statLabel.forEach(el => el.classList.add('dark-theme'));
+          if(passwordInput) passwordInput.classList.add('dark-theme');
+          if(loginForm) loginForm.classList.add('dark-theme');
+          if(loginContainer) loginContainer.classList.add('dark-theme');
+          if(tableContainer) tableContainer.classList.add('dark-theme');
+          if(privacyNotice) privacyNotice.classList.add('dark-theme');
+          if(dataRemovalNotice) dataRemovalNotice.classList.add('dark-theme');
+          errorMessage.forEach(el => el.classList.add('dark-theme'));
+          if(modalContent) modalContent.classList.add('dark-theme');
+          if(modalBody) modalBody.classList.add('dark-theme');
+          if(closeButton) closeButton.classList.add('dark-theme');
+          if(topIncidentsTitle) topIncidentsTitle.classList.add('dark-theme');
+          if(topIncidentsGrid) topIncidentsGrid.classList.add('dark-theme');
+        } else {
+          body.classList.remove('dark-theme');
+          if(contentContainer) contentContainer.classList.remove('dark-theme');
+          if(header) header.classList.remove('dark-theme');
+          if(headerTitle) headerTitle.classList.remove('dark-theme');
+          if(headerLegend) headerLegend.classList.remove('dark-theme');
+          if(menuDesplegable) menuDesplegable.classList.remove('dark-theme');
+          if(pageTitle) pageTitle.classList.remove('dark-theme');
+          navButtons.forEach(el => el.classList.remove('dark-theme'));
+                  if(footer) footer.classList.remove('dark-theme');
+        footerSections.forEach(el => el.classList.remove('dark-theme'));
+        footerLinks.forEach(el => el.classList.remove('dark-theme'));
+        if(footerBottom) footerBottom.classList.remove('dark-theme');
+        if(copyright) copyright.classList.remove('dark-theme');
+        if(menuToggle) menuToggle.classList.remove('dark-theme');
+        if(bottomFixedBar) bottomFixedBar.classList.remove('dark-theme');
+          if(panelExpansion) panelExpansion.classList.remove('dark-theme');
+          if(newsContainer) newsContainer.classList.remove('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.remove('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.remove('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.remove('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.remove('dark-theme');
+          actionSeparators.forEach(el => el.classList.remove('dark-theme'));
+          newsSeparators.forEach(el => el.classList.remove('dark-theme'));
+          if(searchInput) searchInput.classList.remove('dark-theme');
+          if(searchForm) searchForm.classList.remove('dark-theme');
+          if(metadataContainer) metadataContainer.classList.remove('dark-theme');
+          if(metadataCard) metadataCard.classList.remove('dark-theme');
+          if(metadataHeader) metadataHeader.classList.remove('dark-theme');
+          metadataLabel.forEach(el => el.classList.remove('dark-theme'));
+          metadataValue.forEach(el => el.classList.remove('dark-theme'));
+          if(metadataDescription) metadataDescription.classList.remove('dark-theme');
+          statItem.forEach(el => el.classList.remove('dark-theme'));
+          statNumber.forEach(el => el.classList.remove('dark-theme'));
+          statLabel.forEach(el => el.classList.remove('dark-theme'));
+          if(passwordInput) passwordInput.classList.remove('dark-theme');
+          if(loginForm) loginForm.classList.remove('dark-theme');
+          if(loginContainer) loginContainer.classList.remove('dark-theme');
+          if(tableContainer) tableContainer.classList.remove('dark-theme');
+          if(privacyNotice) privacyNotice.classList.remove('dark-theme');
+          if(dataRemovalNotice) dataRemovalNotice.classList.remove('dark-theme');
+          errorMessage.forEach(el => el.classList.remove('dark-theme'));
+          if(modalContent) modalContent.classList.remove('dark-theme');
+          if(modalBody) modalBody.classList.remove('dark-theme');
+          if(closeButton) closeButton.classList.remove('dark-theme');
+          if(topIncidentsTitle) topIncidentsTitle.classList.remove('dark-theme');
+          if(topIncidentsGrid) topIncidentsGrid.classList.remove('dark-theme');
+        }
+          }
+
+          if (theme.includes('oscuro')) {
+            setDarkTheme(true);
+          } else if (theme.includes('claro')) {
+            setDarkTheme(false);
+          } else if (theme.includes('automático') || theme.includes('automatico')) {
+            // Automático: modo oscuro de 20:00 a 7:00, claro el resto
+            const hour = new Date().getHours();
+            if (hour >= 20 || hour < 7) {
+              setDarkTheme(true);
+            } else {
+              setDarkTheme(false);
+            }
+          } else if (theme.includes('eficiencia')) {
+            // Eficiencia: modo oscuro si el ahorro de energía está activo
+            if (navigator.getBattery) {
+              navigator.getBattery().then(function(battery) {
+                if (battery && battery.savePower) {
+                  setDarkTheme(true);
+                } else if (battery && battery.dischargingTime === Infinity && battery.charging) {
+                  setDarkTheme(false);
+                } else if (battery && battery.charging === false && battery.level < 0.2) {
+                  setDarkTheme(true);
+                } else if (battery && battery.level < 0.15) {
+                  setDarkTheme(true);
+                } else {
+                  setDarkTheme(false);
+                }
+              }).catch(function() {
+                setDarkTheme(false);
+              });
+            } else if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+              // fallback: si el usuario tiene preferencias de ahorro de energía
+              setDarkTheme(true);
+            } else {
+              setDarkTheme(false);
+            }
+          }
+        });
+      });
+
+      // Al cargar la página, aplicar la preferencia guardada
+      function activarTemaGuardado() {
+        const temaGuardado = localStorage.getItem('preferencia-tema');
+        if (!temaGuardado) return;
+        let btnToClick = null;
+        themeBtns.forEach(btn => {
+          let theme = btn.textContent.trim().toLowerCase();
+          if (
+            (temaGuardado === 'oscuro' && theme.includes('oscuro')) ||
+            (temaGuardado === 'claro' && theme.includes('claro')) ||
+            (temaGuardado === 'automatico' && (theme.includes('automático') || theme.includes('automatico'))) ||
+            (temaGuardado === 'eficiencia' && theme.includes('eficiencia'))
+          ) {
+            btnToClick = btn;
+          }
+        });
+        if (btnToClick) btnToClick.click();
+      }
+      activarTemaGuardado();
+    });
+
+    // --- Popup de ayuda para Tema ---
+    document.addEventListener('DOMContentLoaded', function() {
+      const helpBtn = document.getElementById('themeHelpBtn');
+      const helpPopup = document.getElementById('themeHelpPopup');
+      const closeHelp = document.getElementById('closeThemeHelp');
+      
+      if (helpBtn && helpPopup && closeHelp) {
+        helpBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          helpPopup.classList.add('active');
+        });
+        
+        closeHelp.addEventListener('click', function() {
+          helpPopup.classList.remove('active');
+        });
+        
+        // Cerrar al hacer clic fuera del popup
+        document.addEventListener('mousedown', function(e) {
+          if (helpPopup.classList.contains('active') && !helpPopup.contains(e.target) && e.target !== helpBtn) {
+            helpPopup.classList.remove('active');
+          }
+        });
+      }
+    });
+
+
+  </script>
+</body>
+</html>

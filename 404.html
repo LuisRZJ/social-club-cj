@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="var(--color-primary)">
+  <title>Error 404 | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <style>
+    :root {
+      /* Variables de colores principales - Modo claro */
+      --color-primary: #FFD1A9;
+      --color-primary-hover: #ffb07a;
+      --color-background: #FFF5EB;
+      --color-surface: #ffffff;
+      --color-text-primary: #1F2937;
+      --color-text-secondary: #4B5563;
+      --color-text-button: #1F2937;
+      --color-border: rgba(0, 0, 0, 0.1);
+      --color-shadow: rgba(0, 0, 0, 0.1);
+      --color-shadow-dark: rgba(0, 0, 0, 0.15);
+      --color-text-shadow: rgba(0, 0, 0, 0.10);
+      
+      /* Variables de espaciado */
+      --spacing-xs: 0.5rem;
+      --spacing-sm: 1rem;
+      --spacing-md: 1.5rem;
+      --spacing-lg: 2rem;
+      --spacing-xl: 2.5rem;
+      --spacing-2xl: 3rem;
+      
+      /* Variables de tipografía */
+      --font-family: 'Inter', sans-serif;
+      --font-size-xs: 0.75rem;
+      --font-size-sm: 1rem;
+      --font-size-base: 1.1rem;
+      --font-size-lg: 1.5rem;
+      --font-size-xl: 2rem;
+      --font-size-2xl: 6rem;
+      --font-weight-normal: 400;
+      --font-weight-medium: 500;
+      --font-weight-semibold: 600;
+      --font-weight-bold: 700;
+      --font-weight-black: 900;
+      --letter-spacing-wide: 2px;
+      
+      /* Variables de efectos */
+      --shadow-sm: 0 2px 4px var(--color-shadow);
+      --shadow-md: 0 4px 6px -1px var(--color-shadow), 0 2px 4px -1px var(--color-shadow);
+      --shadow-lg: 0 4px 8px var(--color-shadow-dark);
+      --border-radius: 0.375rem;
+      --border-radius-lg: 0.5rem;
+      --text-shadow: 0 2px 8px var(--color-text-shadow);
+      
+      /* Variables de transiciones */
+      --transition-duration: 0.3s;
+      --transition-timing: ease;
+      
+      /* Variables de layout */
+      --container-max-width: 600px;
+      --button-min-width: 250px;
+      --breakpoint-mobile: 768px;
+      
+      /* Variables de dimensiones */
+      --min-height-vh: 100vh;
+      --transform-y-hover: -2px;
+      --transform-y-active: 0;
+    }
+
+    /* Modo oscuro */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-primary: #FFB07A;
+        --color-primary-hover: #FF8C42;
+        --color-background: #1A1A1A;
+        --color-surface: #2D2D2D;
+        --color-text-primary: #E5E5E5;
+        --color-text-secondary: #B0B0B0;
+        --color-text-button: #1A1A1A;
+        --color-border: rgba(255, 255, 255, 0.1);
+        --color-shadow: rgba(0, 0, 0, 0.3);
+        --color-shadow-dark: rgba(0, 0, 0, 0.5);
+        --color-text-shadow: rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--color-background);
+      display: flex;
+      flex-direction: column;
+      min-height: var(--min-height-vh);
+      scroll-behavior: smooth;
+      justify-content: center;
+      align-items: center;
+      transition: background-color var(--transition-duration) var(--transition-timing);
+    }
+    .content-container {
+      max-width: var(--container-max-width);
+      margin: var(--spacing-2xl) auto var(--spacing-lg) auto;
+      padding: var(--spacing-xl) var(--spacing-lg);
+      border-radius: var(--border-radius-lg);
+      background-color: var(--color-surface);
+      box-shadow: var(--shadow-md);
+      flex: 1;
+      text-align: center;
+      transition: background-color var(--transition-duration) var(--transition-timing), box-shadow var(--transition-duration) var(--transition-timing);
+    }
+    .error-code {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-black);
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-sm);
+      letter-spacing: var(--letter-spacing-wide);
+      text-shadow: var(--text-shadow);
+      transition: color var(--transition-duration) var(--transition-timing);
+    }
+    .error-message {
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+      margin-bottom: var(--spacing-md);
+      transition: color var(--transition-duration) var(--transition-timing);
+    }
+    .error-description {
+      font-size: var(--font-size-base);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-lg);
+      transition: color var(--transition-duration) var(--transition-timing);
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-xl);
+      flex-wrap: wrap;
+    }
+    .nav-button {
+      background-color: var(--color-primary);
+      color: var(--color-text-button);
+      font-weight: var(--font-weight-semibold);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--border-radius);
+      transition: all var(--transition-duration) var(--transition-timing);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-border);
+      text-align: center;
+      min-width: var(--button-min-width);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nav-button:hover {
+      background-color: var(--color-primary-hover);
+      transform: translateY(var(--transform-y-hover));
+      box-shadow: var(--shadow-lg);
+    }
+    .nav-button:active {
+      transform: translateY(var(--transform-y-active));
+      box-shadow: var(--shadow-sm);
+    }
+    .nav-button i {
+      margin-right: var(--spacing-xs);
+    }
+    @media (max-width: var(--breakpoint-mobile)) {
+      .content-container {
+        padding: var(--spacing-md) var(--spacing-xs);
+      }
+      .nav-buttons {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+      }
+      .nav-button {
+        width: 100%;
+      }
+    }
+  </style>
+  <script>
+    // Detectar preferencia de tema del usuario
+    function detectThemePreference() {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      
+      // Aplicar tema basado en la preferencia del sistema
+      if (prefersDark) {
+        document.documentElement.classList.add('dark-mode');
+      } else if (prefersLight) {
+        document.documentElement.classList.remove('dark-mode');
+      }
+      // Si no hay preferencia específica, se mantiene el tema por defecto (claro)
+    }
+
+    // Escuchar cambios en la preferencia del sistema
+    function setupThemeListener() {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      mediaQuery.addEventListener('change', detectThemePreference);
+    }
+
+    // Inicializar cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', function() {
+      detectThemePreference();
+      setupThemeListener();
+    });
+
+    // También ejecutar inmediatamente por si el DOM ya está listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', detectThemePreference);
+    } else {
+      detectThemePreference();
+    }
+  </script>
+</head>
+<body>
+  <div class="content-container">
+    <div class="error-code">404</div>
+    <div class="error-message">Página no encontrada</div>
+    <div class="error-description">
+      Lo sentimos, la página que buscas no existe o ha sido movida.<br>
+      Por favor, verifica la URL o utiliza los botones de abajo para continuar navegando.
+    </div>
+    <div class="nav-buttons">
+      <a href="/index.html" class="nav-button"><i class="fas fa-home"></i> Ir al inicio</a>
+      <a href="/categorias.html" class="nav-button"><i class="fas fa-list"></i> Ver categorías</a>
+      <a href="/contacto.html" class="nav-button"><i class="fas fa-envelope"></i> Contactar soporte</a>
+    </div>
+  </div>
+</body>
+</html>
