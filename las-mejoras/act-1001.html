@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Act 1,001 | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Aquí se pueden agregar estilos específicos de la plantilla si es necesario */
+
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V2.1</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <header class="header-comunidad">
+    <div class="header-content">
+      <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+      <span class="header-title">CGN</span>
+      <span class="header-legend">Sin tiempo para descansos</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <nav class="menu-desplegable" id="menuDesplegable">
+      <ul>
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/faq.html">FAQ</a></li>
+        <li><a href="/socios.html">Socios</a></li>
+        <li><a href="/ajustes.html">Ajustes</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <!-- Barra de progreso de scroll -->
+<div id="scroll-progress-container">
+  <div id="scroll-progress-bar"></div>
+</div>
+
+  </header>
+  
+  <div class="content-container">
+    <h1 class="page-title">Actualización a la v2.0 - v2.1</h1>
+    <!-- Sección de actualización reutilizable -->
+    <div class="update-container">
+      <div class="update-tag-row">
+        <span class="update-tag added">
+          <i class="fas fa-plus-circle"></i> AÑADIDO
+        </span>
+        <span class="update-tag date">
+          <i class="far fa-calendar-alt"></i> 22 de Julio del 2025<!-- Fecha aquí -->
+        </span>
+      </div>
+      <hr class="update-divider">
+      <p class="info-text">Esta actualización introduce un sistema completo de navegación mejorada con panel de acciones fijo, sistema de temas personalizable, noticias dinámicas, clasificaciones de actividad y mejoras significativas en el rendimiento y diseño de todas las páginas de la comunidad.</p>
+      <p class="info-text">La migración se realizó en dos fases: la v2.0 se aplicó a la mayoría de páginas, mientras que la v2.1 (que corrige errores de compatibilidad críticos) se implementó en aproximadamente el 25% de las páginas más importantes. La intención es completar la migración a la v2.1 en el futuro para garantizar la estabilidad total del sitio.</p>
+
+      <h2 class="update-subtitle">Panel de acciones</h2>
+      <ul class="update-list">
+        <li>Barra de <b>accesos rápidos</b> fija en la parte inferior de todas las páginas para navegación fácil.</li>
+        <li>Botones de <b>navegación</b>: volver arriba, ir al final, compartir página y obtener ayuda.</li>
+        <li>Panel expandible con <b>categorías organizadas</b> para acceder rápidamente a Comunidad, Minecraft, Reglas y Administración.</li>
+        <li>Selector de <b>tema visual</b> con opciones Automático, Eficiencia, Claro y Oscuro para personalizar la experiencia.</li>
+        <li>Chat de <b>soporte integrado</b> para recibir ayuda inmediata cuando la necesites.</li>
+        <li>Noticias actualizadas de la comunidad accesibles desde cualquier página.</li>
+        <li>Interfaz intuitiva con iconos claros y fácil de usar en cualquier dispositivo.</li>
+      </ul>
+
+      <h2 class="update-subtitle">Nuevo Panel de noticias</h2>
+      <ul class="update-list">
+        <li>Panel de <b>novedades automáticas</b> que se actualiza con las últimas noticias de la comunidad.</li>
+        <li>Noticias organizadas por <b>categorías</b> como Discord, Minecraft, Comunidad y Administración para fácil navegación.</li>
+        <li>Enlaces directos a eventos importantes, actualizaciones y recursos de la comunidad.</li>
+        <li>Rotación automática de noticias para mantener la información siempre actualizada.</li>
+        <li>Acceso rápido a las novedades más relevantes desde cualquier página del sitio.</li>
+        <li>Información sobre eventos, colaboraciones y oportunidades de participación en la comunidad.</li>
+      </ul>
+
+      <h2 class="update-subtitle">Presentamos el sistema de temas</h2>
+      <ul class="update-list">
+        <li>Implementación de un sistema completo de temas con <b>4 modos diferentes</b>: Automático, Eficiencia, Claro y Oscuro.</li>
+        <li><b>Modo Automático</b>: Cambia entre tema claro y oscuro automáticamente según la hora del día (tema oscuro de 20:00 a 7:00, claro el resto del día).</li>
+        <li><b>Modo Eficiencia</b>: Activa automáticamente el tema oscuro cuando el dispositivo tiene ahorro de energía activo, batería baja (menos del 20%) o está descargándose con nivel crítico (menos del 15%).</li>
+        <li><b>Modo Claro</b>: Fuerza la aplicación del tema claro en toda la página independientemente de las condiciones externas.</li>
+        <li><b>Modo Oscuro</b>: Fuerza la aplicación del tema oscuro en toda la página para una experiencia visual más suave.</li>
+        <li>Sistema de <b>persistencia de preferencias</b> que guarda la selección del usuario en el localStorage del navegador.</li>
+        <li>Interfaz intuitiva con botones temáticos que incluyen iconos descriptivos (sol, luna, rayo, ajuste) para cada modo.</li>
+        <li>Popup de ayuda integrado que explica detalladamente el funcionamiento de cada modo de tema.</li>
+        <li>Transiciones suaves entre temas para una experiencia visual fluida sin interrupciones.</li>
+        <li>Compatibilidad completa con todos los elementos de la página: headers, footers, paneles, botones, textos y componentes interactivos.</li>
+        <li>Optimización de rendimiento con cambio de temas mediante variables CSS para mayor eficiencia.</li>
+        <li>Detección inteligente del estado de la batería del dispositivo para el modo de eficiencia energética.</li>
+        <li>Fallback automático para dispositivos que no soportan la API de batería, utilizando preferencias del sistema.</li>
+      </ul>
+
+      <h2 class="update-subtitle">Creación de un sistema de clasificación por actividad</h2>
+      <ul class="update-list">
+        <li>Accesible desde la página de inicio y página de los grupos de la comunidad.</li>
+        <li>Disponible para usuarios de cuaquiera de los grupos de la CMD en WhatsApp.</li>
+        <li>Utiliza el mismo motor de analizis que el analizador de chats, pero optimizado para trabajar con datos precargados que usan el historial completo de los grupos.</li>
+        <li>clasificación mes a mes o en general.</li>
+        <li>En el futuro, podria usarse para elegir a usuarios ganadores de dinamicas por actividad.</li>
+        <li>¡Ahora puedes revisar a detalle en nivel de actividad de cada usuario y el tuyo propio a lo largo del tiempo!</li>
+      </ul>
+
+      <h2 class="update-subtitle">Mejoras en el analizador de chats</h2>
+      <ul class="update-list">
+        <li>Tiempos de analizis reducidos aun más, especialmente para archivos grandes.</li>
+        <li>Detección de usuarios a nivel global y estatal, con indicadores. (a nivel estatal de momento solo para usuarios reconocidos de México)</li>
+        <li>Nuevas estadisticas demograficas para una mejor comprención de audiencias.</li>
+        <li>Creación de un chat simulado, con funciones extendidas para detección y filtrado de mensajes/usuarios.</li>
+      </ul>
+
+      <h2 class="update-subtitle">Mejoras en el reglamento y normativas de la comunidad</h2>
+      <ul class="update-list">
+        <li>Reestructuración completa del reglamento general y de administradores para mayor claridad y profesionalismo.</li>
+        <li>Unificación y organización de reglas en secciones temáticas, facilitando su consulta y comprensión.</li>
+        <li>Inclusión de principios, criterios de interpretación y procesos claros de sanción y apelación.</li>
+        <li>Actualización y ampliación de la política de privacidad y protección de datos conforme a mejores prácticas legales.</li>
+        <li>Definición detallada de derechos, deberes y límites para administradores y miembros.</li>
+        <li>Mejoras en la transparencia, comunicación y mecanismos de reporte y defensa.</li>
+        <li>Actualización de fechas y versión en todos los documentos normativos.</li>
+        <li>Mejoras menores y correcciones en la estructura de páginas, navegación y estilos visuales de las páginas de reglas.</li>
+      </ul>
+
+      <h2 class="update-subtitle">Nuevas páginas relevan a las de la anterior versión</h2>
+      <ul class="update-list">
+        <li><b>Las páginas de respaldo han sido descontinuadas de forma permanente</b>, ahora todo lo relevante estará en las páginas de la nueva versión.</li>
+        <li>La página de reglas y la de los grupos de la CMD ya estan operativas en la versión más reciente hasta ahora.</li>
+      </ul>
+
+      <h2 class="update-subtitle">Nuevas páginas</h2>
+      <ul class="update-list">
+        <li>Se agregaron nuevas páginas de ayuda para la categoria de administración.</li>
+        <li>Ahora puedes contactar con los admins sin salir de la página, visita la página de Contacto para más detalles.</li>
+      </ul>
+
+      <h2 class="update-subtitle">La página de grupos fue restaurada y actualizada</h2>
+      <ul class="update-list">
+        <li>Se normalizo el acceso a cualquiera de los grupos desde la página.</li>
+        <li>Agregados nuevos detalles relevantes junto a los grupos.</li>
+        <li>Acceso directo a las <b>Tablas de clasificación</b> para todos los grupos de WhatsApp.</li>
+      </ul>
+
+      <h2 class="update-subtitle">Mejoras generales en el rendimiento, carga y diseño de las páginas</h2>
+      <ul class="update-list">
+        <li>Corrección de varios errores de diseño en elementos de las páginas.</li>
+        <li>Compatibilidad mejorada con dispositivos móviles.</li>
+        <li>Creación de un sistema de carga (en fase beta) en algunas páginas, sumado a un mejor uso de los Recursos.</li>
+      </ul>
+
+      <br>
+
+      <h2 class="update-subtitle">¿Qué sigue?</h2>
+      <p>En el corto plazo, se espera que la migración a la v2.1 quede completamente agregada y solucione, mejore y optimize cosas y elementos en todas las páginas y subpáginas.<br>
+      Por otro lado, la proxima gran actualización de la página se espera que se de a comienzos de octubre de este año. Agregando nuevas y utiles funciónes, como una restructuración al sistema de ayuda y soporte a usuarios desde la página.</p>
+
+    </div>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <div class="footer-links">
+          <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+          <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+          <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+          <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+          <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Comunidad</h3>
+        <div class="footer-links">
+          <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+          <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+          <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+          <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+          <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">
+        <img src="/icons/Bandera-jal.avif" 
+             alt="Logo Comunidad CGN" 
+             class="cgn-icon">
+        Comunidad CGN | <span id="currentYear">2022-</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Rectángulo gris fijo en la parte inferior -->
+  <div class="bottom-fixed-bar">
+    <div class="left-actions">
+      <button title="Abrir chat" class="open-chat-btn" onclick="openChat()">
+        <i class="fas fa-comments"></i>Ayuda
+      </button>
+      <button title="Compartir página" class="share-btn-fixed" id="shareBtn" onclick="sharePage()">
+        <i class="fas fa-share-alt"></i>
+      </button>
+    </div>
+    <div class="right-actions">
+      <div class="action-separator"></div>
+      <div class="view-more-fixed" id="viewMoreBtn" title="panel de acciones" onclick="togglePanel()">
+        <i class="fas fa-ellipsis-h"></i>
+        <span id="viewMoreText">Ver más</span>
+      </div>
+      <div class="back-to-top-fixed" id="backToTopBtn" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+      <div class="go-to-bottom-fixed" id="goToBottomBtn" title="Ir al final">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de expansión separado -->
+  <div class="panel-expansion" id="panelExpansion">
+    <!-- Contenedor para el contenido expandido -->
+    <div class="expanded-content">
+      <!-- Contenedor de noticias -->
+      <div class='news-container'>
+        <div class='title'>
+          Novedades
+        </div>
+
+        <ul>
+          <!-- Las noticias se cargarán dinámicamente desde noticias.json -->
+        </ul>
+      </div>
+      <div class="news-separator-top"></div>
+      
+      <!-- Sección de categorías -->
+      <div class="categories-section-panel">
+        <div class="categories-title-panel">Categorías</div>
+        <div class="categories-tags-panel">
+          <a href="/categorias-comunidad.html" class="category-tag-panel comunidad"><i class="fas fa-users"></i> Comunidad</a>
+          <a href="/categorias-mc.html" class="category-tag-panel minecraft"><i class="fas fa-cube"></i> Minecraft</a>
+          <a href="/categorias-reglas.html" class="category-tag-panel reglas"><i class="fas fa-book"></i> Reglas</a>
+          <a href="/categorias-admins.html" class="category-tag-panel administracion"><i class="fas fa-user-shield"></i> Administración</a>
+        </div>
+      </div>
+      <div class="news-separator-bottom"></div>
+      
+      <!-- Sección de tema -->
+      <div class="theme-section-panel" style="width:100%; margin: 0 0 10px 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+        <div class="categories-title-panel" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center; text-align: center;">
+          <span style="display: flex; align-items: center; gap: 8px;">
+            Tema
+            <button id="themeHelpBtn" type="button" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: var(--popup-text-color); font-size: var(--font-size-7xl); display: flex; align-items: center;">
+              <i class="fas fa-question-circle"></i>
+            </button>
+          </span>
+        </div>
+        <div class="theme-buttons-panel" style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+          <button class="theme-btn" title="Automático" type="button">
+            <i class="fas fa-adjust"></i> Automático
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Eficiencia" type="button">
+            <i class="fas fa-bolt"></i> Eficiencia
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Claro" type="button">
+            <i class="fas fa-sun"></i> Claro
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Oscuro" type="button">
+            <i class="fas fa-moon"></i> Oscuro
+            <span class="theme-indicator"></span>
+          </button>
+        </div>
+        <div class="action-separator" style="position: relative; left: 50%; transform: translateX(-50%); width: 100vw; height: 4px; background-color: rgba(255,255,255,0.3); margin: 14px 0 0 0; border-radius: 2px; z-index: 100;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay que contiene el chat modal -->
+  <div class="overlay" id="chatOverlay">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="header-left">
+          <div class="header-image">
+            <img src="/icons/bot-hecks.avif" alt="Logo de soporte" id="chatImage">
+          </div>
+          <div class="header-title">Soporte CGN</div>
+        </div>
+        <div class="header-buttons">
+          <button class="header-btn" onclick="toggleMaximize()" title="Maximizar/Minimizar chat">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="header-btn" onclick="clearChat()" title="Borrar chat">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="header-btn" onclick="closeChat()" title="Cerrar chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-footer" id="chatFooter"></div>
+    </div>
+  </div>
+
+  <!-- Popup de ayuda para Tema -->
+  <div class="theme-help-popup" id="themeHelpPopup">
+    <button class="close-btn" id="closeThemeHelp" title="Cerrar ayuda"><i class="fas fa-times"></i></button>
+    <strong>¿Cómo funcionan los modos de tema?</strong>
+    <ul>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-adjust"></i> <b>Automático</b></span>
+        <span style="font-size: 0.97em; color: var(--popup-text-color); margin-left: 1.7em;">Cambia entre modo claro y oscuro automáticamente según la hora del día (oscuro de noche, claro de día).</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-bolt"></i> <b>Eficiencia</b></span>
+        <span style="font-size: 0.97em; color: var(--popup-text-color); margin-left: 1.7em;">Activa el modo oscuro si el ahorro de energía está activo en tu dispositivo.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-sun"></i> <b>Claro</b></span>
+        <span style="font-size: 0.97em; color: var(--popup-text-color); margin-left: 1.7em;">Fuerza el tema claro en la página.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-moon"></i> <b>Oscuro</b></span>
+        <span style="font-size: 0.97em; color: var(--popup-text-color); margin-left: 1.7em;">Fuerza el tema oscuro en la página.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  </div> <!-- Cierre del main-content -->
+
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <script src="/pwa/noticias.js"></script>
+  <script src="/pwa/javascript.js"></script>
+</body>
+</html>
