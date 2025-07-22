@@ -1,0 +1,4476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Plantilla BD | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFF5EB;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    
+    .content-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      flex: 1;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    
+    .nav-button {
+      background-color: #FFD1A9;
+      color: #374151;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .nav-button:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .nav-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-button i {
+      margin-right: 0.5rem;
+    }
+    
+    footer {
+      background-color: #FFF5EB;
+      padding: 2.5rem 1rem;
+      border-top: 2px solid #E5E7EB;
+      margin-top: auto;
+      position: relative;
+      margin-bottom: 35px; /* Espacio de la bandera respecto al final */
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2.5rem;
+    }
+    
+    .footer-section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: #FFD1A9;
+    }
+    
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .footer-links a {
+      color: #4B5563;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+      color: #d8971d;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 0.75rem;
+      color: #FFD1A9;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 2px solid #E5E7EB;
+      text-align: center;
+      color: #4B5563;
+      font-size: 0.9rem;
+    }
+    
+    .copyright {
+      font-weight: 600;
+      color: #1F2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .copyright span {
+      color: #FFD1A9;
+    }
+    
+    .back-to-top {
+      position: absolute;
+      top: -25px;
+      right: 20px;
+      background-color: #FFD1A9;
+      color: #374151;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .back-to-top:hover {
+      background-color: #ffb07a;
+      transform: translateY(-3px);
+    }
+    
+    .back-to-top:active {
+      transform: translateY(0);
+    }
+    
+    .cgn-icon {
+      height: 50px;
+      width: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .cgn-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Header completo con menú desplegable */
+    .header-comunidad {
+      background-color: #FFF5EB;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 98;
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .header-logo {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .header-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1F2937;
+    }
+    
+    .header-legend {
+      font-weight: 700;
+      font-style: italic;
+      font-size: 0.75rem;
+      color: #115c2c;
+      margin-left: 0.5rem;
+    }
+    
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 24px;
+      width: 30px;
+      padding: 0;
+    }
+    
+    .menu-bar {
+      height: 3px;
+      width: 100%;
+      background-color: #1F2937;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+    
+    .menu-desplegable {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    
+    .menu-desplegable.abierto {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .menu-desplegable ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+    
+    .menu-desplegable li {
+      padding: 0;
+    }
+    
+    .menu-desplegable a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      color: #4B5563;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    
+    .menu-desplegable a:hover {
+      background-color: #FFD1A9;
+      color: #1F2937;
+      padding-left: 1.75rem;
+    }
+    
+    /* Título principal */
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #FFD1A9;
+      position: relative;
+    }
+    
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: #ffb07a;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-button {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .back-to-top {
+        top: -20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      
+      .cgn-icon {
+        height: 50px;
+        width: 100px;
+      }
+
+      .header-comunidad {
+        padding: 0.75rem;
+      }
+
+      .header-title {
+        font-size: 1.3rem;
+      }
+
+      .header-legend {
+        font-size: 0.7rem;
+      }
+
+      .page-title {
+        font-size: 2rem;
+        padding: 0 1rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-comunidad {
+        padding: 0.5rem;
+      }
+
+      .header-title {
+        font-size: 1.1rem;
+      }
+
+      .header-legend {
+        font-size: 0.6rem;
+      }
+
+      .page-title {
+        font-size: 1.5rem;
+        padding: 0 0.5rem;
+      }
+
+      .nav-buttons {
+        gap: 0.75rem;
+      }
+
+      .nav-button {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .header-comunidad {
+        padding: 0.4rem;
+      }
+
+      .header-title {
+        font-size: 1rem;
+      }
+
+      .header-legend {
+        font-size: 0.55rem;
+      }
+
+      .page-title {
+        font-size: 1.3rem;
+        padding: 0 0.25rem;
+      }
+
+      .nav-button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+      }
+    }
+
+   /* Barra de progreso de scroll - Ahora dentro del header */
+#scroll-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: rgba(255, 209, 169, 0.2);
+  z-index: 99; /* Reducir z-index */
+}
+
+#scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFD1A9, #ffb07a);
+  transition: width 0.1s ease;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Aumentar z-index del menú desplegable */
+.menu-desplegable {
+  z-index: 100; /* Mayor que la barra de progreso */
+}
+
+/* Rectángulo gris fijo en la parte inferior */
+.bottom-fixed-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 50;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  transition: all 0.3s ease;
+}
+
+/* Panel expandido */
+.bottom-fixed-bar.expanded {
+  height: 100vh;
+  bottom: 0;
+  top: auto;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Contenedor para el contenido expandido */
+.expanded-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 0;
+}
+
+.bottom-fixed-bar.expanded .expanded-content {
+  display: flex;
+}
+
+/* Ajustar botones cuando está expandido */
+.bottom-fixed-bar.expanded .right-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  gap: 8px;
+}
+
+.bottom-fixed-bar.expanded .open-chat-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+/* Botón volver arriba dentro del rectángulo fijo */
+.back-to-top-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.back-to-top-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.back-to-top-fixed:active {
+  transform: translateY(0);
+}
+
+/* Botón ir al final dentro del rectángulo fijo */
+.go-to-bottom-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.go-to-bottom-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.go-to-bottom-fixed:active {
+  transform: translateY(0);
+}
+
+/* Contenedor para los botones de la izquierda */
+.left-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Botón compartir dentro del rectángulo fijo */
+.share-btn-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.share-btn-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.share-btn-fixed:active {
+  transform: translateY(0);
+}
+
+/* Separador vertical del panel de acciones */
+.action-separator {
+  width: 2px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin-left: 12px;
+  margin-right: 5px;
+  border-radius: 1px;
+}
+
+/* Botón ver más dentro del rectángulo fijo */
+.view-more-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  min-width: 80px;
+  height: 35px;
+  border-radius: 17.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-right: 15px;
+  gap: 5px;
+}
+
+.view-more-fixed.expanded {
+  min-width: 100px;
+}
+
+/* Contenedor para las acciones de la derecha */
+.right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Panel expandido - elemento separado */
+.panel-expansion {
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 98;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 20px;
+}
+
+.panel-expansion.expanded {
+  height: calc(100vh - 60px);
+  padding: 8px 20px 20px 20px;
+}
+
+.panel-expansion.expanded .expanded-content {
+  display: flex;
+}
+
+/* Estilos para el contenedor de noticias */
+.news-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.3);
+  border-radius: 0;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  margin-bottom: 0;
+  overflow: hidden;
+  z-index: 99;
+}
+
+.news-container .title {
+  position: absolute;
+  background-color: rgb(255, 209, 169);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 3.8px;
+  color: #374151;
+  font-size: 1rem;
+  z-index: 200;
+  border-radius: 6px;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+}
+
+.news-container ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  animation: scroll 120s infinite linear;
+  padding-left: 80px;
+}
+
+.news-container ul li {
+  white-space: nowrap;
+  padding: 10px 24px;
+  color: white;
+  position: relative;
+}
+
+.news-container ul li::after {
+  content: "";
+  width: 1px;
+  height: 100%;
+  background: #b8b8b8;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.news-container ul li:last-child::after {
+  display: none;
+}
+
+.news-container ul li a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-container ul li a:hover {
+  text-decoration: underline;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-10200px);
+  }
+}
+
+.news-separator {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  margin: 100px 0 8px 0;
+  z-index: 100;
+}
+
+.news-separator-top, .news-separator-bottom {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  z-index: 100;
+}
+
+.news-separator-top {
+  margin: 50px 0 8px 0;
+}
+
+.news-separator-bottom {
+  margin: 0px 0 8px 0;
+}
+
+.categories-section-panel {
+  width: 100%;
+  margin: -20px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.categories-title-panel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 12px;
+  margin-left: 0;
+  letter-spacing: 0.5px;
+  background: rgba(255, 168, 54, 0.92);
+  padding: 12px 24px 12px 24px;
+  border-radius: 0px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.10);
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  max-width: none;
+  z-index: 101;
+}
+.categories-tags-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.category-tag-panel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.07);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.category-tag-panel:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.category-tag-panel i {
+  font-size: 1.1em;
+  margin-right: 4px;
+}
+
+/* --- Botones de tema --- */
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  position: relative;
+  min-width: 140px;
+}
+.theme-btn:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.theme-btn .theme-indicator {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #d1d5db;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border 0.2s;
+}
+.theme-btn.active .theme-indicator {
+  background: #22c55e;
+  border: 2px solid #16a34a;
+}
+
+/* Estilo para el popup de ayuda de tema */
+.theme-help-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  color: #1F2937;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 28px 24px 18px 24px;
+  z-index: 9999;
+  min-width: 320px;
+  max-width: 90vw;
+  font-size: 1rem;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.2s;
+}
+.theme-help-popup.active {
+  display: flex;
+}
+.theme-help-popup .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #374151;
+  cursor: pointer;
+}
+.theme-help-popup ul {
+  margin: 0 0 0 0.5em;
+  padding: 0;
+  list-style: none;
+}
+.theme-help-popup ul li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -60%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+  </style>
+  <style id="dark-theme-style">
+    /* Modo oscuro general */
+    body.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+    }
+    .content-container.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 4px 12px -1px rgba(0,0,0,0.45), 0 2px 4px -1px rgba(0,0,0,0.30);
+      color: #f3f4f6 !important;
+    }
+    .header-comunidad.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+    .header-title.dark-theme {
+      color: #f3f4f6 !important;
+    }
+    .header-legend.dark-theme {
+      color: #18813f !important;
+    }
+    .menu-desplegable.dark-theme {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    .page-title.dark-theme {
+      color: #f3f4f6 !important;
+      border-bottom: 3px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme {
+      background-color: #23232a !important;
+      color: #FFD1A9 !important;
+      border: 1px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    footer.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+      border-top: 2px solid #bb4b004b !important;
+    }
+    .footer-section.dark-theme h3 {
+      color: #FFD1A9 !important;
+    }
+    .footer-links.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .footer-links.dark-theme a:hover {
+      color: #ffb07a !important;
+    }
+    .footer-links.dark-theme a i {
+      color: #FFD1A9 !important;
+    }
+    .footer-bottom.dark-theme {
+      color: #FFD1A9 !important;
+      border-top: 2px solid #bb4b004b !important;
+    }
+    .copyright.dark-theme {
+      color: #929292b0 !important;
+    }
+    .copyright.dark-theme span {
+      color: #FFD1A9 !important;
+    }
+    .bottom-fixed-bar.dark-theme {
+      background-color: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .panel-expansion.dark-theme {
+      background-color: rgba(24,24,27,0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .news-container.dark-theme {
+      background: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .categories-title-panel.dark-theme {
+      background: rgba(60, 48, 40, 0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme {
+      background: rgba(60, 60, 40, 0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.dark-theme {
+      background: rgba(60,60,40,0.85) !important;
+      color: #FFD1A9 !important;
+      border: 2px solid #FFD1A9 !important;
+    }
+    .theme-btn.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.active .theme-indicator {
+      background: #22c55e !important;
+      border: 2px solid #16a34a !important;
+    }
+    .theme-help-popup.dark-theme {
+      background: #23232a !important;
+      color: #FFD1A9 !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    }
+    .theme-help-popup.dark-theme .close-btn {
+      color: #FFD1A9 !important;
+    }
+    .theme-help-popup.dark-theme ul li span {
+      color: #FFD1A9 !important;
+    }
+    /* Separadores */
+    .action-separator.dark-theme,
+    .news-separator-top.dark-theme,
+    .news-separator-bottom.dark-theme {
+      background-color: rgba(255,209,169,0.25) !important;
+    }
+    .menu-toggle.dark-theme .menu-bar {
+      background-color: #f3f4f6 !important;
+    }
+    /* Mayor especificidad para sobrescribir estilos del modo claro */
+    body.dark-theme .footer-links a {
+      color: #929292b0 !important;
+    }
+    body.dark-theme .footer-links a:hover {
+      color: #ffb07a !important;
+    }
+    body.dark-theme .footer-links a i {
+      color: #FFD1A9 !important;
+    }
+    /* Icono de interrogación en modo oscuro */
+    body.dark-theme #themeHelpBtn {
+      color: #f3f4f6 !important;
+    }
+    body.dark-theme #themeHelpBtn i {
+      color: #f3f4f6 !important;
+    }
+    /* Bandera del pie de página en modo oscuro */
+    body.dark-theme .cgn-icon {
+      border: 1px solid rgba(255, 209, 169, 0.3) !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    /* Estilos para el panel de administración */
+    .admin-panel {
+      margin-top: 2rem;
+      padding: 2rem;
+      background-color: #f8f9fa;
+      border-radius: 12px;
+      border: 1px solid #e9ecef;
+    }
+
+    .admin-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #FFD1A9;
+      position: relative;
+    }
+
+    .admin-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background-color: #ffb07a;
+    }
+
+    .form-section {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    .form-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #1F2937;
+      margin-bottom: 1.5rem;
+    }
+
+    .incident-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: #374151;
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: white;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #FFD1A9;
+      box-shadow: 0 0 0 3px rgba(255, 209, 169, 0.1);
+    }
+
+    /* Estilos para el campo de fecha con formato DD/MM/AA */
+    .form-group input[type="date"] {
+      position: relative;
+    }
+
+    .form-group input[type="date"]::before {
+      content: attr(data-formatted);
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b7280;
+      font-size: 0.9rem;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .form-group input[type="date"]:focus::before {
+      color: #FFD1A9;
+    }
+
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+      position: relative;
+      z-index: 2;
+    }
+
+    .form-group input[type="date"]::-webkit-datetime-edit {
+      color: transparent;
+    }
+
+    .form-group input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+      color: transparent;
+    }
+
+    .form-group input[type="date"]::-webkit-datetime-edit-text {
+      color: transparent;
+    }
+
+    .form-group input[type="date"]::-webkit-datetime-edit-month-field {
+      color: transparent;
+    }
+
+    .form-group input[type="date"]::-webkit-datetime-edit-day-field {
+      color: transparent;
+    }
+
+    .form-group input[type="date"]::-webkit-datetime-edit-year-field {
+      color: transparent;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger,
+    .btn-success,
+    .btn-info,
+    .btn-warning {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: #FFD1A9;
+      color: #374151;
+    }
+
+    .btn-primary:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-secondary {
+      background-color: #6b7280;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #4b5563;
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #dc2626;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background-color: #10b981;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #059669;
+      transform: translateY(-2px);
+    }
+
+    .btn-info {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .btn-info:hover {
+      background-color: #2563eb;
+      transform: translateY(-2px);
+    }
+
+    .btn-warning {
+      background-color: #f59e0b;
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background-color: #d97706;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .data-section {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    .data-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .data-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #1F2937;
+    }
+
+    .data-stats {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: #6b7280;
+    }
+
+    .data-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Estilos para la información de almacenamiento */
+    .storage-info-container {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border: 1px solid #e9ecef;
+    }
+
+    .storage-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1F2937;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .storage-title i {
+      color: #6b7280;
+    }
+
+    .storage-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .storage-status {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      background-color: #f3f4f6;
+      border-left: 4px solid #10b981;
+    }
+
+    .storage-status.warning {
+      background-color: #fef3c7;
+      border-left-color: #f59e0b;
+    }
+
+    .storage-status.critical {
+      background-color: #fee2e2;
+      border-left-color: #ef4444;
+    }
+
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-text {
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .storage-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .storage-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background-color: white;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
+    }
+
+    .storage-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .storage-item i {
+      color: #6b7280;
+      width: 16px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .storage-item span {
+      font-size: 0.9rem;
+      color: #374151;
+      line-height: 1.4;
+    }
+
+    .storage-item strong {
+      color: #1F2937;
+    }
+
+    /* Estilos para indicador de bloqueo */
+    .blocked-indicator {
+      background-color: #ef4444;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    /* Estilos para advertencia de almacenamiento */
+    .storage-warning {
+      background-color: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    .warning-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .warning-content i {
+      color: #f59e0b;
+      font-size: 1.5rem;
+      margin-top: 0.25rem;
+      flex-shrink: 0;
+    }
+
+    .warning-text {
+      flex: 1;
+    }
+
+    .warning-text strong {
+      color: #92400e;
+      font-size: 1rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .warning-text p {
+      color: #92400e;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .warning-text ul {
+      margin: 0;
+      padding-left: 1.5rem;
+      color: #92400e;
+      font-size: 0.9rem;
+    }
+
+    .warning-text li {
+      margin-bottom: 0.25rem;
+    }
+
+    /* Estilos para formulario deshabilitado */
+    .form-section.disabled {
+      position: relative;
+      opacity: 0.6;
+    }
+
+    .form-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      z-index: 10;
+    }
+
+    .overlay-content {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      max-width: 300px;
+    }
+
+    .overlay-content i {
+      color: #f59e0b;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .overlay-content p {
+      color: #374151;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .overlay-content small {
+      color: #6b7280;
+      font-size: 0.8rem;
+    }
+
+    .btn-primary.disabled {
+      background-color: #9ca3af !important;
+      color: #6b7280 !important;
+      cursor: not-allowed !important;
+      transform: none !important;
+    }
+
+    .btn-primary.disabled:hover {
+      background-color: #9ca3af !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .form-group input.disabled,
+    .form-group select.disabled,
+    .form-group textarea.disabled {
+      background-color: #f3f4f6 !important;
+      color: #9ca3af !important;
+      cursor: not-allowed !important;
+    }
+
+    /* Estilos para detalles del cálculo */
+    .calculation-details {
+      margin-top: 1rem;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 1rem;
+    }
+
+    .calculation-details details {
+      background-color: #f8f9fa;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .calculation-details summary {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: #374151;
+      transition: all 0.3s ease;
+    }
+
+    .calculation-details summary:hover {
+      background-color: #f3f4f6;
+    }
+
+    .calculation-details summary i {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    .calculation-content {
+      padding: 1rem;
+      border-top: 1px solid #e5e7eb;
+      background-color: white;
+      border-radius: 0 0 6px 6px;
+    }
+
+    .calc-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 0.9rem;
+    }
+
+    .calc-item:last-child {
+      border-bottom: none;
+    }
+
+    .calc-item strong {
+      color: #1F2937;
+      font-weight: 600;
+    }
+
+    .calc-item:not(.formula) {
+      color: #6b7280;
+    }
+
+    .calc-item.formula {
+      background-color: #fef3c7;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+      color: #92400e;
+      font-weight: 600;
+    }
+
+    .incidents-list-section {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .list-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #1F2937;
+      margin: 0;
+    }
+
+    .list-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: #6b7280;
+      background-color: #f3f4f6;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .list-info i {
+      color: #9ca3af;
+      font-size: 0.85rem;
+    }
+
+    .incidents-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .incident-item {
+      background-color: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid #FFD1A9;
+      transition: all 0.3s ease;
+    }
+
+    .incident-item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .incident-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .incident-identifier {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #1F2937;
+    }
+
+    .incident-date {
+      font-size: 0.9rem;
+      color: #6b7280;
+      background-color: #e5e7eb;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+    }
+
+    .incident-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .incident-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .detail-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+    }
+
+    .detail-value {
+      font-size: 0.95rem;
+      color: #374151;
+    }
+
+    .incident-justification {
+      background-color: #e5e7eb;
+      padding: 1rem;
+      border-radius: 6px;
+      font-style: italic;
+      color: #4b5563;
+      margin-bottom: 1rem;
+    }
+
+    .incident-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+
+    .btn-delete-incident {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-delete-incident:hover {
+      background-color: #dc2626;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-delete-incident:active {
+      transform: translateY(0);
+    }
+
+    /* Modal de confirmación personalizado */
+    .confirm-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .confirm-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .confirm-modal {
+      background-color: white;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transform: scale(0.9);
+      transition: all 0.3s ease;
+    }
+
+    .confirm-modal-overlay.active .confirm-modal {
+      transform: scale(1);
+    }
+
+    .confirm-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .confirm-modal-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .confirm-modal-icon.warning {
+      background-color: #f59e0b;
+    }
+
+    .confirm-modal-icon.danger {
+      background-color: #ef4444;
+    }
+
+    .confirm-modal-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin: 0;
+    }
+
+    .confirm-modal-message {
+      color: #6b7280;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 2rem;
+    }
+
+    .confirm-modal-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    .confirm-modal-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .confirm-modal-btn.cancel {
+      background-color: #6b7280;
+      color: white;
+    }
+
+    .confirm-modal-btn.cancel:hover {
+      background-color: #4b5563;
+    }
+
+    .confirm-modal-btn.confirm {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    .confirm-modal-btn.confirm:hover {
+      background-color: #dc2626;
+    }
+
+    .confirm-modal-btn.delete-all {
+      background-color: #dc2626;
+      color: white;
+    }
+
+    .confirm-modal-btn.delete-all:hover {
+      background-color: #b91c1c;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #6b7280;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #d1d5db;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .content-container {
+        margin: 1rem;
+        padding: 1rem;
+      }
+
+      .admin-panel {
+        margin-top: 1rem;
+        padding: 1rem;
+      }
+
+      .admin-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .form-section,
+      .data-section,
+      .incidents-list-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .form-title,
+      .data-title,
+      .list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+
+      .list-title {
+        font-size: 1.2rem;
+        margin-bottom: 0;
+      }
+
+      .list-info {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.75rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .form-group {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        padding: 0.5rem;
+        font-size: 0.95rem;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+      }
+
+      .form-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .btn-primary,
+      .btn-secondary,
+      .btn-danger,
+      .btn-success,
+      .btn-info,
+      .btn-warning {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .data-header {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+      }
+
+      .data-stats {
+        width: 100%;
+      }
+
+      .stat-item {
+        font-size: 0.9rem;
+      }
+
+      .data-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+      }
+
+      .incident-details {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .incident-item {
+        padding: 1rem;
+      }
+
+      .incident-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+      }
+
+      .incident-identifier {
+        font-size: 1rem;
+      }
+
+      .incident-date {
+        font-size: 0.8rem;
+        align-self: flex-start;
+      }
+
+      .detail-label {
+        font-size: 0.8rem;
+      }
+
+      .detail-value {
+        font-size: 0.9rem;
+      }
+
+      .incident-justification {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .incident-actions {
+        justify-content: center;
+      }
+
+      .btn-delete-incident {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .empty-state {
+        padding: 2rem 1rem;
+      }
+
+      .empty-state i {
+        font-size: 2.5rem;
+      }
+
+      .empty-state h4 {
+        font-size: 1.1rem;
+      }
+
+      .empty-state p {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .content-container {
+        margin: 0.5rem;
+        padding: 0.75rem;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .admin-panel {
+        margin-top: 0.5rem;
+        padding: 0.75rem;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .admin-title {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .form-section,
+      .data-section,
+      .incidents-list-section {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .form-title,
+      .data-title,
+      .list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .list-title {
+        font-size: 1.1rem;
+        margin-bottom: 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .list-info {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+      }
+
+      .form-group label {
+        font-size: 0.9rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .form-group {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+      }
+
+      .btn-primary,
+      .btn-secondary,
+      .btn-danger,
+      .btn-success,
+      .btn-info,
+      .btn-warning {
+        padding: 0.6rem 0.75rem;
+        font-size: 0.85rem;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+
+      .incident-item {
+        padding: 0.75rem;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .incident-identifier {
+        font-size: 0.95rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .incident-date {
+        font-size: 0.75rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .detail-label {
+        font-size: 0.75rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .detail-value {
+        font-size: 0.85rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .incident-justification {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        margin-bottom: 0.5rem;
+      }
+
+      .btn-delete-incident {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* Modal responsive */
+      .confirm-modal {
+        padding: 1.5rem;
+        max-width: 350px;
+      }
+
+      .confirm-modal-header {
+        margin-bottom: 1rem;
+      }
+
+      .confirm-modal-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+      }
+
+      .confirm-modal-title {
+        font-size: 1.1rem;
+      }
+
+      .confirm-modal-message {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .confirm-modal-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .confirm-modal-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .empty-state {
+        padding: 1.5rem 0.75rem;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .empty-state i {
+        font-size: 2rem;
+      }
+
+      .empty-state h4 {
+        font-size: 1rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .empty-state p {
+        font-size: 0.85rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      /* Responsive para información de almacenamiento */
+      .storage-info-container {
+        padding: 1rem;
+        margin: 1rem 0;
+      }
+
+      .storage-title {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .storage-details {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .storage-item {
+        padding: 0.6rem;
+      }
+
+      .storage-item span {
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .content-container {
+        margin: 0.25rem;
+        padding: 0.5rem;
+      }
+
+      .admin-panel {
+        margin-top: 0.25rem;
+        padding: 0.5rem;
+      }
+
+      .admin-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .form-section,
+      .data-section,
+      .incidents-list-section {
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-title,
+      .data-title,
+      .list-title {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .form-group {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        padding: 0.4rem;
+        font-size: 0.85rem;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+      }
+
+      .btn-primary,
+      .btn-secondary,
+      .btn-danger,
+      .btn-success,
+      .btn-info,
+      .btn-warning {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.8rem;
+      }
+
+      .incident-item {
+        padding: 0.5rem;
+      }
+
+      .incident-identifier {
+        font-size: 0.9rem;
+      }
+
+      .incident-date {
+        font-size: 0.7rem;
+      }
+
+      .detail-label {
+        font-size: 0.7rem;
+      }
+
+      .detail-value {
+        font-size: 0.8rem;
+      }
+
+      .incident-justification {
+        padding: 0.4rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Modo oscuro para el panel de administración */
+    .admin-panel.dark-theme {
+      background-color: #23232a !important;
+      border-color: #33334a !important;
+    }
+
+    .admin-title.dark-theme {
+      color: #f3f4f6 !important;
+    }
+
+    .form-section.dark-theme,
+    .data-section.dark-theme,
+    .incidents-list-section.dark-theme {
+      background-color: #2a2a35 !important;
+      color: #f3f4f6 !important;
+    }
+
+    .form-title.dark-theme,
+    .data-title.dark-theme,
+    .list-title.dark-theme {
+      color: #f3f4f6 !important;
+    }
+
+    .list-info.dark-theme {
+      background-color: #33334a !important;
+      color: #d1d5db !important;
+    }
+
+    .list-info.dark-theme i {
+      color: #9ca3af !important;
+    }
+
+    .form-group.dark-theme label {
+      color: #f3f4f6 !important;
+    }
+
+    .form-group.dark-theme input,
+    .form-group.dark-theme select,
+    .form-group.dark-theme textarea {
+      background-color: #33334a !important;
+      border-color: #44445a !important;
+      color: #f3f4f6 !important;
+    }
+
+    .form-group.dark-theme input:focus,
+    .form-group.dark-theme select:focus,
+    .form-group.dark-theme textarea:focus {
+      border-color: #FFD1A9 !important;
+    }
+
+    /* Estilos para el campo de fecha en modo oscuro */
+    .form-group.dark-theme input[type="date"]::before {
+      color: #9ca3af !important;
+    }
+
+    .form-group.dark-theme input[type="date"]:focus::before {
+      color: #FFD1A9 !important;
+    }
+
+    .incident-item.dark-theme {
+      background-color: #33334a !important;
+      color: #f3f4f6 !important;
+    }
+
+    .incident-identifier.dark-theme {
+      color: #FFD1A9 !important;
+    }
+
+    .detail-value.dark-theme {
+      color: #f3f4f6 !important;
+    }
+
+    .incident-justification.dark-theme {
+      background-color: #44445a !important;
+      color: #d1d5db !important;
+    }
+
+    .btn-delete-incident.dark-theme {
+      background-color: #dc2626 !important;
+      color: white !important;
+    }
+
+    .btn-delete-incident.dark-theme:hover {
+      background-color: #b91c1c !important;
+    }
+
+    /* Estilos de almacenamiento en modo oscuro */
+    .storage-info-container.dark-theme {
+      background-color: #33334a !important;
+      border-color: #44445a !important;
+    }
+
+    .storage-title.dark-theme {
+      color: #f3f4f6 !important;
+    }
+
+    .storage-title.dark-theme i {
+      color: #9ca3af !important;
+    }
+
+    .storage-status.dark-theme {
+      background-color: #44445a !important;
+      color: #f3f4f6 !important;
+    }
+
+    .storage-status.dark-theme .status-text {
+      color: #f3f4f6 !important;
+    }
+
+    .storage-item.dark-theme {
+      background-color: #2a2a35 !important;
+      border-color: #44445a !important;
+      color: #f3f4f6 !important;
+    }
+
+    .storage-item.dark-theme i {
+      color: #9ca3af !important;
+    }
+
+    .storage-item.dark-theme span {
+      color: #f3f4f6 !important;
+    }
+
+    .storage-item.dark-theme strong {
+      color: #FFD1A9 !important;
+    }
+
+    /* Estilos de bloqueo en modo oscuro */
+    .blocked-indicator.dark-theme {
+      background-color: #dc2626 !important;
+      color: white !important;
+    }
+
+    .storage-warning.dark-theme {
+      background-color: #451a03 !important;
+      border-color: #f59e0b !important;
+    }
+
+    .warning-content.dark-theme i {
+      color: #f59e0b !important;
+    }
+
+    .warning-text.dark-theme strong {
+      color: #fbbf24 !important;
+    }
+
+    .warning-text.dark-theme p,
+    .warning-text.dark-theme ul {
+      color: #fbbf24 !important;
+    }
+
+    .overlay-content.dark-theme {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+
+    .overlay-content.dark-theme p {
+      color: #f3f4f6 !important;
+    }
+
+    .overlay-content.dark-theme small {
+      color: #9ca3af !important;
+    }
+
+    .btn-primary.disabled.dark-theme {
+      background-color: #4b5563 !important;
+      color: #9ca3af !important;
+    }
+
+    .form-group input.disabled.dark-theme,
+    .form-group select.disabled.dark-theme,
+    .form-group textarea.disabled.dark-theme {
+      background-color: #374151 !important;
+      color: #6b7280 !important;
+    }
+
+    .btn-warning.dark-theme {
+      background-color: #d97706 !important;
+      color: white !important;
+    }
+
+    .btn-warning.dark-theme:hover {
+      background-color: #b45309 !important;
+    }
+
+    /* Estilos de detalles del cálculo en modo oscuro */
+    .calculation-details.dark-theme {
+      border-top-color: #44445a !important;
+    }
+
+    .calculation-details.dark-theme details {
+      background-color: #33334a !important;
+      border-color: #44445a !important;
+    }
+
+    .calculation-details.dark-theme summary {
+      color: #f3f4f6 !important;
+    }
+
+    .calculation-details.dark-theme summary:hover {
+      background-color: #44445a !important;
+    }
+
+    .calculation-details.dark-theme summary i {
+      color: #9ca3af !important;
+    }
+
+    .calculation-details.dark-theme .calculation-content {
+      background-color: #2a2a35 !important;
+      border-color: #44445a !important;
+      color: #f3f4f6 !important;
+    }
+
+    .calculation-details.dark-theme .calc-item {
+      border-bottom-color: #44445a !important;
+      color: #d1d5db !important;
+    }
+
+    .calculation-details.dark-theme .calc-item strong {
+      color: #FFD1A9 !important;
+    }
+
+    .calculation-details.dark-theme .calc-item.formula {
+      background-color: #451a03 !important;
+      color: #fbbf24 !important;
+    }
+
+    /* Modal en modo oscuro */
+    .confirm-modal.dark-theme {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+
+    .confirm-modal.dark-theme .confirm-modal-title {
+      color: #f3f4f6 !important;
+    }
+
+    .confirm-modal.dark-theme .confirm-modal-message {
+      color: #d1d5db !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+</head>
+<body class="text-gray-800">
+
+  <header class="header-comunidad">
+    <div class="header-content">
+      <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+      <span class="header-title">CGN</span>
+      <span class="header-legend">Sin tiempo para descansos</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <nav class="menu-desplegable" id="menuDesplegable">
+      <ul>
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/faq.html">FAQ</a></li>
+        <li><a href="/socios.html">Socios</a></li>
+        <li><a href="/ajustes.html">Ajustes</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <!-- Barra de progreso de scroll -->
+<div id="scroll-progress-container">
+  <div id="scroll-progress-bar"></div>
+</div>
+
+  </header>
+  
+  <div class="content-container">
+    <h1 class="page-title">Plantilla BD</h1>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  <!-- Panel de Administración de Incidencias -->
+  <div class="admin-panel">
+    <h2 class="admin-title">Registro de Incidencias</h2>
+    
+    <!-- Formulario de registro -->
+    <div class="form-section">
+      <h3 class="form-title">Registrar Nueva Incidencia</h3>
+      <form id="incidentForm" class="incident-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="identifier">Identificador:</label>
+            <input type="text" id="identifier" name="identifier" required placeholder="Ej: Elfin, +34632719384">
+          </div>
+          <div class="form-group">
+            <label for="group">Grupo:</label>
+            <select id="group" name="group" required>
+              <option value="">Seleccionar grupo</option>
+              <option value="Telegram">Telegram</option>
+              <option value="Signal | Grupo MC">Signal | Grupo MC</option>
+              <option value="Signal | Grupo Amistades">Signal | Grupo Amistades</option>
+              <option value="Discord">Discord</option>
+              <option value="WhatsApp | Comunidad">WhatsApp | Comunidad</option>
+              <option value="WhatsApp | Fortnite">WhatsApp | Fortnite</option>
+              <option value="WhatsApp | Sin reglas">WhatsApp | Sin reglas</option>
+              <option value="WhatsApp | Amistades 24/7">WhatsApp | Amistades 24/7</option>
+              <option value="WhatsApp | EH">WhatsApp | EH</option>
+              <option value="WhatsApp | AH">WhatsApp | AH</option>
+              <option value="WhatsApp | Roblox">WhatsApp | Roblox</option>
+              <option value="WhatsApp | MC CMT2">WhatsApp | MC CMT2</option>
+              <option value="WhatsApp | Ver estados">WhatsApp | Ver estados</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sanctionDate">Fecha de Sanción:</label>
+            <input type="date" id="sanctionDate" name="sanctionDate" required>
+          </div>
+          <div class="form-group">
+            <label for="infraction">Infracción:</label>
+            <select id="infraction" name="infraction" required>
+              <option value="">Seleccionar infracción</option>
+              <option value="Regla 1 | Admins | Dar admin sin permiso">Regla 1 | Admins | Dar admin sin permiso</option>
+              <option value="Regla 2 | Spam">Regla 2 | Spam</option>
+              <option value="Regla 3 | No contenido +18">Regla 3 | No contenido +18</option>
+              <option value="Regla 4 | Sin discusiones politicas">Regla 4 | Sin discusiones politicas</option>
+              <option value="Regla 5 | No links/qr de grupos">Regla 5 | No links/qr de grupos</option>
+              <option value="Regla 6 | No propaganda de servidores de MC">Regla 6 | No propaganda de servidores de MC</option>
+              <option value="Regla 7 | Poca actividad">Regla 7 | Poca actividad</option>
+              <option value="Regla 8 | No Trabas (binarios)">Regla 8 | No Trabas (binarios)</option>
+              <option value="Regla 9 | No doxeos">Regla 9 | No doxeos</option>
+              <option value="Regla 10 | No links o cadenas maliciosas">Regla 10 | No links o cadenas maliciosas</option>
+              <option value="Regla 11 | Respeto a la temática del grupo">Regla 11 | Respeto a la temática del grupo</option>
+              <option value="Regla 12 | No miembros corruptos">Regla 12 | No miembros corruptos</option>
+              <option value="Regla 13 | Acuerdo/replica no autorizado">Regla 13 | Acuerdo/replica no autorizado</option>
+              <option value="Regla 14 | No hacer dinamicas que incumplan las reglas">Regla 14 | No hacer dinamicas que incumplan las reglas</option>
+              <option value="Regla 15 | Prohibido suplantar la identidad de algun miembro">Regla 15 | Prohibido suplantar la identidad de algun miembro</option>
+              <option value="Regla 16 | El usuario no acato indicaciones de un admin">Regla 16 | El usuario no acato indicaciones de un admin</option>
+              <option value="Regla 17 | El usuario causo un daño a la comunidad">Regla 17 | El usuario causo un daño a la comunidad</option>
+              <option value="Regla 18 | Mal uso de multicuentas">Regla 18 | Mal uso de multicuentas</option>
+              <option value="Regla 19 | No MD/PV a alguien si no es necesario">Regla 19 | No MD/PV a alguien si no es necesario</option>
+              <option value="Regla 20 | Mal uso de los @">Regla 20 | Mal uso de los @</option>
+              <option value="Regla 21 | Mal uso de los bots del grupo">Regla 21 | Mal uso de los bots del grupo</option>
+              <option value="Regla 22 | No meter un bot al grupo sin autorización">Regla 22 | No meter un bot al grupo sin autorización</option>
+              <option value="Regla 23 | No flood">Regla 23 | No flood</option>
+              <option value="Regla 24 | No aparentar ser un admin">Regla 24 | No aparentar ser un admin</option>
+              <option value="Mal uso del admin">Mal uso del admin</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group full-width">
+          <label for="justification">Justificación:</label>
+          <textarea id="justification" name="justification" required placeholder="Ej: Baneo y eliminación de mensajes, Eliminación del grupo, etc." rows="3"></textarea>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-save"></i> Registrar Incidencia
+          </button>
+          <button type="button" class="btn-secondary" onclick="clearForm()">
+            <i class="fas fa-eraser"></i> Limpiar Formulario
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Panel de gestión de datos -->
+    <div class="data-section">
+      <div class="data-header">
+        <h3 class="data-title">Gestión de Datos</h3>
+        <div class="data-stats">
+          <span class="stat-item">
+            <i class="fas fa-list"></i>
+            <span id="totalIncidents">0</span> incidencias registradas
+          </span>
+        </div>
+      </div>
+      
+      <!-- Información de almacenamiento -->
+      <div class="storage-info-container">
+        <h4 class="storage-title">
+          <i class="fas fa-hdd"></i>
+          Estado del Almacenamiento LocalStorage
+        </h4>
+        <div id="storageInfo" class="storage-info">
+          <!-- La información se cargará dinámicamente -->
+        </div>
+      </div>
+      
+      <div class="data-actions">
+        <button class="btn-danger" onclick="clearAllIncidents()">
+          <i class="fas fa-trash-alt"></i> Borrar Todas las Incidencias
+        </button>
+        <button class="btn-success" onclick="copyToClipboard()">
+          <i class="fas fa-copy"></i> Copiar JSON al Portapapeles
+        </button>
+        <button class="btn-info" onclick="downloadJSON()">
+          <i class="fas fa-download"></i> Descargar JSON
+        </button>
+        <button class="btn-warning" onclick="importJSON()">
+          <i class="fas fa-upload"></i> Importar JSON
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista de incidencias registradas -->
+    <div class="incidents-list-section">
+      <div class="list-header">
+        <h3 class="list-title">Incidencias Registradas</h3>
+        <div class="list-info">
+          <i class="fas fa-sort-amount-down"></i>
+          <span>Ordenadas por fecha (más recientes primero)</span>
+        </div>
+      </div>
+      <div id="incidentsList" class="incidents-list">
+        <!-- Las incidencias se mostrarán aquí dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <div class="footer-links">
+          <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+          <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+          <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+          <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+          <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Comunidad</h3>
+        <div class="footer-links">
+          <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+          <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+          <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+          <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+          <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">
+        <img src="/icons/Bandera-jal.avif" 
+             alt="Logo Comunidad CGN" 
+             class="cgn-icon">
+        Comunidad CGN | <span id="currentYear">2022-2025</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Rectángulo gris fijo en la parte inferior -->
+  <div class="bottom-fixed-bar">
+    <div class="left-actions">
+      <button title="Abrir chat" class="open-chat-btn" onclick="openChat()">
+        <i class="fas fa-comments"></i>Ayuda
+      </button>
+      <button title="Compartir página" class="share-btn-fixed" id="shareBtn" onclick="sharePage()">
+        <i class="fas fa-share-alt"></i>
+      </button>
+    </div>
+    <div class="right-actions">
+      <div class="action-separator"></div>
+      <div class="view-more-fixed" id="viewMoreBtn" title="panel de acciones" onclick="togglePanel()">
+        <i class="fas fa-ellipsis-h"></i>
+        <span id="viewMoreText">Ver más</span>
+      </div>
+      <div class="back-to-top-fixed" id="backToTopBtn" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+      <div class="go-to-bottom-fixed" id="goToBottomBtn" title="Ir al final">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de expansión separado -->
+  <div class="panel-expansion" id="panelExpansion">
+    <!-- Contenedor para el contenido expandido -->
+    <div class="expanded-content">
+      <!-- Contenedor de noticias -->
+      <div class='news-container'>
+        <div class='title'>
+          Novedades
+        </div>
+
+        <ul>
+          <!-- Las noticias se cargarán dinámicamente desde noticias.json -->
+        </ul>
+      </div>
+      <div class="news-separator-top"></div>
+      
+      <!-- Sección de categorías -->
+      <div class="categories-section-panel">
+        <div class="categories-title-panel">Categorías</div>
+        <div class="categories-tags-panel">
+          <a href="/categorias-comunidad.html" class="category-tag-panel comunidad"><i class="fas fa-users"></i> Comunidad</a>
+          <a href="/categorias-mc.html" class="category-tag-panel minecraft"><i class="fas fa-cube"></i> Minecraft</a>
+          <a href="/categorias-reglas.html" class="category-tag-panel reglas"><i class="fas fa-book"></i> Reglas</a>
+          <a href="/categorias-admins.html" class="category-tag-panel administracion"><i class="fas fa-user-shield"></i> Administración</a>
+        </div>
+      </div>
+      <div class="news-separator-bottom"></div>
+      
+      <!-- Sección de tema -->
+      <div class="theme-section-panel" style="width:100%; margin: 0 0 10px 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+        <div class="categories-title-panel" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center; text-align: center;">
+          <span style="display: flex; align-items: center; gap: 8px;">
+            Tema
+            <button id="themeHelpBtn" type="button" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #374151; font-size: 1.1em; display: flex; align-items: center;">
+              <i class="fas fa-question-circle"></i>
+            </button>
+          </span>
+        </div>
+        <div class="theme-buttons-panel" style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+          <button class="theme-btn" title="Automático" type="button">
+            <i class="fas fa-adjust"></i> Automático
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Eficiencia" type="button">
+            <i class="fas fa-bolt"></i> Eficiencia
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Claro" type="button">
+            <i class="fas fa-sun"></i> Claro
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Oscuro" type="button">
+            <i class="fas fa-moon"></i> Oscuro
+            <span class="theme-indicator"></span>
+          </button>
+        </div>
+        <div class="action-separator" style="position: relative; left: 50%; transform: translateX(-50%); width: 100vw; height: 4px; background-color: rgba(255,255,255,0.3); margin: 14px 0 0 0; border-radius: 2px; z-index: 100;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay que contiene el chat modal -->
+  <div class="overlay" id="chatOverlay">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="header-left">
+          <div class="header-image">
+            <img src="/icons/bot-hecks.avif" alt="Logo de soporte" id="chatImage">
+          </div>
+          <div class="header-title">Soporte CGN</div>
+        </div>
+        <div class="header-buttons">
+          <button class="header-btn" onclick="toggleMaximize()" title="Maximizar/Minimizar chat">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="header-btn" onclick="clearChat()" title="Borrar chat">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="header-btn" onclick="closeChat()" title="Cerrar chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-footer" id="chatFooter"></div>
+    </div>
+  </div>
+
+  <!-- Popup de ayuda para Tema -->
+  <div class="theme-help-popup" id="themeHelpPopup">
+    <button class="close-btn" id="closeThemeHelp" title="Cerrar ayuda"><i class="fas fa-times"></i></button>
+    <strong>¿Cómo funcionan los modos de tema?</strong>
+    <ul>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-adjust"></i> <b>Automático</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Cambia entre modo claro y oscuro automáticamente según la hora del día (oscuro de noche, claro de día).</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-bolt"></i> <b>Eficiencia</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Activa el modo oscuro si el ahorro de energía está activo en tu dispositivo.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-sun"></i> <b>Claro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema claro en la página.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-moon"></i> <b>Oscuro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema oscuro en la página.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Input file oculto para importación -->
+  <input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="handleFileImport(event)">
+
+  <!-- Modal de confirmación personalizado -->
+  <div class="confirm-modal-overlay" id="confirmModal">
+    <div class="confirm-modal" id="confirmModalContent">
+      <div class="confirm-modal-header">
+        <div class="confirm-modal-icon" id="confirmModalIcon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 class="confirm-modal-title" id="confirmModalTitle">Confirmar acción</h3>
+      </div>
+      <p class="confirm-modal-message" id="confirmModalMessage">¿Estás seguro de que quieres realizar esta acción?</p>
+      <div class="confirm-modal-actions">
+        <button class="confirm-modal-btn cancel" id="confirmModalCancel">Cancelar</button>
+        <button class="confirm-modal-btn confirm" id="confirmModalConfirm">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <script src="/pwa/noticias.js"></script>
+  <script>
+    // Variables globales para el panel de administración
+    let incidents = [];
+    const STORAGE_KEY = 'cgn_incidents_data';
+
+    // Función para cargar incidencias desde LocalStorage
+    function loadIncidents() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          incidents = JSON.parse(stored);
+        } catch (e) {
+          console.error('Error al cargar incidencias:', e);
+          incidents = [];
+        }
+      }
+      updateIncidentsList();
+      updateStats();
+    }
+
+    // Función para guardar incidencias en LocalStorage
+    function saveIncidents() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(incidents));
+      updateIncidentsList();
+      updateStats();
+    }
+
+    // Función para ordenar incidencias por fecha (más recientes primero)
+    function sortIncidentsByDate() {
+      return incidents.sort((a, b) => {
+        const dateA = new Date(a.sanctionDate);
+        const dateB = new Date(b.sanctionDate);
+        return dateB - dateA; // Orden descendente (más reciente primero)
+      });
+    }
+
+    // Función para actualizar la lista de incidencias
+    function updateIncidentsList() {
+      const listContainer = document.getElementById('incidentsList');
+      if (!listContainer) return;
+
+      if (incidents.length === 0) {
+        listContainer.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-clipboard-list"></i>
+            <h4>No hay incidencias registradas</h4>
+            <p>Comienza registrando una nueva incidencia usando el formulario de arriba.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Ordenar incidencias por fecha antes de mostrar
+      const sortedIncidents = sortIncidentsByDate();
+
+      listContainer.innerHTML = sortedIncidents.map((incident, index) => `
+        <div class="incident-item" data-incident-id="${incident.id}">
+          <div class="incident-header">
+            <div class="incident-identifier">${incident.identifier}</div>
+            <div class="incident-date">${formatDate(incident.sanctionDate)}</div>
+          </div>
+          <div class="incident-details">
+            <div class="incident-detail">
+              <div class="detail-label">Grupo</div>
+              <div class="detail-value">${incident.group}</div>
+            </div>
+            <div class="incident-detail">
+              <div class="detail-label">Infracción</div>
+              <div class="detail-value">${incident.infraction}</div>
+            </div>
+          </div>
+          <div class="incident-justification">
+            <strong>Justificación:</strong> ${incident.justification}
+          </div>
+          <div class="incident-actions">
+            <button class="btn-delete-incident" onclick="deleteIncident(${incident.id})" title="Eliminar esta incidencia">
+              <i class="fas fa-trash-alt"></i> Eliminar
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      // Aplicar tema oscuro a los elementos recién generados si está activo
+      if (document.body.classList.contains('dark-theme')) {
+        applyDarkThemeToIncidents();
+      }
+    }
+
+    // Función para calcular el uso de memoria en LocalStorage
+    function calculateStorageUsage() {
+      const storageData = {
+        totalUsed: 0,
+        incidentsUsed: 0,
+        otherUsed: 0,
+        totalAvailable: 0,
+        incidentsData: null
+      };
+
+      try {
+        // Calcular uso total de LocalStorage
+        let totalSize = 0;
+        for (let key in localStorage) {
+          if (localStorage.hasOwnProperty(key)) {
+            const itemSize = new Blob([localStorage[key]]).size;
+            totalSize += itemSize;
+            
+            // Separar uso de incidencias vs otros datos
+            if (key === STORAGE_KEY) {
+              storageData.incidentsUsed = itemSize;
+              storageData.incidentsData = localStorage[key];
+            } else {
+              storageData.otherUsed += itemSize;
+            }
+          }
+        }
+        storageData.totalUsed = totalSize;
+
+        // Calcular espacio disponible (estimación conservadora)
+        // La mayoría de navegadores tienen límites entre 5-10MB
+        const estimatedLimit = 5 * 1024 * 1024; // 5MB como límite conservador
+        storageData.totalAvailable = estimatedLimit - totalSize;
+
+        return storageData;
+      } catch (error) {
+        console.error('Error al calcular uso de almacenamiento:', error);
+        return storageData;
+      }
+    }
+
+    // Función para formatear bytes a formato legible
+    function formatBytes(bytes, decimals = 2) {
+      if (bytes === 0) return '0 Bytes';
+      
+      const k = 1024;
+      const dm = decimals < 0 ? 0 : decimals;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    // Función para formatear números con comas para separar miles
+    function formatNumberWithCommas(number) {
+      if (typeof number === 'string') {
+        // Si es un string como "Sin datos para calcular", devolverlo tal como está
+        if (isNaN(number)) return number;
+        number = parseInt(number);
+      }
+      
+      if (isNaN(number)) return '0';
+      
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // Función para estimar cuántas incidencias más se pueden agregar
+    function estimateRemainingIncidents() {
+      const storageData = calculateStorageUsage();
+      
+      if (storageData.incidentsUsed === 0) {
+        return 'Sin datos para calcular';
+      }
+
+      // Calcular tamaño promedio por incidencia
+      const averageIncidentSize = storageData.incidentsUsed / incidents.length;
+      
+      // Calcular cuántas incidencias más caben de forma segura
+      // Usar solo el 80% del espacio disponible para ser conservador
+      const safeSpace = storageData.totalAvailable * 0.8;
+      const estimatedIncidents = Math.floor(safeSpace / averageIncidentSize);
+      
+      // Guardar datos para mostrar en la interfaz
+      window.storageCalculationDetails = {
+        averageIncidentSize: averageIncidentSize,
+        safeSpace: safeSpace,
+        totalAvailable: storageData.totalAvailable,
+        incidentsCount: incidents.length,
+        incidentsUsed: storageData.incidentsUsed
+      };
+      
+      return Math.max(0, estimatedIncidents);
+    }
+
+    // Función para actualizar información de almacenamiento
+    function updateStorageInfo() {
+      const storageInfoContainer = document.getElementById('storageInfo');
+      if (!storageInfoContainer) return;
+
+      const storageData = calculateStorageUsage();
+      const remainingIncidents = estimateRemainingIncidents();
+      
+      // Calcular porcentajes
+      const totalLimit = 5 * 1024 * 1024; // 5MB
+      const totalPercentage = ((storageData.totalUsed / totalLimit) * 100).toFixed(1);
+      const incidentsPercentage = storageData.totalUsed > 0 ? ((storageData.incidentsUsed / storageData.totalUsed) * 100).toFixed(1) : '0';
+      
+      // Determinar estado de almacenamiento
+      let storageStatus = 'normal';
+      let statusText = 'Normal';
+      let statusColor = '#10b981';
+      
+      if (totalPercentage > 80) {
+        storageStatus = 'critical';
+        statusText = 'Crítico';
+        statusColor = '#ef4444';
+      } else if (totalPercentage > 60) {
+        storageStatus = 'warning';
+        statusText = 'Advertencia';
+        statusColor = '#f59e0b';
+      }
+
+      // Verificar si el registro está bloqueado
+      const isRegistrationBlocked = parseFloat(totalPercentage) >= 85;
+      
+      storageInfoContainer.innerHTML = `
+        <div class="storage-status ${storageStatus}">
+          <div class="status-indicator" style="background-color: ${statusColor}"></div>
+          <span class="status-text">Estado: ${statusText}</span>
+          ${isRegistrationBlocked ? '<span class="blocked-indicator">🚫 Registro Bloqueado</span>' : ''}
+        </div>
+        
+        <div class="storage-details">
+          <div class="storage-item">
+            <i class="fas fa-database"></i>
+            <span><strong>Uso Total:</strong> ${formatBytes(storageData.totalUsed)} (${totalPercentage}%)</span>
+          </div>
+          
+          <div class="storage-item">
+            <i class="fas fa-clipboard-list"></i>
+            <span><strong>Incidencias:</strong> ${formatBytes(storageData.incidentsUsed)} (${incidentsPercentage}% del total)</span>
+          </div>
+          
+          <div class="storage-item">
+            <i class="fas fa-folder"></i>
+            <span><strong>Otros Datos:</strong> ${formatBytes(storageData.otherUsed)}</span>
+          </div>
+          
+          <div class="storage-item">
+            <i class="fas fa-hdd"></i>
+            <span><strong>Espacio Disponible:</strong> ${formatBytes(storageData.totalAvailable)}</span>
+          </div>
+          
+          <div class="storage-item">
+            <i class="fas fa-plus-circle"></i>
+            <span><strong>Incidencias Seguras:</strong> ${formatNumberWithCommas(remainingIncidents)} más</span>
+          </div>
+        </div>
+        
+        <!-- Detalles técnicos del cálculo -->
+        <div class="calculation-details">
+          <details>
+            <summary>
+              <i class="fas fa-calculator"></i>
+              <span>Ver detalles del cálculo</span>
+            </summary>
+            <div class="calculation-content">
+              <div class="calc-item">
+                <strong>Límite de LocalStorage:</strong> ${formatBytes(5 * 1024 * 1024)} (5MB)
+              </div>
+              <div class="calc-item">
+                <strong>Memoria usada por incidencias:</strong> ${formatBytes(storageData.incidentsUsed)}
+              </div>
+              <div class="calc-item">
+                <strong>Número de incidencias actuales:</strong> ${formatNumberWithCommas(incidents.length)}
+              </div>
+              <div class="calc-item">
+                <strong>Promedio por incidencia:</strong> ${formatBytes(window.storageCalculationDetails?.averageIncidentSize || 0)}
+              </div>
+              <div class="calc-item">
+                <strong>Espacio disponible total:</strong> ${formatBytes(storageData.totalAvailable)}
+              </div>
+              <div class="calc-item">
+                <strong>Espacio seguro (80%):</strong> ${formatBytes(window.storageCalculationDetails?.safeSpace || 0)}
+              </div>
+              <div class="calc-item formula">
+                <strong>Fórmula:</strong> (Espacio seguro ÷ Promedio por incidencia) = ${formatNumberWithCommas(remainingIncidents)} incidencias
+              </div>
+            </div>
+          </details>
+        </div>
+        
+        ${isRegistrationBlocked ? `
+        <div class="storage-warning">
+          <div class="warning-content">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="warning-text">
+              <strong>Registro Bloqueado</strong>
+              <p>El almacenamiento está al ${totalPercentage}% de su capacidad. Para continuar registrando incidencias:</p>
+              <ul>
+                <li>1. Copia o descarga los datos actuales</li>
+                <li>2. Elimina las incidencias existentes</li>
+                <li>3. Intenta registrar nuevamente</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        ` : ''}
+      `;
+
+      // Actualizar estado del formulario
+      updateFormState(isRegistrationBlocked);
+    }
+
+    // Función para actualizar el estado del formulario
+    function updateFormState(isBlocked) {
+      const form = document.getElementById('incidentForm');
+      const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+      const formInputs = form ? form.querySelectorAll('input, select, textarea') : [];
+      
+      if (isBlocked) {
+        // Deshabilitar formulario
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.classList.add('disabled');
+          submitBtn.innerHTML = '<i class="fas fa-ban"></i> Registro Bloqueado';
+        }
+        
+        formInputs.forEach(input => {
+          input.disabled = true;
+          input.classList.add('disabled');
+        });
+        
+        // Agregar overlay de bloqueo
+        let overlay = document.getElementById('formOverlay');
+        if (!overlay) {
+          overlay = document.createElement('div');
+          overlay.id = 'formOverlay';
+          overlay.className = 'form-overlay';
+          overlay.innerHTML = `
+            <div class="overlay-content">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p>Registro temporalmente bloqueado</p>
+              <small>Almacenamiento al 85% o más de su capacidad</small>
+            </div>
+          `;
+          form.appendChild(overlay);
+        }
+      } else {
+        // Habilitar formulario
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('disabled');
+          submitBtn.innerHTML = '<i class="fas fa-save"></i> Registrar Incidencia';
+        }
+        
+        formInputs.forEach(input => {
+          input.disabled = false;
+          input.classList.remove('disabled');
+        });
+        
+        // Remover overlay de bloqueo
+        const overlay = document.getElementById('formOverlay');
+        if (overlay) {
+          overlay.remove();
+        }
+      }
+    }
+
+    // Función para actualizar estadísticas
+    function updateStats() {
+      const totalElement = document.getElementById('totalIncidents');
+      if (totalElement) {
+        totalElement.textContent = formatNumberWithCommas(incidents.length);
+      }
+
+      // Actualizar información de almacenamiento
+      updateStorageInfo();
+    }
+
+    // Función para formatear fecha
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    }
+
+    // Función para limpiar formulario
+    function clearForm() {
+      document.getElementById('incidentForm').reset();
+      // Establecer fecha actual por defecto
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('sanctionDate').value = today;
+    }
+
+    // Función para verificar si se puede registrar una nueva incidencia
+    function canRegisterIncident() {
+      const storageData = calculateStorageUsage();
+      const totalLimit = 5 * 1024 * 1024; // 5MB
+      const totalPercentage = (storageData.totalUsed / totalLimit) * 100;
+      
+      return totalPercentage < 85; // Permitir registro solo si está por debajo del 85%
+    }
+
+    // Función para registrar nueva incidencia
+    function registerIncident(formData) {
+      // Verificar si se puede registrar
+      if (!canRegisterIncident()) {
+        showNotification('No se puede registrar la incidencia. El almacenamiento está al 85% o más de su capacidad. Por favor, copia o descarga los datos actuales y luego elimínalos para liberar espacio.', 'error');
+        return false;
+      }
+
+      const newIncident = {
+        id: incidents.length + 1,
+        identifier: formData.identifier,
+        group: formData.group,
+        sanctionDate: formData.sanctionDate,
+        infraction: formData.infraction,
+        justification: formData.justification
+      };
+
+      incidents.push(newIncident);
+      saveIncidents();
+      
+      // Mostrar notificación de éxito
+      showNotification('Incidencia registrada exitosamente', 'success');
+      return true;
+    }
+
+    // Variables para el modal de confirmación
+    let currentConfirmCallback = null;
+
+    // Función para mostrar modal de confirmación
+    function showConfirmModal(title, message, iconClass, confirmText, cancelText, onConfirm) {
+      const modal = document.getElementById('confirmModal');
+      const modalContent = document.getElementById('confirmModalContent');
+      const modalTitle = document.getElementById('confirmModalTitle');
+      const modalMessage = document.getElementById('confirmModalMessage');
+      const modalIcon = document.getElementById('confirmModalIcon');
+      const confirmBtn = document.getElementById('confirmModalConfirm');
+      const cancelBtn = document.getElementById('confirmModalCancel');
+
+      // Configurar contenido del modal
+      modalTitle.textContent = title;
+      modalMessage.textContent = message;
+      modalIcon.className = `confirm-modal-icon ${iconClass}`;
+      modalIcon.innerHTML = `<i class="fas fa-${iconClass === 'warning' ? 'exclamation-triangle' : 'trash-alt'}"></i>`;
+      confirmBtn.textContent = confirmText;
+      cancelBtn.textContent = cancelText;
+
+      // Guardar callback de confirmación
+      currentConfirmCallback = onConfirm;
+
+      // Mostrar modal
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Función para cerrar modal de confirmación
+    function closeConfirmModal() {
+      const modal = document.getElementById('confirmModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      currentConfirmCallback = null;
+    }
+
+    // Función para eliminar una incidencia específica
+    function deleteIncident(incidentId) {
+      const incident = incidents.find(inc => inc.id === incidentId);
+      if (!incident) {
+        showNotification('Incidencia no encontrada', 'error');
+        return;
+      }
+
+      showConfirmModal(
+        'Eliminar Incidencia',
+        `¿Estás seguro de que quieres eliminar la incidencia de "${incident.identifier}"? Esta acción no se puede deshacer.`,
+        'danger',
+        'Eliminar',
+        'Cancelar',
+        () => {
+          incidents = incidents.filter(inc => inc.id !== incidentId);
+          saveIncidents();
+          showNotification(`Incidencia de "${incident.identifier}" eliminada exitosamente`, 'success');
+          closeConfirmModal();
+        }
+      );
+    }
+
+    // Función para borrar todas las incidencias
+    function clearAllIncidents() {
+      if (incidents.length === 0) {
+        showNotification('No hay incidencias para borrar', 'info');
+        return;
+      }
+
+      showConfirmModal(
+        'Eliminar Todas las Incidencias',
+        '¿Estás seguro de que quieres borrar todas las incidencias? Esta acción no se puede deshacer.',
+        'warning',
+        'Eliminar Todo',
+        'Cancelar',
+        () => {
+          incidents = [];
+          saveIncidents();
+          showNotification('Todas las incidencias han sido borradas', 'success');
+          closeConfirmModal();
+        }
+      );
+    }
+
+    // Función para copiar JSON al portapapeles
+    function copyToClipboard() {
+      if (incidents.length === 0) {
+        showNotification('No hay incidencias para copiar', 'info');
+        return;
+      }
+
+      const jsonData = {
+        registros: incidents,
+        metadata: {
+          ultimaActualizacion: new Date().toISOString().split('T')[0],
+          totalRegistros: incidents.length,
+          version: "2.0",
+          administrador: "CGN",
+          descripcion: "Base de datos de incumplimientos a las reglas al rededor de nuestros grupos, con capacidades para obtener un expediente completo de cualquier usuario indexado. Las estadísticas se calculan automáticamente.",
+          contacto: "soporteclubgaming@gmail.com"
+        }
+      };
+
+      const jsonString = JSON.stringify(jsonData, null, 2);
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(jsonString).then(() => {
+          showNotification('JSON copiado al portapapeles exitosamente', 'success');
+        }).catch(() => {
+          fallbackCopy(jsonString);
+        });
+      } else {
+        fallbackCopy(jsonString);
+      }
+    }
+
+    // Función de respaldo para copiar
+    function fallbackCopy(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showNotification('JSON copiado al portapapeles exitosamente', 'success');
+      } catch (err) {
+        showNotification('Error al copiar al portapapeles', 'error');
+      }
+      document.body.removeChild(textArea);
+    }
+
+    // Función para descargar JSON
+    function downloadJSON() {
+      if (incidents.length === 0) {
+        showNotification('No hay incidencias para descargar', 'info');
+        return;
+      }
+
+      const jsonData = {
+        registros: incidents,
+        metadata: {
+          ultimaActualizacion: new Date().toISOString().split('T')[0],
+          totalRegistros: incidents.length,
+          version: "2.0",
+          administrador: "CGN",
+          descripcion: "Base de datos de incumplimientos a las reglas al rededor de nuestros grupos, con capacidades para obtener un expediente completo de cualquier usuario indexado. Las estadísticas se calculan automáticamente.",
+          contacto: "soporteclubgaming@gmail.com"
+        }
+      };
+
+      const jsonString = JSON.stringify(jsonData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `incidencias_cgn_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showNotification('Archivo JSON descargado exitosamente', 'success');
+    }
+
+    // Función para importar JSON
+    function importJSON() {
+      const fileInput = document.getElementById('importFileInput');
+      if (fileInput) {
+        fileInput.click();
+      }
+    }
+
+    // Función para manejar la importación de archivos
+    function handleFileImport(event) {
+      const file = event.target.files[0];
+      if (!file) {
+        showNotification('No se seleccionó ningún archivo', 'error');
+        return;
+      }
+
+      // Validar que sea un archivo JSON
+      if (!file.name.toLowerCase().endsWith('.json')) {
+        showNotification('El archivo debe ser de formato JSON (.json)', 'error');
+        resetFileInput();
+        return;
+      }
+
+      // Validar tamaño del archivo (máximo 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        showNotification('El archivo es demasiado grande. Máximo 10MB permitido.', 'error');
+        resetFileInput();
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const jsonData = JSON.parse(e.target.result);
+          
+          // Validar estructura del JSON
+          if (!validateImportStructure(jsonData)) {
+            showNotification('El archivo JSON no tiene el formato esperado. Asegúrate de que sea un archivo exportado desde esta aplicación.', 'error');
+            resetFileInput();
+            return;
+          }
+
+          // Mostrar modal de confirmación para importar
+          showImportConfirmation(jsonData);
+          
+        } catch (error) {
+          showNotification('Error al leer el archivo JSON. Verifica que el archivo no esté corrupto.', 'error');
+          resetFileInput();
+        }
+      };
+
+      reader.onerror = function() {
+        showNotification('Error al leer el archivo', 'error');
+        resetFileInput();
+      };
+
+      reader.readAsText(file);
+    }
+
+    // Función para validar la estructura del JSON importado
+    function validateImportStructure(jsonData) {
+      // Verificar que tenga las propiedades básicas
+      if (!jsonData || typeof jsonData !== 'object') {
+        return false;
+      }
+
+      // Verificar que tenga registros
+      if (!jsonData.registros || !Array.isArray(jsonData.registros)) {
+        return false;
+      }
+
+      // Verificar que tenga metadata
+      if (!jsonData.metadata || typeof jsonData.metadata !== 'object') {
+        return false;
+      }
+
+      // Verificar propiedades de metadata
+      const requiredMetadataProps = ['version', 'administrador', 'descripcion'];
+      for (const prop of requiredMetadataProps) {
+        if (!jsonData.metadata[prop]) {
+          return false;
+        }
+      }
+
+      // Verificar que los registros tengan la estructura correcta
+      if (jsonData.registros.length > 0) {
+        const firstRecord = jsonData.registros[0];
+        const requiredRecordProps = ['id', 'identifier', 'group', 'sanctionDate', 'infraction', 'justification'];
+        
+        for (const prop of requiredRecordProps) {
+          if (!(prop in firstRecord)) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
+
+    // Función para mostrar confirmación de importación
+    function showImportConfirmation(jsonData) {
+      const totalRecords = jsonData.registros.length;
+      const currentRecords = incidents.length;
+      
+      let message = `Se encontraron ${formatNumberWithCommas(totalRecords)} incidencias en el archivo.`;
+      
+      if (currentRecords > 0) {
+        message += `\n\nActualmente tienes ${formatNumberWithCommas(currentRecords)} incidencias registradas.`;
+        message += `\n\n¿Qué deseas hacer?`;
+      } else {
+        message += `\n\n¿Deseas importar estas incidencias?`;
+      }
+
+      showConfirmModal(
+        'Importar Incidencias',
+        message,
+        'warning',
+        currentRecords > 0 ? 'Reemplazar Actuales' : 'Importar',
+        'Cancelar',
+        () => {
+          // Importar los datos
+          incidents = [...jsonData.registros];
+          saveIncidents();
+          
+          const action = currentRecords > 0 ? 'reemplazadas' : 'importadas';
+          showNotification(`${formatNumberWithCommas(totalRecords)} incidencias ${action} exitosamente`, 'success');
+          
+          closeConfirmModal();
+          resetFileInput();
+        }
+      );
+    }
+
+    // Función para resetear el input file
+    function resetFileInput() {
+      const fileInput = document.getElementById('importFileInput');
+      if (fileInput) {
+        fileInput.value = '';
+      }
+    }
+
+    // Función para mostrar notificaciones
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: ${type === 'success' ? 'rgba(16, 185, 129, 0.95)' : 
+                          type === 'error' ? 'rgba(239, 68, 68, 0.95)' : 
+                          'rgba(255, 209, 169, 0.95)'};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 10000;
+        font-size: 14px;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+      `;
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 100);
+      
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // Aplicar tema oscuro específicamente a los elementos de incidencias
+    function applyDarkThemeToIncidents() {
+      const incidentItems = document.querySelectorAll('.incident-item');
+      const incidentIdentifiers = document.querySelectorAll('.incident-identifier');
+      const detailValues = document.querySelectorAll('.detail-value');
+      const incidentJustifications = document.querySelectorAll('.incident-justification');
+      const deleteButtons = document.querySelectorAll('.btn-delete-incident');
+
+      incidentItems.forEach(el => el.classList.add('dark-theme'));
+      incidentIdentifiers.forEach(el => el.classList.add('dark-theme'));
+      detailValues.forEach(el => el.classList.add('dark-theme'));
+      incidentJustifications.forEach(el => el.classList.add('dark-theme'));
+      deleteButtons.forEach(el => el.classList.add('dark-theme'));
+    }
+
+    // Aplicar tema oscuro al panel de administración
+    function applyDarkThemeToAdmin() {
+      const adminPanel = document.querySelector('.admin-panel');
+      const formSection = document.querySelector('.form-section');
+      const dataSection = document.querySelector('.data-section');
+      const incidentsListSection = document.querySelector('.incidents-list-section');
+      const adminTitle = document.querySelector('.admin-title');
+      const formTitle = document.querySelector('.form-title');
+      const dataTitle = document.querySelector('.data-title');
+      const listTitle = document.querySelector('.list-title');
+      const listInfo = document.querySelector('.list-info');
+      const formGroups = document.querySelectorAll('.form-group');
+      const incidentItems = document.querySelectorAll('.incident-item');
+      const incidentIdentifiers = document.querySelectorAll('.incident-identifier');
+      const detailValues = document.querySelectorAll('.detail-value');
+      const incidentJustifications = document.querySelectorAll('.incident-justification');
+      const deleteButtons = document.querySelectorAll('.btn-delete-incident');
+      const confirmModal = document.getElementById('confirmModal');
+      const storageInfoContainer = document.querySelector('.storage-info-container');
+      const storageTitle = document.querySelector('.storage-title');
+      const storageStatus = document.querySelector('.storage-status');
+      const storageItems = document.querySelectorAll('.storage-item');
+      const blockedIndicator = document.querySelector('.blocked-indicator');
+      const storageWarning = document.querySelector('.storage-warning');
+      const warningContent = document.querySelector('.warning-content');
+      const warningText = document.querySelector('.warning-text');
+      const overlayContent = document.querySelector('.overlay-content');
+      const disabledBtn = document.querySelector('.btn-primary.disabled');
+      const disabledInputs = document.querySelectorAll('.form-group input.disabled, .form-group select.disabled, .form-group textarea.disabled');
+      const calculationDetails = document.querySelector('.calculation-details');
+      const warningButtons = document.querySelectorAll('.btn-warning');
+
+      if (document.body.classList.contains('dark-theme')) {
+        if (adminPanel) adminPanel.classList.add('dark-theme');
+        if (formSection) formSection.classList.add('dark-theme');
+        if (dataSection) dataSection.classList.add('dark-theme');
+        if (incidentsListSection) incidentsListSection.classList.add('dark-theme');
+        if (adminTitle) adminTitle.classList.add('dark-theme');
+        if (formTitle) formTitle.classList.add('dark-theme');
+        if (dataTitle) dataTitle.classList.add('dark-theme');
+        if (listTitle) listTitle.classList.add('dark-theme');
+        if (listInfo) listInfo.classList.add('dark-theme');
+        formGroups.forEach(el => el.classList.add('dark-theme'));
+        incidentItems.forEach(el => el.classList.add('dark-theme'));
+        incidentIdentifiers.forEach(el => el.classList.add('dark-theme'));
+        detailValues.forEach(el => el.classList.add('dark-theme'));
+        incidentJustifications.forEach(el => el.classList.add('dark-theme'));
+        deleteButtons.forEach(el => el.classList.add('dark-theme'));
+        if (confirmModal) confirmModal.classList.add('dark-theme');
+        if (storageInfoContainer) storageInfoContainer.classList.add('dark-theme');
+        if (storageTitle) storageTitle.classList.add('dark-theme');
+        if (storageStatus) storageStatus.classList.add('dark-theme');
+        storageItems.forEach(el => el.classList.add('dark-theme'));
+        if (blockedIndicator) blockedIndicator.classList.add('dark-theme');
+        if (storageWarning) storageWarning.classList.add('dark-theme');
+        if (warningContent) warningContent.classList.add('dark-theme');
+        if (warningText) warningText.classList.add('dark-theme');
+        if (overlayContent) overlayContent.classList.add('dark-theme');
+        if (disabledBtn) disabledBtn.classList.add('dark-theme');
+        disabledInputs.forEach(el => el.classList.add('dark-theme'));
+        if (calculationDetails) calculationDetails.classList.add('dark-theme');
+        warningButtons.forEach(el => el.classList.add('dark-theme'));
+      } else {
+        if (adminPanel) adminPanel.classList.remove('dark-theme');
+        if (formSection) formSection.classList.remove('dark-theme');
+        if (dataSection) dataSection.classList.remove('dark-theme');
+        if (incidentsListSection) incidentsListSection.classList.remove('dark-theme');
+        if (adminTitle) adminTitle.classList.remove('dark-theme');
+        if (formTitle) formTitle.classList.remove('dark-theme');
+        if (dataTitle) dataTitle.classList.remove('dark-theme');
+        if (listTitle) listTitle.classList.remove('dark-theme');
+        if (listInfo) listInfo.classList.remove('dark-theme');
+        formGroups.forEach(el => el.classList.remove('dark-theme'));
+        incidentItems.forEach(el => el.classList.remove('dark-theme'));
+        incidentIdentifiers.forEach(el => el.classList.remove('dark-theme'));
+        detailValues.forEach(el => el.classList.remove('dark-theme'));
+        incidentJustifications.forEach(el => el.classList.remove('dark-theme'));
+        deleteButtons.forEach(el => el.classList.remove('dark-theme'));
+        if (confirmModal) confirmModal.classList.remove('dark-theme');
+        if (storageInfoContainer) storageInfoContainer.classList.remove('dark-theme');
+        if (storageTitle) storageTitle.classList.remove('dark-theme');
+        if (storageStatus) storageStatus.classList.remove('dark-theme');
+        storageItems.forEach(el => el.classList.remove('dark-theme'));
+        if (blockedIndicator) blockedIndicator.classList.remove('dark-theme');
+        if (storageWarning) storageWarning.classList.remove('dark-theme');
+        if (warningContent) warningContent.classList.remove('dark-theme');
+        if (warningText) warningText.classList.remove('dark-theme');
+        if (overlayContent) overlayContent.classList.remove('dark-theme');
+        if (disabledBtn) disabledBtn.classList.remove('dark-theme');
+        disabledInputs.forEach(el => el.classList.remove('dark-theme'));
+        if (calculationDetails) calculationDetails.classList.remove('dark-theme');
+        warningButtons.forEach(el => el.classList.remove('dark-theme'));
+      }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      // Actualizar año en footer
+      const currentYear = new Date().getFullYear();
+      document.getElementById('currentYear').textContent = `2022-${currentYear}`;
+      
+       // Botón "Volver" inteligente
+       const backButton = document.getElementById('backButton');
+            backButton.addEventListener('click', function() {
+                // Comprobar si hay una página anterior en el historial
+                if (document.referrer && document.referrer !== window.location.href) {
+                    window.history.back();
+                } else {
+                    // Si no hay historial previo, redirigir a la página de inicio
+                    window.location.href = '/index.html';
+                }
+            });
+
+      // Botón "Volver arriba"
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Botón "Ir al final"
+      const goToBottomBtn = document.getElementById('goToBottomBtn');
+      goToBottomBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Menú desplegable
+      const menuToggle = document.getElementById('menuToggle');
+      const menuDesplegable = document.getElementById('menuDesplegable');
+      
+      // Abrir/cerrar menú al hacer clic en el botón
+      menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menuDesplegable.classList.toggle('abierto');
+        menuToggle.classList.toggle('activo');
+      });
+      
+      // Cerrar menú al hacer clic fuera
+      document.addEventListener('click', function(e) {
+        if (!menuDesplegable.contains(e.target) && !menuToggle.contains(e.target)) {
+          menuDesplegable.classList.remove('abierto');
+          menuToggle.classList.remove('activo');
+        }
+      });
+      
+      // Prevenir que el clic en el menú lo cierre
+      menuDesplegable.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+
+      // Inicializar panel de administración
+      loadIncidents();
+      
+      // Establecer fecha actual por defecto en el formulario
+      const today = new Date().toISOString().split('T')[0];
+      const dateInput = document.getElementById('sanctionDate');
+      if (dateInput) {
+        dateInput.value = today;
+      }
+
+      // Manejar envío del formulario de incidencias
+      const incidentForm = document.getElementById('incidentForm');
+      if (incidentForm) {
+        incidentForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const formData = {
+            identifier: document.getElementById('identifier').value.trim(),
+            group: document.getElementById('group').value,
+            sanctionDate: document.getElementById('sanctionDate').value,
+            infraction: document.getElementById('infraction').value,
+            justification: document.getElementById('justification').value.trim()
+          };
+
+          // Validar que todos los campos estén completos
+          if (!formData.identifier || !formData.group || !formData.sanctionDate || !formData.infraction || !formData.justification) {
+            showNotification('Por favor, completa todos los campos del formulario', 'error');
+            return;
+          }
+
+          // Intentar registrar la incidencia
+          const success = registerIncident(formData);
+          
+          // Solo limpiar formulario si el registro fue exitoso
+          if (success) {
+            clearForm();
+          }
+        });
+      }
+
+      // Aplicar tema oscuro al panel de administración al cargar
+      applyDarkThemeToAdmin();
+
+      // Formatear campo de fecha a DD/MM/AA
+      const fechaInput = document.getElementById('sanctionDate');
+      if (fechaInput) {
+        fechaInput.addEventListener('input', function() {
+          if (this.value) {
+            const partes = this.value.split('-');
+            if (partes.length === 3) {
+              const dia = partes[2];
+              const mes = partes[1];
+              const anio = partes[0].slice(2); // Solo los últimos 2 dígitos del año
+              this.setAttribute('data-formatted', `${dia}/${mes}/${anio}`);
+            }
+          }
+        });
+
+        // También aplicar formato al cargar si ya hay un valor
+        if (fechaInput.value) {
+          const partes = fechaInput.value.split('-');
+          if (partes.length === 3) {
+            const dia = partes[2];
+            const mes = partes[1];
+            const anio = partes[0].slice(2);
+            fechaInput.setAttribute('data-formatted', `${dia}/${mes}/${anio}`);
+          }
+        }
+      }
+
+      // Event listeners para el modal de confirmación
+      const confirmModal = document.getElementById('confirmModal');
+      const confirmModalCancel = document.getElementById('confirmModalCancel');
+      const confirmModalConfirm = document.getElementById('confirmModalConfirm');
+
+      if (confirmModal && confirmModalCancel && confirmModalConfirm) {
+        // Cerrar modal al hacer clic en cancelar
+        confirmModalCancel.addEventListener('click', closeConfirmModal);
+
+        // Ejecutar acción al hacer clic en confirmar
+        confirmModalConfirm.addEventListener('click', function() {
+          if (currentConfirmCallback) {
+            currentConfirmCallback();
+          }
+        });
+
+        // Cerrar modal al hacer clic fuera del modal
+        confirmModal.addEventListener('click', function(e) {
+          if (e.target === confirmModal) {
+            closeConfirmModal();
+          }
+        });
+
+        // Cerrar modal con la tecla Escape
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && confirmModal.classList.contains('active')) {
+            closeConfirmModal();
+          }
+        });
+      }
+    });
+
+
+   // Barra de progreso de scroll
+const scrollProgressBar = document.getElementById('scroll-progress-bar');
+
+function updateScrollProgress() {
+  // Calcular el progreso del scroll
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrollPercentage = (scrollTop / scrollHeight) * 100;
+  
+  // Actualizar el ancho de la barra de progreso
+  scrollProgressBar.style.width = scrollPercentage + '%';
+  
+  // Cambiar color cuando esté cerca del final
+  if (scrollPercentage > 90) {
+    scrollProgressBar.style.background = 'linear-gradient(90deg, #ffb07a, #ff7b54)';
+  } else {
+    scrollProgressBar.style.background = 'linear-gradient(90deg, #FFD1A9, #ffb07a)';
+  }
+}
+
+// Actualizar al cargar y al hacer scroll
+window.addEventListener('load', updateScrollProgress);
+window.addEventListener('scroll', updateScrollProgress);
+window.addEventListener('resize', updateScrollProgress);
+
+// Calcular altura del header automáticamente
+function setProgressBarPosition() {
+  const header = document.querySelector('.header-comunidad');
+  if (header) {
+    const headerHeight = header.offsetHeight;
+    document.getElementById('scroll-progress-container').style.top = headerHeight + 'px';
+  }
+}
+
+// Llamar al cargar y al redimensionar
+window.addEventListener('load', function() {
+  setProgressBarPosition();
+  updateScrollProgress();
+});
+window.addEventListener('resize', setProgressBarPosition);
+
+// Función para expandir/contraer el panel de acciones
+function togglePanel() {
+  const panelExpansion = document.getElementById('panelExpansion');
+  const viewMoreBtn = document.getElementById('viewMoreBtn');
+  const viewMoreText = document.getElementById('viewMoreText');
+  const viewMoreIcon = document.querySelector('#viewMoreBtn i');
+  
+  if (panelExpansion.classList.contains('expanded')) {
+    // Contraer el panel
+    panelExpansion.classList.remove('expanded');
+    viewMoreBtn.classList.remove('expanded');
+    viewMoreText.textContent = 'Ver más';
+    viewMoreIcon.className = 'fas fa-ellipsis-h';
+    document.body.style.overflow = '';
+  } else {
+    // Expandir el panel
+    panelExpansion.classList.add('expanded');
+    viewMoreBtn.classList.add('expanded');
+    viewMoreText.textContent = 'Ver menos';
+    viewMoreIcon.className = 'fas fa-compress';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+// Función para verificar si el panel está expandido
+function isPanelExpanded() {
+  return document.getElementById('panelExpansion').classList.contains('expanded');
+}
+
+// Función para establecer el overflow correcto basado en el estado del panel
+function setCorrectOverflow() {
+  if (isPanelExpanded()) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
+
+// Función para compartir la página
+function sharePage() {
+  const pageTitle = document.title || 'CGN - Comunidad Gaming Network';
+  const pageUrl = window.location.href;
+  
+  // Verificar si la API Web Share está disponible
+  if (navigator.share) {
+    navigator.share({
+      title: pageTitle,
+      url: pageUrl,
+      text: '¡Mira esta página de la Comunidad Gaming Network!'
+    }).then(() => {
+      console.log('Contenido compartido exitosamente');
+    }).catch((error) => {
+      console.log('Error al compartir:', error);
+      // Fallback: copiar URL al portapapeles
+      fallbackShare();
+    });
+  } else {
+    // Fallback para navegadores que no soportan Web Share API
+    fallbackShare();
+  }
+}
+
+// Función de respaldo para compartir
+function fallbackShare() {
+  const pageUrl = window.location.href;
+  
+  // Intentar copiar al portapapeles
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(pageUrl).then(() => {
+      // Mostrar notificación de éxito
+      showShareNotification('¡URL copiada al portapapeles!');
+    }).catch(() => {
+      // Si falla clipboard, mostrar URL en alert
+      alert('Comparte esta URL: ' + pageUrl);
+    });
+  } else {
+    // Fallback final: mostrar URL en alert
+    alert('Comparte esta URL: ' + pageUrl);
+  }
+}
+
+// Función para mostrar notificación de compartir
+function showShareNotification(message) {
+  // Crear elemento de notificación
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 209, 169, 0.95);
+    color: #374151;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  `;
+  notification.textContent = message;
+  
+  // Agregar al DOM
+  document.body.appendChild(notification);
+  
+  // Animar entrada
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Remover después de 3 segundos
+  setTimeout(() => {
+    notification.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
+// --- Tema: solo un botón activo a la vez ---
+document.addEventListener('DOMContentLoaded', function() {
+  const themeBtns = document.querySelectorAll('.theme-btn');
+  const body = document.body;
+  const contentContainer = document.querySelector('.content-container');
+  const header = document.querySelector('.header-comunidad');
+  const headerTitle = document.querySelector('.header-title');
+  const headerLegend = document.querySelector('.header-legend');
+  const menuDesplegable = document.getElementById('menuDesplegable');
+  const pageTitle = document.querySelector('.page-title');
+  const navButtons = document.querySelectorAll('.nav-button');
+  const footer = document.querySelector('footer');
+  const footerSections = document.querySelectorAll('.footer-section');
+  const footerLinks = document.querySelectorAll('.footer-links a');
+  const footerBottom = document.querySelector('.footer-bottom');
+  const copyright = document.querySelector('.copyright');
+  const bottomFixedBar = document.querySelector('.bottom-fixed-bar');
+  const panelExpansion = document.querySelector('.panel-expansion');
+  const newsContainer = document.querySelector('.news-container');
+  const categoriesTitlePanel = document.querySelectorAll('.categories-title-panel');
+  const categoryTagPanel = document.querySelectorAll('.category-tag-panel');
+  const themeBtnsAll = document.querySelectorAll('.theme-btn');
+  const themeHelpPopup = document.getElementById('themeHelpPopup');
+  const actionSeparators = document.querySelectorAll('.action-separator');
+  const newsSeparators = document.querySelectorAll('.news-separator-top, .news-separator-bottom');
+  const menuToggle = document.getElementById('menuToggle');
+
+  themeBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      themeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Guardar preferencia en localStorage
+      let theme = btn.textContent.trim().toLowerCase();
+      if (theme.includes('oscuro')) {
+        localStorage.setItem('preferencia-tema', 'oscuro');
+      } else if (theme.includes('claro')) {
+        localStorage.setItem('preferencia-tema', 'claro');
+      } else if (theme.includes('automático') || theme.includes('automatico')) {
+        localStorage.setItem('preferencia-tema', 'automatico');
+      } else if (theme.includes('eficiencia')) {
+        localStorage.setItem('preferencia-tema', 'eficiencia');
+      }
+
+      // Lógica de tema
+      function setDarkTheme(active) {
+        if (active) {
+          body.classList.add('dark-theme');
+          if(contentContainer) contentContainer.classList.add('dark-theme');
+          if(header) header.classList.add('dark-theme');
+          if(headerTitle) headerTitle.classList.add('dark-theme');
+          if(headerLegend) headerLegend.classList.add('dark-theme');
+          if(menuDesplegable) menuDesplegable.classList.add('dark-theme');
+          if(pageTitle) pageTitle.classList.add('dark-theme');
+          navButtons.forEach(el => el.classList.add('dark-theme'));
+                  if(footer) footer.classList.add('dark-theme');
+        footerSections.forEach(el => el.classList.add('dark-theme'));
+        footerLinks.forEach(el => el.classList.add('dark-theme'));
+        if(footerBottom) footerBottom.classList.add('dark-theme');
+        if(copyright) copyright.classList.add('dark-theme');
+        if(menuToggle) menuToggle.classList.add('dark-theme');
+        if(bottomFixedBar) bottomFixedBar.classList.add('dark-theme');
+          if(panelExpansion) panelExpansion.classList.add('dark-theme');
+          if(newsContainer) newsContainer.classList.add('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.add('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.add('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.add('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.add('dark-theme');
+          actionSeparators.forEach(el => el.classList.add('dark-theme'));
+          newsSeparators.forEach(el => el.classList.add('dark-theme'));
+          
+          // Aplicar tema oscuro al panel de administración
+          applyDarkThemeToAdmin();
+        } else {
+          body.classList.remove('dark-theme');
+          if(contentContainer) contentContainer.classList.remove('dark-theme');
+          if(header) header.classList.remove('dark-theme');
+          if(headerTitle) headerTitle.classList.remove('dark-theme');
+          if(headerLegend) headerLegend.classList.remove('dark-theme');
+          if(menuDesplegable) menuDesplegable.classList.remove('dark-theme');
+          if(pageTitle) pageTitle.classList.remove('dark-theme');
+          navButtons.forEach(el => el.classList.remove('dark-theme'));
+                  if(footer) footer.classList.remove('dark-theme');
+        footerSections.forEach(el => el.classList.remove('dark-theme'));
+        footerLinks.forEach(el => el.classList.remove('dark-theme'));
+        if(footerBottom) footerBottom.classList.remove('dark-theme');
+        if(copyright) copyright.classList.remove('dark-theme');
+        if(menuToggle) menuToggle.classList.remove('dark-theme');
+        if(bottomFixedBar) bottomFixedBar.classList.remove('dark-theme');
+          if(panelExpansion) panelExpansion.classList.remove('dark-theme');
+          if(newsContainer) newsContainer.classList.remove('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.remove('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.remove('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.remove('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.remove('dark-theme');
+          actionSeparators.forEach(el => el.classList.remove('dark-theme'));
+          newsSeparators.forEach(el => el.classList.remove('dark-theme'));
+          
+          // Aplicar tema claro al panel de administración
+          applyDarkThemeToAdmin();
+        }
+      }
+
+      if (theme.includes('oscuro')) {
+        setDarkTheme(true);
+      } else if (theme.includes('claro')) {
+        setDarkTheme(false);
+      } else if (theme.includes('automático') || theme.includes('automatico')) {
+        // Automático: modo oscuro de 20:00 a 7:00, claro el resto
+        const hour = new Date().getHours();
+        if (hour >= 20 || hour < 7) {
+          setDarkTheme(true);
+        } else {
+          setDarkTheme(false);
+        }
+      } else if (theme.includes('eficiencia')) {
+        // Eficiencia: modo oscuro si el ahorro de energía está activo
+        if (navigator.getBattery) {
+          navigator.getBattery().then(function(battery) {
+            if (battery && battery.savePower) {
+              setDarkTheme(true);
+            } else if (battery && battery.dischargingTime === Infinity && battery.charging) {
+              setDarkTheme(false);
+            } else if (battery && battery.charging === false && battery.level < 0.2) {
+              setDarkTheme(true);
+            } else if (battery && battery.level < 0.15) {
+              setDarkTheme(true);
+            } else {
+              setDarkTheme(false);
+            }
+          }).catch(function() {
+            setDarkTheme(false);
+          });
+        } else if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          // fallback: si el usuario tiene preferencias de ahorro de energía
+          setDarkTheme(true);
+        } else {
+          setDarkTheme(false);
+        }
+      }
+    });
+  });
+
+  // Al cargar la página, aplicar la preferencia guardada
+  function activarTemaGuardado() {
+    const temaGuardado = localStorage.getItem('preferencia-tema');
+    if (!temaGuardado) return;
+    let btnToClick = null;
+    themeBtns.forEach(btn => {
+      let theme = btn.textContent.trim().toLowerCase();
+      if (
+        (temaGuardado === 'oscuro' && theme.includes('oscuro')) ||
+        (temaGuardado === 'claro' && theme.includes('claro')) ||
+        (temaGuardado === 'automatico' && (theme.includes('automático') || theme.includes('automatico'))) ||
+        (temaGuardado === 'eficiencia' && theme.includes('eficiencia'))
+      ) {
+        btnToClick = btn;
+      }
+    });
+    if (btnToClick) btnToClick.click();
+  }
+  activarTemaGuardado();
+});
+
+// --- Popup de ayuda para Tema ---
+document.addEventListener('DOMContentLoaded', function() {
+  const helpBtn = document.getElementById('themeHelpBtn');
+  const helpPopup = document.getElementById('themeHelpPopup');
+  const closeHelp = document.getElementById('closeThemeHelp');
+  
+  if (helpBtn && helpPopup && closeHelp) {
+    helpBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      helpPopup.classList.add('active');
+    });
+    
+    closeHelp.addEventListener('click', function() {
+      helpPopup.classList.remove('active');
+    });
+    
+    // Cerrar al hacer clic fuera del popup
+    document.addEventListener('mousedown', function(e) {
+      if (helpPopup.classList.contains('active') && !helpPopup.contains(e.target) && e.target !== helpBtn) {
+        helpPopup.classList.remove('active');
+      }
+    });
+  }
+});
+
+  </script>
+</body>
+</html>

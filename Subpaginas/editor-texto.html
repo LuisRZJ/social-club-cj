@@ -1,0 +1,3300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Editor de texto | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFF5EB;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    
+    .content-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      flex: 1;
+      margin-bottom: 100px;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    
+    .nav-button {
+      background-color: #FFD1A9;
+      color: #374151;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .nav-button:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .nav-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-button i {
+      margin-right: 0.5rem;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2.5rem;
+    }
+    
+    .footer-section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: #FFD1A9;
+    }
+    
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .footer-links a {
+      color: #4B5563;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+      color: #d8971d;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 0.75rem;
+      color: #FFD1A9;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 2px solid #E5E7EB;
+      text-align: center;
+      color: #4B5563;
+      font-size: 0.9rem;
+    }
+    
+    .copyright {
+      font-weight: 600;
+      color: #1F2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .copyright span {
+      color: #FFD1A9;
+    }
+    
+    .back-to-top {
+      position: absolute;
+      top: -25px;
+      right: 20px;
+      background-color: #FFD1A9;
+      color: #374151;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .back-to-top:hover {
+      background-color: #ffb07a;
+      transform: translateY(-3px);
+    }
+    
+    .back-to-top:active {
+      transform: translateY(0);
+    }
+    
+    .cgn-icon {
+      height: 50px;
+      width: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .cgn-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Header completo con menú desplegable */
+    .header-comunidad {
+      background-color: #FFF5EB;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .header-logo {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .header-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1F2937;
+    }
+    
+    .header-legend {
+      font-weight: 700;
+      font-style: italic;
+      font-size: 0.75rem;
+      color: #115c2c;
+      margin-left: 0.5rem;
+    }
+    
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 24px;
+      width: 30px;
+      padding: 0;
+    }
+    
+    .menu-bar {
+      height: 3px;
+      width: 100%;
+      background-color: #1F2937;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+    
+    .menu-desplegable {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    
+    .menu-desplegable.abierto {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .menu-desplegable ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+    
+    .menu-desplegable li {
+      padding: 0;
+    }
+    
+    .menu-desplegable a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      color: #4B5563;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    
+    .menu-desplegable a:hover {
+      background-color: #FFD1A9;
+      color: #1F2937;
+      padding-left: 1.75rem;
+    }
+    
+    /* Título principal */
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #FFD1A9;
+      position: relative;
+    }
+    
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: #ffb07a;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-button {
+        width: 100%;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .back-to-top {
+        top: -20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      
+      .cgn-icon {
+        height: 50px;
+        width: 100px;
+      }
+    }
+
+   /* Barra de progreso de scroll - Ahora dentro del header */
+#scroll-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: rgba(255, 209, 169, 0.2);
+  z-index: 99; /* Reducir z-index */
+}
+
+#scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFD1A9, #ffb07a);
+  transition: width 0.1s ease;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Aumentar z-index del menú desplegable */
+.menu-desplegable {
+  z-index: 100; /* Mayor que la barra de progreso */
+}
+
+/* Rectángulo gris fijo en la parte inferior */
+.bottom-fixed-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 50;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  transition: all 0.3s ease;
+}
+
+/* Panel expandido */
+.bottom-fixed-bar.expanded {
+  height: 100vh;
+  bottom: 0;
+  top: auto;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Contenedor para el contenido expandido */
+.expanded-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 0;
+}
+
+.bottom-fixed-bar.expanded .expanded-content {
+  display: flex;
+}
+
+/* Ajustar botones cuando está expandido */
+.bottom-fixed-bar.expanded .right-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  gap: 8px;
+}
+
+.bottom-fixed-bar.expanded .open-chat-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+/* Botón volver arriba dentro del rectángulo fijo */
+.back-to-top-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.back-to-top-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.back-to-top-fixed:active {
+  transform: translateY(0);
+}
+
+/* Botón ir al final dentro del rectángulo fijo */
+.go-to-bottom-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.go-to-bottom-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.go-to-bottom-fixed:active {
+  transform: translateY(0);
+}
+
+/* Contenedor para los botones de la izquierda */
+.left-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Botón compartir dentro del rectángulo fijo */
+.share-btn-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.share-btn-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.share-btn-fixed:active {
+  transform: translateY(0);
+}
+
+/* Separador vertical del panel de acciones */
+.action-separator {
+  width: 2px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin-left: 12px;
+  margin-right: 5px;
+  border-radius: 1px;
+}
+
+/* Botón ver más dentro del rectángulo fijo */
+.view-more-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  min-width: 80px;
+  height: 35px;
+  border-radius: 17.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-right: 15px;
+  gap: 5px;
+}
+
+.view-more-fixed.expanded {
+  min-width: 100px;
+}
+
+/* Contenedor para las acciones de la derecha */
+.right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Panel expandido - elemento separado */
+.panel-expansion {
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 98;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 20px;
+}
+
+.panel-expansion.expanded {
+  height: calc(100vh - 60px);
+  padding: 8px 20px 20px 20px;
+}
+
+.panel-expansion.expanded .expanded-content {
+  display: flex;
+}
+
+/* Estilos para el contenedor de noticias */
+.news-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.3);
+  border-radius: 0;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  margin-bottom: 0;
+  overflow: hidden;
+  z-index: 99;
+}
+
+.news-container .title {
+  position: absolute;
+  background-color: rgb(255, 209, 169);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 3.8px;
+  color: #374151;
+  font-size: 1rem;
+  z-index: 200;
+  border-radius: 6px;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+}
+
+.news-container ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  animation: scroll 120s infinite linear;
+  padding-left: 80px;
+}
+
+.news-container ul li {
+  white-space: nowrap;
+  padding: 10px 24px;
+  color: white;
+  position: relative;
+}
+
+.news-container ul li::after {
+  content: "";
+  width: 1px;
+  height: 100%;
+  background: #b8b8b8;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.news-container ul li:last-child::after {
+  display: none;
+}
+
+.news-container ul li a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-container ul li a:hover {
+  text-decoration: underline;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-10200px);
+  }
+}
+
+.news-separator {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  margin: 100px 0 8px 0;
+  z-index: 100;
+}
+
+.news-separator-top, .news-separator-bottom {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  z-index: 100;
+}
+
+.news-separator-top {
+  margin: 50px 0 8px 0;
+}
+
+.news-separator-bottom {
+  margin: 0px 0 8px 0;
+}
+
+.categories-section-panel {
+  width: 100%;
+  margin: -20px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.categories-title-panel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 12px;
+  margin-left: 0;
+  letter-spacing: 0.5px;
+  background: rgba(255, 168, 54, 0.92);
+  padding: 12px 24px 12px 24px;
+  border-radius: 0px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.10);
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  max-width: none;
+  z-index: 101;
+}
+.categories-tags-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.category-tag-panel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.07);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.category-tag-panel:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.category-tag-panel i {
+  font-size: 1.1em;
+  margin-right: 4px;
+}
+
+/* --- Botones de tema --- */
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  position: relative;
+  min-width: 140px;
+}
+.theme-btn:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.theme-btn .theme-indicator {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #d1d5db;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border 0.2s;
+}
+.theme-btn.active .theme-indicator {
+  background: #22c55e;
+  border: 2px solid #16a34a;
+}
+
+/* Estilo para el popup de ayuda de tema */
+.theme-help-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  color: #1F2937;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 28px 24px 18px 24px;
+  z-index: 9999;
+  min-width: 320px;
+  max-width: 90vw;
+  font-size: 1rem;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.2s;
+}
+.theme-help-popup.active {
+  display: flex;
+}
+.theme-help-popup .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #374151;
+  cursor: pointer;
+}
+.theme-help-popup ul {
+  margin: 0 0 0 0.5em;
+  padding: 0;
+  list-style: none;
+}
+.theme-help-popup ul li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -60%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* Botón de ayuda en el panel inferior */
+.open-chat-btn {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  border: none;
+  border-radius: 17.5px;
+  padding: 8px 15px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.open-chat-btn:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos adicionales para el chat modal */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.overlay.show {
+  display: flex;
+}
+
+.chat-container {
+  width: 100%;
+  max-width: 400px;
+  height: 600px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.chat-container.maximized {
+  max-width: 100%;
+  width: 100%;
+  height: 100vh;
+  border-radius: 0;
+  transform: none;
+}
+
+.overlay.show .chat-container {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.overlay.show .chat-container.maximized {
+  transform: none;
+}
+
+.chat-header {
+  background: #FFD1A9;
+  color: #374151;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #fff;
+}
+
+.header-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header-title {
+  font-weight: 700;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.header-btn {
+  background: rgba(255, 255, 255, 0.6);
+  color: #374151;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.header-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chat-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #FFF5EB;
+  position: relative;
+}
+
+.message {
+  max-width: 85%;
+  padding: 14px 18px;
+  border-radius: 18px;
+  line-height: 1.5;
+  font-size: 15px;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bot {
+  align-self: flex-start;
+  background: #ffffff;
+  color: #1F2937;
+  border-top-left-radius: 4px;
+}
+
+.user {
+  align-self: flex-end;
+  background: #FFD1A9;
+  color: #374151;
+  border-top-right-radius: 4px;
+}
+
+.message-time {
+  display: block;
+  font-size: 11px;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 14px 18px;
+  background: #ffffff;
+  border-radius: 18px;
+  border-top-left-radius: 4px;
+  align-self: flex-start;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background: #FFD1A9;
+  border-radius: 50%;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(1) { animation-delay: 0s; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+.chat-footer {
+  padding: 20px;
+  background: #ffffff;
+  border-top: 1px solid #e0e6f0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-reply {
+  background: #FFD1A9;
+  color: #374151;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.quick-reply:hover:not(:disabled) {
+  background: #ffb07a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.quick-reply:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quick-reply i {
+  font-size: 12px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes typing {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-10px); }
+}
+
+@media (max-width: 768px) {
+  .chat-container {
+    width: 95%;
+    height: 80vh;
+    border-radius: 12px;
+  }
+  
+  .open-chat-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .quick-reply {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+   /* Barra de progreso de scroll - Ahora dentro del header */
+#scroll-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: rgba(255, 209, 169, 0.2);
+  z-index: 99; /* Reducir z-index */
+}
+
+#scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFD1A9, #ffb07a);
+  transition: width 0.1s ease;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Aumentar z-index del menú desplegable */
+.menu-desplegable {
+  z-index: 100; /* Mayor que la barra de progreso */
+}
+
+/* Ajustar posición del header */
+.header-comunidad {
+  position: sticky;
+  top: 0;
+  z-index: 98; /* Menor que la barra */
+}
+
+/* Estilos del Editor de Texto */
+.editor-container {
+  margin-top: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 50, 150, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.info-box {
+  background: #f0f5ff;
+  padding: 15px;
+  margin: 0;
+  border-radius: 0;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #e0e6f0;
+  color: #4a6fa5;
+}
+
+.editor-sections {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 25px;
+  gap: 25px;
+}
+
+.input-section, .output-section {
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e6f0;
+  font-weight: 400;
+}
+
+.section-title i {
+  margin-right: 10px;
+  font-size: 1.3rem;
+  color: #4a6fa5;
+}
+
+.input-container {
+  position: relative;
+}
+
+#text-input {
+  width: 100%;
+  height: 200px;
+  padding: 15px;
+  border: 1px solid #e0e6f0;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  resize: vertical;
+  font-family: inherit;
+  background: #f8fafd;
+  color: #333;
+  transition: border-color 0.2s;
+  padding-right: 50px;
+}
+
+#text-input:focus {
+  border-color: #4a6fa5;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.1);
+}
+
+.paste-btn {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background: #4a6fa5;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.paste-btn:hover {
+  background: #3a5a85;
+  transform: scale(1.05);
+}
+
+.tool-status {
+  text-align: center;
+  margin: 0;
+  padding: 15px;
+  background: #f8fafd;
+  border-radius: 0;
+  font-weight: 500;
+  border-bottom: 1px solid #e0e6f0;
+  color: #4a6fa5;
+}
+
+.tool-status span {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding: 20px;
+  background-color: #f8fafd;
+  border-radius: 0;
+  justify-content: center;
+  border-bottom: 1px solid #e0e6f0;
+}
+
+.style-btn {
+  flex: 1;
+  min-width: 130px;
+  padding: 12px 15px;
+  border: 1px solid #d0d9e7;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: white;
+  color: #2c3e50;
+  position: relative;
+}
+
+.style-btn i {
+  font-size: 1.1rem;
+  color: #4a6fa5;
+}
+
+.style-btn:hover {
+  border-color: #4a6fa5;
+  background: #f0f5ff;
+}
+
+.style-btn.active {
+  background: #4a6fa5;
+  border-color: #4a6fa5;
+  color: white;
+}
+
+.style-btn.active i {
+  color: white;
+}
+
+.invisible-counter {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(74, 111, 165, 0.9);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 8px;
+  min-width: 24px;
+  text-align: center;
+  line-height: 1;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.output-box {
+  width: 100%;
+  height: 200px;
+  padding: 20px;
+  border: 1px solid #e0e6f0;
+  border-radius: 8px;
+  background-color: #f8fafd;
+  overflow: auto;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #000;
+}
+
+.output-box.bold {
+  font-weight: bold;
+}
+
+.output-box.italic {
+  font-style: italic;
+}
+
+.output-box.bold-italic {
+  font-weight: bold;
+  font-style: italic;
+}
+
+.output-box.invisible {
+  color: #ccc;
+  font-style: italic;
+}
+
+.output-box.invisible::before {
+  content: '[Caracteres invisibles] ';
+  color: #999;
+  font-size: 0.9em;
+}
+
+.action-btns {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.copy-btn {
+  background: #4a6fa5;
+  color: white;
+}
+
+.copy-btn:hover {
+  background: #3a5a85;
+}
+
+.reset-btn {
+  background: #f0f5ff;
+  color: #4a6fa5;
+  border: 1px solid #d0d9e7;
+}
+
+.reset-btn:hover {
+  background: #e0e6f0;
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  background: #4a6fa5;
+  color: white;
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateX(200%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.permission-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.permission-modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transform: translateY(20px);
+  transition: transform 0.3s;
+}
+
+.permission-modal.active .modal-content {
+  transform: translateY(0);
+}
+
+.modal-content i {
+  font-size: 3rem;
+  color: #4a6fa5;
+  margin-bottom: 20px;
+}
+
+.modal-content h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-weight: 400;
+}
+
+.modal-content p {
+  margin-bottom: 25px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.modal-btn {
+  padding: 12px 25px;
+  background: #4a6fa5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-btn:hover {
+  background: #3a5a85;
+}
+
+@media (max-width: 768px) {
+  .editor-sections {
+    flex-direction: column;
+    padding: 15px;
+    gap: 20px;
+  }
+  
+  .input-section, .output-section {
+    width: 100%;
+  }
+  
+  .style-btn {
+    min-width: 110px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+  
+  #text-input {
+    height: 180px;
+  }
+  
+  .output-box {
+    height: 180px;
+  }
+}
+
+footer {
+  background-color: #FFF5EB;
+  padding: 2.5rem 1rem 4rem 1rem;
+  border-top: 1px solid #E5E7EB;
+  margin-top: auto;
+  position: relative;
+}
+
+  </style>
+  <style id="dark-theme-style">
+    /* Modo oscuro general */
+    body.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+    }
+    .content-container.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 4px 12px -1px rgba(0,0,0,0.45), 0 2px 4px -1px rgba(0,0,0,0.30);
+      color: #f3f4f6 !important;
+    }
+    .header-comunidad.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+    .header-title.dark-theme {
+      color: #f3f4f6 !important;
+    }
+    .header-legend.dark-theme {
+      color: #18813f !important;
+    }
+    .menu-desplegable.dark-theme {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    .page-title.dark-theme {
+      color: #f3f4f6 !important;
+      border-bottom: 3px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme {
+      background-color: #23232a !important;
+      color: #FFD1A9 !important;
+      border: 1px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    footer.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+      border-top: 2px solid #bb4b004b !important;
+      padding: 2.5rem 1rem 4rem 1rem !important;
+    }
+    .footer-section.dark-theme h3 {
+      color: #FFD1A9 !important;
+    }
+    .footer-links.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .footer-links.dark-theme a:hover {
+      color: #ffb07a !important;
+    }
+    .footer-links.dark-theme a i {
+      color: #FFD1A9 !important;
+    }
+    .footer-bottom.dark-theme {
+      color: #FFD1A9 !important;
+      border-top: 2px solid #bb4b004b !important;
+    }
+    .copyright.dark-theme {
+      color: #929292b0 !important;
+    }
+    .copyright.dark-theme span {
+      color: #FFD1A9 !important;
+    }
+    .bottom-fixed-bar.dark-theme {
+      background-color: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .panel-expansion.dark-theme {
+      background-color: rgba(24,24,27,0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .news-container.dark-theme {
+      background: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .categories-title-panel.dark-theme {
+      background: rgba(60, 48, 40, 0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme {
+      background: rgba(60, 60, 40, 0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.dark-theme {
+      background: rgba(60,60,40,0.85) !important;
+      color: #FFD1A9 !important;
+      border: 2px solid #FFD1A9 !important;
+    }
+    .theme-btn.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.active .theme-indicator {
+      background: #22c55e !important;
+      border: 2px solid #16a34a !important;
+    }
+    .theme-help-popup.dark-theme {
+      background: #23232a !important;
+      color: #FFD1A9 !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    }
+    .theme-help-popup.dark-theme .close-btn {
+      color: #FFD1A9 !important;
+    }
+    .theme-help-popup.dark-theme ul li span {
+      color: #FFD1A9 !important;
+    }
+    /* Separadores */
+    .action-separator.dark-theme,
+    .news-separator-top.dark-theme,
+    .news-separator-bottom.dark-theme {
+      background-color: rgba(255,209,169,0.25) !important;
+    }
+    .menu-toggle.dark-theme .menu-bar {
+      background-color: #f3f4f6 !important;
+    }
+    /* Mayor especificidad para sobrescribir estilos del modo claro */
+    body.dark-theme .footer-links a {
+      color: #929292b0 !important;
+    }
+    body.dark-theme .footer-links a:hover {
+      color: #ffb07a !important;
+    }
+    body.dark-theme .footer-links a i {
+      color: #FFD1A9 !important;
+    }
+    /* Icono de interrogación en modo oscuro */
+    body.dark-theme #themeHelpBtn {
+      color: #f3f4f6 !important;
+    }
+    body.dark-theme #themeHelpBtn i {
+      color: #f3f4f6 !important;
+    }
+    /* Bandera del pie de página en modo oscuro */
+    body.dark-theme .cgn-icon {
+      border: 1px solid rgba(255, 209, 169, 0.3) !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+
+    
+    /* Editor de texto en modo oscuro */
+    body.dark-theme .editor-container {
+      background: #23232a !important;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45) !important;
+    }
+    
+    body.dark-theme .info-box {
+      background: #33334a !important;
+      color: #FFD1A9 !important;
+      border-bottom: 1px solid #4a4a5a !important;
+    }
+    
+    body.dark-theme .section-title {
+      color: #f3f4f6 !important;
+      border-bottom: 1px solid #4a4a5a !important;
+    }
+    
+    body.dark-theme .section-title i {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme #text-input {
+      background: #33334a !important;
+      color: #f3f4f6 !important;
+      border-color: #4a4a5a !important;
+    }
+    
+    body.dark-theme #text-input:focus {
+      border-color: #FFD1A9 !important;
+      box-shadow: 0 0 0 2px rgba(255, 209, 169, 0.1) !important;
+    }
+    
+    body.dark-theme #text-input::placeholder {
+      color: #929292b0 !important;
+    }
+    
+    body.dark-theme .paste-btn {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .paste-btn:hover {
+      background: #ffb07a !important;
+    }
+    
+    body.dark-theme .tool-status {
+      background: #33334a !important;
+      color: #FFD1A9 !important;
+      border-bottom: 1px solid #4a4a5a !important;
+    }
+    
+    body.dark-theme .tool-status span {
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .controls {
+      background-color: #33334a !important;
+      border-bottom: 1px solid #4a4a5a !important;
+    }
+    
+    body.dark-theme .style-btn {
+      background: #23232a !important;
+      color: #f3f4f6 !important;
+      border-color: #4a4a5a !important;
+    }
+    
+    body.dark-theme .style-btn i {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme .style-btn:hover {
+      border-color: #FFD1A9 !important;
+      background: #33334a !important;
+    }
+    
+    body.dark-theme .style-btn.active {
+      background: #FFD1A9 !important;
+      border-color: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .style-btn.active i {
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .invisible-counter {
+      background: rgba(255, 209, 169, 0.9) !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .output-box {
+      background-color: #33334a !important;
+      color: #f3f4f6 !important;
+      border-color: #4a4a5a !important;
+    }
+    
+    body.dark-theme .output-box.invisible {
+      color: #929292b0 !important;
+    }
+    
+    body.dark-theme .output-box.invisible::before {
+      color: #929292b0 !important;
+    }
+    
+    body.dark-theme .action-btns {
+      background: #33334a !important;
+    }
+    
+    body.dark-theme .copy-btn {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .copy-btn:hover {
+      background: #ffb07a !important;
+    }
+    
+    body.dark-theme .reset-btn {
+      background: #33334a !important;
+      color: #FFD1A9 !important;
+      border-color: #4a4a5a !important;
+    }
+    
+    body.dark-theme .reset-btn:hover {
+      background: #4a4a5a !important;
+    }
+    
+    body.dark-theme .notification {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .permission-modal {
+      background: rgba(0, 0, 0, 0.7) !important;
+    }
+    
+    body.dark-theme .modal-content {
+      background: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .modal-content h2 {
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .modal-content p {
+      color: #929292b0 !important;
+    }
+    
+    body.dark-theme .modal-content i {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme .modal-btn {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .modal-btn:hover {
+      background: #ffb07a !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+</head>
+<body class="text-gray-800">
+
+  <header class="header-comunidad">
+    <div class="header-content">
+      <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+      <span class="header-title">CGN</span>
+      <span class="header-legend">Sin tiempo para descansos</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <nav class="menu-desplegable" id="menuDesplegable">
+      <ul>
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/faq.html">FAQ</a></li>
+        <li><a href="/socios.html">Socios</a></li>
+        <li><a href="/ajustes.html">Ajustes</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <!-- Barra de progreso de scroll -->
+<div id="scroll-progress-container">
+  <div id="scroll-progress-bar"></div>
+</div>
+
+  </header>
+  
+  <div class="content-container">
+    <h1 class="page-title">Editor de texto</h1>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+    <!-- Editor de texto -->
+    <div class="editor-container">
+        <div class="info-box">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Editor de texto:</strong> Herramienta para formatear y transformar texto con estilos Unicode. 
+                Escribe tu texto y aplica diferentes formatos.
+            </div>
+        </div>
+        
+        <div class="editor-sections">
+            <div class="input-section">
+                <h2 class="section-title"><i class="fas fa-keyboard"></i> Entrada de Texto</h2>
+                <div class="input-container">
+                    <textarea id="text-input" placeholder="Escribe tu texto o usa el botón de pegar..."></textarea>
+                    <button class="paste-btn" id="paste-btn" title="Pegar desde portapapeles">
+                        <i class="fas fa-paste"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="output-section">
+                <h2 class="section-title"><i class="fas fa-eye"></i> Vista Previa</h2>
+                <div id="output-box" class="output-box"></div>
+            </div>
+        </div>
+        
+        <div class="tool-status">
+            Herramienta activa: <span id="active-tool">Ninguna</span>
+        </div>
+        
+        <div class="controls">
+            <button class="style-btn" id="bold-btn">
+                <i class="fas fa-bold"></i> Negrita
+            </button>
+            <button class="style-btn" id="italic-btn">
+                <i class="fas fa-italic"></i> Cursiva
+            </button>
+            <button class="style-btn" id="bold-italic-btn">
+                <i class="fas fa-bold"></i><i class="fas fa-italic"></i> Negrita + Cursiva
+            </button>
+            <button class="style-btn" id="invisible-btn">
+                <i class="fas fa-eye-slash"></i> Invisibles
+                <span class="invisible-counter">1/9</span>
+            </button>
+            <button class="style-btn" id="transform-btn">
+                <i class="fas fa-text-height"></i> Transformar
+            </button>
+        </div>
+        
+        <div class="action-btns">
+            <button class="action-btn copy-btn" id="copy-btn">
+                <i class="fas fa-copy"></i> Copiar Texto
+            </button>
+            <button class="action-btn reset-btn" id="reset-btn">
+                <i class="fas fa-redo"></i> Restablecer
+            </button>
+        </div>
+    </div>
+
+    <!-- Notificación -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i> ¡Texto copiado al portapapeles!
+    </div>
+    
+    <!-- Modal de permisos -->
+    <div class="permission-modal" id="permission-modal">
+        <div class="modal-content">
+            <i class="fas fa-clipboard-question"></i>
+            <h2>Permiso para acceder al portapapeles</h2>
+            <p>Para poder pegar contenido directamente desde tu portapapeles, necesitamos tu permiso. Esta acción es segura y solo se utiliza para la función de pegado en este editor.</p>
+            <p>Haz clic en "Permitir" cuando tu navegador te lo solicite.</p>
+            <button class="modal-btn" id="modal-ok-btn">Entendido</button>
+        </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <div class="footer-links">
+          <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+          <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+          <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+          <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+          <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Comunidad</h3>
+        <div class="footer-links">
+          <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+          <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+          <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+          <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+          <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">
+        <img src="/icons/Bandera-jal.avif" 
+             alt="Logo Comunidad CGN" 
+             class="cgn-icon">
+        Comunidad CGN | <span id="currentYear">2022-2025</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Rectángulo gris fijo en la parte inferior -->
+  <div class="bottom-fixed-bar">
+    <div class="left-actions">
+      <button title="Abrir chat" class="open-chat-btn" onclick="openChat()">
+        <i class="fas fa-comments"></i>Ayuda
+      </button>
+      <button title="Compartir página" class="share-btn-fixed" id="shareBtn" onclick="sharePage()">
+        <i class="fas fa-share-alt"></i>
+      </button>
+    </div>
+    <div class="right-actions">
+      <div class="action-separator"></div>
+      <div class="view-more-fixed" id="viewMoreBtn" title="panel de acciones" onclick="togglePanel()">
+        <i class="fas fa-ellipsis-h"></i>
+        <span id="viewMoreText">Ver más</span>
+      </div>
+      <div class="back-to-top-fixed" id="backToTopBtn" title="Volver arriba" onclick="goToTop()">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+      <div class="go-to-bottom-fixed" id="goToBottomBtn" title="Ir al final" onclick="goToBottom()">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de expansión separado -->
+  <div class="panel-expansion" id="panelExpansion">
+    <!-- Contenedor para el contenido expandido -->
+    <div class="expanded-content">
+      <!-- Contenedor de noticias -->
+      <div class='news-container'>
+        <div class='title'>
+          Novedades
+        </div>
+
+        <ul>
+          <!-- Las noticias se cargarán dinámicamente desde noticias.json -->
+        </ul>
+      </div>
+      <div class="news-separator-top"></div>
+      
+      <!-- Sección de categorías -->
+      <div class="categories-section-panel">
+        <div class="categories-title-panel">Categorías</div>
+        <div class="categories-tags-panel">
+          <a href="/categorias-comunidad.html" class="category-tag-panel comunidad"><i class="fas fa-users"></i> Comunidad</a>
+          <a href="/categorias-mc.html" class="category-tag-panel minecraft"><i class="fas fa-cube"></i> Minecraft</a>
+          <a href="/categorias-reglas.html" class="category-tag-panel reglas"><i class="fas fa-book"></i> Reglas</a>
+          <a href="/categorias-admins.html" class="category-tag-panel administracion"><i class="fas fa-user-shield"></i> Administración</a>
+        </div>
+      </div>
+      <div class="news-separator-bottom"></div>
+      
+      <!-- Sección de tema -->
+      <div class="theme-section-panel" style="width:100%; margin: 0 0 10px 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+        <div class="categories-title-panel" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center; text-align: center;">
+          <span style="display: flex; align-items: center; gap: 8px;">
+            Tema
+            <button id="themeHelpBtn" type="button" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #374151; font-size: 1.1em; display: flex; align-items: center;">
+              <i class="fas fa-question-circle"></i>
+            </button>
+          </span>
+        </div>
+        <div class="theme-buttons-panel" style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+          <button class="theme-btn" title="Automático" type="button">
+            <i class="fas fa-adjust"></i> Automático
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Eficiencia" type="button">
+            <i class="fas fa-bolt"></i> Eficiencia
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Claro" type="button">
+            <i class="fas fa-sun"></i> Claro
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Oscuro" type="button">
+            <i class="fas fa-moon"></i> Oscuro
+            <span class="theme-indicator"></span>
+          </button>
+        </div>
+        <div class="action-separator" style="position: relative; left: 50%; transform: translateX(-50%); width: 100vw; height: 4px; background-color: rgba(255,255,255,0.3); margin: 14px 0 0 0; border-radius: 2px; z-index: 100;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay que contiene el chat modal -->
+  <div class="overlay" id="chatOverlay">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="header-left">
+          <div class="header-image">
+            <img src="/icons/bot-hecks.avif" alt="Logo de soporte" id="chatImage">
+          </div>
+          <div class="header-title">Soporte CGN</div>
+        </div>
+        <div class="header-buttons">
+          <button class="header-btn" onclick="toggleMaximize()" title="Maximizar/Minimizar chat">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="header-btn" onclick="clearChat()" title="Borrar chat">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="header-btn" onclick="closeChat()" title="Cerrar chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-footer" id="chatFooter"></div>
+    </div>
+  </div>
+
+  <!-- Popup de ayuda para Tema -->
+  <div class="theme-help-popup" id="themeHelpPopup">
+    <button class="close-btn" id="closeThemeHelp" title="Cerrar ayuda"><i class="fas fa-times"></i></button>
+    <strong>¿Cómo funcionan los modos de tema?</strong>
+    <ul>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-adjust"></i> <b>Automático</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Cambia entre modo claro y oscuro automáticamente según la hora del día (oscuro de noche, claro de día).</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-bolt"></i> <b>Eficiencia</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Activa el modo oscuro si el ahorro de energía está activo en tu dispositivo.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-sun"></i> <b>Claro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema claro en la página.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-moon"></i> <b>Oscuro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema oscuro en la página.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Actualizar año en footer
+      const currentYear = new Date().getFullYear();
+      document.getElementById('currentYear').textContent = `2022-${currentYear}`;
+      
+       // Botón "Volver" inteligente
+       const backButton = document.getElementById('backButton');
+            backButton.addEventListener('click', function() {
+                // Comprobar si hay una página anterior en el historial
+                if (document.referrer && document.referrer !== window.location.href) {
+                    window.history.back();
+                } else {
+                    // Si no hay historial previo, redirigir a la página de inicio
+                    window.location.href = '/index.html';
+                }
+            });
+
+      // Botón "Volver arriba"
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Menú desplegable
+      const menuToggle = document.getElementById('menuToggle');
+      const menuDesplegable = document.getElementById('menuDesplegable');
+      
+      // Abrir/cerrar menú al hacer clic en el botón
+      menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menuDesplegable.classList.toggle('abierto');
+        menuToggle.classList.toggle('activo');
+      });
+      
+      // Cerrar menú al hacer clic fuera
+      document.addEventListener('click', function(e) {
+        if (!menuDesplegable.contains(e.target) && !menuToggle.contains(e.target)) {
+          menuDesplegable.classList.remove('abierto');
+          menuToggle.classList.remove('activo');
+        }
+      });
+      
+      // Prevenir que el clic en el menú lo cierre
+      menuDesplegable.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    });
+
+
+   // Barra de progreso de scroll
+const scrollProgressBar = document.getElementById('scroll-progress-bar');
+
+function updateScrollProgress() {
+  // Calcular el progreso del scroll
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrollPercentage = (scrollTop / scrollHeight) * 100;
+  
+  // Actualizar el ancho de la barra de progreso
+  scrollProgressBar.style.width = scrollPercentage + '%';
+  
+  // Cambiar color cuando esté cerca del final
+  if (scrollPercentage > 90) {
+    scrollProgressBar.style.background = 'linear-gradient(90deg, #ffb07a, #ff7b54)';
+  } else {
+    scrollProgressBar.style.background = 'linear-gradient(90deg, #FFD1A9, #ffb07a)';
+  }
+}
+
+// Actualizar al cargar y al hacer scroll
+window.addEventListener('load', updateScrollProgress);
+window.addEventListener('scroll', updateScrollProgress);
+window.addEventListener('resize', updateScrollProgress);
+
+// Calcular altura del header automáticamente
+function setProgressBarPosition() {
+  const header = document.querySelector('.header-comunidad');
+  if (header) {
+    const headerHeight = header.offsetHeight;
+    document.getElementById('scroll-progress-container').style.top = headerHeight + 'px';
+  }
+}
+
+// Llamar al cargar y al redimensionar
+window.addEventListener('load', function() {
+  setProgressBarPosition();
+  updateScrollProgress();
+});
+window.addEventListener('resize', setProgressBarPosition);
+
+// Función para expandir/contraer el panel de acciones
+function togglePanel() {
+  const panelExpansion = document.getElementById('panelExpansion');
+  const viewMoreBtn = document.getElementById('viewMoreBtn');
+  const viewMoreText = document.getElementById('viewMoreText');
+  const viewMoreIcon = document.querySelector('#viewMoreBtn i');
+  
+  if (panelExpansion.classList.contains('expanded')) {
+    // Contraer el panel
+    panelExpansion.classList.remove('expanded');
+    viewMoreBtn.classList.remove('expanded');
+    viewMoreText.textContent = 'Ver más';
+    viewMoreIcon.className = 'fas fa-ellipsis-h';
+    document.body.style.overflow = '';
+  } else {
+    // Expandir el panel
+    panelExpansion.classList.add('expanded');
+    viewMoreBtn.classList.add('expanded');
+    viewMoreText.textContent = 'Ver menos';
+    viewMoreIcon.className = 'fas fa-compress';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+// Función para verificar si el panel está expandido
+function isPanelExpanded() {
+  return document.getElementById('panelExpansion').classList.contains('expanded');
+}
+
+// Función para establecer el overflow correcto basado en el estado del panel
+function setCorrectOverflow() {
+  if (isPanelExpanded()) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
+
+// Función para compartir la página
+function sharePage() {
+  const pageTitle = document.title || 'CGN - Comunidad Gaming Network';
+  const pageUrl = window.location.href;
+  
+  // Verificar si la API Web Share está disponible
+  if (navigator.share) {
+    navigator.share({
+      title: pageTitle,
+      url: pageUrl,
+      text: '¡Mira esta página de la Comunidad Gaming Network!'
+    }).then(() => {
+      console.log('Contenido compartido exitosamente');
+    }).catch((error) => {
+      console.log('Error al compartir:', error);
+      // Fallback: copiar URL al portapapeles
+      fallbackShare();
+    });
+  } else {
+    // Fallback para navegadores que no soportan Web Share API
+    fallbackShare();
+  }
+}
+
+// Función de respaldo para compartir
+function fallbackShare() {
+  const pageUrl = window.location.href;
+  
+  // Intentar copiar al portapapeles
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(pageUrl).then(() => {
+      // Mostrar notificación de éxito
+      showShareNotification('¡URL copiada al portapapeles!');
+    }).catch(() => {
+      // Si falla clipboard, mostrar URL en alert
+      alert('Comparte esta URL: ' + pageUrl);
+    });
+  } else {
+    // Fallback final: mostrar URL en alert
+    alert('Comparte esta URL: ' + pageUrl);
+  }
+}
+
+// Función para mostrar notificación de compartir
+function showShareNotification(message) {
+  // Crear elemento de notificación
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 209, 169, 0.95);
+    color: #374151;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  `;
+  notification.textContent = message;
+  
+  // Agregar al DOM
+  document.body.appendChild(notification);
+  
+  // Animar entrada
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Remover después de 3 segundos
+  setTimeout(() => {
+    notification.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
+// --- Tema: solo un botón activo a la vez ---
+document.addEventListener('DOMContentLoaded', function() {
+  const themeBtns = document.querySelectorAll('.theme-btn');
+  const body = document.body;
+  const contentContainer = document.querySelector('.content-container');
+  const header = document.querySelector('.header-comunidad');
+  const headerTitle = document.querySelector('.header-title');
+  const headerLegend = document.querySelector('.header-legend');
+  const menuDesplegable = document.getElementById('menuDesplegable');
+  const pageTitle = document.querySelector('.page-title');
+  const navButtons = document.querySelectorAll('.nav-button');
+  const footer = document.querySelector('footer');
+  const footerSections = document.querySelectorAll('.footer-section');
+  const footerLinks = document.querySelectorAll('.footer-links a');
+  const footerBottom = document.querySelector('.footer-bottom');
+  const copyright = document.querySelector('.copyright');
+  const bottomFixedBar = document.querySelector('.bottom-fixed-bar');
+  const panelExpansion = document.querySelector('.panel-expansion');
+  const newsContainer = document.querySelector('.news-container');
+  const categoriesTitlePanel = document.querySelectorAll('.categories-title-panel');
+  const categoryTagPanel = document.querySelectorAll('.category-tag-panel');
+  const themeBtnsAll = document.querySelectorAll('.theme-btn');
+  const themeHelpPopup = document.getElementById('themeHelpPopup');
+  const actionSeparators = document.querySelectorAll('.action-separator');
+  const newsSeparators = document.querySelectorAll('.news-separator-top, .news-separator-bottom');
+  const menuToggle = document.getElementById('menuToggle');
+
+  themeBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      themeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Guardar preferencia en localStorage
+      let theme = btn.textContent.trim().toLowerCase();
+      if (theme.includes('oscuro')) {
+        localStorage.setItem('preferencia-tema', 'oscuro');
+      } else if (theme.includes('claro')) {
+        localStorage.setItem('preferencia-tema', 'claro');
+      } else if (theme.includes('automático') || theme.includes('automatico')) {
+        localStorage.setItem('preferencia-tema', 'automatico');
+      } else if (theme.includes('eficiencia')) {
+        localStorage.setItem('preferencia-tema', 'eficiencia');
+      }
+
+      // Lógica de tema
+      function setDarkTheme(active) {
+        if (active) {
+          body.classList.add('dark-theme');
+          if(contentContainer) contentContainer.classList.add('dark-theme');
+          if(header) header.classList.add('dark-theme');
+          if(headerTitle) headerTitle.classList.add('dark-theme');
+          if(headerLegend) headerLegend.classList.add('dark-theme');
+          if(menuDesplegable) menuDesplegable.classList.add('dark-theme');
+          if(pageTitle) pageTitle.classList.add('dark-theme');
+          navButtons.forEach(el => el.classList.add('dark-theme'));
+          if(footer) footer.classList.add('dark-theme');
+          footerSections.forEach(el => el.classList.add('dark-theme'));
+          footerLinks.forEach(el => el.classList.add('dark-theme'));
+          if(footerBottom) footerBottom.classList.add('dark-theme');
+          if(copyright) copyright.classList.add('dark-theme');
+          if(menuToggle) menuToggle.classList.add('dark-theme');
+          if(bottomFixedBar) bottomFixedBar.classList.add('dark-theme');
+          if(panelExpansion) panelExpansion.classList.add('dark-theme');
+          if(newsContainer) newsContainer.classList.add('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.add('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.add('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.add('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.add('dark-theme');
+          actionSeparators.forEach(el => el.classList.add('dark-theme'));
+          newsSeparators.forEach(el => el.classList.add('dark-theme'));
+          
+          // Elementos específicos del editor de texto
+          const editorContainer = document.querySelector('.editor-container');
+          const infoBox = document.querySelector('.info-box');
+          const sectionTitles = document.querySelectorAll('.section-title');
+          const textInput = document.getElementById('text-input');
+          const pasteBtn = document.querySelector('.paste-btn');
+          const toolStatus = document.querySelector('.tool-status');
+          const controls = document.querySelector('.controls');
+          const styleBtns = document.querySelectorAll('.style-btn');
+          const outputBox = document.getElementById('output-box');
+          const actionBtns = document.querySelector('.action-btns');
+          const copyBtn = document.querySelector('.copy-btn');
+          const resetBtn = document.querySelector('.reset-btn');
+          const notification = document.getElementById('notification');
+          const permissionModal = document.getElementById('permission-modal');
+          const modalContent = document.querySelector('.modal-content');
+          
+          if(editorContainer) editorContainer.classList.add('dark-theme');
+          if(infoBox) infoBox.classList.add('dark-theme');
+          sectionTitles.forEach(el => el.classList.add('dark-theme'));
+          if(textInput) textInput.classList.add('dark-theme');
+          if(pasteBtn) pasteBtn.classList.add('dark-theme');
+          if(toolStatus) toolStatus.classList.add('dark-theme');
+          if(controls) controls.classList.add('dark-theme');
+          styleBtns.forEach(el => el.classList.add('dark-theme'));
+          if(outputBox) outputBox.classList.add('dark-theme');
+          if(actionBtns) actionBtns.classList.add('dark-theme');
+          if(copyBtn) copyBtn.classList.add('dark-theme');
+          if(resetBtn) resetBtn.classList.add('dark-theme');
+          if(notification) notification.classList.add('dark-theme');
+          if(permissionModal) permissionModal.classList.add('dark-theme');
+          if(modalContent) modalContent.classList.add('dark-theme');
+        } else {
+          body.classList.remove('dark-theme');
+          if(contentContainer) contentContainer.classList.remove('dark-theme');
+          if(header) header.classList.remove('dark-theme');
+          if(headerTitle) headerTitle.classList.remove('dark-theme');
+          if(headerLegend) headerLegend.classList.remove('dark-theme');
+          if(menuDesplegable) menuDesplegable.classList.remove('dark-theme');
+          if(pageTitle) pageTitle.classList.remove('dark-theme');
+          navButtons.forEach(el => el.classList.remove('dark-theme'));
+          if(footer) footer.classList.remove('dark-theme');
+          footerSections.forEach(el => el.classList.remove('dark-theme'));
+          footerLinks.forEach(el => el.classList.remove('dark-theme'));
+          if(footerBottom) footerBottom.classList.remove('dark-theme');
+          if(copyright) copyright.classList.remove('dark-theme');
+          if(menuToggle) menuToggle.classList.remove('dark-theme');
+          if(bottomFixedBar) bottomFixedBar.classList.remove('dark-theme');
+          if(panelExpansion) panelExpansion.classList.remove('dark-theme');
+          if(newsContainer) newsContainer.classList.remove('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.remove('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.remove('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.remove('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.remove('dark-theme');
+          actionSeparators.forEach(el => el.classList.remove('dark-theme'));
+          newsSeparators.forEach(el => el.classList.remove('dark-theme'));
+          
+          // Elementos específicos del editor de texto
+          const editorContainer = document.querySelector('.editor-container');
+          const infoBox = document.querySelector('.info-box');
+          const sectionTitles = document.querySelectorAll('.section-title');
+          const textInput = document.getElementById('text-input');
+          const pasteBtn = document.querySelector('.paste-btn');
+          const toolStatus = document.querySelector('.tool-status');
+          const controls = document.querySelector('.controls');
+          const styleBtns = document.querySelectorAll('.style-btn');
+          const outputBox = document.getElementById('output-box');
+          const actionBtns = document.querySelector('.action-btns');
+          const copyBtn = document.querySelector('.copy-btn');
+          const resetBtn = document.querySelector('.reset-btn');
+          const notification = document.getElementById('notification');
+          const permissionModal = document.getElementById('permission-modal');
+          const modalContent = document.querySelector('.modal-content');
+          
+          if(editorContainer) editorContainer.classList.remove('dark-theme');
+          if(infoBox) infoBox.classList.remove('dark-theme');
+          sectionTitles.forEach(el => el.classList.remove('dark-theme'));
+          if(textInput) textInput.classList.remove('dark-theme');
+          if(pasteBtn) pasteBtn.classList.remove('dark-theme');
+          if(toolStatus) toolStatus.classList.remove('dark-theme');
+          if(controls) controls.classList.remove('dark-theme');
+          styleBtns.forEach(el => el.classList.remove('dark-theme'));
+          if(outputBox) outputBox.classList.remove('dark-theme');
+          if(actionBtns) actionBtns.classList.remove('dark-theme');
+          if(copyBtn) copyBtn.classList.remove('dark-theme');
+          if(resetBtn) resetBtn.classList.remove('dark-theme');
+          if(notification) notification.classList.remove('dark-theme');
+          if(permissionModal) permissionModal.classList.remove('dark-theme');
+          if(modalContent) modalContent.classList.remove('dark-theme');
+        }
+      }
+
+      if (theme.includes('oscuro')) {
+        setDarkTheme(true);
+      } else if (theme.includes('claro')) {
+        setDarkTheme(false);
+      } else if (theme.includes('automático') || theme.includes('automatico')) {
+        // Automático: modo oscuro de 20:00 a 7:00, claro el resto
+        const hour = new Date().getHours();
+        if (hour >= 20 || hour < 7) {
+          setDarkTheme(true);
+        } else {
+          setDarkTheme(false);
+        }
+      } else if (theme.includes('eficiencia')) {
+        // Eficiencia: modo oscuro si el ahorro de energía está activo
+        if (navigator.getBattery) {
+          navigator.getBattery().then(function(battery) {
+            if (battery && battery.savePower) {
+              setDarkTheme(true);
+            } else if (battery && battery.dischargingTime === Infinity && battery.charging) {
+              setDarkTheme(false);
+            } else if (battery && battery.charging === false && battery.level < 0.2) {
+              setDarkTheme(true);
+            } else if (battery && battery.level < 0.15) {
+              setDarkTheme(true);
+            } else {
+              setDarkTheme(false);
+            }
+          }).catch(function() {
+            setDarkTheme(false);
+          });
+        } else if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          // fallback: si el usuario tiene preferencias de ahorro de energía
+          setDarkTheme(true);
+        } else {
+          setDarkTheme(false);
+        }
+      }
+    });
+  });
+
+  // Al cargar la página, aplicar la preferencia guardada
+  function activarTemaGuardado() {
+    const temaGuardado = localStorage.getItem('preferencia-tema');
+    if (!temaGuardado) return;
+    let btnToClick = null;
+    themeBtns.forEach(btn => {
+      let theme = btn.textContent.trim().toLowerCase();
+      if (
+        (temaGuardado === 'oscuro' && theme.includes('oscuro')) ||
+        (temaGuardado === 'claro' && theme.includes('claro')) ||
+        (temaGuardado === 'automatico' && (theme.includes('automático') || theme.includes('automatico'))) ||
+        (temaGuardado === 'eficiencia' && theme.includes('eficiencia'))
+      ) {
+        btnToClick = btn;
+      }
+    });
+    if (btnToClick) btnToClick.click();
+  }
+  activarTemaGuardado();
+});
+
+// --- Popup de ayuda para Tema ---
+document.addEventListener('DOMContentLoaded', function() {
+  const helpBtn = document.getElementById('themeHelpBtn');
+  const helpPopup = document.getElementById('themeHelpPopup');
+  const closeHelp = document.getElementById('closeThemeHelp');
+  
+  if (helpBtn && helpPopup && closeHelp) {
+    helpBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      helpPopup.classList.add('active');
+    });
+    
+    closeHelp.addEventListener('click', function() {
+      helpPopup.classList.remove('active');
+    });
+    
+    // Cerrar al hacer clic fuera del popup
+    document.addEventListener('mousedown', function(e) {
+      if (helpPopup.classList.contains('active') && !helpPopup.contains(e.target) && e.target !== helpBtn) {
+        helpPopup.classList.remove('active');
+      }
+    });
+  }
+});
+
+// JavaScript del Editor de Texto
+document.addEventListener('DOMContentLoaded', function() {
+    // Referencias a los elementos del DOM del editor
+    const textInput = document.getElementById('text-input');
+    const outputBox = document.getElementById('output-box');
+    const boldBtn = document.getElementById('bold-btn');
+    const italicBtn = document.getElementById('italic-btn');
+    const transformBtn = document.getElementById('transform-btn');
+    const copyBtn = document.getElementById('copy-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const pasteBtn = document.getElementById('paste-btn');
+    const notification = document.getElementById('notification');
+    const activeTool = document.getElementById('active-tool');
+    const permissionModal = document.getElementById('permission-modal');
+    const modalOkBtn = document.getElementById('modal-ok-btn');
+    
+    // Mapeo de caracteres Unicode para estilos
+    const unicodeStyles = {
+        bold: {
+            'a': '𝗮', 'b': '𝗯', 'c': '𝗰', 'd': '𝗱', 'e': '𝗲', 'f': '𝗳', 'g': '𝗴', 'h': '𝗵', 'i': '𝗶', 'j': '𝗷',
+            'k': '𝗸', 'l': '𝗹', 'm': '𝗺', 'n': '𝗻', 'o': '𝗼', 'p': '𝗽', 'q': '𝗾', 'r': '𝗿', 's': '𝘀', 't': '𝘁',
+            'u': '𝘂', 'v': '𝘃', 'w': '𝘄', 'x': '𝘅', 'y': '𝘆', 'z': '𝘇',
+            'A': '𝗔', 'B': '𝗕', 'C': '𝗖', 'D': '𝗗', 'E': '𝗘', 'F': '𝗙', 'G': '𝗚', 'H': '𝗛', 'I': '𝗜', 'J': '𝗝',
+            'K': '𝗞', 'L': '𝗟', 'M': '𝗠', 'N': '𝗡', 'O': '𝗢', 'P': '𝗣', 'Q': '𝗤', 'R': '𝗥', 'S': '𝗦', 'T': '𝗧',
+            'U': '𝗨', 'V': '𝗩', 'W': '𝗪', 'X': '𝗫', 'Y': '𝗬', 'Z': '𝗭',
+            '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰', '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵',
+            ' ': ' ', '.': '.', ',': ',', ';': ';', ':': ':', '!': '!', '?': '?', '(': '(', ')': ')'
+        },
+        italic: {
+            'a': '𝘢', 'b': '𝘣', 'c': '𝘤', 'd': '𝘥', 'e': '𝘦', 'f': '𝘧', 'g': '𝘨', 'h': '𝘩', 'i': '𝘪', 'j': '𝘫',
+            'k': '𝘬', 'l': '𝘭', 'm': '𝘮', 'n': '𝘯', 'o': '𝘰', 'p': '𝘱', 'q': '𝘲', 'r': '𝘳', 's': '𝘴', 't': '𝘵',
+            'u': '𝘶', 'v': '𝘷', 'w': '𝘸', 'x': '𝘹', 'y': '𝘺', 'z': '𝘻',
+            'A': '𝘈', 'B': '𝘉', 'C': '𝘊', 'D': '𝘋', 'E': '𝘌', 'F': '𝘍', 'G': '𝘎', 'H': '𝘏', 'I': '𝘐', 'J': '𝘑',
+            'K': '𝘒', 'L': '𝘓', 'M': '𝘔', 'N': '𝘕', 'O': '𝘖', 'P': '𝘗', 'Q': '𝘘', 'R': '𝘙', 'S': '𝘚', 'T': '𝘛',
+            'U': '𝘜', 'V': '𝘝', 'W': '𝘞', 'X': '𝘟', 'Y': '𝘠', 'Z': '𝘡',
+            ' ': ' ', '.': '.', ',': ',', ';': ';', ':': ':', '!': '!', '?': '?', '(': '(', ')': ')'
+        },
+        'bold-italic': {
+            'a': '𝙖', 'b': '𝙗', 'c': '𝙘', 'd': '𝙙', 'e': '𝙚', 'f': '𝙛', 'g': '𝙜', 'h': '𝙝', 'i': '𝙞', 'j': '𝙟',
+            'k': '𝙠', 'l': '𝙡', 'm': '𝙢', 'n': '𝙣', 'o': '𝙤', 'p': '𝙥', 'q': '𝙦', 'r': '𝙧', 's': '𝙨', 't': '𝙩',
+            'u': '𝙪', 'v': '𝙫', 'w': '𝙬', 'x': '𝙭', 'y': '𝙮', 'z': '𝙯',
+            'A': '𝙰', 'B': '𝙱', 'C': '𝙲', 'D': '𝙳', 'E': '𝙴', 'F': '𝙵', 'G': '𝙶', 'H': '𝙷', 'I': '𝙸', 'J': '𝙹',
+            'K': '𝙺', 'L': '𝙻', 'M': '𝙼', 'N': '𝙽', 'O': '𝙾', 'P': '𝙿', 'Q': '𝚀', 'R': '𝚁', 'S': '𝚂', 'T': '𝚃',
+            'U': '𝚄', 'V': '𝚅', 'W': '𝚆', 'X': '𝚇', 'Y': '𝚈', 'Z': '𝚉',
+            '0': '𝟶', '1': '𝟷', '2': '𝟸', '3': '𝟹', '4': '𝟺', '5': '𝟻', '6': '𝟼', '7': '𝟽', '8': '𝟾', '9': '𝟿',
+            ' ': ' ', '.': '.', ',': ',', ';': ';', ':': ':', '!': '!', '?': '?', '(': '(', ')': ')'
+        },
+        invisible: {
+            ' ': '\u200B', // Zero Width Space
+            'a': '\u200B', 'b': '\u200B', 'c': '\u200B', 'd': '\u200B', 'e': '\u200B', 'f': '\u200B', 'g': '\u200B', 'h': '\u200B', 'i': '\u200B', 'j': '\u200B',
+            'k': '\u200B', 'l': '\u200B', 'm': '\u200B', 'n': '\u200B', 'o': '\u200B', 'p': '\u200B', 'q': '\u200B', 'r': '\u200B', 's': '\u200B', 't': '\u200B',
+            'u': '\u200B', 'v': '\u200B', 'w': '\u200B', 'x': '\u200B', 'y': '\u200B', 'z': '\u200B',
+            'A': '\u200B', 'B': '\u200B', 'C': '\u200B', 'D': '\u200B', 'E': '\u200B', 'F': '\u200B', 'G': '\u200B', 'H': '\u200B', 'I': '\u200B', 'J': '\u200B',
+            'K': '\u200B', 'L': '\u200B', 'M': '\u200B', 'N': '\u200B', 'O': '\u200B', 'P': '\u200B', 'Q': '\u200B', 'R': '\u200B', 'S': '\u200B', 'T': '\u200B',
+            'U': '\u200B', 'V': '\u200B', 'W': '\u200B', 'X': '\u200B', 'Y': '\u200B', 'Z': '\u200B',
+            '0': '\u200B', '1': '\u200B', '2': '\u200B', '3': '\u200B', '4': '\u200B', '5': '\u200B', '6': '\u200B', '7': '\u200B', '8': '\u200B', '9': '\u200B',
+            '.': '\u200B', ',': '\u200B', ';': '\u200B', ':': '\u200B', '!': '\u200B', '?': '\u200B', '(': '\u200B', ')': '\u200B'
+        }
+    };
+    
+    // Caracteres invisibles disponibles
+    const invisibleCharacters = {
+        'zero-width-space': '\u200B', // Espacio de ancho cero
+        'zero-width-non-joiner': '\u200C', // No-joiner de ancho cero
+        'zero-width-joiner': '\u200D', // Joiner de ancho cero
+        'left-to-right-mark': '\u200E', // Marca de izquierda a derecha
+        'right-to-left-mark': '\u200F', // Marca de derecha a izquierda
+        'word-joiner': '\u2060', // Unión de palabras
+        'invisible-separator': '\u2063', // Separador invisible
+        'invisible-plus': '\u2064' // Más invisible
+    };
+    
+    // Variables de estado para los estilos
+    let activeStyles = {
+        bold: false,
+        italic: false,
+        'bold-italic': false,
+        invisible: false
+    };
+    
+    let transformCase = 'none';
+    let permissionRequested = false;
+    let invisibleCharacterIndex = 0; // Contador para caracteres invisibles
+    
+    // Array de caracteres invisibles con sus nombres
+    const invisibleCharacterTypes = [
+        { name: 'Invisibles', type: 'zero-width-space', description: 'Espacio de ancho cero' },
+        { name: 'Espacio Cero', type: 'zero-width-space', description: 'Espacio de ancho cero' },
+        { name: 'No-Joiner', type: 'zero-width-non-joiner', description: 'No-joiner de ancho cero' },
+        { name: 'Joiner', type: 'zero-width-joiner', description: 'Joiner de ancho cero' },
+        { name: 'LTR Mark', type: 'left-to-right-mark', description: 'Marca LTR' },
+        { name: 'RTL Mark', type: 'right-to-left-mark', description: 'Marca RTL' },
+        { name: 'Word Joiner', type: 'word-joiner', description: 'Unión de palabras' },
+        { name: 'Separador', type: 'invisible-separator', description: 'Separador invisible' },
+        { name: 'Invisible +', type: 'invisible-plus', description: 'Más invisible' }
+    ];
+    
+    // Función para mostrar el modal de permisos
+    function showPermissionModal() {
+        permissionModal.classList.add('active');
+    }
+    
+    // Función para ocultar el modal de permisos
+    function hidePermissionModal() {
+        permissionModal.classList.remove('active');
+    }
+    
+    // Función para aplicar estilos Unicode
+    function applyUnicodeStyles(text, styles) {
+        if (!text) return text;
+        
+        let result = '';
+        
+        for (let char of text) {
+            let styledChar = char;
+            
+            // Aplicar estilos
+            if (styles.bold && unicodeStyles.bold[char]) {
+                styledChar = unicodeStyles.bold[char];
+            } else if (styles.italic && unicodeStyles.italic[char]) {
+                styledChar = unicodeStyles.italic[char];
+            } else if (styles['bold-italic'] && unicodeStyles['bold-italic'][char]) {
+                styledChar = unicodeStyles['bold-italic'][char];
+            }
+            
+            result += styledChar;
+        }
+        
+        return result;
+    }
+    
+    // Función para actualizar la vista previa
+    function updatePreview() {
+        let text = textInput.value;
+        
+        // Aplicar transformación de mayúsculas/minúsculas
+        if (transformCase === 'uppercase') {
+            text = text.toUpperCase();
+        } else if (transformCase === 'lowercase') {
+            text = text.toLowerCase();
+        } else if (transformCase === 'capitalize') {
+            text = text.replace(/\b\w/g, char => char.toUpperCase());
+        }
+        
+        // Aplicar estilos Unicode
+        if (activeStyles.bold || activeStyles.italic || activeStyles['bold-italic']) {
+            text = applyUnicodeStyles(text, activeStyles);
+        }
+        
+        // Actualizar el contenido
+        outputBox.textContent = text;
+        
+        // Aplicar clases de estilo para CSS
+        outputBox.className = 'output-box';
+        if (activeStyles.bold) {
+            outputBox.classList.add('bold');
+        } else if (activeStyles.italic) {
+            outputBox.classList.add('italic');
+        } else if (activeStyles['bold-italic']) {
+            outputBox.classList.add('bold-italic');
+        }
+        
+        // Actualizar estado de botones
+        boldBtn.classList.toggle('active', activeStyles.bold);
+        italicBtn.classList.toggle('active', activeStyles.italic);
+        document.getElementById('bold-italic-btn').classList.toggle('active', activeStyles['bold-italic']);
+        
+        // Actualizar indicador de herramienta activa
+        updateActiveToolIndicator();
+    }
+    
+    // Función para actualizar el indicador de herramienta activa
+    function updateActiveToolIndicator() {
+        if (activeStyles.bold) {
+            activeTool.textContent = 'Negrita';
+        } else if (activeStyles.italic) {
+            activeTool.textContent = 'Cursiva';
+        } else if (activeStyles['bold-italic']) {
+            activeTool.textContent = 'Negrita + Cursiva';
+        } else {
+            activeTool.textContent = 'Ninguna';
+        }
+    }
+    
+    // Función para alternar estilos (solo uno activo a la vez)
+    function toggleStyle(style) {
+        // Si se está activando un estilo, desactivar el otro
+        if (!activeStyles[style]) {
+            if (style === 'bold') {
+                activeStyles.italic = false;
+                activeStyles['bold-italic'] = false;
+            } else if (style === 'italic') {
+                activeStyles.bold = false;
+                activeStyles['bold-italic'] = false;
+            } else {
+                activeStyles.bold = false;
+                activeStyles.italic = false;
+            }
+            activeStyles[style] = true;
+        } else {
+            // Si ya está activo, desactivarlo
+            activeStyles[style] = false;
+        }
+        
+        updatePreview();
+    }
+    
+    // Función para rotar entre transformaciones de texto
+    function rotateTransform() {
+        const cases = ['none', 'uppercase', 'lowercase', 'capitalize'];
+        const currentIndex = cases.indexOf(transformCase);
+        transformCase = cases[(currentIndex + 1) % cases.length];
+        
+        // Actualizar el botón según la transformación actual
+        if (transformCase === 'uppercase') {
+            transformBtn.innerHTML = '<i class="fas fa-text-height"></i> Mayúsculas';
+        } else if (transformCase === 'lowercase') {
+            transformBtn.innerHTML = '<i class="fas fa-text-height"></i> Minúsculas';
+        } else if (transformCase === 'capitalize') {
+            transformBtn.innerHTML = '<i class="fas fa-text-height"></i> Capitalizar';
+        } else {
+            transformBtn.innerHTML = '<i class="fas fa-text-height"></i> Transformar';
+        }
+        
+        updatePreview();
+    }
+    
+    // Función para manejar caracteres invisibles
+    function handleInvisibleCharacters() {
+        const invisibleBtn = document.getElementById('invisible-btn');
+        
+        // Obtener el carácter actual
+        const currentChar = invisibleCharacterTypes[invisibleCharacterIndex];
+        
+        // Copiar el carácter al portapapeles
+        copyInvisibleCharacter(currentChar.type);
+        
+        // Mostrar notificación
+        showNotification(`${currentChar.description} copiado al portapapeles`);
+        
+        // Avanzar al siguiente carácter
+        invisibleCharacterIndex = (invisibleCharacterIndex + 1) % invisibleCharacterTypes.length;
+        
+        // Obtener el siguiente carácter para actualizar el botón
+        const nextChar = invisibleCharacterTypes[invisibleCharacterIndex];
+        const counterText = `${invisibleCharacterIndex + 1}/${invisibleCharacterTypes.length}`;
+        
+        // Actualizar el botón
+        invisibleBtn.innerHTML = `<i class="fas fa-eye-slash"></i> ${nextChar.name}<span class="invisible-counter">${counterText}</span>`;
+    }
+    
+    // Función para copiar un carácter invisible específico
+    function copyInvisibleCharacter(type) {
+        const character = invisibleCharacters[type];
+        
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(character).then(() => {
+                // Notificación ya se muestra en handleInvisibleCharacters
+            }).catch(err => {
+                console.error('Error al copiar carácter invisible:', err);
+                fallbackCopyText(character);
+            });
+        } else {
+            fallbackCopyText(character);
+        }
+    }
+    
+    // Función para copiar el texto formateado
+    function copyFormattedText() {
+        const text = outputBox.textContent;
+        
+        // Usar la API del portapapeles moderna
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('¡Texto copiado al portapapeles!');
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                fallbackCopyText(text);
+            });
+        } else {
+            fallbackCopyText(text);
+        }
+    }
+    
+    // Método alternativo para copiar
+    function fallbackCopyText(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '0';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            showNotification('¡Texto copiado al portapapeles!');
+        } catch (err) {
+            console.error('Error al copiar:', err);
+        }
+        
+        document.body.removeChild(textArea);
+    }
+    
+    // Función para pegar desde el portapapeles
+    function pasteFromClipboard() {
+        // Mostrar el modal de permisos si es la primera vez
+        if (!permissionRequested) {
+            showPermissionModal();
+            return;
+        }
+        
+        if (navigator.clipboard) {
+            navigator.clipboard.readText()
+                .then(text => {
+                    textInput.value = text;
+                    updatePreview();
+                    showNotification('¡Texto pegado desde portapapeles!');
+                })
+                .catch(err => {
+                    console.error('Error al pegar:', err);
+                    showNotification('Permiso denegado. Haz clic en "Permitir" cuando se solicite.');
+                    showPermissionModal();
+                });
+        } else {
+            showNotification('Tu navegador no soporta esta función');
+        }
+    }
+    
+    // Mostrar notificación
+    function showNotification(message) {
+        notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+        notification.classList.add('show');
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+    
+    // Función para restablecer todo
+    function resetAll() {
+        textInput.value = '';
+        outputBox.textContent = '';
+        activeStyles = {
+            bold: false,
+            italic: false,
+            'bold-italic': false,
+            invisible: false
+        };
+        transformCase = 'none';
+        invisibleCharacterIndex = 0; // Resetear contador de caracteres invisibles
+        outputBox.className = 'output-box';
+        transformBtn.innerHTML = '<i class="fas fa-text-height"></i> Transformar';
+        if (document.getElementById('invisible-btn')) {
+            document.getElementById('invisible-btn').innerHTML = '<i class="fas fa-eye-slash"></i> Invisibles<span class="invisible-counter">1/8</span>';
+        }
+        updatePreview();
+    }
+    
+    // Event Listeners del editor
+    if (textInput) textInput.addEventListener('input', updatePreview);
+    if (boldBtn) boldBtn.addEventListener('click', () => toggleStyle('bold'));
+    if (italicBtn) italicBtn.addEventListener('click', () => toggleStyle('italic'));
+    if (document.getElementById('bold-italic-btn')) document.getElementById('bold-italic-btn').addEventListener('click', () => toggleStyle('bold-italic'));
+    if (document.getElementById('invisible-btn')) document.getElementById('invisible-btn').addEventListener('click', handleInvisibleCharacters);
+    if (transformBtn) transformBtn.addEventListener('click', rotateTransform);
+    if (copyBtn) copyBtn.addEventListener('click', copyFormattedText);
+    if (resetBtn) resetBtn.addEventListener('click', resetAll);
+    if (pasteBtn) pasteBtn.addEventListener('click', pasteFromClipboard);
+    if (modalOkBtn) modalOkBtn.addEventListener('click', () => {
+        hidePermissionModal();
+        permissionRequested = true;
+        pasteFromClipboard(); // Intentar de nuevo después de aceptar
+    });
+    
+    // Cerrar modal al hacer clic fuera del contenido
+    if (permissionModal) {
+        permissionModal.addEventListener('click', (e) => {
+            if (e.target === permissionModal) {
+                hidePermissionModal();
+            }
+        });
+    }
+    
+    // Inicializar vista previa si los elementos existen
+    if (textInput && outputBox) {
+        updatePreview();
+    }
+});
+
+// Funciones para el chat y botones del panel inferior
+function openChat() {
+  const chatOverlay = document.getElementById('chatOverlay');
+  if (chatOverlay) {
+    chatOverlay.style.display = 'flex';
+    setTimeout(() => {
+      chatOverlay.classList.add('show');
+    }, 10);
+    
+    // Inicializar el chat si no tiene contenido
+    const chatBody = document.getElementById('chatBody');
+    if (chatBody && !chatBody.hasChildNodes()) {
+      renderChatNode('start');
+    }
+  }
+}
+
+function closeChat() {
+  const chatOverlay = document.getElementById('chatOverlay');
+  if (chatOverlay) {
+    chatOverlay.classList.remove('show');
+    setTimeout(() => {
+      chatOverlay.style.display = 'none';
+    }, 300);
+  }
+}
+
+function toggleMaximize() {
+  const chatContainer = document.querySelector('.chat-container');
+  if (chatContainer) {
+    chatContainer.classList.toggle('maximized');
+  }
+}
+
+function clearChat() {
+  const chatBody = document.getElementById('chatBody');
+  const chatFooter = document.getElementById('chatFooter');
+  if (chatBody) {
+    chatBody.innerHTML = '';
+  }
+  if (chatFooter) {
+    chatFooter.innerHTML = '';
+  }
+  
+  // Reiniciar el chat después de limpiar
+  setTimeout(() => {
+    renderChatNode('start');
+  }, 300);
+}
+
+// Árbol de conversación del chat
+const chatTree = {
+  start: { 
+    bot: '¡Hola! 👋 Soy tu asistente de soporte. ¿En qué podemos ayudarte hoy?', 
+    options: [
+      { text: 'Soporte técnico', icon: 'fas fa-cogs', next: 'tech' },
+      { text: 'Datos personales', icon: 'fas fa-user-shield', next: 'privacy' },
+      { text: 'Características de la plataforma', icon: 'fas fa-list-alt', next: 'features' } 
+    ] 
+  },
+  
+  tech: { 
+    bot: 'Entiendo que tienes un problema técnico. ¿Podrías especificar qué está sucediendo?', 
+    options: [
+      { text: 'Error de carga', icon: 'fas fa-exclamation-triangle', next: 'loadError' },
+      { text: 'Funcionamiento lento', icon: 'fas fa-tachometer-alt', next: 'slow' },
+      { text: 'Problemas de conexión', icon: 'fas fa-wifi', next: 'connection' },
+      { text: 'Volver al inicio', icon: 'fas fa-home', next: 'start' } 
+    ] 
+  },
+  
+  loadError: { 
+    bot: '⚠️ Para solucionar problemas de carga:\n1. Verifica tu conexión a internet\n2. Actualiza la página (Ctrl+F5)\n3. Limpia el caché de tu navegador\n\n¿Hay algo más en lo que pueda ayudarte?', 
+    options: [
+      { text: 'Volver a soporte técnico', icon: 'fas fa-arrow-left', next: 'tech' },
+      { text: 'Inicio', icon: 'fas fa-home', next: 'start' }
+    ] 
+  },
+  
+  slow: { 
+    bot: '🐢 Para mejorar el rendimiento:\n1. Cierra aplicaciones en segundo plano\n2. Limpia el caché de tu navegador\n3. Actualiza tu navegador a la última versión\n\n¿Necesitas algo más?', 
+    options: [
+      { text: 'Volver a soporte técnico', icon: 'fas fa-arrow-left', next: 'tech' },
+      { text: 'Inicio', icon: 'fas fa-home', next: 'start' }
+    ] 
+  },
+  
+  connection: { 
+    bot: '📶 Para resolver problemas de conexión:\n1. Reinicia tu módem/router\n2. Verifica otros dispositivos\n3. Prueba con una conexión diferente\n\n¿Hay algo más que necesites?', 
+    options: [
+      { text: 'Volver a soporte técnico', icon: 'fas fa-arrow-left', next: 'tech' },
+      { text: 'Inicio', icon: 'fas fa-home', next: 'start' }
+    ] 
+  },
+  
+  privacy: {
+    bot: 'En esta sección puedes consultar nuestras políticas de protección de datos. ¿Qué deseas saber?',
+    options: [
+      { text: 'Política de cookies', icon: 'fas fa-cookie-bite', next: 'cookies' },
+      { text: 'Política de privacidad', icon: 'fas fa-user-lock', next: 'privacy_policy' },
+      { text: 'Volver al inicio', icon: 'fas fa-home', next: 'start' }
+    ]
+  },
+  
+  cookies: {
+    bot: 'Nuestra política de cookies explica cómo utilizamos cookies y tecnologías similares. Puedes consultar la política completa haciendo clic <a style="color:blue" href="Legal/politica-de-cookies.html">aquí</a>',
+    options: [
+      { text: 'Volver a datos personales', icon: 'fas fa-arrow-left', next: 'privacy' },
+      { text: 'Inicio', icon: 'fas fa-home', next: 'start' }
+    ]
+  },
+  
+  privacy_policy: {
+    bot: 'Nuestra política de privacidad describe cómo recopilamos, usamos y protegemos tu información personal. Consúltala <a style="color:blue" href="Legal/politica-de-privacidad.html">aquí</a>',
+    options: [
+      { text: 'Volver a datos personales', icon: 'fas fa-arrow-left', next: 'privacy' },
+      { text: 'Inicio', icon: 'fas fa-home', next: 'start' }
+    ]
+  },
+  
+  features: {
+    bot: 'Nuestra plataforma cuenta con varias características avanzadas. ¿Sobre cuál deseas información?',
+    options: [
+      { text: 'Editor de texto', icon: 'fas fa-edit', next: 'text_editor' },
+      { text: 'Base de datos', icon: 'fas fa-database', next: 'database' },
+      { text: 'Servidor MC BR', icon: 'fas fa-server', next: 'server' },
+      { text: 'Volver al inicio', icon: 'fas fa-home', next: 'start' }
+    ]
+  },
+  
+  text_editor: {
+    bot: 'El editor de texto te permite formatear texto con estilos Unicode como negrita, cursiva y caracteres invisibles. Es una herramienta útil para crear contenido especializado.<br><a style="color:blue" href="/Subpaginas/editor-texto.html">Usar editor</a>',
+    options: [
+      { text: 'Volver a características', icon: 'fas fa-arrow-left', next: 'features' },
+      { text: 'Inicio', icon: 'fas fa-home', next: 'start' }
+    ]
+  },
+  
+  database: {
+    bot: 'Nuestra base de datos fue creada para registrar e informar a los usuarios de la comunidad sobre los usuarios problemáticos, en ella puedes ver los más recientes incidentes y un informe completo sobre cada uno de ellos.<br><a style="color:blue" href="/base-de-datos.html">Ver base</a>',
+    options: [
+      { text: 'Volver a características', icon: 'fas fa-arrow-left', next: 'features' },
+      { text: 'Inicio', icon: 'fas fa-home', next: 'start' }
+    ]
+  },
+  
+  server: {
+    bot: 'El servidor MC BR esta operativo desde el 2022, cuenta con diferentes modalidades y modos de juego. Puedes obtener más detalles <a style="color:blue" href="/categorias-mc.html">aquí</a>',
+    options: [
+      { text: 'Volver a características', icon: 'fas fa-arrow-left', next: 'features' },
+      { text: 'Inicio', icon: 'fas fa-home', next: 'start' }
+    ]
+  }
+};
+
+let currentChatState = 'start';
+let isChatProcessing = false;
+
+function renderChatNode(nodeKey) {
+  if (isChatProcessing) return;
+  
+  isChatProcessing = true;
+  currentChatState = nodeKey;
+  const node = chatTree[nodeKey];
+  const chatBody = document.getElementById('chatBody');
+  const chatFooter = document.getElementById('chatFooter');
+  
+  if (!chatBody || !chatFooter) return;
+  
+  // Mostrar indicador de escritura
+  const typing = document.createElement('div');
+  typing.className = 'typing-indicator';
+  typing.innerHTML = `
+    <div class="typing-dot"></div>
+    <div class="typing-dot"></div>
+    <div class="typing-dot"></div>
+  `;
+  chatBody.appendChild(typing);
+  chatBody.scrollTop = chatBody.scrollHeight;
+  
+  // Simular tiempo de escritura
+  setTimeout(() => {
+    typing.remove();
+    
+    const msg = document.createElement('div');
+    msg.className = 'message bot';
+    msg.innerHTML = node.bot.replace(/\n/g, '<br>') + 
+      `<span class="message-time">${getCurrentTime()}</span>`;
+    chatBody.appendChild(msg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    chatFooter.innerHTML = '';
+    node.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'quick-reply';
+      btn.innerHTML = `<i class="${opt.icon}"></i> ${opt.text}`;
+      btn.addEventListener('click', () => {
+        if (isChatProcessing) return;
+        
+        // Agregar mensaje del usuario
+        const userMsg = document.createElement('div');
+        userMsg.className = 'message user';
+        userMsg.innerHTML = opt.text + `<span class="message-time">${getCurrentTime()}</span>`;
+        chatBody.appendChild(userMsg);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        
+        // Renderizar siguiente nodo
+        setTimeout(() => {
+          renderChatNode(opt.next);
+        }, 500);
+      });
+      chatFooter.appendChild(btn);
+    });
+    
+    isChatProcessing = false;
+  }, 1000);
+}
+
+function getCurrentTime() {
+  const now = new Date();
+  return now.toLocaleTimeString('es-ES', { 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  });
+}
+
+// Funciones para los botones del panel inferior
+function goToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+function goToBottom() {
+  window.scrollTo({
+    top: document.documentElement.scrollHeight,
+    behavior: 'smooth'
+  });
+}
+
+  </script>
+</body>
+</html>

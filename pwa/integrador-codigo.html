@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Integrador de Código - MVP</title>
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+
+  <!-- Script para detectar tema antes de que se renderice la página -->
+  <script>
+    (function() {
+      const temaGuardado = localStorage.getItem('preferencia-tema');
+      if (temaGuardado) {
+        document.documentElement.classList.add('theme-controlled');
+        if (temaGuardado === 'oscuro') {
+          document.documentElement.classList.add('dark-theme');
+        }
+      }
+    })();
+  </script>
+
+  <style>
+    
+    :root {
+      /* Colores principales - Paleta cálida similar a 404 */
+      --color-primary: #FFD1A9;
+      --color-primary-hover: #ffb07a;
+      --color-success: #4ade80;
+      --color-success-hover: #22c55e;
+      
+      /* Colores de texto */
+      --color-text-primary: #1F2937;
+      --color-text-secondary: #4B5563;
+      --color-text-muted: #6B7280;
+      
+      /* Colores de fondo */
+      --color-bg-primary: #FFF5EB;
+      --color-bg-secondary: #ffffff;
+      
+      /* Colores de bordes */
+      --color-border: rgba(0, 0, 0, 0.1);
+      
+      /* Sombras */
+      --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.1);
+      --shadow-button: 0 2px 4px rgba(0,0,0,0.1);
+      --shadow-box: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.1);
+      
+      /* Espaciado */
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 10px;
+      --spacing-lg: 16px;
+      --spacing-xl: 20px;
+      --spacing-xxl: 30px;
+      
+      /* Bordes redondeados */
+      --border-radius-sm: 3px;
+      --border-radius-md: 4px;
+      --border-radius-lg: 8px;
+      
+      /* Tamaños de fuente */
+      --font-size-xs: 12px;
+      --font-size-sm: 13px;
+      --font-size-md: 14px;
+      --font-size-lg: 16px;
+      
+      /* Pesos de fuente */
+      --font-weight-light: 300;
+      --font-weight-normal: 400;
+      --font-weight-medium: 500;
+      --font-weight-semibold: 600;
+      --font-weight-bold: 700;
+      
+      /* Familias de fuente */
+      --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-family-mono: 'Inter', monospace;
+      
+      /* Transiciones */
+      --transition-fast: 0.2s;
+      --transition-normal: 0.3s;
+    }
+
+    /* Modo oscuro - solo se aplica si NO hay tema guardado */
+    @media (prefers-color-scheme: dark) {
+      html:not(.theme-controlled) :root {
+        --color-primary: #FFB07A;
+        --color-primary-hover: #FF8C42;
+        --color-success: #22c55e;
+        --color-success-hover: #16a34a;
+        --color-text-primary: #E5E5E5;
+        --color-text-secondary: #B0B0B0;
+        --color-text-muted: #9CA3AF;
+        --color-bg-primary: #1A1A1A;
+        --color-bg-secondary: #2D2D2D;
+        --color-border: rgba(255, 255, 255, 0.1);
+        --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.3);
+        --shadow-button: 0 2px 4px rgba(0,0,0,0.3);
+        --shadow-box: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -1px rgba(0,0,0,0.3);
+      }
+    }
+
+    /* Desactivar media query cuando el tema está controlado por JavaScript */
+    html.theme-controlled {
+      --color-primary: #FFD1A9 !important;
+      --color-primary-hover: #ffb07a !important;
+      --color-success: #4ade80 !important;
+      --color-success-hover: #22c55e !important;
+      --color-text-primary: #1F2937 !important;
+      --color-text-secondary: #4B5563 !important;
+      --color-text-muted: #6B7280 !important;
+      --color-bg-primary: #FFF5EB !important;
+      --color-bg-secondary: #ffffff !important;
+      --color-border: rgba(0, 0, 0, 0.1) !important;
+      --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.1) !important;
+      --shadow-button: 0 2px 4px rgba(0,0,0,0.1) !important;
+      --shadow-box: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.1) !important;
+    }
+
+    /* Tema oscuro controlado por JavaScript */
+    html.theme-controlled.dark-theme {
+      --color-primary: #FFB07A !important;
+      --color-primary-hover: #FF8C42 !important;
+      --color-success: #22c55e !important;
+      --color-success-hover: #16a34a !important;
+      --color-text-primary: #E5E5E5 !important;
+      --color-text-secondary: #B0B0B0 !important;
+      --color-text-muted: #9CA3AF !important;
+      --color-bg-primary: #1A1A1A !important;
+      --color-bg-secondary: #2D2D2D !important;
+      --color-border: rgba(255, 255, 255, 0.1) !important;
+      --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.3) !important;
+      --shadow-button: 0 2px 4px rgba(0,0,0,0.3) !important;
+      --shadow-box: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -1px rgba(0,0,0,0.3) !important;
+    }
+
+    /* Reset y box sizing */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow-x: hidden;
+    }
+    
+    body {
+      font-family: var(--font-family-primary);
+      background-color: var(--color-bg-primary);
+      padding: var(--spacing-xl);
+      transition: background-color var(--transition-normal);
+      margin-bottom: 80px;
+    }
+    
+    h1 {
+      text-align: center;
+      color: var(--color-text-primary);
+      margin-bottom: var(--spacing-xl);
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-lg);
+      transition: color var(--transition-normal);
+    }
+    
+    label {
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-secondary);
+      margin-top: var(--spacing-xl);
+      display: block;
+      transition: color var(--transition-normal);
+    }
+    
+    .field-group {
+      position: relative;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    textarea {
+      width: 100%;
+      height: 120px;
+      margin-top: var(--spacing-xs);
+      padding: var(--spacing-md);
+      font-family: var(--font-family-mono);
+      font-size: var(--font-size-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-inset);
+      resize: vertical;
+      background-color: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+      transition: all var(--transition-normal);
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(255, 209, 169, 0.1);
+    }
+    
+    button {
+      padding: var(--spacing-sm) var(--spacing-lg);
+      margin-top: var(--spacing-md);
+      margin-right: var(--spacing-md);
+      border: none;
+      border-radius: var(--border-radius-md);
+      background-color: var(--color-primary);
+      color: var(--color-text-primary);
+      cursor: pointer;
+      font-size: var(--font-size-md);
+      font-family: var(--font-family-primary);
+      font-weight: var(--font-weight-medium);
+      box-shadow: var(--shadow-button);
+      transition: all var(--transition-normal);
+      border: 1px solid var(--color-border);
+    }
+    
+    button:hover {
+      background-color: var(--color-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    button:active {
+      transform: translateY(0);
+      box-shadow: var(--shadow-button);
+    }
+    
+    .paste-btn {
+      position: absolute;
+      top: 32px;
+      right: 12px;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      font-size: var(--font-size-xs);
+      background-color: var(--color-success);
+      color: var(--color-text-primary);
+    }
+    
+    .paste-btn:hover {
+      background-color: var(--color-success-hover);
+    }
+    
+    #btnGenerate, #btnDownload {
+      display: inline-block;
+    }
+    
+    h2 {
+      margin-top: var(--spacing-xxl);
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-semibold);
+      transition: color var(--transition-normal);
+    }
+    
+    .preview-container {
+      display: flex;
+      gap: var(--spacing-xl);
+      margin-top: var(--spacing-md);
+      max-width: 100%;
+      flex-wrap: wrap;
+    }
+    
+    .preview-box {
+      flex: 1 1 45%;
+      height: 400px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      background: var(--color-bg-secondary);
+      overflow: auto;
+      box-shadow: var(--shadow-box);
+      position: relative;
+      padding: var(--spacing-xxl) var(--spacing-md) var(--spacing-md);
+      transition: all var(--transition-normal);
+    }
+    
+    .preview-box:hover {
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+    
+    .preview-box h3 {
+      position: absolute;
+      top: 5px;
+      left: var(--spacing-md);
+      margin: 0;
+      font-size: var(--font-size-md);
+      color: var(--color-text-primary);
+      background: var(--color-bg-primary);
+      padding: 2px 6px;
+      border-radius: var(--border-radius-sm);
+      font-weight: var(--font-weight-medium);
+      transition: all var(--transition-normal);
+    }
+    
+    #previewCode {
+      white-space: pre-wrap;
+      font-family: var(--font-family-mono);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+      transition: color var(--transition-normal);
+    }
+    
+    #previewRendered {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: var(--border-radius-sm);
+    }
+
+    /* Panel de acciones inferior */
+    /* Rectángulo gris fijo en la parte inferior */
+    .bottom-fixed-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      min-height: 60px;
+      background-color: rgba(0, 0, 0, 0.26);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      z-index: 50;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    /* Panel expandido */
+    .bottom-fixed-bar.expanded {
+      height: 100vh;
+      bottom: 0;
+      top: auto;
+      z-index: 99;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    /* Contenedor para el contenido expandido */
+    .expanded-content {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      padding-top: 0;
+    }
+
+    .bottom-fixed-bar.expanded .expanded-content {
+      display: flex;
+    }
+
+    /* Ajustar botones cuando está expandido */
+    .bottom-fixed-bar.expanded .right-actions {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      gap: 8px;
+    }
+
+    .bottom-fixed-bar.expanded .open-chat-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+
+    /* Botón volver arriba dentro del rectángulo fijo */
+    .back-to-top-fixed {
+      background-color: rgba(255, 209, 169, 0.8);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      color: #374151;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      margin-left: 10px;
+    }
+
+    .back-to-top-fixed:hover {
+      background-color: rgba(255, 176, 122, 0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .back-to-top-fixed:active {
+      transform: translateY(0);
+    }
+
+    /* Botón ir al final dentro del rectángulo fijo */
+    .go-to-bottom-fixed {
+      background-color: rgba(255, 209, 169, 0.8);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      color: #374151;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      margin-left: 10px;
+    }
+
+    .go-to-bottom-fixed:hover {
+      background-color: rgba(255, 176, 122, 0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .go-to-bottom-fixed:active {
+      transform: translateY(0);
+    }
+
+    /* Contenedor para los botones de la izquierda */
+    .left-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 60px;
+      min-height: 60px;
+      margin-bottom: 10px;
+    }
+
+    /* Botón de ayuda */
+    .open-chat-btn {
+      background-color: rgba(255, 209, 169, 0.8);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      color: #374151;
+      height: 35px;
+      min-height: 35px;
+      border-radius: 17.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      padding: 0 12px;
+      gap: 5px;
+      line-height: 1;
+    }
+
+    .open-chat-btn:hover {
+      background-color: rgba(255, 176, 122, 0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .open-chat-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Botón compartir dentro del rectángulo fijo */
+    .share-btn-fixed {
+      background-color: rgba(255, 209, 169, 0.8);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      color: #374151;
+      width: 35px;
+      height: 35px;
+      min-height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      line-height: 1;
+    }
+
+    .share-btn-fixed:hover {
+      background-color: rgba(255, 176, 122, 0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .share-btn-fixed:active {
+      transform: translateY(0);
+    }
+
+    /* Separador vertical del panel de acciones */
+    .action-separator {
+      width: 2px;
+      height: 60px;
+      background-color: rgba(255, 255, 255, 0.3);
+      margin-left: 12px;
+      margin-right: 5px;
+      border-radius: 1px;
+    }
+
+    /* Botón ver más dentro del rectángulo fijo */
+    .view-more-fixed {
+      background-color: rgba(255, 209, 169, 0.8);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      color: #374151;
+      min-width: 80px;
+      height: 35px;
+      border-radius: 17.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      margin-right: 15px;
+      gap: 5px;
+    }
+
+    .view-more-fixed.expanded {
+      min-width: 100px;
+    }
+
+    /* Contenedor para las acciones de la derecha */
+    .right-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-left: auto;
+      height: 60px;
+    }
+
+    /* Panel expandido - elemento separado */
+    .panel-expansion {
+      position: fixed;
+      bottom: 60px;
+      left: 0;
+      width: 100%;
+      height: 0;
+      background-color: rgba(0, 0, 0, 0.26);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      z-index: 98;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 0 20px;
+    }
+
+    .panel-expansion.expanded {
+      height: calc(100vh - 60px);
+      padding: 8px 20px 20px 20px;
+    }
+
+    .panel-expansion.expanded .expanded-content {
+      display: flex;
+    }
+
+    /* Estilos para el contenedor de noticias */
+    .news-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.3);
+      border-radius: 0;
+      box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      margin-bottom: 0;
+      overflow: hidden;
+      z-index: 99;
+    }
+
+    .news-container .title {
+      position: absolute;
+      background-color: rgb(255, 209, 169);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 3.8px;
+      color: #374151;
+      font-size: 1rem;
+      z-index: 200;
+      border-radius: 6px;
+      box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .news-container ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      animation: scroll 120s infinite linear;
+      padding-left: 80px;
+    }
+
+    .news-container ul li {
+      white-space: nowrap;
+      padding: 10px 24px;
+      color: white;
+      position: relative;
+    }
+
+    .news-container ul li::after {
+      content: "";
+      width: 1px;
+      height: 100%;
+      background: #b8b8b8;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .news-container ul li:last-child::after {
+      display: none;
+    }
+
+    .news-container ul li a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .news-container ul li a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes scroll {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(-10200px);
+      }
+    }
+
+    .news-separator {
+      position: relative;
+      width: 100%;
+      height: 4px;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      margin: 100px 0 8px 0;
+      z-index: 100;
+    }
+
+    .news-separator-top, .news-separator-bottom {
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 4px;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      z-index: 100;
+    }
+
+    .news-separator-top {
+      margin: 50px 0 8px 0;
+    }
+
+    .news-separator-bottom {
+      margin: 0px 0 8px 0;
+    }
+
+    .categories-section-panel {
+      width: 100%;
+      margin: -20px 0 10px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    .categories-title-panel {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 12px;
+      margin-left: 0;
+      letter-spacing: 0.5px;
+      background: rgba(255, 168, 54, 0.92);
+      padding: 12px 24px 12px 24px;
+      border-radius: 0px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.10);
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      display: block;
+      text-align: center;
+      text-transform: uppercase;
+      max-width: none;
+      z-index: 101;
+    }
+
+    .categories-tags-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .category-tag-panel {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 209, 169, 0.85);
+      color: #374151;
+      font-weight: 600;
+      font-size: 0.98rem;
+      border-radius: 18px;
+      padding: 7px 18px;
+      text-decoration: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.07);
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    .category-tag-panel:hover {
+      background: #ffb07a;
+      color: #1F2937;
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+    }
+
+    .category-tag-panel i {
+      font-size: 1.1em;
+      margin-right: 4px;
+    }
+
+    /* --- Botones de tema --- */
+    .theme-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 209, 169, 0.85);
+      color: #374151;
+      font-weight: 600;
+      font-size: 0.98rem;
+      border-radius: 18px;
+      padding: 7px 18px;
+      border: 1px solid rgba(0,0,0,0.07);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      position: relative;
+      min-width: 140px;
+    }
+
+    .theme-btn:hover {
+      background: #ffb07a;
+      color: #1F2937;
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+    }
+
+    .theme-btn .theme-indicator {
+      margin-left: auto;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #d1d5db;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border 0.2s;
+    }
+
+    .theme-btn.active .theme-indicator {
+      background: #22c55e;
+      border: 2px solid #16a34a;
+    }
+
+    /* Estilo para el popup de ayuda de tema */
+    .theme-help-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      color: #1F2937;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      padding: 28px 24px 18px 24px;
+      z-index: 9999;
+      min-width: 320px;
+      max-width: 90vw;
+      font-size: 1rem;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      animation: fadeIn 0.2s;
+    }
+
+    .theme-help-popup.active {
+      display: flex;
+    }
+
+    .theme-help-popup .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: none;
+      border: none;
+      font-size: 1.2em;
+      color: #374151;
+      cursor: pointer;
+    }
+
+    .theme-help-popup ul {
+      margin: 0 0 0 0.5em;
+      padding: 0;
+      list-style: none;
+    }
+
+    .theme-help-popup ul li {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -60%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+  </style>
+  
+  <!-- Estilos para el modo oscuro -->
+  <style id="dark-theme-style">
+    /* Modo oscuro general */
+    html.dark-theme body {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+    }
+    
+    /* Elementos específicos del integrador de código */
+    html.dark-theme h1 {
+      color: #f3f4f6 !important;
+    }
+    
+    html.dark-theme h2 {
+      color: #f3f4f6 !important;
+    }
+    
+    html.dark-theme label {
+      color: #f3f4f6 !important;
+    }
+    
+    html.dark-theme textarea {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    html.dark-theme textarea:focus {
+      border-color: #FFD1A9 !important;
+      box-shadow: 0 0 0 3px rgba(255, 209, 169, 0.2) !important;
+    }
+    
+    html.dark-theme button {
+      background-color: #23232a !important;
+      color: #FFD1A9 !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    html.dark-theme button:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    
+    html.dark-theme .paste-btn {
+      background-color: #22c55e !important;
+      color: #f3f4f6 !important;
+    }
+    
+    html.dark-theme .paste-btn:hover {
+      background-color: #16a34a !important;
+    }
+    
+    html.dark-theme .preview-box {
+      background-color: #23232a !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    html.dark-theme .preview-box h3 {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+    }
+    
+    html.dark-theme #previewCode {
+      color: #9CA3AF !important;
+    }
+    
+    /* Panel de acciones */
+    .bottom-fixed-bar.dark-theme {
+      background-color: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    
+    .panel-expansion.dark-theme {
+      background-color: rgba(24,24,27,0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    
+    .news-container.dark-theme {
+      background: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    
+    .categories-title-panel.dark-theme {
+      background: rgba(60, 48, 40, 0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    
+    .category-tag-panel.dark-theme {
+      background: rgba(60, 60, 40, 0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    
+    .category-tag-panel.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    .theme-btn.dark-theme {
+      background: rgba(60,60,40,0.85) !important;
+      color: #FFD1A9 !important;
+      border: 2px solid #FFD1A9 !important;
+    }
+    
+    .theme-btn.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    /* Estilos para el botón de reset */
+    #resetThemeBtn {
+      background: rgba(239, 68, 68, 0.85) !important;
+      color: white !important;
+    }
+    
+    #resetThemeBtn:hover {
+      background: rgba(220, 38, 38, 0.95) !important;
+      color: white !important;
+    }
+    
+    #resetThemeBtn.dark-theme {
+      background: rgba(239, 68, 68, 0.85) !important;
+      color: white !important;
+    }
+    
+    #resetThemeBtn.dark-theme:hover {
+      background: rgba(220, 38, 38, 0.95) !important;
+      color: white !important;
+    }
+    
+    .theme-btn.active .theme-indicator {
+      background: #22c55e !important;
+      border: 2px solid #16a34a !important;
+    }
+    
+    .theme-help-popup.dark-theme {
+      background: #23232a !important;
+      color: #FFD1A9 !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    }
+    
+    .theme-help-popup.dark-theme .close-btn {
+      color: #FFD1A9 !important;
+    }
+    
+    .theme-help-popup.dark-theme ul li span {
+      color: #FFD1A9 !important;
+    }
+    
+    /* Separadores */
+    .action-separator.dark-theme,
+    .news-separator-top.dark-theme,
+    .news-separator-bottom.dark-theme {
+      background-color: rgba(255,209,169,0.25) !important;
+    }
+    
+    /* Botones del panel */
+    .open-chat-btn.dark-theme {
+      background-color: rgba(60,60,40,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    
+    .open-chat-btn.dark-theme:hover {
+      background-color: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    .share-btn-fixed.dark-theme {
+      background-color: rgba(60,60,40,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    
+    .share-btn-fixed.dark-theme:hover {
+      background-color: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    .view-more-fixed.dark-theme {
+      background-color: rgba(60,60,40,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    
+    .view-more-fixed.dark-theme:hover {
+      background-color: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    .back-to-top-fixed.dark-theme,
+    .go-to-bottom-fixed.dark-theme {
+      background-color: rgba(60,60,40,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    
+    .back-to-top-fixed.dark-theme:hover,
+    .go-to-bottom-fixed.dark-theme:hover {
+      background-color: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+  </style>
+</head>
+<body>
+  <h1>Integrador de Código</h1>
+
+  <div class="field-group">
+    <label for="baseHtml">HTML Base:</label>
+    <button class="paste-btn" data-target="baseHtml">Pegar</button>
+    <textarea id="baseHtml" placeholder="Pega aquí tu HTML base..."></textarea>
+  </div>
+
+  <div class="field-group">
+    <label for="addHtml">Fragmento HTML a insertar (opcional):</label>
+    <button class="paste-btn" data-target="addHtml">Pegar</button>
+    <textarea id="addHtml" placeholder="Pega aquí tu fragmento HTML..."></textarea>
+  </div>
+
+  <div class="field-group">
+    <label for="addCss">Fragmento CSS a insertar (opcional):</label>
+    <button class="paste-btn" data-target="addCss">Pegar</button>
+    <textarea id="addCss" placeholder="Pega aquí tu CSS..."></textarea>
+  </div>
+
+  <div class="field-group">
+    <label for="addJs">Fragmento JavaScript a insertar (opcional):</label>
+    <button class="paste-btn" data-target="addJs">Pegar</button>
+    <textarea id="addJs" placeholder="Pega aquí tu JavaScript..."></textarea>
+  </div>
+
+  <button id="btnGenerate">Generar Integración</button>
+  <button id="btnDownload" disabled>Descargar HTML Final</button>
+
+  <h2>Vistas Previas:</h2>
+  <div class="preview-container">
+    <div class="preview-box">
+      <h3>Código Final (sin ejecutar)</h3>
+      <div id="previewCode"></div>
+    </div>
+    <div class="preview-box">
+      <h3>Vista Ejecutada</h3>
+      <iframe id="previewRendered"></iframe>
+    </div>
+  </div>
+
+  <!-- Rectángulo gris fijo en la parte inferior -->
+  <div class="bottom-fixed-bar">
+    <div class="left-actions">
+      <button title="Abrir chat" class="open-chat-btn" onclick="openChat()">
+        <i class="fas fa-comments"></i>Ayuda
+      </button>
+      <button title="Compartir página" class="share-btn-fixed" id="shareBtn" onclick="sharePage()">
+        <i class="fas fa-share-alt"></i>
+      </button>
+    </div>
+    <div class="right-actions">
+      <div class="action-separator"></div>
+      <div class="view-more-fixed" id="viewMoreBtn" title="panel de acciones" onclick="togglePanel()">
+        <i class="fas fa-ellipsis-h"></i>
+        <span id="viewMoreText">Ver más</span>
+      </div>
+      <div class="back-to-top-fixed" id="backToTopBtn" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+      <div class="go-to-bottom-fixed" id="goToBottomBtn" title="Ir al final">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de expansión separado -->
+  <div class="panel-expansion" id="panelExpansion">
+    <!-- Contenedor para el contenido expandido -->
+    <div class="expanded-content">
+      <!-- Contenedor de noticias -->
+      <div class='news-container'>
+        <div class='title'>
+          Novedades
+        </div>
+
+        <ul>
+          <!-- Las noticias se cargarán dinámicamente desde noticias.json -->
+        </ul>
+      </div>
+      <div class="news-separator-top"></div>
+      
+      <!-- Sección de categorías -->
+      <div class="categories-section-panel">
+        <div class="categories-title-panel">Categorías</div>
+        <div class="categories-tags-panel">
+          <a href="/categorias-comunidad.html" class="category-tag-panel comunidad"><i class="fas fa-users"></i> Comunidad</a>
+          <a href="/categorias-mc.html" class="category-tag-panel minecraft"><i class="fas fa-cube"></i> Minecraft</a>
+          <a href="/categorias-reglas.html" class="category-tag-panel reglas"><i class="fas fa-book"></i> Reglas</a>
+          <a href="/categorias-admins.html" class="category-tag-panel administracion"><i class="fas fa-user-shield"></i> Administración</a>
+        </div>
+      </div>
+      <div class="news-separator-bottom"></div>
+      
+      <!-- Sección de tema -->
+      <div class="theme-section-panel" style="width:100%; margin: 0 0 10px 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+        <div class="categories-title-panel" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center; text-align: center;">
+          <span style="display: flex; align-items: center; gap: 8px;">
+            Tema
+            <button id="themeHelpBtn" type="button" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #374151; font-size: 1.1em; display: flex; align-items: center;">
+              <i class="fas fa-question-circle"></i>
+            </button>
+          </span>
+        </div>
+        <div class="theme-buttons-panel" style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+          <button class="theme-btn" title="Automático" type="button">
+            <i class="fas fa-adjust"></i> Automático
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Eficiencia" type="button">
+            <i class="fas fa-bolt"></i> Eficiencia
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Claro" type="button">
+            <i class="fas fa-sun"></i> Claro
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Oscuro" type="button">
+            <i class="fas fa-moon"></i> Oscuro
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Reset (Sistema)" type="button" id="resetThemeBtn" style="background: rgba(239, 68, 68, 0.85); color: white;">
+            <i class="fas fa-undo"></i> Reset Sistema
+            <span class="theme-indicator"></span>
+          </button>
+        </div>
+        <div class="action-separator" style="position: relative; left: 50%; transform: translateX(-50%); width: 100vw; height: 4px; background-color: rgba(255,255,255,0.3); margin: 14px 0 0 0; border-radius: 2px; z-index: 100;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay que contiene el chat modal -->
+  <div class="overlay" id="chatOverlay">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="header-left">
+          <div class="header-image">
+            <img src="/icons/bot-hecks.avif" alt="Logo de soporte" id="chatImage">
+          </div>
+          <div class="header-title">Soporte CGN</div>
+        </div>
+        <div class="header-buttons">
+          <button class="header-btn" onclick="toggleMaximize()" title="Maximizar/Minimizar chat">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="header-btn" onclick="clearChat()" title="Borrar chat">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="header-btn" onclick="closeChat()" title="Cerrar chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-footer" id="chatFooter"></div>
+    </div>
+  </div>
+
+  <!-- Popup de ayuda para Tema -->
+  <div class="theme-help-popup" id="themeHelpPopup">
+    <button class="close-btn" id="closeThemeHelp" title="Cerrar ayuda"><i class="fas fa-times"></i></button>
+    <strong>¿Cómo funcionan los modos de tema?</strong>
+    <ul>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-adjust"></i> <b>Automático</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Cambia entre modo claro y oscuro automáticamente según la hora del día (oscuro de noche, claro de día).</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-bolt"></i> <b>Eficiencia</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Activa el modo oscuro si el ahorro de energía está activo en tu dispositivo.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-sun"></i> <b>Claro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema claro en la página.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-moon"></i> <b>Oscuro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema oscuro en la página.</span>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    // Función para pegar desde portapapeles
+    document.querySelectorAll('.paste-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const targetId = btn.getAttribute('data-target');
+        try {
+          const text = await navigator.clipboard.readText();
+          document.getElementById(targetId).value = text;
+        } catch (err) {
+          alert('No se pudo acceder al portapapeles.');
+        }
+      });
+    });
+
+    document.getElementById('btnGenerate').addEventListener('click', function() {
+      const baseHtml = document.getElementById('baseHtml').value;
+      const addHtml  = document.getElementById('addHtml').value;
+      const addCss   = document.getElementById('addCss').value;
+      const addJs    = document.getElementById('addJs').value;
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(baseHtml, 'text/html');
+
+      if (addHtml.trim()) {
+        const container = document.createElement('div');
+        container.innerHTML = addHtml;
+        doc.body.appendChild(container);
+      }
+      if (addCss.trim()) {
+        let styleTag = doc.head.querySelector('style[data-generated]');
+        if (!styleTag) {
+          styleTag = doc.createElement('style');
+          styleTag.setAttribute('data-generated', 'true');
+          doc.head.appendChild(styleTag);
+        }
+        styleTag.textContent += '\n' + addCss;
+      }
+      if (addJs.trim()) {
+        const scriptTag = doc.createElement('script');
+        scriptTag.setAttribute('data-generated', 'true');
+        scriptTag.textContent = addJs;
+        doc.body.appendChild(scriptTag);
+      }
+
+      const finalHtml = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+
+      // Código final
+      document.getElementById('previewCode').textContent = finalHtml;
+      // Render
+      document.getElementById('previewRendered').srcdoc = finalHtml;
+
+      // Descarga
+      const btnDownload = document.getElementById('btnDownload');
+      const blob = new Blob([finalHtml], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      btnDownload.href = url;
+      btnDownload.download = 'integrated.html';
+      btnDownload.disabled = false;
+    });
+
+    // Prevenir descarga si está deshabilitado
+    document.getElementById('btnDownload').addEventListener('click', function(e) {
+      if (this.disabled) e.preventDefault();
+    });
+
+    // Función para expandir/contraer el panel de acciones
+    function togglePanel() {
+      const panelExpansion = document.getElementById('panelExpansion');
+      const viewMoreBtn = document.getElementById('viewMoreBtn');
+      const viewMoreText = document.getElementById('viewMoreText');
+      const viewMoreIcon = document.querySelector('#viewMoreBtn i');
+      
+      if (panelExpansion.classList.contains('expanded')) {
+        // Contraer el panel
+        panelExpansion.classList.remove('expanded');
+        viewMoreBtn.classList.remove('expanded');
+        viewMoreText.textContent = 'Ver más';
+        viewMoreIcon.className = 'fas fa-ellipsis-h';
+        document.body.style.overflow = '';
+      } else {
+        // Expandir el panel
+        panelExpansion.classList.add('expanded');
+        viewMoreBtn.classList.add('expanded');
+        viewMoreText.textContent = 'Ver menos';
+        viewMoreIcon.className = 'fas fa-compress';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    // Función para verificar si el panel está expandido
+    function isPanelExpanded() {
+      return document.getElementById('panelExpansion').classList.contains('expanded');
+    }
+
+    // Función para establecer el overflow correcto basado en el estado del panel
+    function setCorrectOverflow() {
+      if (isPanelExpanded()) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Función para compartir la página
+    function sharePage() {
+      const pageTitle = document.title || 'CGN - Comunidad Gaming Network';
+      const pageUrl = window.location.href;
+      
+      // Verificar si la API Web Share está disponible
+      if (navigator.share) {
+        navigator.share({
+          title: pageTitle,
+          url: pageUrl,
+          text: '¡Mira esta página de la Comunidad Gaming Network!'
+        }).then(() => {
+          console.log('Contenido compartido exitosamente');
+        }).catch((error) => {
+          console.log('Error al compartir:', error);
+          // Fallback: copiar URL al portapapeles
+          fallbackShare();
+        });
+      } else {
+        // Fallback para navegadores que no soportan Web Share API
+        fallbackShare();
+      }
+    }
+
+    // Función de respaldo para compartir
+    function fallbackShare() {
+      const pageUrl = window.location.href;
+      
+      // Intentar copiar al portapapeles
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(pageUrl).then(() => {
+          // Mostrar notificación de éxito
+          showShareNotification('¡URL copiada al portapapeles!');
+        }).catch(() => {
+          // Si falla clipboard, mostrar URL en alert
+          alert('Comparte esta URL: ' + pageUrl);
+        });
+      } else {
+        // Fallback final: mostrar URL en alert
+        alert('Comparte esta URL: ' + pageUrl);
+      }
+    }
+
+    // Función para mostrar notificación de compartir
+    function showShareNotification(message) {
+      // Crear elemento de notificación
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: rgba(255, 209, 169, 0.95);
+        color: #374151;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 10000;
+        font-size: 14px;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      `;
+      notification.textContent = message;
+      
+      // Agregar al DOM
+      document.body.appendChild(notification);
+      
+      // Animar entrada
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 100);
+      
+      // Remover después de 3 segundos
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // Botón "Volver arriba"
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // Botón "Ir al final"
+    const goToBottomBtn = document.getElementById('goToBottomBtn');
+    goToBottomBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+      });
+    });
+
+    // --- Tema: solo un botón activo a la vez ---
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeBtns = document.querySelectorAll('.theme-btn');
+      const body = document.body;
+      const contentContainer = document.querySelector('.content-container');
+      const navButtons = document.querySelectorAll('.nav-button');
+      const footer = document.querySelector('footer');
+      const footerSections = document.querySelectorAll('.footer-section');
+      const footerLinks = document.querySelectorAll('.footer-links a');
+      const footerBottom = document.querySelector('.footer-bottom');
+      const copyright = document.querySelector('.copyright');
+      const bottomFixedBar = document.querySelector('.bottom-fixed-bar');
+      const panelExpansion = document.querySelector('.panel-expansion');
+      const newsContainer = document.querySelector('.news-container');
+      const categoriesTitlePanel = document.querySelectorAll('.categories-title-panel');
+      const categoryTagPanel = document.querySelectorAll('.category-tag-panel');
+      const themeBtnsAll = document.querySelectorAll('.theme-btn');
+      const themeHelpPopup = document.getElementById('themeHelpPopup');
+      const actionSeparators = document.querySelectorAll('.action-separator');
+      const newsSeparators = document.querySelectorAll('.news-separator-top, .news-separator-bottom');
+
+      // Función para establecer el tema oscuro (definida fuera del event listener)
+      function setDarkTheme(active) {
+        console.log('setDarkTheme llamado con:', active);
+        if (active) {
+          document.documentElement.classList.add('dark-theme');
+          if(contentContainer) contentContainer.classList.add('dark-theme');
+          navButtons.forEach(el => el.classList.add('dark-theme'));
+          if(footer) footer.classList.add('dark-theme');
+          footerSections.forEach(el => el.classList.add('dark-theme'));
+          footerLinks.forEach(el => el.classList.add('dark-theme'));
+          if(footerBottom) footerBottom.classList.add('dark-theme');
+          if(copyright) copyright.classList.add('dark-theme');
+          if(bottomFixedBar) bottomFixedBar.classList.add('dark-theme');
+          if(panelExpansion) panelExpansion.classList.add('dark-theme');
+          if(newsContainer) newsContainer.classList.add('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.add('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.add('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.add('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.add('dark-theme');
+          actionSeparators.forEach(el => el.classList.add('dark-theme'));
+          newsSeparators.forEach(el => el.classList.add('dark-theme'));
+          
+          // Elementos específicos del integrador de código
+          const openChatBtn = document.querySelector('.open-chat-btn');
+          const shareBtn = document.querySelector('.share-btn-fixed');
+          const viewMoreBtn = document.querySelector('.view-more-fixed');
+          const backToTopBtn = document.querySelector('.back-to-top-fixed');
+          const goToBottomBtn = document.querySelector('.go-to-bottom-fixed');
+          
+          if(openChatBtn) openChatBtn.classList.add('dark-theme');
+          if(shareBtn) shareBtn.classList.add('dark-theme');
+          if(viewMoreBtn) viewMoreBtn.classList.add('dark-theme');
+          if(backToTopBtn) backToTopBtn.classList.add('dark-theme');
+          if(goToBottomBtn) goToBottomBtn.classList.add('dark-theme');
+        } else {
+          document.documentElement.classList.remove('dark-theme');
+          if(contentContainer) contentContainer.classList.remove('dark-theme');
+          navButtons.forEach(el => el.classList.remove('dark-theme'));
+          if(footer) footer.classList.remove('dark-theme');
+          footerSections.forEach(el => el.classList.remove('dark-theme'));
+          footerLinks.forEach(el => el.classList.remove('dark-theme'));
+          if(footerBottom) footerBottom.classList.remove('dark-theme');
+          if(copyright) copyright.classList.remove('dark-theme');
+          if(bottomFixedBar) bottomFixedBar.classList.remove('dark-theme');
+          if(panelExpansion) panelExpansion.classList.remove('dark-theme');
+          if(newsContainer) newsContainer.classList.remove('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.remove('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.remove('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.remove('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.remove('dark-theme');
+          actionSeparators.forEach(el => el.classList.remove('dark-theme'));
+          newsSeparators.forEach(el => el.classList.remove('dark-theme'));
+          
+          // Elementos específicos del integrador de código
+          const openChatBtn = document.querySelector('.open-chat-btn');
+          const shareBtn = document.querySelector('.share-btn-fixed');
+          const viewMoreBtn = document.querySelector('.view-more-fixed');
+          const backToTopBtn = document.querySelector('.back-to-top-fixed');
+          const goToBottomBtn = document.querySelector('.go-to-bottom-fixed');
+          
+          if(openChatBtn) openChatBtn.classList.remove('dark-theme');
+          if(shareBtn) shareBtn.classList.remove('dark-theme');
+          if(viewMoreBtn) viewMoreBtn.classList.remove('dark-theme');
+          if(backToTopBtn) backToTopBtn.classList.remove('dark-theme');
+          if(goToBottomBtn) goToBottomBtn.classList.remove('dark-theme');
+        }
+      }
+
+      // Función para aplicar tema basado en el texto del botón
+      function aplicarTema(themeText) {
+        console.log('aplicarTema llamado con:', themeText);
+        const theme = themeText.toLowerCase();
+        
+        if (theme.includes('oscuro')) {
+          setDarkTheme(true);
+        } else if (theme.includes('claro')) {
+          setDarkTheme(false);
+        } else if (theme.includes('automático') || theme.includes('automatico')) {
+          // Automático: modo oscuro de 20:00 a 7:00, claro el resto
+          const hour = new Date().getHours();
+          if (hour >= 20 || hour < 7) {
+            setDarkTheme(true);
+          } else {
+            setDarkTheme(false);
+          }
+        } else if (theme.includes('eficiencia')) {
+          // Eficiencia: modo oscuro si el ahorro de energía está activo
+          if (navigator.getBattery) {
+            navigator.getBattery().then(function(battery) {
+              if (battery && battery.savePower) {
+                setDarkTheme(true);
+              } else if (battery && battery.dischargingTime === Infinity && battery.charging) {
+                setDarkTheme(false);
+              } else if (battery && battery.charging === false && battery.level < 0.2) {
+                setDarkTheme(true);
+              } else if (battery && battery.level < 0.15) {
+                setDarkTheme(true);
+              } else {
+                setDarkTheme(false);
+              }
+            }).catch(function() {
+              setDarkTheme(false);
+            });
+          } else if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            // fallback: si el usuario tiene preferencias de ahorro de energía
+            setDarkTheme(true);
+          } else {
+            setDarkTheme(false);
+          }
+        }
+      }
+
+      // Event listeners para los botones de tema
+      themeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          console.log('Botón de tema clickeado:', btn.textContent.trim());
+          
+          // Remover clase active de todos los botones
+          themeBtns.forEach(b => b.classList.remove('active'));
+          // Agregar clase active al botón clickeado
+          btn.classList.add('active');
+
+          // Agregar clase para controlar el tema (desactiva media query)
+          document.documentElement.classList.add('theme-controlled');
+
+          // Guardar preferencia en localStorage
+          let theme = btn.textContent.trim();
+          if (theme.includes('Oscuro')) {
+            localStorage.setItem('preferencia-tema', 'oscuro');
+          } else if (theme.includes('Claro')) {
+            localStorage.setItem('preferencia-tema', 'claro');
+          } else if (theme.includes('Automático')) {
+            localStorage.setItem('preferencia-tema', 'automatico');
+          } else if (theme.includes('Eficiencia')) {
+            localStorage.setItem('preferencia-tema', 'eficiencia');
+          }
+
+          // Aplicar el tema
+          aplicarTema(theme);
+        });
+      });
+
+      // Al cargar la página, aplicar la preferencia guardada
+      function activarTemaGuardado() {
+        const temaGuardado = localStorage.getItem('preferencia-tema');
+        console.log('Tema guardado en localStorage:', temaGuardado);
+        
+        if (!temaGuardado) {
+          console.log('No hay tema guardado, usando tema claro por defecto');
+          return;
+        }
+        
+        // Agregar clase para controlar el tema (desactiva media query)
+        document.documentElement.classList.add('theme-controlled');
+        
+        let btnToClick = null;
+        themeBtns.forEach(btn => {
+          let theme = btn.textContent.trim();
+          console.log('Comparando botón:', theme, 'con tema guardado:', temaGuardado);
+          
+          if (
+            (temaGuardado === 'oscuro' && theme.includes('Oscuro')) ||
+            (temaGuardado === 'claro' && theme.includes('Claro')) ||
+            (temaGuardado === 'automatico' && theme.includes('Automático')) ||
+            (temaGuardado === 'eficiencia' && theme.includes('Eficiencia'))
+          ) {
+            btnToClick = btn;
+            console.log('Botón encontrado:', theme);
+          }
+        });
+        
+        if (btnToClick) {
+          console.log('Activando botón guardado:', btnToClick.textContent.trim());
+          btnToClick.click();
+        } else {
+          console.log('No se encontró botón correspondiente al tema guardado');
+        }
+      }
+      
+      // Ejecutar al cargar la página
+      activarTemaGuardado();
+      
+      // Botón de reset para volver al comportamiento del sistema
+      const resetThemeBtn = document.getElementById('resetThemeBtn');
+      if (resetThemeBtn) {
+        resetThemeBtn.addEventListener('click', function() {
+          // Remover clase active de todos los botones
+          themeBtns.forEach(b => b.classList.remove('active'));
+          
+          // Remover clase theme-controlled para permitir que el media query funcione
+          document.documentElement.classList.remove('theme-controlled');
+          
+          // Limpiar localStorage
+          localStorage.removeItem('preferencia-tema');
+          
+          // Remover todas las clases dark-theme
+          setDarkTheme(false);
+          
+          console.log('Tema reseteado al comportamiento del sistema');
+        });
+      }
+    });
+
+    // --- Popup de ayuda para Tema ---
+    document.addEventListener('DOMContentLoaded', function() {
+      const helpBtn = document.getElementById('themeHelpBtn');
+      const helpPopup = document.getElementById('themeHelpPopup');
+      const closeHelp = document.getElementById('closeThemeHelp');
+      
+      if (helpBtn && helpPopup && closeHelp) {
+        helpBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          helpPopup.classList.add('active');
+        });
+        
+        closeHelp.addEventListener('click', function() {
+          helpPopup.classList.remove('active');
+        });
+        
+        // Cerrar al hacer clic fuera del popup
+        document.addEventListener('mousedown', function(e) {
+          if (helpPopup.classList.contains('active') && !helpPopup.contains(e.target) && e.target !== helpBtn) {
+            helpPopup.classList.remove('active');
+          }
+        });
+      }
+    });
+
+    // Verificar si los scripts se cargaron correctamente
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM cargado');
+      if (typeof openChat === 'function') {
+        console.log('openChat está disponible después de cargar DOM');
+      } else {
+        console.log('openChat NO está disponible después de cargar DOM');
+      }
+    });
+  </script>
+  
+  <!-- Scripts al final del body -->
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <script src="/pwa/noticias.js"></script>
+</body>
+</html>

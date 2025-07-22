@@ -1,0 +1,3625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Uso de fondos | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFF5EB;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    
+    .content-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      flex: 1;
+      margin-bottom: 100px; /* Espacio adicional para evitar que el panel tape el footer */
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    
+    .nav-button {
+      background-color: #FFD1A9;
+      color: #374151;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .nav-button:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .nav-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-button i {
+      margin-right: 0.5rem;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2.5rem;
+    }
+    
+    .footer-section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: #FFD1A9;
+    }
+    
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .footer-links a {
+      color: #4B5563;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+      color: #d8971d;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 0.75rem;
+      color: #FFD1A9;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid #E5E7EB;
+      text-align: center;
+      color: #4B5563;
+      font-size: 0.9rem;
+      padding-bottom: 80px; /* Espacio extra para que la bandera no quede tapada */
+    }
+    
+    .copyright {
+      font-weight: 600;
+      color: #1F2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .copyright span {
+      color: #FFD1A9;
+    }
+    
+    .back-to-top {
+      position: absolute;
+      top: -25px;
+      right: 20px;
+      background-color: #FFD1A9;
+      color: #374151;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .back-to-top:hover {
+      background-color: #ffb07a;
+      transform: translateY(-3px);
+    }
+    
+    .back-to-top:active {
+      transform: translateY(0);
+    }
+    
+    .cgn-icon {
+      height: 50px;
+      width: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .cgn-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Header completo con menú desplegable */
+    .header-comunidad {
+      background-color: #FFF5EB;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .header-logo {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .header-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1F2937;
+    }
+    
+    .header-legend {
+      font-weight: 700;
+      font-style: italic;
+      font-size: 0.75rem;
+      color: #115c2c;
+      margin-left: 0.5rem;
+    }
+    
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 24px;
+      width: 30px;
+      padding: 0;
+    }
+    
+    .menu-bar {
+      height: 3px;
+      width: 100%;
+      background-color: #1F2937;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+    
+    .menu-desplegable {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    
+    .menu-desplegable.abierto {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .menu-desplegable ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+    
+    .menu-desplegable li {
+      padding: 0;
+    }
+    
+    .menu-desplegable a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      color: #4B5563;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    
+    .menu-desplegable a:hover {
+      background-color: #FFD1A9;
+      color: #1F2937;
+      padding-left: 1.75rem;
+    }
+    
+    /* Título principal */
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #FFD1A9;
+      position: relative;
+    }
+    
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: #ffb07a;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-button {
+        width: 100%;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .back-to-top {
+        top: -20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      
+      .cgn-icon {
+        height: 50px;
+        width: 100px;
+      }
+
+      /* Estilos responsivos para reportes */
+      .summary-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .stat-item {
+        padding: 1rem;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .transparency-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .investments-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .usage-category {
+        padding: 1rem;
+      }
+
+      .category-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+
+      .category-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-card {
+        padding: 1rem;
+      }
+
+      .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+      }
+
+      .stat-number {
+        font-size: 1.5rem;
+      }
+
+      .transparency-card {
+        padding: 1rem;
+      }
+
+      .transparency-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+      }
+
+      .investment-item {
+        padding: 1rem;
+      }
+
+      .investment-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+
+      .investment-header i {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+      }
+
+      .investment-details {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+      }
+    }
+
+   /* Barra de progreso de scroll - Ahora dentro del header */
+#scroll-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: rgba(255, 209, 169, 0.2);
+  z-index: 99; /* Reducir z-index */
+}
+
+#scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFD1A9, #ffb07a);
+  transition: width 0.1s ease;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Aumentar z-index del menú desplegable */
+.menu-desplegable {
+  z-index: 100; /* Mayor que la barra de progreso */
+}
+
+/* Ajustar posición del header */
+.header-comunidad {
+  position: sticky;
+  top: 0;
+  z-index: 98; /* Menor que la barra */
+}
+
+/* Rectángulo gris fijo en la parte inferior */
+.bottom-fixed-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 50;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  transition: all 0.3s ease;
+}
+
+/* Panel expandido */
+.bottom-fixed-bar.expanded {
+  height: 100vh;
+  bottom: 0;
+  top: auto;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Contenedor para el contenido expandido */
+.expanded-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 0;
+}
+
+.bottom-fixed-bar.expanded .expanded-content {
+  display: flex;
+}
+
+/* Ajustar botones cuando está expandido */
+.bottom-fixed-bar.expanded .right-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  gap: 8px;
+}
+
+.bottom-fixed-bar.expanded .open-chat-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+/* Botón volver arriba dentro del rectángulo fijo */
+.back-to-top-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.back-to-top-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.back-to-top-fixed:active {
+  transform: translateY(0);
+}
+
+/* Botón ir al final dentro del rectángulo fijo */
+.go-to-bottom-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.go-to-bottom-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.go-to-bottom-fixed:active {
+  transform: translateY(0);
+}
+
+/* Contenedor para los botones de la izquierda */
+.left-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Botón compartir dentro del rectángulo fijo */
+.share-btn-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.share-btn-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.share-btn-fixed:active {
+  transform: translateY(0);
+}
+
+/* Separador vertical del panel de acciones */
+.action-separator {
+  width: 2px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin-left: 12px;
+  margin-right: 5px;
+  border-radius: 1px;
+}
+
+/* Botón ver más dentro del rectángulo fijo */
+.view-more-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  min-width: 80px;
+  height: 35px;
+  border-radius: 17.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-right: 15px;
+  gap: 5px;
+}
+
+.view-more-fixed.expanded {
+  min-width: 100px;
+}
+
+/* Contenedor para las acciones de la derecha */
+.right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Panel de expansión - elemento separado */
+.panel-expansion {
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 98;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 20px;
+}
+
+.panel-expansion.expanded {
+  height: calc(100vh - 60px);
+  padding: 8px 20px 20px 20px;
+}
+
+.panel-expansion.expanded .expanded-content {
+  display: flex;
+}
+
+/* Estilos para el contenedor de noticias */
+.news-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.3);
+  border-radius: 0;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  margin-bottom: 0;
+  overflow: hidden;
+  z-index: 99;
+}
+
+.news-container .title {
+  position: absolute;
+  background-color: rgb(255, 209, 169);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 3.8px;
+  color: #374151;
+  font-size: 1rem;
+  z-index: 200;
+  border-radius: 6px;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+}
+
+.news-container ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  animation: scroll 120s infinite linear;
+  padding-left: 80px;
+}
+
+.news-container ul li {
+  white-space: nowrap;
+  padding: 10px 24px;
+  color: white;
+  position: relative;
+}
+
+.news-container ul li::after {
+  content: "";
+  width: 1px;
+  height: 100%;
+  background: #b8b8b8;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.news-container ul li:last-child::after {
+  display: none;
+}
+
+.news-container ul li a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-container ul li a:hover {
+  text-decoration: underline;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-10200px);
+  }
+}
+
+.news-separator {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  margin: 100px 0 8px 0;
+  z-index: 100;
+}
+
+.news-separator-top, .news-separator-bottom {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  z-index: 100;
+}
+
+.news-separator-top {
+  margin: 50px 0 8px 0;
+}
+
+.news-separator-bottom {
+  margin: 0px 0 8px 0;
+}
+
+.categories-section-panel {
+  width: 100%;
+  margin: -20px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.categories-title-panel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 12px;
+  margin-left: 0;
+  letter-spacing: 0.5px;
+  background: rgba(255, 168, 54, 0.92);
+  padding: 12px 24px 12px 24px;
+  border-radius: 0px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.10);
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  max-width: none;
+  z-index: 101;
+}
+.categories-tags-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.category-tag-panel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.07);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.category-tag-panel:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.category-tag-panel i {
+  font-size: 1.1em;
+  margin-right: 4px;
+}
+
+/* --- Botones de tema --- */
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  position: relative;
+  min-width: 140px;
+}
+.theme-btn:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.theme-btn .theme-indicator {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #d1d5db;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border 0.2s;
+}
+.theme-btn.active .theme-indicator {
+  background: #22c55e;
+  border: 2px solid #16a34a;
+}
+
+/* Estilo para el popup de ayuda de tema */
+.theme-help-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  color: #1F2937;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 28px 24px 18px 24px;
+  z-index: 9999;
+  min-width: 320px;
+  max-width: 90vw;
+  font-size: 1rem;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.2s;
+}
+.theme-help-popup.active {
+  display: flex;
+}
+.theme-help-popup .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #374151;
+  cursor: pointer;
+}
+.theme-help-popup ul {
+  margin: 0 0 0 0.5em;
+  padding: 0;
+  list-style: none;
+}
+.theme-help-popup ul li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -60%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* Estilos para la página de reportes */
+.reports-intro {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.reports-intro p {
+  font-size: 1.125rem;
+  color: #4B5563;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Tarjeta de resumen general */
+.summary-card {
+  background: linear-gradient(135deg, #E0F2FE, #B3E5FC);
+  border: 2px solid #0288D1;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.summary-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(2, 136, 209, 0.2);
+}
+
+.summary-header i {
+  color: #0277BD;
+  font-size: 2rem;
+}
+
+.summary-header h2 {
+  color: #01579B;
+  font-weight: 700;
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0277BD;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.stat-period {
+  font-size: 0.875rem;
+  color: #6B7280;
+}
+
+/* Sección de uso de fondos */
+.funds-usage-section {
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1F2937;
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #FFD1A9;
+}
+
+/* Estilos para la tabla de fondos */
+.funds-table-container {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 2px solid #E5E7EB;
+  width: 100%;
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.funds-table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+.table-header {
+  background: linear-gradient(135deg, #FFD1A9, #ffb07a);
+  font-weight: 700;
+  color: #374151;
+  border-bottom: 3px solid #E5E7EB;
+  font-size: 0.875rem;
+}
+
+.table-header th {
+  padding: 1.25rem 0.5rem;
+  text-align: center;
+  background: transparent;
+  border-right: none;
+}
+
+.table-header th:nth-child(1) { width: 40%; }
+.table-header th:nth-child(2) { width: 20%; }
+.table-header th:nth-child(3) { width: 40%; }
+
+.table-row {
+  background: white;
+  border-bottom: 1px solid #E5E7EB;
+  transition: all 0.3s ease;
+}
+
+.table-row:hover {
+  background-color: #F9FAFB;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-cell {
+  padding: 1.25rem 0.5rem;
+  border-right: 2px solid #E5E7EB;
+  min-height: 60px;
+  background: transparent;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.table-cell:last-child {
+  border-right: none;
+}
+
+.table-row.total-row {
+  background: linear-gradient(135deg, #E0F2FE, #B3E5FC);
+  border-top: 3px solid #0288D1;
+  border-bottom: none;
+}
+
+.table-row.total-row .table-cell {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.table-row.total-row .table-cell.category-cell {
+  padding-left: 1rem;
+}
+
+.table-row.total-row .table-cell.amount-cell {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.table-row.total-row .table-cell.details-cell {
+  padding-left: 0.75rem;
+}
+
+.category-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.category-icon {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, #FFD1A9, #ffb07a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #374151;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #E5E7EB;
+}
+
+.category-text h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0 0 0.25rem 0;
+}
+
+.category-text p {
+  font-size: 0.8rem;
+  color: #6B7280;
+  margin: 0;
+}
+
+.amount {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0277BD;
+  text-align: center;
+  width: 100%;
+}
+
+.details-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.details-list li {
+  padding: 0.3rem 0;
+  font-size: 0.8rem;
+  color: #4B5563;
+  border-bottom: 1px solid #F3F4F6;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: left;
+}
+
+.details-list li:last-child {
+  border-bottom: none;
+}
+
+.details-list li::before {
+  content: '•';
+  color: #FFD1A9;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+/* Estilos para la fila de total */
+.table-row.total-row {
+  background: linear-gradient(135deg, #E0F2FE, #B3E5FC);
+  border-top: 3px solid #0288D1;
+  border-bottom: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.table-row.total-row .table-cell {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.total-icon {
+  background: linear-gradient(135deg, #0288D1, #0277BD);
+  color: white;
+  border-color: #0277BD;
+}
+
+.total-amount {
+  color: #01579B;
+  font-size: 1.3rem;
+}
+
+.total-details p {
+  font-size: 0.8rem;
+  color: #0D47A1;
+  margin: 0.2rem 0;
+  font-weight: 500;
+}
+
+/* Responsive para las nuevas secciones */
+@media (max-width: 768px) {
+  .table-header, .table-row {
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 0;
+  }
+  .table-header {
+    padding: 0;
+  }
+  .table-header > div {
+    padding: 0.75rem 0.25rem;
+    font-size: 0.7rem;
+  }
+  .table-header > div:last-child {
+    border-right: none;
+  }
+  .table-cell {
+    padding: 0.75rem 0.25rem;
+    border-right: 2px solid #E5E7EB;
+    min-height: 40px;
+  }
+  .table-cell:last-child {
+    border-right: none;
+  }
+  .category-info {
+    gap: 0.5rem;
+  }
+  .category-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 0.8rem;
+  }
+  .category-text h4 {
+    font-size: 0.8rem;
+    margin: 0 0 0.1rem 0;
+  }
+  .category-text p {
+    font-size: 0.65rem;
+  }
+  .amount {
+    font-size: 0.9rem;
+  }
+  .details-list li {
+    font-size: 0.65rem;
+    padding: 0.15rem 0;
+  }
+  .total-amount {
+    font-size: 1rem;
+  }
+  .total-details p {
+    font-size: 0.65rem;
+  }
+  .total-row .table-cell {
+    border-right: 2px solid rgba(2, 136, 209, 0.3);
+  }
+  .total-row .table-cell:last-child {
+    border-right: none;
+  }
+  .progress-stats {
+    grid-template-columns: 1fr;
+  }
+  .transparency-container,
+  .investments-container {
+    padding: 1rem;
+  }
+  .investment-details {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+  .progress-grid,
+  .transparency-container,
+  .investments-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-header, .table-row {
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 0;
+  }
+  .table-header {
+    padding: 0;
+  }
+  .table-header > div {
+    padding: 0.5rem 0.15rem;
+    font-size: 0.65rem;
+  }
+  .table-header > div:last-child {
+    border-right: none;
+  }
+  .table-row {
+    padding: 0;
+  }
+  .table-cell {
+    padding: 0.5rem 0.15rem;
+    border-right: 2px solid #E5E7EB;
+    min-height: 35px;
+  }
+  .table-cell:last-child {
+    border-right: none;
+  }
+  .category-info {
+    gap: 0.4rem;
+  }
+  .category-icon {
+    width: 25px;
+    height: 25px;
+    font-size: 0.7rem;
+  }
+  .category-text h4 {
+    font-size: 0.7rem;
+    margin: 0 0 0.05rem 0;
+  }
+  .category-text p {
+    font-size: 0.6rem;
+  }
+  .amount {
+    font-size: 0.8rem;
+  }
+  .details-list li {
+    font-size: 0.6rem;
+    padding: 0.1rem 0;
+  }
+  .total-amount {
+    font-size: 0.9rem;
+  }
+  .total-details p {
+    font-size: 0.6rem;
+  }
+  .total-row .table-cell {
+    border-right: 2px solid rgba(2, 136, 209, 0.3);
+  }
+  .total-row .table-cell:last-child {
+    border-right: none;
+  }
+  .funds-table-container {
+    margin: 0 -0.5rem;
+    border-radius: 0.5rem;
+  }
+  .transparency-container,
+  .investments-container {
+    margin: 0 -0.5rem;
+    border-radius: 0.5rem;
+    padding: 1rem 0.75rem;
+  }
+  .progress-card,
+  .transparency-card,
+  .investment-card {
+    padding: 1rem 0.75rem;
+  }
+  .progress-icon,
+  .transparency-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+  }
+  .investment-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  .category-text h4,
+  .progress-content h3,
+  .transparency-content h3,
+  .investment-info h3 {
+    font-size: 1rem;
+  }
+  .progress-stats .stat-number {
+    font-size: 1.1rem;
+  }
+  .progress-stats .stat-label {
+    font-size: 0.7rem;
+  }
+  .progress-content p,
+  .transparency-content p,
+  .investment-info p {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .table-header, .table-row {
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 0;
+  }
+  .table-header {
+    padding: 0;
+  }
+  .table-header > div {
+    padding: 0.4rem 0.1rem;
+    font-size: 0.6rem;
+  }
+  .table-header > div:last-child {
+    border-right: none;
+  }
+  .table-row {
+    padding: 10px;
+  }
+  .table-cell {
+    padding: 0.4rem 0.1rem;
+    border-right: 2px solid #E5E7EB;
+    min-height: 30px;
+  }
+  .table-cell:last-child {
+    border-right: none;
+  }
+  .category-info {
+    gap: 0.3rem;
+  }
+  .category-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 0.6rem;
+  }
+  .category-text h4 {
+    font-size: 0.65rem;
+    margin: 0 0 0.05rem 0;
+  }
+  .category-text p {
+    font-size: 0.55rem;
+  }
+  .amount {
+    font-size: 0.7rem;
+  }
+  .details-list li {
+    font-size: 0.55rem;
+    padding: 0.08rem 0;
+  }
+  .total-amount {
+    font-size: 0.8rem;
+  }
+  .total-details p {
+    font-size: 0.55rem;
+  }
+  .total-row .table-cell {
+    border-right: 2px solid rgba(2, 136, 209, 0.3);
+  }
+  .total-row .table-cell:last-child {
+    border-right: none;
+  }
+  .content-container {
+    padding: 1rem;
+  }
+  .funds-table-container,
+  .transparency-container,
+  .investments-container {
+    margin: 0;
+    border-radius: 0.5rem;
+  }
+  .progress-card,
+  .transparency-card,
+  .investment-card {
+    padding: 0.75rem;
+  }
+  .progress-icon,
+  .transparency-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  .investment-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Sección de progresos logrados */
+.progress-section {
+  margin-bottom: 3rem;
+}
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.progress-card {
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.progress-card:hover {
+  border-color: #10B981;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.progress-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #10B981, #059669);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  color: white;
+}
+
+.progress-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 0.75rem;
+}
+
+.progress-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.progress-stats .stat-item {
+  text-align: center;
+  padding: 0.5rem;
+  background: #F0FDF4;
+  border-radius: 0.5rem;
+  border: 1px solid #BBF7D0;
+}
+
+.progress-stats .stat-number {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #059669;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.progress-stats .stat-label {
+  font-size: 0.75rem;
+  color: #065F46;
+  font-weight: 500;
+}
+
+.progress-content p {
+  color: #4B5563;
+  line-height: 1.5;
+  font-size: 0.85rem;
+}
+
+/* Sección de transparencia mejorada */
+.transparency-section {
+  margin-bottom: 3rem;
+}
+
+.transparency-container {
+  background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+  border: 2px solid #16A34A;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.transparency-card {
+  background: white;
+  border: 1px solid #BBF7D0;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.transparency-card:hover {
+  border-color: #16A34A;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.transparency-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #16A34A, #22C55E);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  color: white;
+  align-self: flex-start;
+}
+
+.transparency-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.transparency-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #166534;
+  margin-bottom: 0.75rem;
+}
+
+.transparency-content p {
+  color: #14532D;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  flex: 1;
+  font-size: 0.85rem;
+}
+
+.transparency-status {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.status-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+.status-badge.active {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.last-update {
+  font-size: 0.75rem;
+  color: #15803D;
+}
+
+/* Sección de inversiones mejorada */
+.future-investments {
+  margin-bottom: 3rem;
+}
+
+.investments-container {
+  background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+  border: 2px solid #F59E0B;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.investment-card {
+  background: white;
+  border: 1px solid #FDE68A;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.investment-card:hover {
+  border-color: #F59E0B;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.investment-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.investment-icon {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.investment-info {
+  flex: 1;
+}
+
+.investment-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #92400E;
+  margin: 0 0 0.4rem 0;
+}
+
+.investment-info p {
+  color: #78350F;
+  line-height: 1.5;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.investment-details {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid #F3F4F6;
+}
+
+.investment-amount, .investment-timeline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.amount-label, .timeline-label {
+  font-size: 0.7rem;
+  color: #6B7280;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.amount-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #F59E0B;
+}
+
+.timeline-value {
+  font-size: 0.8rem;
+  color: #374151;
+  font-weight: 600;
+  background: #F3F4F6;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+}
+
+/* Responsive para las nuevas secciones */
+@media (max-width: 768px) {
+  .table-header, .table-row {
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 0;
+  }
+  .table-header {
+    padding: 0;
+  }
+  .table-header > div {
+    padding: 0.75rem 0.25rem;
+    font-size: 0.7rem;
+  }
+  .table-header > div:last-child {
+    border-right: none;
+  }
+  .table-cell {
+    padding: 0.75rem 0.25rem;
+    border-right: 2px solid #E5E7EB;
+    min-height: 40px;
+  }
+  .table-cell:last-child {
+    border-right: none;
+  }
+  .category-info {
+    gap: 0.5rem;
+  }
+  .category-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 0.8rem;
+  }
+  .category-text h4 {
+    font-size: 0.8rem;
+    margin: 0 0 0.1rem 0;
+  }
+  .category-text p {
+    font-size: 0.65rem;
+  }
+  .amount {
+    font-size: 0.9rem;
+  }
+  .details-list li {
+    font-size: 0.65rem;
+    padding: 0.15rem 0;
+  }
+  .total-amount {
+    font-size: 1rem;
+  }
+  .total-details p {
+    font-size: 0.65rem;
+  }
+  .total-row .table-cell {
+    border-right: 2px solid rgba(2, 136, 209, 0.3);
+  }
+  .total-row .table-cell:last-child {
+    border-right: none;
+  }
+  .progress-stats {
+    grid-template-columns: 1fr;
+  }
+  .transparency-container,
+  .investments-container {
+    padding: 1rem;
+  }
+  .investment-details {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+  .progress-grid,
+  .transparency-container,
+  .investments-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-header, .table-row {
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 0;
+  }
+  .table-header {
+    padding: 0;
+  }
+  .table-header > div {
+    padding: 0.5rem 0.15rem;
+    font-size: 0.65rem;
+  }
+  .table-header > div:last-child {
+    border-right: none;
+  }
+  .table-row {
+    padding: 0;
+  }
+  .table-cell {
+    padding: 0.5rem 0.15rem;
+    border-right: 2px solid #E5E7EB;
+    min-height: 35px;
+  }
+  .table-cell:last-child {
+    border-right: none;
+  }
+  .category-info {
+    gap: 0.4rem;
+  }
+  .category-icon {
+    width: 25px;
+    height: 25px;
+    font-size: 0.7rem;
+  }
+  .category-text h4 {
+    font-size: 0.7rem;
+    margin: 0 0 0.05rem 0;
+  }
+  .category-text p {
+    font-size: 0.6rem;
+  }
+  .amount {
+    font-size: 0.8rem;
+  }
+  .details-list li {
+    font-size: 0.6rem;
+    padding: 0.1rem 0;
+  }
+  .total-amount {
+    font-size: 0.9rem;
+  }
+  .total-details p {
+    font-size: 0.6rem;
+  }
+  .total-row .table-cell {
+    border-right: 2px solid rgba(2, 136, 209, 0.3);
+  }
+  .total-row .table-cell:last-child {
+    border-right: none;
+  }
+  .funds-table-container {
+    margin: 0 -0.5rem;
+    border-radius: 0.5rem;
+  }
+  .transparency-container,
+  .investments-container {
+    margin: 0 -0.5rem;
+    border-radius: 0.5rem;
+    padding: 1rem 0.75rem;
+  }
+  .progress-card,
+  .transparency-card,
+  .investment-card {
+    padding: 1rem 0.75rem;
+  }
+  .progress-icon,
+  .transparency-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+  }
+  .investment-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  .category-text h4,
+  .progress-content h3,
+  .transparency-content h3,
+  .investment-info h3 {
+    font-size: 1rem;
+  }
+  .progress-stats .stat-number {
+    font-size: 1.1rem;
+  }
+  .progress-stats .stat-label {
+    font-size: 0.7rem;
+  }
+  .progress-content p,
+  .transparency-content p,
+  .investment-info p {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .table-header, .table-row {
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 0;
+  }
+  .table-header {
+    padding: 0;
+  }
+  .table-header > div {
+    padding: 0.4rem 0.1rem;
+    font-size: 0.6rem;
+  }
+  .table-header > div:last-child {
+    border-right: none;
+  }
+  .table-row {
+    padding: 10px;
+  }
+  .table-cell {
+    padding: 0.4rem 0.1rem;
+    border-right: 2px solid #E5E7EB;
+    min-height: 30px;
+  }
+  .table-cell:last-child {
+    border-right: none;
+  }
+  .category-info {
+    gap: 0.3rem;
+  }
+  .category-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 0.6rem;
+  }
+  .category-text h4 {
+    font-size: 0.65rem;
+    margin: 0 0 0.05rem 0;
+  }
+  .category-text p {
+    font-size: 0.55rem;
+  }
+  .amount {
+    font-size: 0.7rem;
+  }
+  .details-list li {
+    font-size: 0.55rem;
+    padding: 0.08rem 0;
+  }
+  .total-amount {
+    font-size: 0.8rem;
+  }
+  .total-details p {
+    font-size: 0.55rem;
+  }
+  .total-row .table-cell {
+    border-right: 2px solid rgba(2, 136, 209, 0.3);
+  }
+  .total-row .table-cell:last-child {
+    border-right: none;
+  }
+  .content-container {
+    padding: 1rem;
+  }
+  .funds-table-container,
+  .transparency-container,
+  .investments-container {
+    margin: 0;
+    border-radius: 0.5rem;
+  }
+  .progress-card,
+  .transparency-card,
+  .investment-card {
+    padding: 0.75rem;
+  }
+  .progress-icon,
+  .transparency-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  .investment-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+}
+
+footer {
+  background-color: #FFF5EB;
+  padding: 2.5rem 1rem;
+  border-top: 1px solid #E5E7EB;
+  margin-top: auto;
+  position: relative;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2.5rem;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid #E5E7EB;
+  text-align: center;
+  color: #4B5563;
+  font-size: 0.9rem;
+  padding-bottom: 80px; /* Espacio extra para que la bandera no quede tapada */
+}
+
+.copyright {
+  font-weight: 600;
+  color: #1F2937;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cgn-icon {
+  height: 50px;
+  width: 100px;
+  border-radius: 4px;
+  object-fit: cover;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+    }
+
+  </style>
+  <style id="dark-theme-style">
+    /* Modo oscuro general */
+    body.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+    }
+    .content-container.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 4px 12px -1px rgba(0,0,0,0.45), 0 2px 4px -1px rgba(0,0,0,0.30);
+      color: #f3f4f6 !important;
+    }
+    .header-comunidad.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+    .header-title.dark-theme {
+      color: #f3f4f6 !important;
+    }
+    .header-legend.dark-theme {
+      color: #18813f !important;
+    }
+    .menu-desplegable.dark-theme {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    .page-title.dark-theme {
+      color: #f3f4f6 !important;
+      border-bottom: 3px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme {
+      background-color: #23232a !important;
+      color: #FFD1A9 !important;
+      border: 1px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    footer.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+      border-top: 2px solid #bb4b004b !important;
+    }
+    .footer-section.dark-theme h3 {
+      color: #FFD1A9 !important;
+    }
+    .footer-links.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .footer-links.dark-theme a:hover {
+      color: #ffb07a !important;
+    }
+    .footer-links.dark-theme a i {
+      color: #FFD1A9 !important;
+    }
+    .footer-bottom.dark-theme {
+      color: #FFD1A9 !important;
+      border-top: 2px solid #bb4b004b !important;
+    }
+    .copyright.dark-theme {
+      color: #929292b0 !important;
+    }
+    .copyright.dark-theme span {
+      color: #FFD1A9 !important;
+    }
+    .bottom-fixed-bar.dark-theme {
+      background-color: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .panel-expansion.dark-theme {
+      background-color: rgba(24,24,27,0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .news-container.dark-theme {
+      background: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .categories-title-panel.dark-theme {
+      background: rgba(60, 48, 40, 0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme {
+      background: rgba(60, 60, 40, 0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.dark-theme {
+      background: rgba(60,60,40,0.85) !important;
+      color: #FFD1A9 !important;
+      border: 2px solid #FFD1A9 !important;
+    }
+    .theme-btn.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.active .theme-indicator {
+      background: #22c55e !important;
+      border: 2px solid #16a34a !important;
+    }
+    .theme-help-popup.dark-theme {
+      background: #23232a !important;
+      color: #FFD1A9 !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    }
+    .theme-help-popup.dark-theme .close-btn {
+      color: #FFD1A9 !important;
+    }
+    .theme-help-popup.dark-theme ul li span {
+      color: #FFD1A9 !important;
+    }
+    /* Separadores */
+    .action-separator.dark-theme,
+    .news-separator-top.dark-theme,
+    .news-separator-bottom.dark-theme {
+      background-color: rgba(255,209,169,0.25) !important;
+    }
+    .menu-toggle.dark-theme .menu-bar {
+      background-color: #f3f4f6 !important;
+    }
+    /* Mayor especificidad para sobrescribir estilos del modo claro */
+    body.dark-theme .footer-links a {
+      color: #929292b0 !important;
+    }
+    body.dark-theme .footer-links a:hover {
+      color: #ffb07a !important;
+    }
+    body.dark-theme .footer-links a i {
+      color: #FFD1A9 !important;
+    }
+    /* Icono de interrogación en modo oscuro */
+    body.dark-theme #themeHelpBtn {
+      color: #f3f4f6 !important;
+    }
+    body.dark-theme #themeHelpBtn i {
+      color: #f3f4f6 !important;
+    }
+    /* Bandera del pie de página en modo oscuro */
+    body.dark-theme .cgn-icon {
+      border: 1px solid rgba(255, 209, 169, 0.3) !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* Estilos de tema oscuro para elementos específicos de reportes */
+    .reports-intro.dark-theme p {
+      color: #f3f4f6 !important;
+    }
+    
+    .section-title.dark-theme {
+      color: #f3f4f6 !important;
+      border-bottom: 2px solid #FFD1A9 !important;
+    }
+    
+    .summary-card.dark-theme {
+      background: linear-gradient(135deg, #1e3a8a, #1e40af) !important;
+      border: 2px solid #3b82f6 !important;
+    }
+    
+    .summary-header.dark-theme {
+      border-bottom: 2px solid rgba(59, 130, 246, 0.3) !important;
+    }
+    
+    .summary-header.dark-theme i {
+      color: #60a5fa !important;
+    }
+    
+    .summary-header.dark-theme h2 {
+      color: #dbeafe !important;
+    }
+    
+    .stat-item.dark-theme {
+      background: #1f2937 !important;
+      border: 1px solid #374151 !important;
+    }
+    
+    .stat-value.dark-theme {
+      color: #60a5fa !important;
+    }
+    
+    .stat-label.dark-theme {
+      color: #d1d5db !important;
+    }
+    
+    .stat-period.dark-theme {
+      color: #9ca3af !important;
+    }
+    
+    .funds-table-container.dark-theme {
+      background: #1f2937 !important;
+      border: 2px solid #374151 !important;
+    }
+    
+    .table-header.dark-theme {
+      background: linear-gradient(135deg, #374151, #4b5563) !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .table-row.dark-theme {
+      background: #1f2937 !important;
+      border-bottom: 1px solid #374151 !important;
+    }
+    
+    .table-row.dark-theme:hover {
+      background-color: #111827 !important;
+    }
+    
+    .table-cell.dark-theme {
+      border-right: 2px solid #374151 !important;
+    }
+    
+    .table-row.total-row.dark-theme {
+      background: linear-gradient(135deg, #1e3a8a, #1e40af) !important;
+      border-top: 3px solid #3b82f6 !important;
+    }
+    
+    .category-text.dark-theme h4 {
+      color: #f3f4f6 !important;
+    }
+    
+    .category-text.dark-theme p {
+      color: #9ca3af !important;
+    }
+    
+    .amount.dark-theme {
+      color: #60a5fa !important;
+    }
+    
+    .details-list.dark-theme li {
+      color: #d1d5db !important;
+      border-bottom: 1px solid #374151 !important;
+    }
+    
+    .details-list.dark-theme li::before {
+      color: #FFD1A9 !important;
+    }
+    
+    .total-amount.dark-theme {
+      color: #dbeafe !important;
+    }
+    
+    .total-details.dark-theme p {
+      color: #93c5fd !important;
+    }
+    
+    .progress-card.dark-theme {
+      background: #1f2937 !important;
+      border: 2px solid #374151 !important;
+    }
+    
+    .progress-card.dark-theme:hover {
+      border-color: #10b981 !important;
+    }
+    
+    .progress-content.dark-theme h3 {
+      color: #f3f4f6 !important;
+    }
+    
+    .progress-content.dark-theme p {
+      color: #d1d5db !important;
+    }
+    
+    .progress-stats.dark-theme .stat-item {
+      background: #065f46 !important;
+      border: 1px solid #10b981 !important;
+    }
+    
+    .progress-stats.dark-theme .stat-number {
+      color: #34d399 !important;
+    }
+    
+    .progress-stats.dark-theme .stat-label {
+      color: #6ee7b7 !important;
+    }
+    
+    .transparency-container.dark-theme {
+      background: linear-gradient(135deg, #064e3b, #065f46) !important;
+      border: 2px solid #10b981 !important;
+    }
+    
+    .transparency-card.dark-theme {
+      background: #1f2937 !important;
+      border: 1px solid #10b981 !important;
+    }
+    
+    .transparency-card.dark-theme:hover {
+      border-color: #10b981 !important;
+    }
+    
+    .transparency-content.dark-theme h3 {
+      color: #d1fae5 !important;
+    }
+    
+    .transparency-content.dark-theme p {
+      color: #a7f3d0 !important;
+    }
+    
+    .status-badge.dark-theme.active {
+      background: #10b981 !important;
+      color: #064e3b !important;
+    }
+    
+    .last-update.dark-theme {
+      color: #34d399 !important;
+    }
+    
+    .investments-container.dark-theme {
+      background: linear-gradient(135deg, #78350f, #92400e) !important;
+      border: 2px solid #f59e0b !important;
+    }
+    
+    .investment-card.dark-theme {
+      background: #1f2937 !important;
+      border: 1px solid #f59e0b !important;
+    }
+    
+    .investment-card.dark-theme:hover {
+      border-color: #f59e0b !important;
+    }
+    
+    .investment-info.dark-theme h3 {
+      color: #fef3c7 !important;
+    }
+    
+    .investment-info.dark-theme p {
+      color: #fde68a !important;
+    }
+    
+    .amount-label.dark-theme, .timeline-label.dark-theme {
+      color: #9ca3af !important;
+    }
+    
+    .amount-value.dark-theme {
+      color: #fbbf24 !important;
+    }
+    
+    .timeline-value.dark-theme {
+      color: #f3f4f6 !important;
+      background: #374151 !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+</head>
+<body class="text-gray-800">
+
+  <header class="header-comunidad">
+    <div class="header-content">
+      <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+      <span class="header-title">CGN</span>
+      <span class="header-legend">Sin tiempo para descansos</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <nav class="menu-desplegable" id="menuDesplegable">
+      <ul>
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/faq.html">FAQ</a></li>
+        <li><a href="/socios.html">Socios</a></li>
+        <li><a href="/ajustes.html">Ajustes</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <!-- Barra de progreso de scroll -->
+<div id="scroll-progress-container">
+  <div id="scroll-progress-bar"></div>
+</div>
+
+  </header>
+  
+  <div class="content-container">
+    <h1 class="page-title">Reportes de Donaciones</h1>
+    
+    <!-- Descripción principal -->
+    <div class="reports-intro">
+      <p class="text-lg text-gray-700 leading-relaxed mb-8 text-center">
+        Compromiso total con la transparencia. Aquí encontrarás reportes detallados sobre el uso de las donaciones 
+        recibidas, estadísticas actualizadas y el impacto de tu apoyo en nuestra comunidad.
+      </p>
+    </div>
+
+    <!-- Sección de uso de fondos -->
+    <div class="funds-usage-section">
+      <h2 class="section-title">Uso de Fondos</h2>
+      
+      <div class="funds-table-container">
+        <table class="funds-table">
+          <thead>
+            <tr class="table-header">
+              <th class="header-category">Categoría</th>
+              <th class="header-amount">Monto (MXN)</th>
+              <th class="header-details">Detalles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-row">
+              <td class="table-cell category-cell">
+                <div class="category-info">
+                  <div class="category-icon">
+                    <i class="fas fa-server"></i>
+                  </div>
+                  <div class="category-text">
+                    <h4>Infraestructura del Servidor</h4>
+                    <p>Hosting, servidores y servicios de respaldo</p>
+                  </div>
+                </div>
+              </td>
+              <td class="table-cell amount-cell">
+                <span class="amount">$200.00 MXN</span>
+              </td>
+              <td class="table-cell details-cell">
+                <ul class="details-list">
+                  <li>Servidor MC Bedrock: $200.00</li>
+                </ul>
+              </td>
+            </tr>
+            <tr class="table-row">
+              <td class="table-cell category-cell">
+                <div class="category-info">
+                  <div class="category-icon">
+                    <i class="fas fa-tools"></i>
+                  </div>
+                  <div class="category-text">
+                    <h4>Herramientas y Software</h4>
+                    <p>Bots, software de moderación y análisis</p>
+                  </div>
+                </div>
+              </td>
+              <td class="table-cell amount-cell">
+                <span class="amount">$70.00 MXN</span>
+              </td>
+              <td class="table-cell details-cell">
+                <ul class="details-list">
+                  <li>Bots premium Discord: $0.00</li>
+                  <li>Software de moderación: $40.00</li>
+                  <li>Herramientas de análisis: $0.00</li>
+                  <li>Licencias de desarrollo: $30.00</li>
+                </ul>
+              </td>
+            </tr>
+            <tr class="table-row">
+              <td class="table-cell category-cell">
+                <div class="category-info">
+                  <div class="category-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                  </div>
+                  <div class="category-text">
+                    <h4>Eventos y Actividades</h4>
+                    <p>Torneos, eventos especiales y concursos</p>
+                  </div>
+                </div>
+              </td>
+              <td class="table-cell amount-cell">
+                <span class="amount">$380.00 MXN*</span>
+              </td>
+              <td class="table-cell details-cell">
+                <ul class="details-list">
+                  <li>Premios de torneos: $380.00*</li>
+                  <li>Eventos especiales: $0.00</li>
+                  <li>Concursos comunitarios: $0.00</li>
+                </ul>
+              </td>
+            </tr>
+            <tr class="table-row">
+              <td class="table-cell category-cell">
+                <div class="category-info">
+                  <div class="category-icon">
+                    <i class="fas fa-shield-alt"></i>
+                  </div>
+                  <div class="category-text">
+                    <h4>Seguridad y Moderación</h4>
+                    <p>Herramientas de protección y capacitación</p>
+                  </div>
+                </div>
+              </td>
+              <td class="table-cell amount-cell">
+                <span class="amount">$240.00 MXN</span>
+              </td>
+              <td class="table-cell details-cell">
+                <ul class="details-list">
+                  <li>Herramientas anti-spam: $100.00</li>
+                  <li>Sistemas de verificación: $80.00</li>
+                  <li>Capacitación moderadores: $60.00</li>
+                </ul>
+              </td>
+            </tr>
+            <tr class="table-row total-row">
+              <td class="table-cell category-cell">
+                <div class="category-info">
+                  <div class="category-icon total-icon">
+                    <i class="fas fa-calculator"></i>
+                  </div>
+                  <div class="category-text">
+                    <h4>GASTO Total**</h4>
+                    <p>Costos recurrentes aprox.</p>
+                  </div>
+                </div>
+              </td>
+              <td class="table-cell amount-cell">
+                <span class="amount total-amount">$890.00 MXN*</span>
+              </td>
+              <td class="table-cell details-cell">
+                <div class="total-details">
+                  <p><strong>*</strong> Por confirmar.</p>
+                  <p><strong>**</strong> Del periodo mayo-junio.</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Sección de progresos logrados -->
+    <div class="progress-section">
+      <h2 class="section-title">Progresos Logrados</h2>
+      
+      <div class="progress-grid">
+        <div class="progress-card">
+          <div class="progress-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="progress-content">
+            <h3>Crecimiento de la Comunidad</h3>
+            <div class="progress-stats">
+              <div class="stat-item">
+                <span class="stat-number">+130%</span>
+                <span class="stat-label">Crecimiento en 6 meses</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">7,250</span>
+                <span class="stat-label">Miembros nuevos este año.</span>
+              </div>
+            </div>
+            <p>Tu donación contribuye a mejorar la infraestructura y atraer más miembros a nuestra comunidad.</p>
+          </div>
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-icon">
+            <i class="fas fa-server"></i>
+          </div>
+          <div class="progress-content">
+            <h3>Mejoras en Infraestructura</h3>
+            <div class="progress-stats">
+              <div class="stat-item">
+                <span class="stat-number">95%</span>
+                <span class="stat-label">Uptime del servidor de MC</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">+80</span>
+                <span class="stat-label">Usuarios</span>
+              </div>
+            </div>
+            <p>Inversión en servidores premium que garantizan estabilidad y rendimiento óptimo para todos los usuarios.</p>
+          </div>
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="progress-content">
+            <h3>Eventos y Actividades</h3>
+            <div class="progress-stats">
+              <div class="stat-item">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Eventos realizados</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">85%</span>
+                <span class="stat-label">Participación promedio</span>
+              </div>
+            </div>
+            <p>Organización exitosa de torneos, concursos y eventos especiales que fomentan la participación activa.</p>
+          </div>
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="progress-content">
+            <h3>Seguridad y Moderación</h3>
+            <div class="progress-stats">
+              <div class="stat-item">
+                <span class="stat-number">-20%</span>
+                <span class="stat-label">Reducción de spam</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">15</span>
+                <span class="stat-label">Moderadores activos en todas las plataformas</span>
+              </div>
+            </div>
+            <p>Implementación de sistemas avanzados de seguridad que protegen a todos los miembros de la comunidad.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de transparencia -->
+    <div class="transparency-section">
+      <h2 class="section-title">Compromiso de Transparencia</h2>
+      
+      <div class="transparency-container">
+        <div class="transparency-card">
+          <div class="transparency-icon">
+            <i class="fas fa-file-invoice-dollar"></i>
+          </div>
+          <div class="transparency-content">
+            <h3>Reportes Mensuales</h3>
+            <p>Publicamos aquí los reportes detallados cada mes con el desglose completo de ingresos y gastos, garantizando total transparencia en el uso de fondos.</p>
+            <div class="transparency-status">
+              <span class="status-badge active">Actualizado</span>
+              <span class="last-update">Último: 30 de Junio del 2025</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="transparency-card">
+          <div class="transparency-icon">
+            <i class="fas fa-handshake"></i>
+          </div>
+          <div class="transparency-content">
+            <h3>Política de Uso</h3>
+            <p>El 100% de las donaciones se destinan exclusivamente al desarrollo y mantenimiento de la comunidad. Ningún administrador recibe compensación personal.</p>
+            <div class="transparency-status">
+              <span class="status-badge active">Vigente</span>
+              <span class="last-update">Política actualizada</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="transparency-card">
+          <div class="transparency-icon">
+            <i class="fas fa-question-circle"></i>
+          </div>
+          <div class="transparency-content">
+            <h3>Consultas y Dudas</h3>
+            <p>¿Tienes preguntas sobre el uso de fondos? Contacta directamente a los administradores. Respondemos todas las consultas en menos de 24 horas.</p>
+            <div class="transparency-status">
+              <span class="status-badge active">Disponible</span>
+              <span class="last-update">Respuesta en 24h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de próximas inversiones -->
+    <div class="future-investments">
+      <h2 class="section-title">Próximas Inversiones Planificadas</h2>
+      
+      <!-- Inversión 1 -->
+      <div class="investments-container">
+        <div class="investment-card">
+          <div class="investment-header">
+            <div class="investment-icon">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <div class="investment-info">
+              <h3>mantenimiento del servidor de MC</h3>
+              <p>Mejora de la capacidad de servidores para soportar más usuarios simultáneos y mejorar la experiencia general.</p>
+            </div>
+          </div>
+          <div class="investment-details">
+            <div class="investment-amount">
+              <span class="amount-label">Presupuesto</span>
+              <span class="amount-value">$300.00 MXN</span>
+            </div>
+            <div class="investment-timeline">
+              <span class="timeline-label">fechas</span>
+              <span class="timeline-value">T4 2025 - T2 2026</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inversión 2 -->
+        <div class="investment-card">
+          <div class="investment-header">
+            <div class="investment-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <div class="investment-info">
+              <h3>App Móvil</h3>
+              <p>Desarrollo de aplicación móvil para facilitar la participación en la comunidad y mejorar la accesibilidad.</p>
+            </div>
+          </div>
+          <div class="investment-details">
+            <div class="investment-amount">
+              <span class="amount-label">Presupuesto</span>
+              <span class="amount-value">$350,000.00 MXN</span>
+            </div>
+            <div class="investment-timeline">
+              <span class="timeline-label">Fechas</span>
+              <span class="timeline-value">T2 2026 - T3 2028</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inversión 3 
+        <div class="investment-card">
+          <div class="investment-header">
+            <div class="investment-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="investment-info">
+              <h3>Programa de Educación</h3>
+              <p>Creación de cursos y talleres para miembros de la comunidad, fomentando el aprendizaje y desarrollo de habilidades.</p>
+            </div>
+          </div>
+          <div class="investment-details">
+            <div class="investment-amount">
+              <span class="amount-label">Presupuesto</span>
+              <span class="amount-value">$200.00 MXN</span>
+            </div>
+            <div class="investment-timeline">
+              <span class="timeline-label">Timeline</span>
+              <span class="timeline-value">Q1 2025</span>
+            </div>
+          </div>
+        </div> -->
+
+      </div>
+    </div>
+
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/donaciones.html" class="nav-button">
+          <i class="fas fa-heart"></i> Hacer Donación
+      </a>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <div class="footer-links">
+          <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+          <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+          <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+          <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+          <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Comunidad</h3>
+        <div class="footer-links">
+          <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+          <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+          <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+          <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+          <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">
+        <img src="/icons/Bandera-jal.avif" 
+             alt="Logo Comunidad CGN" 
+             class="cgn-icon">
+        Comunidad CGN | <span id="currentYear">2022-2025</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Rectángulo gris fijo en la parte inferior -->
+  <div class="bottom-fixed-bar">
+    <div class="left-actions">
+      <button title="Abrir chat" class="open-chat-btn" onclick="openChat()">
+        <i class="fas fa-comments"></i>Ayuda
+      </button>
+      <button title="Compartir página" class="share-btn-fixed" id="shareBtn" onclick="sharePage()">
+        <i class="fas fa-share-alt"></i>
+      </button>
+    </div>
+    <div class="right-actions">
+      <div class="action-separator"></div>
+      <div class="view-more-fixed" id="viewMoreBtn" title="panel de acciones" onclick="togglePanel()">
+        <i class="fas fa-ellipsis-h"></i>
+        <span id="viewMoreText">Ver más</span>
+      </div>
+      <div class="back-to-top-fixed" id="backToTopBtn" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+      <div class="go-to-bottom-fixed" id="goToBottomBtn" title="Ir al final">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de expansión separado -->
+  <div class="panel-expansion" id="panelExpansion">
+    <!-- Contenedor para el contenido expandido -->
+    <div class="expanded-content">
+      <!-- Contenedor de noticias -->
+      <div class='news-container'>
+        <div class='title'>
+          Novedades
+        </div>
+
+        <ul>
+          <!-- Las noticias se cargarán dinámicamente desde noticias.json -->
+        </ul>
+      </div>
+      <div class="news-separator-top"></div>
+      
+      <!-- Sección de categorías -->
+      <div class="categories-section-panel">
+        <div class="categories-title-panel">Categorías</div>
+        <div class="categories-tags-panel">
+          <a href="/categorias-comunidad.html" class="category-tag-panel comunidad"><i class="fas fa-users"></i> Comunidad</a>
+          <a href="/categorias-mc.html" class="category-tag-panel minecraft"><i class="fas fa-cube"></i> Minecraft</a>
+          <a href="/categorias-reglas.html" class="category-tag-panel reglas"><i class="fas fa-book"></i> Reglas</a>
+          <a href="/categorias-admins.html" class="category-tag-panel administracion"><i class="fas fa-user-shield"></i> Administración</a>
+        </div>
+      </div>
+      <div class="news-separator-bottom"></div>
+      
+      <!-- Sección de tema -->
+      <div class="theme-section-panel" style="width:100%; margin: 0 0 10px 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+        <div class="categories-title-panel" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center; text-align: center;">
+          <span style="display: flex; align-items: center; gap: 8px;">
+            Tema
+            <button id="themeHelpBtn" type="button" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #374151; font-size: 1.1em; display: flex; align-items: center;">
+              <i class="fas fa-question-circle"></i>
+            </button>
+          </span>
+        </div>
+        <div class="theme-buttons-panel" style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+          <button class="theme-btn" title="Automático" type="button">
+            <i class="fas fa-adjust"></i> Automático
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Eficiencia" type="button">
+            <i class="fas fa-bolt"></i> Eficiencia
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Claro" type="button">
+            <i class="fas fa-sun"></i> Claro
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Oscuro" type="button">
+            <i class="fas fa-moon"></i> Oscuro
+            <span class="theme-indicator"></span>
+          </button>
+        </div>
+        <div class="action-separator" style="position: relative; left: 50%; transform: translateX(-50%); width: 100vw; height: 4px; background-color: rgba(255,255,255,0.3); margin: 14px 0 0 0; border-radius: 2px; z-index: 100;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay que contiene el chat modal -->
+  <div class="overlay" id="chatOverlay">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="header-left">
+          <div class="header-image">
+            <img src="/icons/bot-hecks.avif" alt="Logo de soporte" id="chatImage">
+          </div>
+          <div class="header-title">Soporte CGN</div>
+        </div>
+        <div class="header-buttons">
+          <button class="header-btn" onclick="toggleMaximize()" title="Maximizar/Minimizar chat">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="header-btn" onclick="clearChat()" title="Borrar chat">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="header-btn" onclick="closeChat()" title="Cerrar chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-footer" id="chatFooter"></div>
+    </div>
+  </div>
+
+  <!-- Popup de ayuda para Tema -->
+  <div class="theme-help-popup" id="themeHelpPopup">
+    <button class="close-btn" id="closeThemeHelp" title="Cerrar ayuda"><i class="fas fa-times"></i></button>
+    <strong>¿Cómo funcionan los modos de tema?</strong>
+    <ul>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-adjust"></i> <b>Automático</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Cambia entre modo claro y oscuro automáticamente según la hora del día (oscuro de noche, claro de día).</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-bolt"></i> <b>Eficiencia</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Activa el modo oscuro si el ahorro de energía está activo en tu dispositivo.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-sun"></i> <b>Claro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema claro en la página.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-moon"></i> <b>Oscuro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema oscuro en la página.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <script src="/pwa/noticias.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Actualizar año en footer
+      const currentYear = new Date().getFullYear();
+      document.getElementById('currentYear').textContent = `2022-${currentYear}`;
+      
+       // Botón "Volver" inteligente
+       const backButton = document.getElementById('backButton');
+            backButton.addEventListener('click', function() {
+                // Comprobar si hay una página anterior en el historial
+                if (document.referrer && document.referrer !== window.location.href) {
+                    window.history.back();
+                } else {
+                    // Si no hay historial previo, redirigir a la página de inicio
+                    window.location.href = '/index.html';
+                }
+            });
+
+      // Botón "Volver arriba" (solo del panel de acciones)
+      const backToTopFixed = document.getElementById('backToTopBtn');
+      if (backToTopFixed) {
+        backToTopFixed.addEventListener('click', function() {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+      
+      // Botón "Ir al final"
+      const goToBottomBtn = document.getElementById('goToBottomBtn');
+      goToBottomBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Menú desplegable
+      const menuToggle = document.getElementById('menuToggle');
+      const menuDesplegable = document.getElementById('menuDesplegable');
+      
+      // Abrir/cerrar menú al hacer clic en el botón
+      menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menuDesplegable.classList.toggle('abierto');
+        menuToggle.classList.toggle('activo');
+      });
+      
+      // Cerrar menú al hacer clic fuera
+      document.addEventListener('click', function(e) {
+        if (!menuDesplegable.contains(e.target) && !menuToggle.contains(e.target)) {
+          menuDesplegable.classList.remove('abierto');
+          menuToggle.classList.remove('activo');
+        }
+      });
+      
+      // Prevenir que el clic en el menú lo cierre
+      menuDesplegable.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    });
+
+
+   // Barra de progreso de scroll
+const scrollProgressBar = document.getElementById('scroll-progress-bar');
+
+function updateScrollProgress() {
+  // Calcular el progreso del scroll
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrollPercentage = (scrollTop / scrollHeight) * 100;
+  
+  // Actualizar el ancho de la barra de progreso
+  scrollProgressBar.style.width = scrollPercentage + '%';
+  
+  // Cambiar color cuando esté cerca del final
+  if (scrollPercentage > 90) {
+    scrollProgressBar.style.background = 'linear-gradient(90deg, #ffb07a, #ff7b54)';
+  } else {
+    scrollProgressBar.style.background = 'linear-gradient(90deg, #FFD1A9, #ffb07a)';
+  }
+}
+
+// Actualizar al cargar y al hacer scroll
+window.addEventListener('load', updateScrollProgress);
+window.addEventListener('scroll', updateScrollProgress);
+window.addEventListener('resize', updateScrollProgress);
+
+// Calcular altura del header automáticamente
+function setProgressBarPosition() {
+  const header = document.querySelector('.header-comunidad');
+  if (header) {
+    const headerHeight = header.offsetHeight;
+    document.getElementById('scroll-progress-container').style.top = headerHeight + 'px';
+  }
+}
+
+// Llamar al cargar y al redimensionar
+window.addEventListener('load', function() {
+  setProgressBarPosition();
+  updateScrollProgress();
+});
+window.addEventListener('resize', setProgressBarPosition);
+
+// Función para expandir/contraer el panel de acciones
+function togglePanel() {
+  const panelExpansion = document.getElementById('panelExpansion');
+  const viewMoreBtn = document.getElementById('viewMoreBtn');
+  const viewMoreText = document.getElementById('viewMoreText');
+  const viewMoreIcon = document.querySelector('#viewMoreBtn i');
+  
+  if (panelExpansion.classList.contains('expanded')) {
+    // Contraer el panel
+    panelExpansion.classList.remove('expanded');
+    viewMoreBtn.classList.remove('expanded');
+    viewMoreText.textContent = 'Ver más';
+    viewMoreIcon.className = 'fas fa-ellipsis-h';
+    document.body.style.overflow = '';
+  } else {
+    // Expandir el panel
+    panelExpansion.classList.add('expanded');
+    viewMoreBtn.classList.add('expanded');
+    viewMoreText.textContent = 'Ver menos';
+    viewMoreIcon.className = 'fas fa-compress';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+// Función para verificar si el panel está expandido
+function isPanelExpanded() {
+  return document.getElementById('panelExpansion').classList.contains('expanded');
+}
+
+// Función para establecer el overflow correcto basado en el estado del panel
+function setCorrectOverflow() {
+  if (isPanelExpanded()) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
+
+// Función para compartir la página
+function sharePage() {
+  const pageTitle = document.title || 'CGN - Comunidad Gaming Network';
+  const pageUrl = window.location.href;
+  
+  // Verificar si la API Web Share está disponible
+  if (navigator.share) {
+    navigator.share({
+      title: pageTitle,
+      url: pageUrl,
+      text: '¡Mira esta página de la Comunidad Gaming Network!'
+    }).then(() => {
+      console.log('Contenido compartido exitosamente');
+    }).catch((error) => {
+      console.log('Error al compartir:', error);
+      // Fallback: copiar URL al portapapeles
+      fallbackShare();
+    });
+  } else {
+    // Fallback para navegadores que no soportan Web Share API
+    fallbackShare();
+  }
+}
+
+// Función de respaldo para compartir
+function fallbackShare() {
+  const pageUrl = window.location.href;
+  
+  // Intentar copiar al portapapeles
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(pageUrl).then(() => {
+      // Mostrar notificación de éxito
+      showShareNotification('¡URL copiada al portapapeles!');
+    }).catch(() => {
+      // Si falla clipboard, mostrar URL en alert
+      alert('Comparte esta URL: ' + pageUrl);
+    });
+  } else {
+    // Fallback final: mostrar URL en alert
+    alert('Comparte esta URL: ' + pageUrl);
+  }
+}
+
+// Función para mostrar notificación de compartir
+function showShareNotification(message) {
+  // Crear elemento de notificación
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 209, 169, 0.95);
+    color: #374151;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  `;
+  notification.textContent = message;
+  
+  // Agregar al DOM
+  document.body.appendChild(notification);
+  
+  // Animar entrada
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Remover después de 3 segundos
+  setTimeout(() => {
+    notification.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
+// --- Tema: solo un botón activo a la vez ---
+document.addEventListener('DOMContentLoaded', function() {
+  const themeBtns = document.querySelectorAll('.theme-btn');
+  const body = document.body;
+  const contentContainer = document.querySelector('.content-container');
+  const header = document.querySelector('.header-comunidad');
+  const headerTitle = document.querySelector('.header-title');
+  const headerLegend = document.querySelector('.header-legend');
+  const menuDesplegable = document.getElementById('menuDesplegable');
+  const pageTitle = document.querySelector('.page-title');
+  const navButtons = document.querySelectorAll('.nav-button');
+  const footer = document.querySelector('footer');
+  const footerSections = document.querySelectorAll('.footer-section');
+  const footerLinks = document.querySelectorAll('.footer-links a');
+  const footerBottom = document.querySelector('.footer-bottom');
+  const copyright = document.querySelector('.copyright');
+  const bottomFixedBar = document.querySelector('.bottom-fixed-bar');
+  const panelExpansion = document.querySelector('.panel-expansion');
+  const newsContainer = document.querySelector('.news-container');
+  const categoriesTitlePanel = document.querySelectorAll('.categories-title-panel');
+  const categoryTagPanel = document.querySelectorAll('.category-tag-panel');
+  const themeBtnsAll = document.querySelectorAll('.theme-btn');
+  const themeHelpPopup = document.getElementById('themeHelpPopup');
+  const actionSeparators = document.querySelectorAll('.action-separator');
+  const newsSeparators = document.querySelectorAll('.news-separator-top, .news-separator-bottom');
+  const menuToggle = document.getElementById('menuToggle');
+
+  themeBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      themeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Guardar preferencia en localStorage
+      let theme = btn.textContent.trim().toLowerCase();
+      if (theme.includes('oscuro')) {
+        localStorage.setItem('preferencia-tema', 'oscuro');
+      } else if (theme.includes('claro')) {
+        localStorage.setItem('preferencia-tema', 'claro');
+      } else if (theme.includes('automático') || theme.includes('automatico')) {
+        localStorage.setItem('preferencia-tema', 'automatico');
+      } else if (theme.includes('eficiencia')) {
+        localStorage.setItem('preferencia-tema', 'eficiencia');
+      }
+
+      // Lógica de tema
+      function setDarkTheme(active) {
+        if (active) {
+          body.classList.add('dark-theme');
+          if(contentContainer) contentContainer.classList.add('dark-theme');
+          if(header) header.classList.add('dark-theme');
+          if(headerTitle) headerTitle.classList.add('dark-theme');
+          if(headerLegend) headerLegend.classList.add('dark-theme');
+          if(menuDesplegable) menuDesplegable.classList.add('dark-theme');
+          if(pageTitle) pageTitle.classList.add('dark-theme');
+          navButtons.forEach(el => el.classList.add('dark-theme'));
+          if(footer) footer.classList.add('dark-theme');
+          footerSections.forEach(el => el.classList.add('dark-theme'));
+          footerLinks.forEach(el => el.classList.add('dark-theme'));
+          if(footerBottom) footerBottom.classList.add('dark-theme');
+          if(copyright) copyright.classList.add('dark-theme');
+          if(menuToggle) menuToggle.classList.add('dark-theme');
+          if(bottomFixedBar) bottomFixedBar.classList.add('dark-theme');
+          if(panelExpansion) panelExpansion.classList.add('dark-theme');
+          if(newsContainer) newsContainer.classList.add('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.add('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.add('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.add('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.add('dark-theme');
+          actionSeparators.forEach(el => el.classList.add('dark-theme'));
+          newsSeparators.forEach(el => el.classList.add('dark-theme'));
+          
+          // Elementos específicos de la página de reportes
+          const reportsIntro = document.querySelector('.reports-intro');
+          const sectionTitles = document.querySelectorAll('.section-title');
+          const summaryCard = document.querySelector('.summary-card');
+          const summaryHeader = document.querySelector('.summary-header');
+          const statItems = document.querySelectorAll('.stat-item');
+          const statValues = document.querySelectorAll('.stat-value');
+          const statLabels = document.querySelectorAll('.stat-label');
+          const statPeriods = document.querySelectorAll('.stat-period');
+          const fundsTableContainer = document.querySelector('.funds-table-container');
+          const tableHeaders = document.querySelectorAll('.table-header');
+          const tableRows = document.querySelectorAll('.table-row');
+          const tableCells = document.querySelectorAll('.table-cell');
+          const categoryTexts = document.querySelectorAll('.category-text');
+          const amounts = document.querySelectorAll('.amount');
+          const detailsLists = document.querySelectorAll('.details-list');
+          const totalAmounts = document.querySelectorAll('.total-amount');
+          const totalDetails = document.querySelectorAll('.total-details');
+          const progressCards = document.querySelectorAll('.progress-card');
+          const progressContents = document.querySelectorAll('.progress-content');
+          const progressStats = document.querySelectorAll('.progress-stats');
+          const transparencyContainers = document.querySelectorAll('.transparency-container');
+          const transparencyCards = document.querySelectorAll('.transparency-card');
+          const transparencyContents = document.querySelectorAll('.transparency-content');
+          const statusBadges = document.querySelectorAll('.status-badge');
+          const lastUpdates = document.querySelectorAll('.last-update');
+          const investmentsContainers = document.querySelectorAll('.investments-container');
+          const investmentCards = document.querySelectorAll('.investment-card');
+          const investmentInfos = document.querySelectorAll('.investment-info');
+          const amountLabels = document.querySelectorAll('.amount-label');
+          const timelineLabels = document.querySelectorAll('.timeline-label');
+          const amountValues = document.querySelectorAll('.amount-value');
+          const timelineValues = document.querySelectorAll('.timeline-value');
+          
+          if(reportsIntro) reportsIntro.classList.add('dark-theme');
+          sectionTitles.forEach(el => el.classList.add('dark-theme'));
+          if(summaryCard) summaryCard.classList.add('dark-theme');
+          if(summaryHeader) summaryHeader.classList.add('dark-theme');
+          statItems.forEach(el => el.classList.add('dark-theme'));
+          statValues.forEach(el => el.classList.add('dark-theme'));
+          statLabels.forEach(el => el.classList.add('dark-theme'));
+          statPeriods.forEach(el => el.classList.add('dark-theme'));
+          if(fundsTableContainer) fundsTableContainer.classList.add('dark-theme');
+          tableHeaders.forEach(el => el.classList.add('dark-theme'));
+          tableRows.forEach(el => el.classList.add('dark-theme'));
+          tableCells.forEach(el => el.classList.add('dark-theme'));
+          categoryTexts.forEach(el => el.classList.add('dark-theme'));
+          amounts.forEach(el => el.classList.add('dark-theme'));
+          detailsLists.forEach(el => el.classList.add('dark-theme'));
+          totalAmounts.forEach(el => el.classList.add('dark-theme'));
+          totalDetails.forEach(el => el.classList.add('dark-theme'));
+          progressCards.forEach(el => el.classList.add('dark-theme'));
+          progressContents.forEach(el => el.classList.add('dark-theme'));
+          progressStats.forEach(el => el.classList.add('dark-theme'));
+          transparencyContainers.forEach(el => el.classList.add('dark-theme'));
+          transparencyCards.forEach(el => el.classList.add('dark-theme'));
+          transparencyContents.forEach(el => el.classList.add('dark-theme'));
+          statusBadges.forEach(el => el.classList.add('dark-theme'));
+          lastUpdates.forEach(el => el.classList.add('dark-theme'));
+          investmentsContainers.forEach(el => el.classList.add('dark-theme'));
+          investmentCards.forEach(el => el.classList.add('dark-theme'));
+          investmentInfos.forEach(el => el.classList.add('dark-theme'));
+          amountLabels.forEach(el => el.classList.add('dark-theme'));
+          timelineLabels.forEach(el => el.classList.add('dark-theme'));
+          amountValues.forEach(el => el.classList.add('dark-theme'));
+          timelineValues.forEach(el => el.classList.add('dark-theme'));
+        } else {
+          body.classList.remove('dark-theme');
+          if(contentContainer) contentContainer.classList.remove('dark-theme');
+          if(header) header.classList.remove('dark-theme');
+          if(headerTitle) headerTitle.classList.remove('dark-theme');
+          if(headerLegend) headerLegend.classList.remove('dark-theme');
+          if(menuDesplegable) menuDesplegable.classList.remove('dark-theme');
+          if(pageTitle) pageTitle.classList.remove('dark-theme');
+          navButtons.forEach(el => el.classList.remove('dark-theme'));
+          if(footer) footer.classList.remove('dark-theme');
+          footerSections.forEach(el => el.classList.remove('dark-theme'));
+          footerLinks.forEach(el => el.classList.remove('dark-theme'));
+          if(footerBottom) footerBottom.classList.remove('dark-theme');
+          if(copyright) copyright.classList.remove('dark-theme');
+          if(menuToggle) menuToggle.classList.remove('dark-theme');
+          if(bottomFixedBar) bottomFixedBar.classList.remove('dark-theme');
+          if(panelExpansion) panelExpansion.classList.remove('dark-theme');
+          if(newsContainer) newsContainer.classList.remove('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.remove('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.remove('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.remove('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.remove('dark-theme');
+          actionSeparators.forEach(el => el.classList.remove('dark-theme'));
+          newsSeparators.forEach(el => el.classList.remove('dark-theme'));
+          
+          // Elementos específicos de la página de reportes
+          const reportsIntro = document.querySelector('.reports-intro');
+          const sectionTitles = document.querySelectorAll('.section-title');
+          const summaryCard = document.querySelector('.summary-card');
+          const summaryHeader = document.querySelector('.summary-header');
+          const statItems = document.querySelectorAll('.stat-item');
+          const statValues = document.querySelectorAll('.stat-value');
+          const statLabels = document.querySelectorAll('.stat-label');
+          const statPeriods = document.querySelectorAll('.stat-period');
+          const fundsTableContainer = document.querySelector('.funds-table-container');
+          const tableHeaders = document.querySelectorAll('.table-header');
+          const tableRows = document.querySelectorAll('.table-row');
+          const tableCells = document.querySelectorAll('.table-cell');
+          const categoryTexts = document.querySelectorAll('.category-text');
+          const amounts = document.querySelectorAll('.amount');
+          const detailsLists = document.querySelectorAll('.details-list');
+          const totalAmounts = document.querySelectorAll('.total-amount');
+          const totalDetails = document.querySelectorAll('.total-details');
+          const progressCards = document.querySelectorAll('.progress-card');
+          const progressContents = document.querySelectorAll('.progress-content');
+          const progressStats = document.querySelectorAll('.progress-stats');
+          const transparencyContainers = document.querySelectorAll('.transparency-container');
+          const transparencyCards = document.querySelectorAll('.transparency-card');
+          const transparencyContents = document.querySelectorAll('.transparency-content');
+          const statusBadges = document.querySelectorAll('.status-badge');
+          const lastUpdates = document.querySelectorAll('.last-update');
+          const investmentsContainers = document.querySelectorAll('.investments-container');
+          const investmentCards = document.querySelectorAll('.investment-card');
+          const investmentInfos = document.querySelectorAll('.investment-info');
+          const amountLabels = document.querySelectorAll('.amount-label');
+          const timelineLabels = document.querySelectorAll('.timeline-label');
+          const amountValues = document.querySelectorAll('.amount-value');
+          const timelineValues = document.querySelectorAll('.timeline-value');
+          
+          if(reportsIntro) reportsIntro.classList.remove('dark-theme');
+          sectionTitles.forEach(el => el.classList.remove('dark-theme'));
+          if(summaryCard) summaryCard.classList.remove('dark-theme');
+          if(summaryHeader) summaryHeader.classList.remove('dark-theme');
+          statItems.forEach(el => el.classList.remove('dark-theme'));
+          statValues.forEach(el => el.classList.remove('dark-theme'));
+          statLabels.forEach(el => el.classList.remove('dark-theme'));
+          statPeriods.forEach(el => el.classList.remove('dark-theme'));
+          if(fundsTableContainer) fundsTableContainer.classList.remove('dark-theme');
+          tableHeaders.forEach(el => el.classList.remove('dark-theme'));
+          tableRows.forEach(el => el.classList.remove('dark-theme'));
+          tableCells.forEach(el => el.classList.remove('dark-theme'));
+          categoryTexts.forEach(el => el.classList.remove('dark-theme'));
+          amounts.forEach(el => el.classList.remove('dark-theme'));
+          detailsLists.forEach(el => el.classList.remove('dark-theme'));
+          totalAmounts.forEach(el => el.classList.remove('dark-theme'));
+          totalDetails.forEach(el => el.classList.remove('dark-theme'));
+          progressCards.forEach(el => el.classList.remove('dark-theme'));
+          progressContents.forEach(el => el.classList.remove('dark-theme'));
+          progressStats.forEach(el => el.classList.remove('dark-theme'));
+          transparencyContainers.forEach(el => el.classList.remove('dark-theme'));
+          transparencyCards.forEach(el => el.classList.remove('dark-theme'));
+          transparencyContents.forEach(el => el.classList.remove('dark-theme'));
+          statusBadges.forEach(el => el.classList.remove('dark-theme'));
+          lastUpdates.forEach(el => el.classList.remove('dark-theme'));
+          investmentsContainers.forEach(el => el.classList.remove('dark-theme'));
+          investmentCards.forEach(el => el.classList.remove('dark-theme'));
+          investmentInfos.forEach(el => el.classList.remove('dark-theme'));
+          amountLabels.forEach(el => el.classList.remove('dark-theme'));
+          timelineLabels.forEach(el => el.classList.remove('dark-theme'));
+          amountValues.forEach(el => el.classList.remove('dark-theme'));
+          timelineValues.forEach(el => el.classList.remove('dark-theme'));
+        }
+      }
+
+      if (theme.includes('oscuro')) {
+        setDarkTheme(true);
+      } else if (theme.includes('claro')) {
+        setDarkTheme(false);
+      } else if (theme.includes('automático') || theme.includes('automatico')) {
+        // Automático: modo oscuro de 20:00 a 7:00, claro el resto
+        const hour = new Date().getHours();
+        if (hour >= 20 || hour < 7) {
+          setDarkTheme(true);
+        } else {
+          setDarkTheme(false);
+        }
+      } else if (theme.includes('eficiencia')) {
+        // Eficiencia: modo oscuro si el ahorro de energía está activo
+        if (navigator.getBattery) {
+          navigator.getBattery().then(function(battery) {
+            if (battery && battery.savePower) {
+              setDarkTheme(true);
+            } else if (battery && battery.dischargingTime === Infinity && battery.charging) {
+              setDarkTheme(false);
+            } else if (battery && battery.charging === false && battery.level < 0.2) {
+              setDarkTheme(true);
+            } else if (battery && battery.level < 0.15) {
+              setDarkTheme(true);
+            } else {
+              setDarkTheme(false);
+            }
+          }).catch(function() {
+            setDarkTheme(false);
+          });
+        } else if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          // fallback: si el usuario tiene preferencias de ahorro de energía
+          setDarkTheme(true);
+        } else {
+          setDarkTheme(false);
+        }
+      }
+    });
+  });
+
+  // Al cargar la página, aplicar la preferencia guardada
+  function activarTemaGuardado() {
+    const temaGuardado = localStorage.getItem('preferencia-tema');
+    if (!temaGuardado) return;
+    let btnToClick = null;
+    themeBtns.forEach(btn => {
+      let theme = btn.textContent.trim().toLowerCase();
+      if (
+        (temaGuardado === 'oscuro' && theme.includes('oscuro')) ||
+        (temaGuardado === 'claro' && theme.includes('claro')) ||
+        (temaGuardado === 'automatico' && (theme.includes('automático') || theme.includes('automatico'))) ||
+        (temaGuardado === 'eficiencia' && theme.includes('eficiencia'))
+      ) {
+        btnToClick = btn;
+      }
+    });
+    if (btnToClick) btnToClick.click();
+  }
+  activarTemaGuardado();
+});
+
+// --- Popup de ayuda para Tema ---
+document.addEventListener('DOMContentLoaded', function() {
+  const helpBtn = document.getElementById('themeHelpBtn');
+  const helpPopup = document.getElementById('themeHelpPopup');
+  const closeHelp = document.getElementById('closeThemeHelp');
+  
+  if (helpBtn && helpPopup && closeHelp) {
+    helpBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      helpPopup.classList.add('active');
+    });
+    
+    closeHelp.addEventListener('click', function() {
+      helpPopup.classList.remove('active');
+    });
+    
+    // Cerrar al hacer clic fuera del popup
+    document.addEventListener('mousedown', function(e) {
+      if (helpPopup.classList.contains('active') && !helpPopup.contains(e.target) && e.target !== helpBtn) {
+        helpPopup.classList.remove('active');
+      }
+    });
+  }
+});
+
+  </script>
+</body>
+</html>

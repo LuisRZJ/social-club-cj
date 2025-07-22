@@ -1,0 +1,3179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Recortador de txt | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFF5EB;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    
+    .content-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      flex: 1;
+      margin-bottom: 20px;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    
+    .nav-button {
+      background-color: #FFD1A9;
+      color: #374151;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .nav-button:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .nav-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-button i {
+      margin-right: 0.5rem;
+    }
+    
+    .upload-area {
+      border: 2px dashed #FFD1A9;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      text-align: center;
+      background-color: #FFFBF7;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .upload-area:hover {
+      border-color: #ffb07a;
+      background-color: #FFF8F0;
+    }
+    
+    .upload-area.dragover {
+      border-color: #ff7b54;
+      background-color: #FFF0E6;
+    }
+    
+    .file-input {
+      display: none;
+    }
+    
+    .analysis-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background-color: #F8FAFC;
+      border-radius: 0.5rem;
+      border-left: 4px solid #FFD1A9;
+    }
+    
+    .month-selector {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background-color: #F0F9FF;
+      border-radius: 0.5rem;
+      border: 1px solid #BAE6FD;
+    }
+    
+    .month-option {
+      display: inline-block;
+      margin: 0.25rem;
+      padding: 0.5rem 1rem;
+      background-color: white;
+      border: 1px solid #CBD5E1;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    
+    .month-option:hover {
+      background-color: #FFD1A9;
+      border-color: #ffb07a;
+    }
+    
+    .month-option.selected {
+      background-color: #FFD1A9;
+      border-color: #ffb07a;
+      color: #374151;
+      font-weight: 600;
+    }
+    
+    .month-option.selected::after {
+      content: '✓';
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #10B981;
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .month-option.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: #F3F4F6;
+    }
+    
+    .selection-info {
+      background-color: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .selection-info h5 {
+      font-weight: 600;
+      color: #1E40AF;
+      margin-bottom: 0.5rem;
+    }
+    
+    .selected-months-display {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .selected-month-tag {
+      background-color: #FFD1A9;
+      color: #374151;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .remove-month {
+      background: none;
+      border: none;
+      color: #DC2626;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0;
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    
+    .remove-month:hover {
+      background-color: #FEE2E2;
+    }
+    
+    .download-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background-color: #F0FDF4;
+      border-radius: 0.5rem;
+      border: 1px solid #BBF7D0;
+      text-align: center;
+    }
+    
+    .download-btn {
+      background-color: #10B981;
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 0.5rem;
+    }
+    
+    .download-btn:hover {
+      background-color: #059669;
+      transform: translateY(-2px);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .stat-card {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #E5E7EB;
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #FFD1A9;
+    }
+    
+    .stat-label {
+      font-size: 0.875rem;
+      color: #6B7280;
+      margin-top: 0.25rem;
+    }
+    
+    .error-message {
+      background-color: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #DC2626;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .success-message {
+      background-color: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      color: #16A34A;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #FFD1A9;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 0.5rem;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Estilos para el modal de capacidad */
+    .modal-content {
+      background-color: white;
+      color: #1F2937;
+    }
+    
+    footer {
+      background-color: #FFF5EB;
+      padding: 2.5rem 1rem;
+      border-top: 2px solid #E5E7EB;
+      margin-top: auto;
+      position: relative;
+      margin-bottom: 35px; /* Espacio de la bandera respecto al final */
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2.5rem;
+    }
+    
+    .footer-section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: #FFD1A9;
+    }
+    
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .footer-links a {
+      color: #4B5563;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+      color: #d8971d;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 0.75rem;
+      color: #FFD1A9;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid #E5E7EB;
+      text-align: center;
+      color: #4B5563;
+      font-size: 0.9rem;
+    }
+    
+    .copyright {
+      font-weight: 600;
+      color: #1F2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .copyright span {
+      color: #FFD1A9;
+    }
+    
+    .back-to-top {
+      position: absolute;
+      top: -25px;
+      right: 20px;
+      background-color: #FFD1A9;
+      color: #374151;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .back-to-top:hover {
+      background-color: #ffb07a;
+      transform: translateY(-3px);
+    }
+    
+    .back-to-top:active {
+      transform: translateY(0);
+    }
+    
+    .cgn-icon {
+      height: 50px;
+      width: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .cgn-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Header completo con menú desplegable */
+    .header-comunidad {
+      background-color: #FFF5EB;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .header-logo {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .header-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1F2937;
+    }
+    
+    .header-legend {
+      font-weight: 700;
+      font-style: italic;
+      font-size: 0.75rem;
+      color: #115c2c;
+      margin-left: 0.5rem;
+    }
+    
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 24px;
+      width: 30px;
+      padding: 0;
+    }
+    
+    .menu-bar {
+      height: 3px;
+      width: 100%;
+      background-color: #1F2937;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .menu-toggle.activo .menu-bar:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+    
+    .menu-desplegable {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    
+    .menu-desplegable.abierto {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .menu-desplegable ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+    
+    .menu-desplegable li {
+      padding: 0;
+    }
+    
+    .menu-desplegable a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      color: #4B5563;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    
+    .menu-desplegable a:hover {
+      background-color: #FFD1A9;
+      color: #1F2937;
+      padding-left: 1.75rem;
+    }
+    
+    /* Título principal */
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #FFD1A9;
+      position: relative;
+    }
+    
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: #ffb07a;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-button {
+        width: 100%;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .back-to-top {
+        top: -20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      
+      .cgn-icon {
+        height: 50px;
+        width: 100px;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+   /* Barra de progreso de scroll - Ahora dentro del header */
+#scroll-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: rgba(255, 209, 169, 0.2);
+  z-index: 99; /* Reducir z-index */
+}
+
+#scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFD1A9, #ffb07a);
+  transition: width 0.1s ease;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Aumentar z-index del menú desplegable */
+.menu-desplegable {
+  z-index: 100; /* Mayor que la barra de progreso */
+}
+
+/* Ajustar posición del header */
+.header-comunidad {
+  position: sticky;
+  top: 0;
+  z-index: 98; /* Menor que la barra */
+}
+
+/* Rectángulo gris fijo en la parte inferior */
+.bottom-fixed-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 50;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  transition: all 0.3s ease;
+}
+
+/* Panel expandido */
+.bottom-fixed-bar.expanded {
+  height: 100vh;
+  bottom: 0;
+  top: auto;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Contenedor para el contenido expandido */
+.expanded-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 0;
+}
+
+.bottom-fixed-bar.expanded .expanded-content {
+  display: flex;
+}
+
+/* Ajustar botones cuando está expandido */
+.bottom-fixed-bar.expanded .right-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  gap: 8px;
+}
+
+.bottom-fixed-bar.expanded .open-chat-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+/* Botón volver arriba dentro del rectángulo fijo */
+.back-to-top-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.back-to-top-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.back-to-top-fixed:active {
+  transform: translateY(0);
+}
+
+/* Botón ir al final dentro del rectángulo fijo */
+.go-to-bottom-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 10px;
+}
+
+.go-to-bottom-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.go-to-bottom-fixed:active {
+  transform: translateY(0);
+}
+
+/* Contenedor para los botones de la izquierda */
+.left-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Botón compartir dentro del rectángulo fijo */
+.share-btn-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.share-btn-fixed:hover {
+  background-color: rgba(255, 176, 122, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.share-btn-fixed:active {
+  transform: translateY(0);
+}
+
+/* Separador vertical del panel de acciones */
+.action-separator {
+  width: 2px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin-left: 12px;
+  margin-right: 5px;
+  border-radius: 1px;
+}
+
+/* Botón ver más dentro del rectángulo fijo */
+.view-more-fixed {
+  background-color: rgba(255, 209, 169, 0.8);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #374151;
+  min-width: 80px;
+  height: 35px;
+  border-radius: 17.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-right: 15px;
+  gap: 5px;
+}
+
+.view-more-fixed.expanded {
+  min-width: 100px;
+}
+
+/* Contenedor para las acciones de la derecha */
+.right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Panel expandido - elemento separado */
+.panel-expansion {
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 98;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 20px;
+}
+
+.panel-expansion.expanded {
+  height: calc(100vh - 60px);
+  padding: 8px 20px 20px 20px;
+}
+
+.panel-expansion.expanded .expanded-content {
+  display: flex;
+}
+
+/* Estilos para el contenedor de noticias */
+.news-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.3);
+  border-radius: 0;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  margin-bottom: 0;
+  overflow: hidden;
+  z-index: 99;
+}
+
+.news-container .title {
+  position: absolute;
+  background-color: rgb(255, 209, 169);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 3.8px;
+  color: #374151;
+  font-size: 1rem;
+  z-index: 200;
+  border-radius: 6px;
+  box-shadow: 2px 8px 5px rgba(0, 0, 0, 0.2);
+}
+
+.news-container ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  animation: scroll 120s infinite linear;
+  padding-left: 80px;
+}
+
+.news-container ul li {
+  white-space: nowrap;
+  padding: 10px 24px;
+  color: white;
+  position: relative;
+}
+
+.news-container ul li::after {
+  content: "";
+  width: 1px;
+  height: 100%;
+  background: #b8b8b8;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.news-container ul li:last-child::after {
+  display: none;
+}
+
+.news-container ul li a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-container ul li a:hover {
+  text-decoration: underline;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-10200px);
+  }
+}
+
+.news-separator {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  margin: 100px 0 8px 0;
+  z-index: 100;
+}
+
+.news-separator-top, .news-separator-bottom {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  z-index: 100;
+}
+
+.news-separator-top {
+  margin: 50px 0 8px 0;
+}
+
+.news-separator-bottom {
+  margin: 0px 0 8px 0;
+}
+
+.categories-section-panel {
+  width: 100%;
+  margin: -20px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.categories-title-panel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 12px;
+  margin-left: 0;
+  letter-spacing: 0.5px;
+  background: rgba(255, 168, 54, 0.92);
+  padding: 12px 24px 12px 24px;
+  border-radius: 0px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.10);
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  max-width: none;
+  z-index: 101;
+}
+.categories-tags-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.category-tag-panel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.07);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.category-tag-panel:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.category-tag-panel i {
+  font-size: 1.1em;
+  margin-right: 4px;
+}
+
+/* --- Botones de tema --- */
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 209, 169, 0.85);
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border-radius: 18px;
+  padding: 7px 18px;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  position: relative;
+  min-width: 140px;
+}
+.theme-btn:hover {
+  background: #ffb07a;
+  color: #1F2937;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.13);
+}
+.theme-btn .theme-indicator {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #d1d5db;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border 0.2s;
+}
+.theme-btn.active .theme-indicator {
+  background: #22c55e;
+  border: 2px solid #16a34a;
+}
+
+/* Estilo para el popup de ayuda de tema */
+.theme-help-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  color: #1F2937;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 28px 24px 18px 24px;
+  z-index: 9999;
+  min-width: 320px;
+  max-width: 90vw;
+  font-size: 1rem;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.2s;
+}
+.theme-help-popup.active {
+  display: flex;
+}
+.theme-help-popup .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #374151;
+  cursor: pointer;
+}
+.theme-help-popup ul {
+  margin: 0 0 0 0.5em;
+  padding: 0;
+  list-style: none;
+}
+.theme-help-popup ul li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -60%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+  </style>
+  <style id="dark-theme-style">
+    /* Modo oscuro general */
+    body.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+    }
+    .content-container.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 4px 12px -1px rgba(0,0,0,0.45), 0 2px 4px -1px rgba(0,0,0,0.30);
+      color: #f3f4f6 !important;
+    }
+    .header-comunidad.dark-theme {
+      background-color: #23232a !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+    .header-title.dark-theme {
+      color: #f3f4f6 !important;
+    }
+    .header-legend.dark-theme {
+      color: #18813f !important;
+    }
+    .menu-desplegable.dark-theme {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .menu-desplegable.dark-theme a:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    .page-title.dark-theme {
+      color: #f3f4f6 !important;
+      border-bottom: 3px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme {
+      background-color: #23232a !important;
+      color: #FFD1A9 !important;
+      border: 1px solid #FFD1A9 !important;
+    }
+    .nav-button.dark-theme:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    footer.dark-theme {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+      border-top: 2px solid #bb4b004b !important;
+    }
+    .footer-section.dark-theme h3 {
+      color: #FFD1A9 !important;
+    }
+    .footer-links.dark-theme a {
+      color: #f3f4f6 !important;
+    }
+    .footer-links.dark-theme a:hover {
+      color: #ffb07a !important;
+    }
+    .footer-links.dark-theme a i {
+      color: #FFD1A9 !important;
+    }
+    .footer-bottom.dark-theme {
+      color: #FFD1A9 !important;
+      border-top: 2px solid #bb4b004b !important;
+    }
+    .copyright.dark-theme {
+      color: #929292b0 !important;
+    }
+    .copyright.dark-theme span {
+      color: #FFD1A9 !important;
+    }
+    .bottom-fixed-bar.dark-theme {
+      background-color: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .panel-expansion.dark-theme {
+      background-color: rgba(24,24,27,0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .news-container.dark-theme {
+      background: rgba(24,24,27,0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .categories-title-panel.dark-theme {
+      background: rgba(60, 48, 40, 0.92) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme {
+      background: rgba(60, 60, 40, 0.85) !important;
+      color: #FFD1A9 !important;
+    }
+    .category-tag-panel.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.dark-theme {
+      background: rgba(60,60,40,0.85) !important;
+      color: #FFD1A9 !important;
+      border: 2px solid #FFD1A9 !important;
+    }
+    .theme-btn.dark-theme:hover {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    .theme-btn.active .theme-indicator {
+      background: #22c55e !important;
+      border: 2px solid #16a34a !important;
+    }
+    .theme-help-popup.dark-theme {
+      background: #23232a !important;
+      color: #FFD1A9 !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    }
+    .theme-help-popup.dark-theme .close-btn {
+      color: #FFD1A9 !important;
+    }
+    .theme-help-popup.dark-theme ul li span {
+      color: #FFD1A9 !important;
+    }
+    /* Separadores */
+    .action-separator.dark-theme,
+    .news-separator-top.dark-theme,
+    .news-separator-bottom.dark-theme {
+      background-color: rgba(255,209,169,0.25) !important;
+    }
+    .menu-toggle.dark-theme .menu-bar {
+      background-color: #f3f4f6 !important;
+    }
+    /* Mayor especificidad para sobrescribir estilos del modo claro */
+    body.dark-theme .footer-links a {
+      color: #929292b0 !important;
+    }
+    body.dark-theme .footer-links a:hover {
+      color: #ffb07a !important;
+    }
+    body.dark-theme .footer-links a i {
+      color: #FFD1A9 !important;
+    }
+    /* Icono de interrogación en modo oscuro */
+    body.dark-theme #themeHelpBtn {
+      color: #f3f4f6 !important;
+    }
+    body.dark-theme #themeHelpBtn i {
+      color: #f3f4f6 !important;
+    }
+    /* Bandera del pie de página en modo oscuro */
+    body.dark-theme .cgn-icon {
+      border: 1px solid rgba(255, 209, 169, 0.3) !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* Elementos específicos del preprocesador en modo oscuro */
+    .upload-area.dark-theme {
+      background-color: #2a2a2a !important;
+      border-color: #FFD1A9 !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .upload-area.dark-theme:hover {
+      background-color: #33334a !important;
+      border-color: #ffb07a !important;
+    }
+    
+    .upload-area.dark-theme.dragover {
+      border-color: #ff7b54 !important;
+      background-color: #3a2a2a !important;
+    }
+    
+    .analysis-section.dark-theme {
+      background-color: #1a1a2a !important;
+      border-left-color: #FFD1A9 !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .month-selector.dark-theme {
+      background-color: #1a2a3a !important;
+      border-color: #4a6a8a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .month-option.dark-theme {
+      background-color: #2a2a3a !important;
+      border-color: #4a5a6a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .month-option.dark-theme:hover {
+      background-color: #FFD1A9 !important;
+      border-color: #ffb07a !important;
+      color: #1F2937 !important;
+    }
+    
+    .month-option.dark-theme.selected {
+      background-color: #FFD1A9 !important;
+      border-color: #ffb07a !important;
+      color: #1F2937 !important;
+    }
+    
+    .month-option.dark-theme.disabled {
+      background-color: #1a1a2a !important;
+      color: #6a6a7a !important;
+    }
+    
+    .selection-info.dark-theme {
+      background-color: #1a2a3a !important;
+      border-color: #4a6a8a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .selection-info.dark-theme h5 {
+      color: #FFD1A9 !important;
+    }
+    
+    .selected-month-tag.dark-theme {
+      background-color: #FFD1A9 !important;
+      color: #1F2937 !important;
+    }
+    
+    .remove-month.dark-theme {
+      color: #ff6b6b !important;
+    }
+    
+    .remove-month.dark-theme:hover {
+      background-color: #3a1a1a !important;
+    }
+    
+    .download-section.dark-theme {
+      background-color: #1a3a1a !important;
+      border-color: #4a8a4a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .download-btn.dark-theme {
+      background-color: #10B981 !important;
+      color: white !important;
+    }
+    
+    .download-btn.dark-theme:hover {
+      background-color: #059669 !important;
+    }
+    
+    .stat-card.dark-theme {
+      background-color: #2a2a3a !important;
+      border-color: #4a5a6a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .stat-number.dark-theme {
+      color: #FFD1A9 !important;
+    }
+    
+    .stat-label.dark-theme {
+      color: #a1a1b1 !important;
+    }
+    
+    .error-message.dark-theme {
+      background-color: #3a1a1a !important;
+      border-color: #8a4a4a !important;
+      color: #ff6b6b !important;
+    }
+    
+    .success-message.dark-theme {
+      background-color: #1a3a1a !important;
+      border-color: #4a8a4a !important;
+      color: #4ade80 !important;
+    }
+    
+    .loading.dark-theme {
+      border-color: #4a4a5a !important;
+      border-top-color: #FFD1A9 !important;
+    }
+    
+    /* Modal de capacidad en modo oscuro */
+    .modal.dark-theme {
+      background-color: rgba(0, 0, 0, 0.8) !important;
+    }
+    
+    .modal-content.dark-theme {
+      background-color: #2a2a3a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .modal .bg-white.dark-theme {
+      background-color: #2a2a3a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .modal .bg-blue-600.dark-theme {
+      background-color: #1a4a6a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .modal .text-blue-800.dark-theme {
+      color: #FFD1A9 !important;
+    }
+    
+    .modal .text-blue-700.dark-theme {
+      color: #a1c1e1 !important;
+    }
+    
+    .modal .text-gray-800.dark-theme {
+      color: #f3f4f6 !important;
+    }
+    
+    /* Leyenda de capacidad en modo oscuro */
+    .bg-blue-50.dark-theme {
+      background-color: #1a2a3a !important;
+      border-color: #4a6a8a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    .text-blue-900.dark-theme {
+      color: #a1c1e1 !important;
+    }
+    
+    .text-blue-800.dark-theme {
+      color: #FFD1A9 !important;
+    }
+    
+    .bg-blue-600.dark-theme {
+      background-color: #1a4a6a !important;
+    }
+    
+    .bg-blue-600.dark-theme:hover {
+      background-color: #1a5a7a !important;
+    }
+    
+    /* Barra de progreso en modo oscuro */
+    .bg-gray-200.dark-theme {
+      background-color: #3a3a4a !important;
+    }
+    
+    .bg-orange-400.dark-theme {
+      background-color: #FFD1A9 !important;
+    }
+    
+    .text-gray-700.dark-theme {
+      color: #f3f4f6 !important;
+    }
+    
+    /* Texto general en modo oscuro */
+    .text-gray-600.dark-theme {
+      color: #a1a1b1 !important;
+    }
+    
+    .text-gray-500.dark-theme {
+      color: #8a8a9a !important;
+    }
+    
+    .text-gray-400.dark-theme {
+      color: #6a6a7a !important;
+    }
+    
+    .text-gray-800.dark-theme {
+      color: #f3f4f6 !important;
+    }
+    
+    .text-green-800.dark-theme {
+      color: #4ade80 !important;
+    }
+    
+    .text-green-700.dark-theme {
+      color: #6ade8a !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+</head>
+<body class="text-gray-800">
+
+  <header class="header-comunidad">
+    <div class="header-content">
+      <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+      <span class="header-title">CGN</span>
+      <span class="header-legend">Sin tiempo para descansos</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <nav class="menu-desplegable" id="menuDesplegable">
+      <ul>
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/faq.html">FAQ</a></li>
+        <li><a href="/socios.html">Socios</a></li>
+        <li><a href="/ajustes.html">Ajustes</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <!-- Barra de progreso de scroll -->
+<div id="scroll-progress-container">
+  <div id="scroll-progress-bar"></div>
+</div>
+
+  </header>
+  
+  <div class="content-container">
+    <h1 class="page-title">Preprocesador de txt</h1>
+    
+    <p class="text-center text-gray-600 mb-8">
+      Sube un archivo de chat de WhatsApp (.txt) para analizar el período de datos y recortar a un mes específico
+    </p>
+    
+    <!-- Área de subida de archivos -->
+    <div class="upload-area" id="uploadArea">
+      <input type="file" id="fileInput" class="file-input" accept=".txt">
+      <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+      <h3 class="text-lg font-semibold text-gray-700 mb-2">Sube tu archivo de chat</h3>
+      <p class="text-gray-500">Arrastra y suelta tu archivo .txt aquí o haz clic para seleccionar</p>
+      <p class="text-sm text-gray-400 mt-2">Solo archivos .txt de chat de WhatsApp</p>
+    </div>
+    <!-- Leyenda de capacidad -->
+    <div class="mt-4 mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-900 text-center text-base font-medium shadow-sm">
+      <span class="block text-xl font-extrabold text-blue-800 mb-1">
+        <i class="fas fa-bolt mr-2"></i>
+        Este preprocesador está optimizado para archivos pesados y grandes historiales de chat
+      </span>
+      <span class="block text-blue-900 font-medium mb-2">
+        Puedes analizar y recortar archivos de cientos de miles o incluso millones de mensajes sin que la página se congele. El procesamiento es eficiente y seguro, incluso con historiales de WhatsApp muy extensos.
+      </span>
+      <button id="showCapacityInfoBtn" class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded shadow transition-all duration-150">
+        <i class="fas fa-info-circle mr-1"></i> Saber más
+      </button>
+    </div>
+    
+    <!-- Modal de información de capacidad -->
+    <div id="capacityModal" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-40 py-8 sm:py-12 backdrop-blur-sm" style="display:none;">
+      <div class="modal-content rounded-lg shadow-lg max-w-lg w-full mx-4 sm:mx-8 relative animate-fade-in overflow-hidden max-h-[90vh]">
+        <!-- Franja superior con botón de cierre -->
+        <div class="bg-blue-600 text-white px-4 py-3 flex justify-between items-center">
+          <h2 class="text-lg font-bold">Información de capacidad</h2>
+          <button id="closeCapacityModal" class="text-white hover:text-red-200 text-2xl font-bold transition-colors duration-200" title="Cerrar">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <!-- Contenido del modal -->
+        <div class="p-4 sm:p-6 overflow-y-auto max-h-[calc(90vh-60px)]">
+          <h3 class="text-xl font-extrabold text-blue-800 mb-3">Estimación de capacidad y rendimiento</h3>
+          <p class="mb-4 text-gray-800">Con la solución de <b>recorte bajo demanda</b> y <b>procesamiento por bloques</b>, la capacidad de la página para manejar archivos grandes aumenta de forma exponencial respecto a la versión tradicional en la que se carga todo el archivo en memoria.</p>
+          
+          <h4 class="text-lg font-bold text-blue-700 mt-5 mb-2">¿Qué tan grande puede ser el archivo?</h4>
+          <ul class="list-disc list-inside mb-4 text-gray-800 text-left space-y-1">
+            <li><b>Miles o cientos de miles de mensajes:</b> El sistema los procesa en menos de un segundo, de hecho puedes probarlo con un archivo de 200,000 mensajes o más y verás que tarda menos de 1 segundo.</li>
+            <li><b>Millones de mensajes (archivos de 50MB, 100MB o más):</b> El límite real lo pone el navegador y la RAM del dispositivo, pero con chunked reading y procesamiento incremental, puedes manejar archivos de varios millones de líneas (decenas o incluso cientos de MB) sin que la página se congele.</li>
+            <li>El tiempo de procesamiento dependerá del tamaño, pero será <b>lineal</b> y la interfaz nunca se bloqueará.</li>
+          </ul>
+          
+          <h4 class="text-lg font-bold text-blue-700 mt-5 mb-2">Ejemplo realista:</h4>
+          <p class="mb-4 text-gray-800">Un archivo de <b>1 millón de mensajes</b> (aprox. 200MB) puede analizarse y recortarse en menos de 1-2 minutos en una PC moderna, y la página seguirá siendo usable durante el proceso.</p>
+          
+          <h4 class="text-lg font-bold text-blue-700 mt-5 mb-2">¿Por qué es tan eficiente?</h4>
+          <ul class="list-disc list-inside mb-2 text-gray-800 text-left space-y-1">
+            <li>Nunca se carga todo el archivo en memoria.</li>
+            <li>El análisis y el recorte se hacen por bloques, permitiendo que el navegador procese otras tareas y mantenga la UI fluida.</li>
+            <li>Tu como usuario puedes ver el progreso y cancelar si lo deseas.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Barra de progreso -->
+    <div id="fileProgressContainer" style="display: none;">
+      <div class="w-full bg-gray-200 rounded-full h-4 mt-4">
+        <div id="fileProgressBar" class="bg-orange-400 h-4 rounded-full transition-all duration-200" style="width: 0%"></div>
+      </div>
+      <div id="fileProgressText" class="text-sm text-gray-700 mt-1 text-center"></div>
+    </div>
+    
+    <!-- Sección de análisis -->
+    <div id="analysisSection" class="analysis-section" style="display: none;">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">
+        <i class="fas fa-chart-line text-orange-500 mr-2"></i>
+        Análisis del archivo
+      </h3>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="totalMessages">0</div>
+          <div class="stat-label">Total de mensajes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="dateRange">-</div>
+          <div class="stat-label">Rango de fechas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="totalMonths">0</div>
+          <div class="stat-label">Meses disponibles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="fileSize">0 KB</div>
+          <div class="stat-label">Tamaño del archivo</div>
+        </div>
+      </div>
+      
+      <div class="month-selector">
+        <h4 class="font-semibold text-gray-800 mb-3">Selecciona hasta 3 meses consecutivos para recortar:</h4>
+        <p class="text-sm text-gray-600 mb-3">Haz clic en los meses para seleccionarlos. Los meses deben ser consecutivos cronológicamente.</p>
+        <div id="monthOptions" class="flex flex-wrap gap-2">
+          <!-- Los meses se generarán dinámicamente -->
+        </div>
+        
+        <div id="selectionInfo" class="selection-info" style="display: none;">
+          <h5><i class="fas fa-info-circle mr-2"></i>Meses seleccionados:</h5>
+          <div id="selectedMonthsDisplay" class="selected-months-display">
+            <!-- Los meses seleccionados se mostrarán aquí -->
+          </div>
+          <p class="text-sm text-blue-700 mt-2">
+            <i class="fas fa-lightbulb mr-1"></i>
+            Puedes seleccionar hasta 3 meses consecutivos. El archivo incluirá todos los mensajes de estos meses.
+          </p>
+        </div>
+      </div>
+      
+      <div class="text-center mt-4">
+        <button id="processBtn" class="download-btn" disabled>
+          <i class="fas fa-cut mr-2"></i>
+          Recortar archivo
+        </button>
+      </div>
+    </div>
+    
+    <!-- Sección de descarga -->
+    <div id="downloadSection" class="download-section" style="display: none;">
+      <h3 class="text-lg font-semibold text-green-800 mb-4">
+        <i class="fas fa-check-circle mr-2"></i>
+        Archivo procesado exitosamente
+      </h3>
+      <p class="text-green-700 mb-4">Tu archivo ha sido recortado al mes seleccionado.</p>
+      <button id="downloadBtn" class="download-btn">
+        <i class="fas fa-download mr-2"></i>
+        Descargar archivo recortado
+      </button>
+      <button id="newFileBtn" class="download-btn" style="background-color: #6B7280;">
+        <i class="fas fa-plus mr-2"></i>
+        Procesar otro archivo
+      </button>
+    </div>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <div class="footer-links">
+          <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+          <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+          <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+          <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+          <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Comunidad</h3>
+        <div class="footer-links">
+          <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+          <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+          <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+          <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+          <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">
+        <img src="/icons/Bandera-jal.avif" 
+             alt="Logo Comunidad CGN" 
+             class="cgn-icon">
+        Comunidad CGN | <span id="currentYear">2022-2025</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Rectángulo gris fijo en la parte inferior -->
+  <div class="bottom-fixed-bar">
+    <div class="left-actions">
+      <button title="Abrir chat" class="open-chat-btn" onclick="openChat()">
+        <i class="fas fa-comments"></i>Ayuda
+      </button>
+      <button title="Compartir página" class="share-btn-fixed" id="shareBtn" onclick="sharePage()">
+        <i class="fas fa-share-alt"></i>
+      </button>
+    </div>
+    <div class="right-actions">
+      <div class="action-separator"></div>
+      <div class="view-more-fixed" id="viewMoreBtn" title="panel de acciones" onclick="togglePanel()">
+        <i class="fas fa-ellipsis-h"></i>
+        <span id="viewMoreText">Ver más</span>
+      </div>
+      <div class="back-to-top-fixed" id="backToTopBtn" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+      <div class="go-to-bottom-fixed" id="goToBottomBtn" title="Ir al final">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de expansión separado -->
+  <div class="panel-expansion" id="panelExpansion">
+    <!-- Contenedor para el contenido expandido -->
+    <div class="expanded-content">
+      <!-- Contenedor de noticias -->
+      <div class='news-container'>
+        <div class='title'>
+          Novedades
+        </div>
+
+        <ul>
+          <!-- Las noticias se cargarán dinámicamente desde noticias.json -->
+        </ul>
+      </div>
+      <div class="news-separator-top"></div>
+      
+      <!-- Sección de categorías -->
+      <div class="categories-section-panel">
+        <div class="categories-title-panel">Categorías</div>
+        <div class="categories-tags-panel">
+          <a href="/categorias-comunidad.html" class="category-tag-panel comunidad"><i class="fas fa-users"></i> Comunidad</a>
+          <a href="/categorias-mc.html" class="category-tag-panel minecraft"><i class="fas fa-cube"></i> Minecraft</a>
+          <a href="/categorias-reglas.html" class="category-tag-panel reglas"><i class="fas fa-book"></i> Reglas</a>
+          <a href="/categorias-admins.html" class="category-tag-panel administracion"><i class="fas fa-user-shield"></i> Administración</a>
+        </div>
+      </div>
+      <div class="news-separator-bottom"></div>
+      
+      <!-- Sección de tema -->
+      <div class="theme-section-panel" style="width:100%; margin: 0 0 10px 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+        <div class="categories-title-panel" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center; text-align: center;">
+          <span style="display: flex; align-items: center; gap: 8px;">
+            Tema
+            <button id="themeHelpBtn" type="button" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #374151; font-size: 1.1em; display: flex; align-items: center;">
+              <i class="fas fa-question-circle"></i>
+            </button>
+          </span>
+        </div>
+        <div class="theme-buttons-panel" style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+          <button class="theme-btn" title="Automático" type="button">
+            <i class="fas fa-adjust"></i> Automático
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Eficiencia" type="button">
+            <i class="fas fa-bolt"></i> Eficiencia
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Claro" type="button">
+            <i class="fas fa-sun"></i> Claro
+            <span class="theme-indicator"></span>
+          </button>
+          <button class="theme-btn" title="Oscuro" type="button">
+            <i class="fas fa-moon"></i> Oscuro
+            <span class="theme-indicator"></span>
+          </button>
+        </div>
+        <div class="action-separator" style="position: relative; left: 50%; transform: translateX(-50%); width: 100vw; height: 4px; background-color: rgba(255,255,255,0.3); margin: 14px 0 0 0; border-radius: 2px; z-index: 100;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay que contiene el chat modal -->
+  <div class="overlay" id="chatOverlay">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="header-left">
+          <div class="header-image">
+            <img src="/icons/bot-hecks.avif" alt="Logo de soporte" id="chatImage">
+          </div>
+          <div class="header-title">Soporte CGN</div>
+        </div>
+        <div class="header-buttons">
+          <button class="header-btn" onclick="toggleMaximize()" title="Maximizar/Minimizar chat">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="header-btn" onclick="clearChat()" title="Borrar chat">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="header-btn" onclick="closeChat()" title="Cerrar chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-footer" id="chatFooter"></div>
+    </div>
+  </div>
+
+  <!-- Popup de ayuda para Tema -->
+  <div class="theme-help-popup" id="themeHelpPopup">
+    <button class="close-btn" id="closeThemeHelp" title="Cerrar ayuda"><i class="fas fa-times"></i></button>
+    <strong>¿Cómo funcionan los modos de tema?</strong>
+    <ul>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-adjust"></i> <b>Automático</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Cambia entre modo claro y oscuro automáticamente según la hora del día (oscuro de noche, claro de día).</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-bolt"></i> <b>Eficiencia</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Activa el modo oscuro si el ahorro de energía está activo en tu dispositivo.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-sun"></i> <b>Claro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema claro en la página.</span>
+      </li>
+      <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+        <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-moon"></i> <b>Oscuro</b></span>
+        <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema oscuro en la página.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <script src="/pwa/noticias.js"></script>
+  <script>
+    // Variables globales para recorte bajo demanda
+    let fileContent = '';
+    let selectedMonths = [];
+    let processedContent = '';
+    let allMonths = [];
+    let fileMeta = null; // { file, blockOffsets, monthsInfo, totalMessages, firstDate, lastDate }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      // Actualizar año en footer
+      const currentYear = new Date().getFullYear();
+      document.getElementById('currentYear').textContent = `2022-${currentYear}`;
+      
+      // Botón "Volver" inteligente
+      const backButton = document.getElementById('backButton');
+      backButton.addEventListener('click', function() {
+        // Comprobar si hay una página anterior en el historial
+        if (document.referrer && document.referrer !== window.location.href) {
+          window.history.back();
+        } else {
+          // Si no hay historial previo, redirigir a la página de inicio
+          window.location.href = '/index.html';
+        }
+      });
+
+      // Botón "Volver arriba"
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Botón "Ir al final"
+      const goToBottomBtn = document.getElementById('goToBottomBtn');
+      goToBottomBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Menú desplegable
+      const menuToggle = document.getElementById('menuToggle');
+      const menuDesplegable = document.getElementById('menuDesplegable');
+      
+      // Abrir/cerrar menú al hacer clic en el botón
+      menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menuDesplegable.classList.toggle('abierto');
+        menuToggle.classList.toggle('activo');
+      });
+      
+      // Cerrar menú al hacer clic fuera
+      document.addEventListener('click', function(e) {
+        if (!menuDesplegable.contains(e.target) && !menuToggle.contains(e.target)) {
+          menuDesplegable.classList.remove('abierto');
+          menuToggle.classList.remove('activo');
+        }
+      });
+      
+      // Prevenir que el clic en el menú lo cierre
+      menuDesplegable.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+      
+      // Funcionalidad de subida de archivos
+      setupFileUpload();
+      
+      // Event listeners para botones
+      document.getElementById('processBtn').addEventListener('click', processFile);
+      document.getElementById('downloadBtn').addEventListener('click', downloadFile);
+      document.getElementById('newFileBtn').addEventListener('click', resetApp);
+    });
+
+    function setupFileUpload() {
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('fileInput');
+      
+      uploadArea.addEventListener('click', () => fileInput.click());
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+      });
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+      });
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          handleLargeFile(files[0]);
+        }
+      });
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          handleLargeFile(e.target.files[0]);
+        }
+      });
+    }
+    
+    function handleLargeFile(file) {
+      if (!file.name.toLowerCase().endsWith('.txt')) {
+        showError('Por favor selecciona un archivo .txt válido');
+        return;
+      }
+      // Si el archivo es pequeño (<2MB), usar el método normal
+      if (file.size < 2 * 1024 * 1024) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          fileContent = e.target.result;
+          analyzeFile(file);
+        };
+        reader.readAsText(file, 'UTF-8');
+        fileMeta = null;
+        return;
+      }
+      // Si es grande, usar chunked reading y solo analizar fechas/meses
+      processLargeFileMeta(file);
+    }
+    
+    function processLargeFileMeta(file) {
+      const CHUNK_SIZE = 1024 * 1024; // 1MB
+      let offset = 0;
+      let partial = '';
+      let blockOffsets = [0]; // Guardar el offset de cada bloque
+      let monthsMap = new Map();
+      let totalMessages = 0;
+      let firstDate = null;
+      let lastDate = null;
+      let dateRegex = /^(\d{2})\/(\d{2})\/(\d{2})/;
+
+      // Mostrar barra de progreso
+      document.getElementById('fileProgressContainer').style.display = 'block';
+      document.getElementById('analysisSection').style.display = 'none';
+      document.getElementById('downloadSection').style.display = 'none';
+      updateFileProgress(0, file.size);
+
+      function readChunk() {
+        const reader = new FileReader();
+        const slice = file.slice(offset, offset + CHUNK_SIZE);
+        reader.onload = function(e) {
+          let text = e.target.result;
+          // Unir con la parte anterior si quedó una línea incompleta
+          text = partial + text;
+          let splitLines = text.split('\n');
+          // Guardar la última línea incompleta para el siguiente chunk
+          if (offset + CHUNK_SIZE < file.size) {
+            partial = splitLines.pop();
+          } else {
+            partial = '';
+          }
+          // Procesar líneas para fechas
+          splitLines.forEach(line => {
+            const match = line.match(dateRegex);
+            if (match) {
+              const day = parseInt(match[1]);
+              const month = parseInt(match[2]);
+              const year = parseInt(match[3]);
+              const fullYear = year < 50 ? 2000 + year : 1900 + year;
+              const key = `${fullYear}-${month.toString().padStart(2, '0')}`;
+              if (!monthsMap.has(key)) {
+                monthsMap.set(key, {
+                  key: key,
+                  year: fullYear,
+                  month: month,
+                  name: new Date(fullYear, month - 1).toLocaleDateString('es-ES', { year: 'numeric', month: 'long' }),
+                  count: 0
+                });
+              }
+              monthsMap.get(key).count++;
+              totalMessages++;
+              const dateObj = { day, month, year: fullYear, date: new Date(fullYear, month - 1, day) };
+              if (!firstDate || dateObj.date < firstDate.date) firstDate = dateObj;
+              if (!lastDate || dateObj.date > lastDate.date) lastDate = dateObj;
+            }
+          });
+          // Actualizar barra de progreso
+          updateFileProgress(offset + CHUNK_SIZE, file.size);
+          // Siguiente chunk
+          offset += CHUNK_SIZE;
+          blockOffsets.push(offset);
+          if (offset < file.size) {
+            setTimeout(readChunk, 0); // No bloquear la UI
+          } else {
+            document.getElementById('fileProgressContainer').style.display = 'none';
+            // Guardar metadatos para recorte bajo demanda
+            fileMeta = {
+              file,
+              blockOffsets,
+              monthsInfo: Array.from(monthsMap.values()).sort((a, b) => (a.year !== b.year ? a.year - b.year : a.month - b.month)),
+              totalMessages,
+              firstDate,
+              lastDate
+            };
+            // Mostrar análisis
+            updateStats(totalMessages, firstDate, lastDate, fileMeta.monthsInfo.length, file.size);
+            generateMonthOptions(fileMeta.monthsInfo);
+            document.getElementById('analysisSection').style.display = 'block';
+            document.getElementById('downloadSection').style.display = 'none';
+          }
+        };
+        reader.readAsText(slice, 'UTF-8');
+      }
+      readChunk();
+    }
+    
+    function updateFileProgress(readBytes, totalBytes) {
+      const percent = Math.min(100, Math.round((readBytes / totalBytes) * 100));
+      const bar = document.getElementById('fileProgressBar');
+      const text = document.getElementById('fileProgressText');
+      if (bar) bar.style.width = percent + '%';
+      if (text) text.textContent = `Procesando archivo... ${percent}% (${formatFileSize(readBytes)} de ${formatFileSize(totalBytes)})`;
+    }
+    
+    function analyzeFile(file) {
+      const lines = fileContent.split('\n');
+      const dateRegex = /^(\d{2})\/(\d{2})\/(\d{2})/;
+      const dates = [];
+      let messageCount = 0;
+      
+      // Analizar cada línea
+      lines.forEach(line => {
+        const match = line.match(dateRegex);
+        if (match) {
+          const day = parseInt(match[1]);
+          const month = parseInt(match[2]);
+          const year = parseInt(match[3]);
+          const fullYear = year < 50 ? 2000 + year : 1900 + year;
+          
+          dates.push({
+            day,
+            month,
+            year: fullYear,
+            date: new Date(fullYear, month - 1, day),
+            line: line
+          });
+          messageCount++;
+        }
+      });
+      
+      if (dates.length === 0) {
+        showError('No se encontraron fechas válidas en el archivo. Asegúrate de que sea un archivo de chat de WhatsApp exportado.');
+        return;
+      }
+      
+      // Ordenar fechas
+      dates.sort((a, b) => a.date - b.date);
+      
+      const firstDate = dates[0];
+      const lastDate = dates[dates.length - 1];
+      
+      // Obtener meses únicos
+      const months = getUniqueMonths(dates);
+      
+      // Actualizar estadísticas
+      updateStats(messageCount, firstDate, lastDate, months.length, file.size);
+      
+      // Generar opciones de meses
+      generateMonthOptions(months);
+      
+      // Mostrar sección de análisis
+      document.getElementById('analysisSection').style.display = 'block';
+      document.getElementById('downloadSection').style.display = 'none';
+    }
+    
+    function getUniqueMonths(dates) {
+      const monthMap = new Map();
+      
+      dates.forEach(date => {
+        const key = `${date.year}-${date.month.toString().padStart(2, '0')}`;
+        const monthName = new Date(date.year, date.month - 1).toLocaleDateString('es-ES', { 
+          year: 'numeric', 
+          month: 'long' 
+        });
+        
+        if (!monthMap.has(key)) {
+          monthMap.set(key, {
+            key: key,
+            year: date.year,
+            month: date.month,
+            name: monthName,
+            count: 0
+          });
+        }
+        monthMap.get(key).count++;
+      });
+      
+      return Array.from(monthMap.values()).sort((a, b) => {
+        if (a.year !== b.year) return a.year - b.year;
+        return a.month - b.month;
+      });
+    }
+    
+    function updateStats(messageCount, firstDate, lastDate, monthCount, fileSize) {
+      document.getElementById('totalMessages').textContent = messageCount.toLocaleString();
+      document.getElementById('dateRange').textContent = 
+        `${firstDate.day}/${firstDate.month}/${firstDate.year} - ${lastDate.day}/${lastDate.month}/${lastDate.year}`;
+      document.getElementById('totalMonths').textContent = monthCount;
+      document.getElementById('fileSize').textContent = formatFileSize(fileSize);
+    }
+    
+    function generateMonthOptions(months) {
+      const container = document.getElementById('monthOptions');
+      container.innerHTML = '';
+      allMonths = months;
+      
+      months.forEach((month, index) => {
+        const option = document.createElement('div');
+        option.className = 'month-option';
+        option.textContent = `${month.name} (${month.count} mensajes)`;
+        option.dataset.month = month.key;
+        option.dataset.index = index;
+        
+        option.addEventListener('click', () => {
+          handleMonthSelection(month, index);
+        });
+        
+        container.appendChild(option);
+      });
+      
+      // Aplicar modo oscuro a los nuevos elementos si está activo
+      if (document.body.classList.contains('dark-theme')) {
+        applyDarkThemeToNewElements();
+      }
+    }
+    
+    // Función para aplicar modo oscuro a elementos dinámicos
+    function applyDarkThemeToNewElements() {
+      const monthOptions = document.querySelectorAll('.month-option');
+      const selectionInfo = document.querySelector('.selection-info');
+      const selectedMonthTags = document.querySelectorAll('.selected-month-tag');
+      const removeMonths = document.querySelectorAll('.remove-month');
+      const monthSelector = document.querySelector('.month-selector');
+      const analysisSection = document.querySelector('.analysis-section');
+      const uploadArea = document.querySelector('.upload-area');
+      const downloadSection = document.querySelector('.download-section');
+      const downloadBtns = document.querySelectorAll('.download-btn');
+      const statCards = document.querySelectorAll('.stat-card');
+      const statNumbers = document.querySelectorAll('.stat-number');
+      const statLabels = document.querySelectorAll('.stat-label');
+      const errorMessages = document.querySelectorAll('.error-message');
+      const successMessages = document.querySelectorAll('.success-message');
+      const loadingElements = document.querySelectorAll('.loading');
+      const capacityModal = document.getElementById('capacityModal');
+      const capacityInfo = document.querySelector('.bg-blue-50');
+      const progressBar = document.querySelector('.bg-gray-200');
+      const progressBarFill = document.querySelector('.bg-orange-400');
+      const textElements = document.querySelectorAll('.text-gray-600, .text-gray-500, .text-gray-400, .text-gray-800, .text-green-800, .text-green-700, .text-blue-900, .text-blue-800, .text-blue-700, .text-gray-700');
+      
+      // Elementos del modal de capacidad
+      const modalBgWhite = document.querySelectorAll('.modal .bg-white');
+      const modalBgBlue600 = document.querySelectorAll('.modal .bg-blue-600');
+      const modalTextBlue800 = document.querySelectorAll('.modal .text-blue-800');
+      const modalTextBlue700 = document.querySelectorAll('.modal .text-blue-700');
+      const modalTextGray800 = document.querySelectorAll('.modal .text-gray-800');
+      const modalBgBlue50 = document.querySelectorAll('.modal .bg-blue-50');
+      const modalTextBlue900 = document.querySelectorAll('.modal .text-blue-900');
+      const modalContent = document.querySelectorAll('.modal-content');
+      
+      monthOptions.forEach(el => el.classList.add('dark-theme'));
+      if(selectionInfo) selectionInfo.classList.add('dark-theme');
+      selectedMonthTags.forEach(el => el.classList.add('dark-theme'));
+      removeMonths.forEach(el => el.classList.add('dark-theme'));
+      if(monthSelector) monthSelector.classList.add('dark-theme');
+      if(analysisSection) analysisSection.classList.add('dark-theme');
+      if(uploadArea) uploadArea.classList.add('dark-theme');
+      if(downloadSection) downloadSection.classList.add('dark-theme');
+      downloadBtns.forEach(el => el.classList.add('dark-theme'));
+      statCards.forEach(el => el.classList.add('dark-theme'));
+      statNumbers.forEach(el => el.classList.add('dark-theme'));
+      statLabels.forEach(el => el.classList.add('dark-theme'));
+      errorMessages.forEach(el => el.classList.add('dark-theme'));
+      successMessages.forEach(el => el.classList.add('dark-theme'));
+      loadingElements.forEach(el => el.classList.add('dark-theme'));
+      if(capacityModal) capacityModal.classList.add('dark-theme');
+      if(capacityInfo) capacityInfo.classList.add('dark-theme');
+      if(progressBar) progressBar.classList.add('dark-theme');
+      if(progressBarFill) progressBarFill.classList.add('dark-theme');
+      textElements.forEach(el => el.classList.add('dark-theme'));
+      
+      // Aplicar modo oscuro a elementos del modal
+      modalContent.forEach(el => el.classList.add('dark-theme'));
+      modalBgWhite.forEach(el => el.classList.add('dark-theme'));
+      modalBgBlue600.forEach(el => el.classList.add('dark-theme'));
+      modalTextBlue800.forEach(el => el.classList.add('dark-theme'));
+      modalTextBlue700.forEach(el => el.classList.add('dark-theme'));
+      modalTextGray800.forEach(el => el.classList.add('dark-theme'));
+      modalBgBlue50.forEach(el => el.classList.add('dark-theme'));
+      modalTextBlue900.forEach(el => el.classList.add('dark-theme'));
+    }
+    
+    // Función para remover modo oscuro de elementos dinámicos
+    function removeDarkThemeFromNewElements() {
+      const monthOptions = document.querySelectorAll('.month-option');
+      const selectionInfo = document.querySelector('.selection-info');
+      const selectedMonthTags = document.querySelectorAll('.selected-month-tag');
+      const removeMonths = document.querySelectorAll('.remove-month');
+      const monthSelector = document.querySelector('.month-selector');
+      const analysisSection = document.querySelector('.analysis-section');
+      const uploadArea = document.querySelector('.upload-area');
+      const downloadSection = document.querySelector('.download-section');
+      const downloadBtns = document.querySelectorAll('.download-btn');
+      const statCards = document.querySelectorAll('.stat-card');
+      const statNumbers = document.querySelectorAll('.stat-number');
+      const statLabels = document.querySelectorAll('.stat-label');
+      const errorMessages = document.querySelectorAll('.error-message');
+      const successMessages = document.querySelectorAll('.success-message');
+      const loadingElements = document.querySelectorAll('.loading');
+      const capacityModal = document.getElementById('capacityModal');
+      const capacityInfo = document.querySelector('.bg-blue-50');
+      const progressBar = document.querySelector('.bg-gray-200');
+      const progressBarFill = document.querySelector('.bg-orange-400');
+      const textElements = document.querySelectorAll('.text-gray-600, .text-gray-500, .text-gray-400, .text-gray-800, .text-green-800, .text-green-700, .text-blue-900, .text-blue-800, .text-blue-700, .text-gray-700');
+      
+      // Elementos del modal de capacidad
+      const modalBgWhite = document.querySelectorAll('.modal .bg-white');
+      const modalBgBlue600 = document.querySelectorAll('.modal .bg-blue-600');
+      const modalTextBlue800 = document.querySelectorAll('.modal .text-blue-800');
+      const modalTextBlue700 = document.querySelectorAll('.modal .text-blue-700');
+      const modalTextGray800 = document.querySelectorAll('.modal .text-gray-800');
+      const modalBgBlue50 = document.querySelectorAll('.modal .bg-blue-50');
+      const modalTextBlue900 = document.querySelectorAll('.modal .text-blue-900');
+      const modalContent = document.querySelectorAll('.modal-content');
+      
+      monthOptions.forEach(el => el.classList.remove('dark-theme'));
+      if(selectionInfo) selectionInfo.classList.remove('dark-theme');
+      selectedMonthTags.forEach(el => el.classList.remove('dark-theme'));
+      removeMonths.forEach(el => el.classList.remove('dark-theme'));
+      if(monthSelector) monthSelector.classList.remove('dark-theme');
+      if(analysisSection) analysisSection.classList.remove('dark-theme');
+      if(uploadArea) uploadArea.classList.remove('dark-theme');
+      if(downloadSection) downloadSection.classList.remove('dark-theme');
+      downloadBtns.forEach(el => el.classList.remove('dark-theme'));
+      statCards.forEach(el => el.classList.remove('dark-theme'));
+      statNumbers.forEach(el => el.classList.remove('dark-theme'));
+      statLabels.forEach(el => el.classList.remove('dark-theme'));
+      errorMessages.forEach(el => el.classList.remove('dark-theme'));
+      successMessages.forEach(el => el.classList.remove('dark-theme'));
+      loadingElements.forEach(el => el.classList.remove('dark-theme'));
+      if(capacityModal) capacityModal.classList.remove('dark-theme');
+      if(capacityInfo) capacityInfo.classList.remove('dark-theme');
+      if(progressBar) progressBar.classList.remove('dark-theme');
+      if(progressBarFill) progressBarFill.classList.remove('dark-theme');
+      textElements.forEach(el => el.classList.remove('dark-theme'));
+      
+      // Remover modo oscuro de elementos del modal
+      modalContent.forEach(el => el.classList.remove('dark-theme'));
+      modalBgWhite.forEach(el => el.classList.remove('dark-theme'));
+      modalBgBlue600.forEach(el => el.classList.remove('dark-theme'));
+      modalTextBlue800.forEach(el => el.classList.remove('dark-theme'));
+      modalTextBlue700.forEach(el => el.classList.remove('dark-theme'));
+      modalTextGray800.forEach(el => el.classList.remove('dark-theme'));
+      modalBgBlue50.forEach(el => el.classList.remove('dark-theme'));
+      modalTextBlue900.forEach(el => el.classList.remove('dark-theme'));
+    }
+    
+    function handleMonthSelection(month, index) {
+      const monthKey = month.key;
+      const isSelected = selectedMonths.some(m => m.key === monthKey);
+      
+      if (isSelected) {
+        // Deseleccionar mes
+        selectedMonths = selectedMonths.filter(m => m.key !== monthKey);
+        document.querySelector(`[data-month="${monthKey}"]`).classList.remove('selected');
+      } else {
+        // Verificar si se puede agregar (máximo 3 meses consecutivos)
+        if (selectedMonths.length >= 3) {
+          showError('Ya tienes 3 meses seleccionados. Deselecciona uno para agregar otro.');
+          return;
+        }
+        
+        // Verificar si es consecutivo
+        if (selectedMonths.length > 0) {
+          const canAdd = isConsecutiveMonth(month, selectedMonths);
+          if (!canAdd) {
+            showError('Solo puedes seleccionar meses consecutivos. Deselecciona todos y selecciona meses consecutivos.');
+            return;
+          }
+        }
+        
+        // Agregar mes
+        selectedMonths.push(month);
+        document.querySelector(`[data-month="${monthKey}"]`).classList.add('selected');
+      }
+      
+      // Actualizar estado del botón y mostrar información
+      updateSelectionInfo();
+      updateProcessButton();
+      updateMonthOptionsState();
+    }
+    
+    function isConsecutiveMonth(newMonth, selectedMonths) {
+      if (selectedMonths.length === 0) return true;
+      
+      // Ordenar meses seleccionados
+      const sortedMonths = [...selectedMonths].sort((a, b) => {
+        if (a.year !== b.year) return a.year - b.year;
+        return a.month - b.month;
+      });
+      
+      const newMonthDate = new Date(newMonth.year, newMonth.month - 1);
+      
+      // Verificar si es consecutivo al inicio o al final
+      const firstMonth = sortedMonths[0];
+      const lastMonth = sortedMonths[sortedMonths.length - 1];
+      
+      const firstMonthDate = new Date(firstMonth.year, firstMonth.month - 1);
+      const lastMonthDate = new Date(lastMonth.year, lastMonth.month - 1);
+      
+      // Verificar si es consecutivo al inicio (un mes antes)
+      const oneMonthBefore = new Date(firstMonthDate);
+      oneMonthBefore.setMonth(oneMonthBefore.getMonth() - 1);
+      
+      // Verificar si es consecutivo al final (un mes después)
+      const oneMonthAfter = new Date(lastMonthDate);
+      oneMonthAfter.setMonth(oneMonthAfter.getMonth() + 1);
+      
+      return newMonthDate.getTime() === oneMonthBefore.getTime() || 
+             newMonthDate.getTime() === oneMonthAfter.getTime();
+    }
+    
+    function updateSelectionInfo() {
+      const infoContainer = document.getElementById('selectionInfo');
+      const displayContainer = document.getElementById('selectedMonthsDisplay');
+      
+      if (selectedMonths.length === 0) {
+        infoContainer.style.display = 'none';
+        return;
+      }
+      
+      infoContainer.style.display = 'block';
+      displayContainer.innerHTML = '';
+      
+      // Ordenar meses cronológicamente
+      const sortedMonths = [...selectedMonths].sort((a, b) => {
+        if (a.year !== b.year) return a.year - b.year;
+        return a.month - b.month;
+      });
+      
+      sortedMonths.forEach(month => {
+        const tag = document.createElement('div');
+        tag.className = 'selected-month-tag';
+        tag.innerHTML = `
+          ${month.name} (${month.count} mensajes)
+        `;
+        // Crear botón X y agregar event listener robusto
+        const btn = document.createElement('button');
+        btn.className = 'remove-month';
+        btn.title = 'Remover mes';
+        btn.type = 'button';
+        btn.innerHTML = '<i class="fas fa-times"></i>';
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          // Eliminar el mes de la selección
+          selectedMonths = selectedMonths.filter(m => m.key !== month.key);
+          // Quitar la clase 'selected' del mes en la lista de opciones
+          const option = document.querySelector(`[data-month="${month.key}"]`);
+          if(option) option.classList.remove('selected');
+          updateSelectionInfo();
+          updateProcessButton();
+          updateMonthOptionsState();
+        });
+        tag.appendChild(btn);
+        displayContainer.appendChild(tag);
+      });
+      
+      // Aplicar modo oscuro a los nuevos elementos si está activo
+      if (document.body.classList.contains('dark-theme')) {
+        applyDarkThemeToNewElements();
+      }
+    }
+    
+    function removeMonth(monthKey) {
+      selectedMonths = selectedMonths.filter(m => m.key !== monthKey);
+      document.querySelector(`[data-month="${monthKey}"]`).classList.remove('selected');
+      updateSelectionInfo();
+      updateProcessButton();
+      updateMonthOptionsState();
+    }
+    
+    function updateProcessButton() {
+      const processBtn = document.getElementById('processBtn');
+      processBtn.disabled = selectedMonths.length === 0;
+    }
+    
+    function updateMonthOptionsState() {
+      allMonths.forEach((month, index) => {
+        const option = document.querySelector(`[data-month="${month.key}"]`);
+        const isSelected = selectedMonths.some(m => m.key === month.key);
+        
+        if (isSelected) {
+          option.classList.remove('disabled');
+        } else {
+          // Verificar si se puede seleccionar
+          const canSelect = selectedMonths.length < 3 && 
+                           (selectedMonths.length === 0 || isConsecutiveMonth(month, selectedMonths));
+          
+          if (canSelect) {
+            option.classList.remove('disabled');
+          } else {
+            option.classList.add('disabled');
+          }
+        }
+      });
+    }
+    
+    function processFile() {
+      if (selectedMonths.length === 0) {
+        showError('Por favor selecciona al menos un mes');
+        return;
+      }
+      // Si es archivo pequeño, recorte normal
+      if (!fileMeta) {
+        const processBtn = document.getElementById('processBtn');
+        processBtn.innerHTML = '<span class="loading"></span>Procesando...';
+        processBtn.disabled = true;
+        setTimeout(() => {
+          const lines = fileContent.split('\n');
+          const dateRegex = /^(\d{2})\/(\d{2})\/(\d{2})/;
+          const validMonths = new Set();
+          selectedMonths.forEach(month => {
+            validMonths.add(`${month.year}-${month.month.toString().padStart(2, '0')}`);
+          });
+          const filteredLines = lines.filter(line => {
+            const match = line.match(dateRegex);
+            if (match) {
+              const lineMonth = parseInt(match[2]);
+              const lineYear = parseInt(match[3]);
+              const fullYear = lineYear < 50 ? 2000 + lineYear : 1900 + lineYear;
+              const monthKey = `${fullYear}-${lineMonth.toString().padStart(2, '0')}`;
+              return validMonths.has(monthKey);
+            }
+            return false;
+          });
+          processedContent = filteredLines.join('\n');
+          document.getElementById('analysisSection').style.display = 'none';
+          document.getElementById('downloadSection').style.display = 'block';
+          const monthNames = selectedMonths.map(m => m.name).join(', ');
+          showSuccess(`Archivo recortado exitosamente. Se mantuvieron ${filteredLines.length} mensajes de los meses: ${monthNames}`);
+        }, 1000);
+        return;
+      }
+      // Si es archivo grande, recorte bajo demanda
+      recorteBajoDemanda();
+    }
+    
+    function recorteBajoDemanda() {
+      const { file } = fileMeta;
+      const CHUNK_SIZE = 1024 * 1024; // 1MB
+      let offset = 0;
+      let partial = '';
+      let selectedKeys = new Set(selectedMonths.map(m => `${m.year}-${m.month.toString().padStart(2, '0')}`));
+      let dateRegex = /^(\d{2})\/(\d{2})\/(\d{2})/;
+      let resultLines = [];
+      // Mostrar barra de progreso
+      document.getElementById('fileProgressContainer').style.display = 'block';
+      document.getElementById('analysisSection').style.display = 'none';
+      document.getElementById('downloadSection').style.display = 'none';
+      updateFileProgress(0, file.size);
+      function readChunk() {
+        const reader = new FileReader();
+        const slice = file.slice(offset, offset + CHUNK_SIZE);
+        reader.onload = function(e) {
+          let text = e.target.result;
+          text = partial + text;
+          let splitLines = text.split('\n');
+          if (offset + CHUNK_SIZE < file.size) {
+            partial = splitLines.pop();
+          } else {
+            partial = '';
+          }
+          splitLines.forEach(line => {
+            const match = line.match(dateRegex);
+            if (match) {
+              const lineMonth = parseInt(match[2]);
+              const lineYear = parseInt(match[3]);
+              const fullYear = lineYear < 50 ? 2000 + lineYear : 1900 + lineYear;
+              const monthKey = `${fullYear}-${lineMonth.toString().padStart(2, '0')}`;
+              if (selectedKeys.has(monthKey)) {
+                resultLines.push(line);
+              }
+            }
+          });
+          updateFileProgress(offset + CHUNK_SIZE, file.size);
+          offset += CHUNK_SIZE;
+          if (offset < file.size) {
+            setTimeout(readChunk, 0);
+          } else {
+            if (partial) {
+              // Procesar la última línea
+              const match = partial.match(dateRegex);
+              if (match) {
+                const lineMonth = parseInt(match[2]);
+                const lineYear = parseInt(match[3]);
+                const fullYear = lineYear < 50 ? 2000 + lineYear : 1900 + lineYear;
+                const monthKey = `${fullYear}-${lineMonth.toString().padStart(2, '0')}`;
+                if (selectedKeys.has(monthKey)) {
+                  resultLines.push(partial);
+                }
+              }
+            }
+            processedContent = resultLines.join('\n');
+            document.getElementById('fileProgressContainer').style.display = 'none';
+            document.getElementById('analysisSection').style.display = 'none';
+            document.getElementById('downloadSection').style.display = 'block';
+            const monthNames = selectedMonths.map(m => m.name).join(', ');
+            showSuccess(`Archivo recortado exitosamente. Se mantuvieron ${resultLines.length} mensajes de los meses: ${monthNames}`);
+          }
+        };
+        reader.readAsText(slice, 'UTF-8');
+      }
+      readChunk();
+    }
+    
+    function downloadFile() {
+      if (!processedContent) {
+        showError('No hay contenido para descargar');
+        return;
+      }
+      
+      const blob = new Blob([processedContent], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      
+      // Generar nombre de archivo basado en los meses seleccionados
+      let fileName = 'chat_recortado';
+      if (selectedMonths.length === 1) {
+        fileName += `_${selectedMonths[0].key}`;
+      } else {
+        const sortedMonths = [...selectedMonths].sort((a, b) => {
+          if (a.year !== b.year) return a.year - b.year;
+          return a.month - b.month;
+        });
+        const firstMonth = sortedMonths[0];
+        const lastMonth = sortedMonths[sortedMonths.length - 1];
+        fileName += `_${firstMonth.key}_a_${lastMonth.key}`;
+      }
+      fileName += '.txt';
+      
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    
+    function resetApp() {
+      fileContent = '';
+      selectedMonths = [];
+      processedContent = '';
+      allMonths = [];
+      fileMeta = null;
+      
+      document.getElementById('fileInput').value = '';
+      document.getElementById('analysisSection').style.display = 'none';
+      document.getElementById('downloadSection').style.display = 'none';
+      document.getElementById('selectionInfo').style.display = 'none';
+      document.getElementById('processBtn').disabled = true;
+      document.getElementById('processBtn').innerHTML = '<i class="fas fa-cut mr-2"></i>Recortar archivo';
+      
+      // Limpiar mensajes
+      clearMessages();
+    }
+    
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+    
+    function showError(message) {
+      clearMessages();
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i>${message}`;
+      document.querySelector('.content-container').insertBefore(errorDiv, document.getElementById('analysisSection'));
+      
+      // Aplicar modo oscuro si está activo
+      if (document.body.classList.contains('dark-theme')) {
+        errorDiv.classList.add('dark-theme');
+      }
+    }
+    
+    function showSuccess(message) {
+      clearMessages();
+      const successDiv = document.createElement('div');
+      successDiv.className = 'success-message';
+      successDiv.innerHTML = `<i class="fas fa-check-circle mr-2"></i>${message}`;
+      document.querySelector('.content-container').insertBefore(successDiv, document.getElementById('downloadSection'));
+      
+      // Aplicar modo oscuro si está activo
+      if (document.body.classList.contains('dark-theme')) {
+        successDiv.classList.add('dark-theme');
+      }
+    }
+    
+    function clearMessages() {
+      const messages = document.querySelectorAll('.error-message, .success-message');
+      messages.forEach(msg => msg.remove());
+    }
+    
+    // Función global para remover meses (llamada desde HTML)
+    window.removeMonth = function(monthKey) {
+      removeMonth(monthKey);
+    };
+
+   // Barra de progreso de scroll
+const scrollProgressBar = document.getElementById('scroll-progress-bar');
+
+function updateScrollProgress() {
+  // Calcular el progreso del scroll
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrollPercentage = (scrollTop / scrollHeight) * 100;
+  
+  // Actualizar el ancho de la barra de progreso
+  scrollProgressBar.style.width = scrollPercentage + '%';
+  
+  // Cambiar color cuando esté cerca del final
+  if (scrollPercentage > 90) {
+    scrollProgressBar.style.background = 'linear-gradient(90deg, #ffb07a, #ff7b54)';
+  } else {
+    scrollProgressBar.style.background = 'linear-gradient(90deg, #FFD1A9, #ffb07a)';
+  }
+}
+
+// Actualizar al cargar y al hacer scroll
+window.addEventListener('load', updateScrollProgress);
+window.addEventListener('scroll', updateScrollProgress);
+window.addEventListener('resize', updateScrollProgress);
+
+// Calcular altura del header automáticamente
+function setProgressBarPosition() {
+  const header = document.querySelector('.header-comunidad');
+  if (header) {
+    const headerHeight = header.offsetHeight;
+    document.getElementById('scroll-progress-container').style.top = headerHeight + 'px';
+  }
+}
+
+// Llamar al cargar y al redimensionar
+window.addEventListener('load', function() {
+  setProgressBarPosition();
+  updateScrollProgress();
+});
+window.addEventListener('resize', setProgressBarPosition);
+
+// Función para expandir/contraer el panel de acciones
+function togglePanel() {
+  const panelExpansion = document.getElementById('panelExpansion');
+  const viewMoreBtn = document.getElementById('viewMoreBtn');
+  const viewMoreText = document.getElementById('viewMoreText');
+  const viewMoreIcon = document.querySelector('#viewMoreBtn i');
+  
+  if (panelExpansion.classList.contains('expanded')) {
+    // Contraer el panel
+    panelExpansion.classList.remove('expanded');
+    viewMoreBtn.classList.remove('expanded');
+    viewMoreText.textContent = 'Ver más';
+    viewMoreIcon.className = 'fas fa-ellipsis-h';
+    document.body.style.overflow = '';
+  } else {
+    // Expandir el panel
+    panelExpansion.classList.add('expanded');
+    viewMoreBtn.classList.add('expanded');
+    viewMoreText.textContent = 'Ver menos';
+    viewMoreIcon.className = 'fas fa-compress';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+// Función para verificar si el panel está expandido
+function isPanelExpanded() {
+  return document.getElementById('panelExpansion').classList.contains('expanded');
+}
+
+// Función para establecer el overflow correcto basado en el estado del panel
+function setCorrectOverflow() {
+  if (isPanelExpanded()) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
+
+// Función para compartir la página
+function sharePage() {
+  const pageTitle = document.title || 'CGN - Comunidad Gaming Network';
+  const pageUrl = window.location.href;
+  
+  // Verificar si la API Web Share está disponible
+  if (navigator.share) {
+    navigator.share({
+      title: pageTitle,
+      url: pageUrl,
+      text: '¡Mira esta página de la Comunidad Gaming Network!'
+    }).then(() => {
+      console.log('Contenido compartido exitosamente');
+    }).catch((error) => {
+      console.log('Error al compartir:', error);
+      // Fallback: copiar URL al portapapeles
+      fallbackShare();
+    });
+  } else {
+    // Fallback para navegadores que no soportan Web Share API
+    fallbackShare();
+  }
+}
+
+// Función de respaldo para compartir
+function fallbackShare() {
+  const pageUrl = window.location.href;
+  
+  // Intentar copiar al portapapeles
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(pageUrl).then(() => {
+      // Mostrar notificación de éxito
+      showShareNotification('¡URL copiada al portapapeles!');
+    }).catch(() => {
+      // Si falla clipboard, mostrar URL en alert
+      alert('Comparte esta URL: ' + pageUrl);
+    });
+  } else {
+    // Fallback final: mostrar URL en alert
+    alert('Comparte esta URL: ' + pageUrl);
+  }
+}
+
+// Función para mostrar notificación de compartir
+function showShareNotification(message) {
+  // Crear elemento de notificación
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 209, 169, 0.95);
+    color: #374151;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  `;
+  notification.textContent = message;
+  
+  // Agregar al DOM
+  document.body.appendChild(notification);
+  
+  // Animar entrada
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Remover después de 3 segundos
+  setTimeout(() => {
+    notification.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
+// --- Tema: solo un botón activo a la vez ---
+document.addEventListener('DOMContentLoaded', function() {
+  const themeBtns = document.querySelectorAll('.theme-btn');
+  const body = document.body;
+  const contentContainer = document.querySelector('.content-container');
+  const header = document.querySelector('.header-comunidad');
+  const headerTitle = document.querySelector('.header-title');
+  const headerLegend = document.querySelector('.header-legend');
+  const menuDesplegable = document.getElementById('menuDesplegable');
+  const pageTitle = document.querySelector('.page-title');
+  const navButtons = document.querySelectorAll('.nav-button');
+  const footer = document.querySelector('footer');
+  const footerSections = document.querySelectorAll('.footer-section');
+  const footerLinks = document.querySelectorAll('.footer-links a');
+  const footerBottom = document.querySelector('.footer-bottom');
+  const copyright = document.querySelector('.copyright');
+  const bottomFixedBar = document.querySelector('.bottom-fixed-bar');
+  const panelExpansion = document.querySelector('.panel-expansion');
+  const newsContainer = document.querySelector('.news-container');
+  const categoriesTitlePanel = document.querySelectorAll('.categories-title-panel');
+  const categoryTagPanel = document.querySelectorAll('.category-tag-panel');
+  const themeBtnsAll = document.querySelectorAll('.theme-btn');
+  const themeHelpPopup = document.getElementById('themeHelpPopup');
+  const actionSeparators = document.querySelectorAll('.action-separator');
+  const newsSeparators = document.querySelectorAll('.news-separator-top, .news-separator-bottom');
+  const menuToggle = document.getElementById('menuToggle');
+
+  themeBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      themeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Guardar preferencia en localStorage
+      let theme = btn.textContent.trim().toLowerCase();
+      if (theme.includes('oscuro')) {
+        localStorage.setItem('preferencia-tema', 'oscuro');
+      } else if (theme.includes('claro')) {
+        localStorage.setItem('preferencia-tema', 'claro');
+      } else if (theme.includes('automático') || theme.includes('automatico')) {
+        localStorage.setItem('preferencia-tema', 'automatico');
+      } else if (theme.includes('eficiencia')) {
+        localStorage.setItem('preferencia-tema', 'eficiencia');
+      }
+
+      // Lógica de tema
+      function setDarkTheme(active) {
+        if (active) {
+          body.classList.add('dark-theme');
+          if(contentContainer) contentContainer.classList.add('dark-theme');
+          if(header) header.classList.add('dark-theme');
+          if(headerTitle) headerTitle.classList.add('dark-theme');
+          if(headerLegend) headerLegend.classList.add('dark-theme');
+          if(menuDesplegable) menuDesplegable.classList.add('dark-theme');
+          if(pageTitle) pageTitle.classList.add('dark-theme');
+          navButtons.forEach(el => el.classList.add('dark-theme'));
+          if(footer) footer.classList.add('dark-theme');
+          footerSections.forEach(el => el.classList.add('dark-theme'));
+          footerLinks.forEach(el => el.classList.add('dark-theme'));
+          if(footerBottom) footerBottom.classList.add('dark-theme');
+          if(copyright) copyright.classList.add('dark-theme');
+          if(menuToggle) menuToggle.classList.add('dark-theme');
+          if(bottomFixedBar) bottomFixedBar.classList.add('dark-theme');
+          if(panelExpansion) panelExpansion.classList.add('dark-theme');
+          if(newsContainer) newsContainer.classList.add('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.add('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.add('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.add('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.add('dark-theme');
+          actionSeparators.forEach(el => el.classList.add('dark-theme'));
+          newsSeparators.forEach(el => el.classList.add('dark-theme'));
+          
+          // Elementos específicos del preprocesador
+          const uploadArea = document.querySelector('.upload-area');
+          const analysisSection = document.querySelector('.analysis-section');
+          const monthSelector = document.querySelector('.month-selector');
+          const monthOptions = document.querySelectorAll('.month-option');
+          const selectionInfo = document.querySelector('.selection-info');
+          const selectedMonthTags = document.querySelectorAll('.selected-month-tag');
+          const removeMonths = document.querySelectorAll('.remove-month');
+          const downloadSection = document.querySelector('.download-section');
+          const downloadBtns = document.querySelectorAll('.download-btn');
+          const statCards = document.querySelectorAll('.stat-card');
+          const statNumbers = document.querySelectorAll('.stat-number');
+          const statLabels = document.querySelectorAll('.stat-label');
+          const errorMessages = document.querySelectorAll('.error-message');
+          const successMessages = document.querySelectorAll('.success-message');
+          const loadingElements = document.querySelectorAll('.loading');
+          const capacityModal = document.getElementById('capacityModal');
+          const capacityInfo = document.querySelector('.bg-blue-50');
+          const progressBar = document.querySelector('.bg-gray-200');
+          const progressBarFill = document.querySelector('.bg-orange-400');
+          const textElements = document.querySelectorAll('.text-gray-600, .text-gray-500, .text-gray-400, .text-gray-800, .text-green-800, .text-green-700, .text-blue-900, .text-blue-800, .text-blue-700, .text-gray-700');
+          
+          // Elementos del modal de capacidad
+          const modalBgWhite = document.querySelectorAll('.modal .bg-white');
+          const modalBgBlue600 = document.querySelectorAll('.modal .bg-blue-600');
+          const modalTextBlue800 = document.querySelectorAll('.modal .text-blue-800');
+          const modalTextBlue700 = document.querySelectorAll('.modal .text-blue-700');
+          const modalTextGray800 = document.querySelectorAll('.modal .text-gray-800');
+          const modalBgBlue50 = document.querySelectorAll('.modal .bg-blue-50');
+          const modalTextBlue900 = document.querySelectorAll('.modal .text-blue-900');
+          const modalContent = document.querySelectorAll('.modal-content');
+          
+          if(uploadArea) uploadArea.classList.add('dark-theme');
+          if(analysisSection) analysisSection.classList.add('dark-theme');
+          if(monthSelector) monthSelector.classList.add('dark-theme');
+          monthOptions.forEach(el => el.classList.add('dark-theme'));
+          if(selectionInfo) selectionInfo.classList.add('dark-theme');
+          selectedMonthTags.forEach(el => el.classList.add('dark-theme'));
+          removeMonths.forEach(el => el.classList.add('dark-theme'));
+          if(downloadSection) downloadSection.classList.add('dark-theme');
+          downloadBtns.forEach(el => el.classList.add('dark-theme'));
+          statCards.forEach(el => el.classList.add('dark-theme'));
+          statNumbers.forEach(el => el.classList.add('dark-theme'));
+          statLabels.forEach(el => el.classList.add('dark-theme'));
+          errorMessages.forEach(el => el.classList.add('dark-theme'));
+          successMessages.forEach(el => el.classList.add('dark-theme'));
+          loadingElements.forEach(el => el.classList.add('dark-theme'));
+          if(capacityModal) capacityModal.classList.add('dark-theme');
+          if(capacityInfo) capacityInfo.classList.add('dark-theme');
+          if(progressBar) progressBar.classList.add('dark-theme');
+          if(progressBarFill) progressBarFill.classList.add('dark-theme');
+          textElements.forEach(el => el.classList.add('dark-theme'));
+          
+          // Aplicar modo oscuro a elementos del modal
+          modalContent.forEach(el => el.classList.add('dark-theme'));
+          modalBgWhite.forEach(el => el.classList.add('dark-theme'));
+          modalBgBlue600.forEach(el => el.classList.add('dark-theme'));
+          modalTextBlue800.forEach(el => el.classList.add('dark-theme'));
+          modalTextBlue700.forEach(el => el.classList.add('dark-theme'));
+          modalTextGray800.forEach(el => el.classList.add('dark-theme'));
+          modalBgBlue50.forEach(el => el.classList.add('dark-theme'));
+          modalTextBlue900.forEach(el => el.classList.add('dark-theme'));
+          
+          // Aplicar modo oscuro a elementos dinámicos
+          applyDarkThemeToNewElements();
+        } else {
+          body.classList.remove('dark-theme');
+          if(contentContainer) contentContainer.classList.remove('dark-theme');
+          if(header) header.classList.remove('dark-theme');
+          if(headerTitle) headerTitle.classList.remove('dark-theme');
+          if(headerLegend) headerLegend.classList.remove('dark-theme');
+          if(menuDesplegable) menuDesplegable.classList.remove('dark-theme');
+          if(pageTitle) pageTitle.classList.remove('dark-theme');
+          navButtons.forEach(el => el.classList.remove('dark-theme'));
+          if(footer) footer.classList.remove('dark-theme');
+          footerSections.forEach(el => el.classList.remove('dark-theme'));
+          footerLinks.forEach(el => el.classList.remove('dark-theme'));
+          if(footerBottom) footerBottom.classList.remove('dark-theme');
+          if(copyright) copyright.classList.remove('dark-theme');
+          if(menuToggle) menuToggle.classList.remove('dark-theme');
+          if(bottomFixedBar) bottomFixedBar.classList.remove('dark-theme');
+          if(panelExpansion) panelExpansion.classList.remove('dark-theme');
+          if(newsContainer) newsContainer.classList.remove('dark-theme');
+          categoriesTitlePanel.forEach(el => el.classList.remove('dark-theme'));
+          categoryTagPanel.forEach(el => el.classList.remove('dark-theme'));
+          themeBtnsAll.forEach(el => el.classList.remove('dark-theme'));
+          if(themeHelpPopup) themeHelpPopup.classList.remove('dark-theme');
+          actionSeparators.forEach(el => el.classList.remove('dark-theme'));
+          newsSeparators.forEach(el => el.classList.remove('dark-theme'));
+          
+          // Elementos específicos del preprocesador
+          const uploadArea = document.querySelector('.upload-area');
+          const analysisSection = document.querySelector('.analysis-section');
+          const monthSelector = document.querySelector('.month-selector');
+          const monthOptions = document.querySelectorAll('.month-option');
+          const selectionInfo = document.querySelector('.selection-info');
+          const selectedMonthTags = document.querySelectorAll('.selected-month-tag');
+          const removeMonths = document.querySelectorAll('.remove-month');
+          const downloadSection = document.querySelector('.download-section');
+          const downloadBtns = document.querySelectorAll('.download-btn');
+          const statCards = document.querySelectorAll('.stat-card');
+          const statNumbers = document.querySelectorAll('.stat-number');
+          const statLabels = document.querySelectorAll('.stat-label');
+          const errorMessages = document.querySelectorAll('.error-message');
+          const successMessages = document.querySelectorAll('.success-message');
+          const loadingElements = document.querySelectorAll('.loading');
+          const capacityModal = document.getElementById('capacityModal');
+          const capacityInfo = document.querySelector('.bg-blue-50');
+          const progressBar = document.querySelector('.bg-gray-200');
+          const progressBarFill = document.querySelector('.bg-orange-400');
+          const textElements = document.querySelectorAll('.text-gray-600, .text-gray-500, .text-gray-400, .text-gray-800, .text-green-800, .text-green-700, .text-blue-900, .text-blue-800, .text-blue-700, .text-gray-700');
+          
+          // Elementos del modal de capacidad
+          const modalBgWhite = document.querySelectorAll('.modal .bg-white');
+          const modalBgBlue600 = document.querySelectorAll('.modal .bg-blue-600');
+          const modalTextBlue800 = document.querySelectorAll('.modal .text-blue-800');
+          const modalTextBlue700 = document.querySelectorAll('.modal .text-blue-700');
+          const modalTextGray800 = document.querySelectorAll('.modal .text-gray-800');
+          const modalBgBlue50 = document.querySelectorAll('.modal .bg-blue-50');
+          const modalTextBlue900 = document.querySelectorAll('.modal .text-blue-900');
+          const modalContent = document.querySelectorAll('.modal-content');
+          
+          if(uploadArea) uploadArea.classList.remove('dark-theme');
+          if(analysisSection) analysisSection.classList.remove('dark-theme');
+          if(monthSelector) monthSelector.classList.remove('dark-theme');
+          monthOptions.forEach(el => el.classList.remove('dark-theme'));
+          if(selectionInfo) selectionInfo.classList.remove('dark-theme');
+          selectedMonthTags.forEach(el => el.classList.remove('dark-theme'));
+          removeMonths.forEach(el => el.classList.remove('dark-theme'));
+          if(downloadSection) downloadSection.classList.remove('dark-theme');
+          downloadBtns.forEach(el => el.classList.remove('dark-theme'));
+          statCards.forEach(el => el.classList.remove('dark-theme'));
+          statNumbers.forEach(el => el.classList.remove('dark-theme'));
+          statLabels.forEach(el => el.classList.remove('dark-theme'));
+          errorMessages.forEach(el => el.classList.remove('dark-theme'));
+          successMessages.forEach(el => el.classList.remove('dark-theme'));
+          loadingElements.forEach(el => el.classList.remove('dark-theme'));
+          if(capacityModal) capacityModal.classList.remove('dark-theme');
+          if(capacityInfo) capacityInfo.classList.remove('dark-theme');
+          if(progressBar) progressBar.classList.remove('dark-theme');
+          if(progressBarFill) progressBarFill.classList.remove('dark-theme');
+          textElements.forEach(el => el.classList.remove('dark-theme'));
+          
+          // Remover modo oscuro de elementos del modal
+          modalContent.forEach(el => el.classList.remove('dark-theme'));
+          modalBgWhite.forEach(el => el.classList.remove('dark-theme'));
+          modalBgBlue600.forEach(el => el.classList.remove('dark-theme'));
+          modalTextBlue800.forEach(el => el.classList.remove('dark-theme'));
+          modalTextBlue700.forEach(el => el.classList.remove('dark-theme'));
+          modalTextGray800.forEach(el => el.classList.remove('dark-theme'));
+          modalBgBlue50.forEach(el => el.classList.remove('dark-theme'));
+          modalTextBlue900.forEach(el => el.classList.remove('dark-theme'));
+          
+          // Remover modo oscuro de elementos dinámicos
+          removeDarkThemeFromNewElements();
+        }
+      }
+
+      if (theme.includes('oscuro')) {
+        setDarkTheme(true);
+      } else if (theme.includes('claro')) {
+        setDarkTheme(false);
+      } else if (theme.includes('automático') || theme.includes('automatico')) {
+        // Automático: modo oscuro de 20:00 a 7:00, claro el resto
+        const hour = new Date().getHours();
+        if (hour >= 20 || hour < 7) {
+          setDarkTheme(true);
+        } else {
+          setDarkTheme(false);
+        }
+      } else if (theme.includes('eficiencia')) {
+        // Eficiencia: modo oscuro si el ahorro de energía está activo
+        if (navigator.getBattery) {
+          navigator.getBattery().then(function(battery) {
+            if (battery && battery.savePower) {
+              setDarkTheme(true);
+            } else if (battery && battery.dischargingTime === Infinity && battery.charging) {
+              setDarkTheme(false);
+            } else if (battery && battery.charging === false && battery.level < 0.2) {
+              setDarkTheme(true);
+            } else if (battery && battery.level < 0.15) {
+              setDarkTheme(true);
+            } else {
+              setDarkTheme(false);
+            }
+          }).catch(function() {
+            setDarkTheme(false);
+          });
+        } else if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          // fallback: si el usuario tiene preferencias de ahorro de energía
+          setDarkTheme(true);
+        } else {
+          setDarkTheme(false);
+        }
+      }
+    });
+  });
+
+  // Al cargar la página, aplicar la preferencia guardada
+  function activarTemaGuardado() {
+    const temaGuardado = localStorage.getItem('preferencia-tema');
+    if (!temaGuardado) return;
+    let btnToClick = null;
+    themeBtns.forEach(btn => {
+      let theme = btn.textContent.trim().toLowerCase();
+      if (
+        (temaGuardado === 'oscuro' && theme.includes('oscuro')) ||
+        (temaGuardado === 'claro' && theme.includes('claro')) ||
+        (temaGuardado === 'automatico' && (theme.includes('automático') || theme.includes('automatico'))) ||
+        (temaGuardado === 'eficiencia' && theme.includes('eficiencia'))
+      ) {
+        btnToClick = btn;
+      }
+    });
+    if (btnToClick) btnToClick.click();
+  }
+  activarTemaGuardado();
+});
+
+// --- Popup de ayuda para Tema ---
+document.addEventListener('DOMContentLoaded', function() {
+  const helpBtn = document.getElementById('themeHelpBtn');
+  const helpPopup = document.getElementById('themeHelpPopup');
+  const closeHelp = document.getElementById('closeThemeHelp');
+  
+  if (helpBtn && helpPopup && closeHelp) {
+    helpBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      helpPopup.classList.add('active');
+    });
+    
+    closeHelp.addEventListener('click', function() {
+      helpPopup.classList.remove('active');
+    });
+    
+    // Cerrar al hacer clic fuera del popup
+    document.addEventListener('mousedown', function(e) {
+      if (helpPopup.classList.contains('active') && !helpPopup.contains(e.target) && e.target !== helpBtn) {
+        helpPopup.classList.remove('active');
+      }
+    });
+  }
+});
+
+// Modal de capacidad
+const showBtn = document.getElementById('showCapacityInfoBtn');
+const modal = document.getElementById('capacityModal');
+const closeBtn = document.getElementById('closeCapacityModal');
+if (showBtn && modal && closeBtn) {
+  showBtn.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  });
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
+}
+
+  </script>
+</body>
+</html>

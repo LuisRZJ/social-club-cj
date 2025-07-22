@@ -1,0 +1,2679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FFD1A9">
+    <title>Analizador de Chats | CGN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- SOLO ESTILOS ESPECÍFICOS DE LA PÁGINA -->
+    <style>
+        /* --- Estilos específicos de la página de estadísticas --- */
+        #fileInput {
+            display: none;
+        }
+        
+        /* Estilos específicos para el indicador de carga de bases de datos */
+        #databaseLoadingIndicator {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 0.5rem;
+            text-align: center;
+            display: none;
+        }
+        
+        #databaseLoadingIndicator i {
+            color: #0ea5e9;
+            margin-right: 0.5rem;
+        }
+        
+        #databaseLoadingIndicator span {
+            color: #0ea5e9;
+            font-weight: 600;
+        }
+        
+        /* Estilos específicos para el contenedor de estadísticas */
+        .stats-container {
+            margin-top: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-primary);
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin: 1rem 0;
+        }
+        
+        /* Estilos específicos para el separador de México */
+        .mexico-separator {
+            margin: 3rem 0;
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, #115c2c, #ffffff, #dc2626);
+        }
+        
+        /* Estilos específicos para títulos de sección */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .info-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* Estilos específicos para elementos de México */
+        .mexico-title {
+            color: #115c2c !important;
+            border-bottom: 3px solid #115c2c !important;
+        }
+        
+        .mexico-subtitle {
+            color: #6b7280 !important;
+            font-style: italic;
+        }
+        
+        /* Estilos para subtítulos de estadísticas */
+        .stat-subtitle {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Corregir posicionamiento del loading-version */
+        .loading-version {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            color: #374151;
+            font-size: 1.1em;
+            letter-spacing: 2px;
+            text-align: center;
+            opacity: 0.85;
+            z-index: 2;
+        }
+        
+        /* Modo oscuro para el loading-version */
+        .loading-overlay.dark-theme .loading-version {
+            color: #FFD1A9;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+    <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+    <link rel="stylesheet" href="/pwa/estilos.css">
+    <link rel="stylesheet" href="/pwa/temas.css">
+    <link rel="stylesheet" href="/pwa/componentes.css">
+    <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800 loading-active">
+    <!-- Overlay de carga -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div style="position: relative;">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loadingText">Cargando scripts...</div>
+        </div>
+        <div class="loading-version">V2.1</div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="main-content" id="mainContent">
+        <!-- Header de CGN -->
+        <header class="header-comunidad">
+            <div class="header-content">
+                <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+                <span class="header-title">CGN</span>
+                <span class="header-legend">Sin tiempo para descansos</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+                <span class="menu-bar"></span>
+                <span class="menu-bar"></span>
+                <span class="menu-bar"></span>
+            </button>
+            <nav class="menu-desplegable" id="menuDesplegable">
+                <ul>
+                    <li><a href="/index.html">Inicio</a></li>
+                    <li><a href="/faq.html">FAQ</a></li>
+                    <li><a href="/socios.html">Socios</a></li>
+                    <li><a href="/ajustes.html">Ajustes</a></li>
+                    <li><a href="/contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+
+            <!-- Barra de progreso de scroll -->
+            <div id="scroll-progress-container">
+                <div id="scroll-progress-bar"></div>
+            </div>
+        </header>
+        
+        <div class="content-container">
+            <section class="analizador-header">
+                <h1 class="page-title">Analizador de Chats de WhatsApp</h1>
+                <p class="analizador-subtitle">Carga tu archivo de exportación de chat para obtener estadísticas detalladas</p>
+            </section>
+            
+            <section class="upload-section">
+                <h2 class="section-title">Cargar archivo de chat</h2>
+                <div class="file-input-wrapper">
+                    <label for="fileInput" class="file-label">
+                        <i class="fas fa-cloud-upload-alt"></i> Seleccionar archivo de exportación (.txt)
+                    </label>
+                    <input type="file" id="fileInput" accept=".txt">
+                </div>
+                <p class="info-text">El archivo debe ser una exportación de chat de WhatsApp en formato .txt</p>
+                
+                <!-- Indicador de carga de bases de datos -->
+                <div id="databaseLoadingIndicator">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Cargando bases de datos...</span>
+                </div>
+            </section>
+            
+            <div class="data-section" id="dataSection">
+                <div class="summary-stats">
+                    <div class="summary-card">
+                        <div class="stat-value" id="totalMessages">0</div>
+                        <div class="stat-label">Mensajes totales</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="stat-value" id="participantCount">0</div>
+                        <div class="stat-label">Activos</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="stat-value" id="joinRequests">0</div>
+                        <div class="stat-label">Solicitudes de unión</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="stat-value" id="mediaCount">0</div>
+                        <div class="stat-label">Multimedia</div>
+                    </div>
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <h2>Actividad del Grupo (por semana)</h2>
+                        <div class="chart-container">
+                            <canvas id="activityChart"></canvas>
+                        </div>
+                        
+                        <!-- Contenedor MACD -->
+                        <div class="macd-container">
+                            <div class="macd-controls">
+                                <div class="macd-indicator" id="macdIndicator">
+                                    <div class="macd-indicator-dot"></div>
+                                    <span id="macdStatus">Analizando actividad...</span>
+                                </div>
+                                <button id="toggleMACDButton" class="toggle-button">
+                                    <i class="fas fa-chart-line"></i> Mostrar MACD
+                                </button>
+                            </div>
+                            
+                            <div id="macdQuality" class="data-quality"></div>
+                            
+                            <div class="macd-chart-container" id="macdChartContainer">
+                                <canvas id="macdChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h2>Participantes Más Activos</h2>
+                        <div class="chart-container">
+                            <canvas id="participantsChart"></canvas>
+                        </div>
+                        <div id="participantsTable"></div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h2>Países Más Activos</h2>
+                        <div class="chart-container">
+                            <canvas id="countriesChart"></canvas>
+                        </div>
+                        <div id="countriesTable"></div>
+                    </div>
+                    
+                    <!-- Separador y sección específica de México -->
+                    <hr class="mexico-separator">
+                    
+                    <section class="analizador-header">
+                        <h1 class="page-title mexico-title">México</h1>
+                        <p class="analizador-subtitle mexico-subtitle">
+                            Los siguientes datos son calculados y mostrados solo con usuarios identificables de México (+52)
+                        </p>
+                    </section>
+                    
+                    <div class="stat-card">
+                        <h3 class="stat-subtitle">Usuarios activos (MX)</h3>
+                        <div class="chart-container">
+                            <canvas id="mexicoChart"></canvas>
+                        </div>
+                        <div id="mexicoTable"></div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3 class="stat-subtitle">Estados más activos</h3>
+                        <div class="chart-container">
+                            <canvas id="mexicoStatesChart"></canvas>
+                        </div>
+                        <div id="mexicoStatesTable"></div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h2>Tipos de Mensajes</h2>
+                        <div class="chart-container">
+                            <canvas id="messageTypeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analizador-footer">
+                    <p>Análisis generado automáticamente a partir de archivos de exportación de WhatsApp</p>
+                    <p class="highlight">Los datos se procesan localmente en tu navegador - tus chats no se envían a ningún servidor</p>
+                </div>
+            </div>
+            
+            <!-- Botones de navegación horizontales -->
+            <div class="nav-buttons">
+                <div id="backButton" class="nav-button">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </div>
+                <a href="/categorias.html" class="nav-button">
+                    <i class="fas fa-list"></i> Ver Categorías
+                </a>
+            </div>
+        </div>
+
+        <!-- Pie de página -->
+        <footer>
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>Recursos</h3>
+                    <div class="footer-links">
+                        <a href="/index.html"><i class="fas fa-home"></i> Página principal</a>
+                        <a href="/Subpaginas/servidor-ds.html"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+                        <a href="/Subpaginas/servidor-mc.html"><i class="fas fa-cube"></i> El servidor de Minecraft Bedrock</a>
+                        <a href="/Subpaginas/ser-admin.html"><i class="fas fa-user-shield"></i> Ser administrador</a>
+                        <a href="/Subpaginas/reglas-generales.html"><i class="fas fa-book"></i> Reglas generales</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Comunidad</h3>
+                    <div class="footer-links">
+                        <a href="https://discord.gg/FBNZ5v7keR"><i class="fab fa-discord"></i> Servidor Discord</a>
+                        <a href="https://t.me/CGNcj"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+                        <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><i class="fab fa-whatsapp"></i> Canal oficial WhatsApp</a>
+                        <a href="https://t.me/community_cgn"><i class="fab fa-telegram"></i> Comunidad Telegram</a>
+                        <a href="/redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright">
+                    <img src="/icons/Bandera-jal.avif" 
+                         alt="Logo Comunidad CGN" 
+                         class="cgn-icon">
+                    Comunidad CGN | <span id="currentYear">2022-2025</span>
+                </p>
+            </div>
+        </footer>
+
+        <!-- Rectángulo gris fijo en la parte inferior -->
+        <div class="bottom-fixed-bar">
+            <div class="left-actions">
+                <button title="Abrir chat" class="open-chat-btn" onclick="openChat()">
+                    <i class="fas fa-comments"></i>Ayuda
+                </button>
+                <button title="Compartir página" class="share-btn-fixed" id="shareBtn" onclick="sharePage()">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+            </div>
+            <div class="right-actions">
+                <div class="action-separator"></div>
+                <div class="view-more-fixed" id="viewMoreBtn" title="panel de acciones" onclick="togglePanel()">
+                    <i class="fas fa-ellipsis-h"></i>
+                    <span id="viewMoreText">Ver más</span>
+                </div>
+                <div class="back-to-top-fixed" id="backToTopBtn" title="Volver arriba">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="go-to-bottom-fixed" id="goToBottomBtn" title="Ir al final">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de expansión separado -->
+        <div class="panel-expansion" id="panelExpansion">
+            <!-- Contenedor para el contenido expandido -->
+            <div class="expanded-content">
+                <!-- Contenedor de noticias -->
+                <div class='news-container'>
+                    <div class='title'>
+                        Novedades
+                    </div>
+
+                    <ul>
+                        <!-- Las noticias se cargarán dinámicamente desde noticias.json -->
+                    </ul>
+                </div>
+                <div class="news-separator-top"></div>
+                
+                <!-- Sección de categorías -->
+                <div class="categories-section-panel">
+                    <div class="categories-title-panel">Categorías</div>
+                    <div class="categories-tags-panel">
+                        <a href="/categorias-comunidad.html" class="category-tag-panel comunidad"><i class="fas fa-users"></i> Comunidad</a>
+                        <a href="/categorias-mc.html" class="category-tag-panel minecraft"><i class="fas fa-cube"></i> Minecraft</a>
+                        <a href="/categorias-reglas.html" class="category-tag-panel reglas"><i class="fas fa-book"></i> Reglas</a>
+                        <a href="/categorias-admins.html" class="category-tag-panel administracion"><i class="fas fa-user-shield"></i> Administración</a>
+                    </div>
+                </div>
+                <div class="news-separator-bottom"></div>
+                
+                <!-- Sección de tema -->
+                <div class="theme-section-panel" style="width:100%; margin: 0 0 10px 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+                    <div class="categories-title-panel" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center; text-align: center;">
+                        <span style="display: flex; align-items: center; gap: 8px;">
+                            Tema
+                            <button id="themeHelpBtn" type="button" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #374151; font-size: 1.1em; display: flex; align-items: center;">
+                                <i class="fas fa-question-circle"></i>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="theme-buttons-panel" style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+                        <button class="theme-btn" title="Automático" type="button">
+                            <i class="fas fa-adjust"></i> Automático
+                            <span class="theme-indicator"></span>
+                        </button>
+                        <button class="theme-btn" title="Eficiencia" type="button">
+                            <i class="fas fa-bolt"></i> Eficiencia
+                            <span class="theme-indicator"></span>
+                        </button>
+                        <button class="theme-btn" title="Claro" type="button">
+                            <i class="fas fa-sun"></i> Claro
+                            <span class="theme-indicator"></span>
+                        </button>
+                        <button class="theme-btn" title="Oscuro" type="button">
+                            <i class="fas fa-moon"></i> Oscuro
+                            <span class="theme-indicator"></span>
+                        </button>
+                    </div>
+                    <div class="action-separator" style="position: relative; left: 50%; transform: translateX(-50%); width: 100vw; height: 4px; background-color: rgba(255,255,255,0.3); margin: 14px 0 0 0; border-radius: 2px; z-index: 100;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overlay que contiene el chat modal -->
+        <div class="overlay" id="chatOverlay">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="header-left">
+                        <div class="header-image">
+                            <img src="/icons/bot-hecks.avif" alt="Logo de soporte" id="chatImage">
+                        </div>
+                        <div class="header-title">Soporte CGN</div>
+                    </div>
+                    <div class="header-buttons">
+                        <button class="header-btn" onclick="toggleMaximize()" title="Maximizar/Minimizar chat">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <button class="header-btn" onclick="clearChat()" title="Borrar chat">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                        <button class="header-btn" onclick="closeChat()" title="Cerrar chat">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="chat-body" id="chatBody"></div>
+                <div class="chat-footer" id="chatFooter"></div>
+            </div>
+        </div>
+
+        <!-- Popup de ayuda para Tema -->
+        <div class="theme-help-popup" id="themeHelpPopup">
+            <button class="close-btn" id="closeThemeHelp" title="Cerrar ayuda"><i class="fas fa-times"></i></button>
+            <strong>¿Cómo funcionan los modos de tema?</strong>
+            <ul>
+                <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+                    <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-adjust"></i> <b>Automático</b></span>
+                    <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Cambia entre modo claro y oscuro automáticamente según la hora del día (oscuro de noche, claro de día).</span>
+                </li>
+                <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+                    <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-bolt"></i> <b>Eficiencia</b></span>
+                    <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Activa el modo oscuro si el ahorro de energía está activo en tu dispositivo.</span>
+                </li>
+                <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+                    <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-sun"></i> <b>Claro</b></span>
+                    <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema claro en la página.</span>
+                </li>
+                <li style="flex-direction: column; align-items: flex-start; gap: 2px;">
+                    <span style="display: flex; align-items: center; gap: 7px;"><i class="fas fa-moon"></i> <b>Oscuro</b></span>
+                    <span style="font-size: 0.97em; color: #374151; margin-left: 1.7em;">Fuerza el tema oscuro en la página.</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- PARTE AUXILIAR, FALTA DE JS -->
+        <noscript>
+            <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+        </noscript>
+
+        <script src="/HECKS-BOT/javascript.js"></script>
+        <script src="/pwa/noticias.js"></script>
+        <script>
+            // Variables globales para almacenar datos
+            let chatData = {
+                totalMessages: 0,
+                participants: {},
+                activity: {},
+                messageTypes: {
+                    text: 0,
+                    media: 0,
+                    deleted: 0,
+                    system: 0,
+                    joinRequests: 0
+                },
+                joinRequests: 0,
+                macd: null,
+                messages: [] // Nuevo: array para los mensajes individuales
+            };
+            
+            // Variables para el chat simulado
+            let searchResults = [];
+            let currentSearchIndex = -1;
+            
+            // Variables para búsqueda dual
+            let currentSearchType = 'messages'; // 'messages' o 'users'
+            let searchState = {
+                messages: {
+                    results: [],
+                    currentIndex: -1,
+                    keyword: ''
+                },
+                users: {
+                    results: [],
+                    currentIndex: -1,
+                    keyword: ''
+                }
+            };
+            
+            // Elementos del DOM
+            const fileInput = document.getElementById('fileInput');
+            const totalMessagesEl = document.getElementById('totalMessages');
+            const participantCountEl = document.getElementById('participantCount');
+            const joinRequestsEl = document.getElementById('joinRequests');
+            const mediaCountEl = document.getElementById('mediaCount');
+            const dataSection = document.getElementById('dataSection');
+            const macdStatusEl = document.getElementById('macdStatus');
+            const macdIndicatorEl = document.getElementById('macdIndicator');
+            const toggleMACDButton = document.getElementById('toggleMACDButton');
+            const macdChartContainer = document.getElementById('macdChartContainer');
+            const macdQualityEl = document.getElementById('macdQuality');
+            
+            // Charts
+            let activityChart, participantsChart, messageTypeChart, macdChart, countriesChart, mexicoChart, mexicoStatesChart;
+            
+            // Event listeners
+            fileInput.addEventListener('change', handleFileUpload);
+            toggleMACDButton.addEventListener('click', toggleMACD);
+            
+            function handleFileUpload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    parseChatFile(content);
+                    displayStatistics();
+                    dataSection.style.display = 'block';
+                };
+                reader.readAsText(file);
+            }
+            
+            // Función para obtener el número de semana
+            function getWeekNumber(date) {
+                const d = new Date(date);
+                d.setHours(0,0,0,0);
+                d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+                const yearStart = new Date(d.getFullYear(),0,1);
+                return `${d.getFullYear()}-W${Math.ceil((((d - yearStart) / 86400000) + 1)/7)}`;
+            }
+            
+            function parseChatFile(content) {
+                console.log('Iniciando parseChatFile con contenido de', content.length, 'caracteres');
+                // Reset data
+                chatData = {
+                    totalMessages: 0,
+                    participants: {},
+                    activity: {},
+                    messageTypes: {
+                        text: 0,
+                        media: 0,
+                        deleted: 0,
+                        system: 0,
+                        joinRequests: 0
+                    },
+                    joinRequests: 0,
+                    macd: null,
+                    messages: [] // Nuevo: array para los mensajes individuales
+                };
+                const lines = content.split('\n');
+                console.log('Procesando', lines.length, 'líneas');
+                const datePattern = /^(\d{2}\/\d{2}\/\d{2}) \d{1,2}:\d{2} - /;
+                lines.forEach(line => {
+                    if (!line.trim()) return;
+                    chatData.totalMessages++;
+                    // Extraer fecha
+                    let date = "Fecha desconocida";
+                    let dateObj = null;
+                    if (datePattern.test(line)) {
+                        const dateStr = line.match(datePattern)[1];
+                        // Convertir a formato Date
+                        const [day, month, year] = dateStr.split('/');
+                        const fullYear = 2000 + parseInt(year);
+                        dateObj = new Date(fullYear, parseInt(month) - 1, parseInt(day));
+                        // Obtener semana
+                        date = getWeekNumber(dateObj);
+                    }
+                    // Actualizar actividad por semana
+                    chatData.activity[date] = (chatData.activity[date] || 0) + 1;
+                    // Detectar tipo de mensaje
+                    let type = 'text';
+                    if (line.includes('<Multimedia omitido>')) {
+                        chatData.messageTypes.media++;
+                        type = 'media';
+                    } else if (line.includes('solicitó unirse')) {
+                        chatData.messageTypes.joinRequests++;
+                        chatData.joinRequests++;
+                        type = 'joinRequest';
+                    } else if (line.includes('Se eliminó este mensaje')) {
+                        chatData.messageTypes.deleted++;
+                        type = 'deleted';
+                    } else if (line.includes('salió del grupo') || 
+                               line.includes('cambió su número') || 
+                               line.includes('Cambió tu código')) {
+                        chatData.messageTypes.system++;
+                        type = 'system';
+                    } else {
+                        chatData.messageTypes.text++;
+                    }
+                    // Extraer remitente
+                    const senderMatch = line.match(/ - (.*?):/);
+                    let sender = null;
+                    if (senderMatch && senderMatch[1]) {
+                        sender = senderMatch[1].trim();
+                        chatData.participants[sender] = (chatData.participants[sender] || 0) + 1;
+                    }
+                    // Guardar mensaje individual
+                    chatData.messages.push({
+                        raw: line,
+                        date: dateObj,
+                        dateStr: date,
+                        sender: sender,
+                        type: type,
+                        text: line.split(': ').slice(1).join(': ').trim()
+                    });
+                });
+                console.log('parseChatFile completado. Total de mensajes:', chatData.totalMessages);
+                console.log('Mensajes procesados:', chatData.messages.length);
+            }
+            
+            // Función para calcular EMA
+            function ema(data, period) {
+                if (data.length === 0) return [];
+                const k = 2 / (period + 1);
+                let emaArray = [data[0]];
+                for (let i = 1; i < data.length; i++) {
+                    emaArray.push(data[i] * k + emaArray[i - 1] * (1 - k));
+                }
+                return emaArray;
+            }
+            
+            // Función para calcular MACD (MODIFICADA)
+            function calculateMACD(data, fastPeriod = 12, slowPeriod = 26, signalPeriod = 9) {
+                if (data.length === 0) {
+                    return {
+                        macdLine: [],
+                        signalLine: [],
+                        histogram: [],
+                        quality: "insufficient"
+                    };
+                }
+                
+                // Determinar calidad de los datos
+                let quality = "high";
+                if (data.length < slowPeriod) {
+                    quality = data.length < fastPeriod ? "low" : "medium";
+                }
+                
+                // Calcular EMA rápida y lenta
+                const fastEMA = ema(data, fastPeriod);
+                const slowEMA = ema(data, slowPeriod);
+                
+                // Asegurar que las EMAs tengan la misma longitud
+                const minLength = Math.min(fastEMA.length, slowEMA.length);
+                const adjustedFastEMA = fastEMA.slice(-minLength);
+                const adjustedSlowEMA = slowEMA.slice(-minLength);
+                
+                // Calcular MACD Line (diferencia entre las EMAs)
+                const macdLine = adjustedFastEMA.map((val, idx) => val - adjustedSlowEMA[idx]);
+                
+                // Calcular Signal Line (EMA del MACD Line)
+                const signalLine = ema(macdLine, signalPeriod);
+                
+                // Ajustar para que tengan la misma longitud
+                const startIndex = macdLine.length - signalLine.length;
+                const adjustedMacdLine = macdLine.slice(startIndex);
+                
+                // Histograma: MACD Line - Signal Line
+                const histogram = adjustedMacdLine.map((val, idx) => val - signalLine[idx]);
+                
+                return {
+                    macdLine: adjustedMacdLine,
+                    signalLine,
+                    histogram,
+                    quality
+                };
+            }
+            
+            // Función para determinar el estado del MACD (MODIFICADA)
+            function determineMACDStatus(macdLine, signalLine, dataLength) {
+                if (macdLine.length < 2 || signalLine.length < 2) {
+                    return {
+                        status: '⚠️ Necesitamos al menos 2 semanas de datos para dar una señal.',
+                        type: 'neutral'
+                    };
+                }
+                
+                const lastMACD = macdLine[macdLine.length - 1];
+                const prevMACD = macdLine[macdLine.length - 2];
+                const lastSignal = signalLine[signalLine.length - 1];
+                const prevSignal = signalLine[signalLine.length - 2];
+                
+                if (prevMACD < prevSignal && lastMACD > lastSignal) {
+                    return {
+                        status: '📈 Tendencia alcista; se espera un aumento en la cantidad de mensajes.',
+                        type: 'buy'
+                    };
+                } else if (prevMACD > prevSignal && lastMACD < lastSignal) {
+                    return {
+                        status: '📉 Tendencia bajista; se espera una disminución en la cantidad de mensajes.',
+                        type: 'sell'
+                    };
+                } else if (lastMACD > lastSignal) {
+                    return {
+                        status: '➡️ Momentum alcista; es probable que la cantidad de mensajes siga aumentando.',
+                        type: 'buy'
+                    };
+                } else if (lastMACD < lastSignal) {
+                    return {
+                        status: '⬅️ Momentum bajista; es probable que la cantidad de mensajes siga cayendo.',
+                        type: 'sell'
+                    };
+                } else {
+                    return {
+                        status: '🔍 Sin tendencia clara por el momento.',
+                        type: 'neutral'
+                    };
+                }
+            }
+            
+            function displayStatistics() {
+                // Actualizar estadísticas principales
+                totalMessagesEl.textContent = chatData.totalMessages.toLocaleString();
+                participantCountEl.textContent = Object.keys(chatData.participants).length.toLocaleString();
+                joinRequestsEl.textContent = chatData.joinRequests.toLocaleString();
+                mediaCountEl.textContent = chatData.messageTypes.media.toLocaleString();
+                
+                // Crear gráficos
+                createActivityChart();
+                createParticipantsChart();
+                createCountriesChart();
+                createMexicoChart();
+                createMexicoStatesChart();
+                createMessageTypeChart();
+                
+                // Crear tabla de participantes (TOP 10 inicial)
+                createParticipantsTable(10);
+                
+                // Crear tabla de países (TOP 10 inicial)
+                createCountriesTable(10);
+                
+                // Crear tabla de usuarios de México (TOP 10 inicial)
+                createMexicoTable(10);
+                
+                // Crear tabla de estados de México (TOP 10 inicial)
+                createMexicoStatesTable(10);
+            }
+            
+            function createActivityChart() {
+                const ctx = document.getElementById('activityChart').getContext('2d');
+                
+                // Ordenar semanas cronológicamente
+                const sortedWeeks = Object.keys(chatData.activity)
+                    .filter(week => week !== "Fecha desconocida")
+                    .sort((a, b) => {
+                        // Ordenar por año y número de semana
+                        const [yearA, weekA] = a.split('-W').map(Number);
+                        const [yearB, weekB] = b.split('-W').map(Number);
+                        return yearA - yearB || weekA - weekB;
+                    });
+                
+                const activityData = sortedWeeks.map(week => chatData.activity[week]);
+                
+                // Formatear etiquetas para mostrar solo semana
+                const labels = sortedWeeks.map(week => `Semana ${week.split('-W')[1]}`);
+                
+                // Calcular MACD
+                chatData.macd = calculateMACD(activityData);
+                
+                // Determinar el estado del MACD
+                const macdStatus = determineMACDStatus(
+                    chatData.macd.macdLine, 
+                    chatData.macd.signalLine,
+                    activityData.length
+                );
+                
+                // Actualizar estado MACD
+                macdStatusEl.textContent = macdStatus.status;
+                
+                // Actualizar indicador visual
+                macdIndicatorEl.className = 'macd-indicator';
+                macdIndicatorEl.classList.add(`macd-signal-${macdStatus.type}`);
+                
+                // Actualizar el punto de indicador
+                const dot = macdIndicatorEl.querySelector('.macd-indicator-dot');
+                dot.className = 'macd-indicator-dot';
+                dot.classList.add(`macd-dot-${macdStatus.type}`);
+                
+                // Actualizar calidad de datos
+                let qualityText = '';
+                let qualityClass = '';
+                
+                switch(chatData.macd.quality) {
+                    case 'high':
+                        qualityText = '✅ Calidad alta (más de 26 semanas de datos)';
+                        qualityClass = 'quality-high';
+                        break;
+                    case 'medium':
+                        qualityText = '⚠️ Calidad media (entre 12 y 26 semanas)';
+                        qualityClass = 'quality-medium';
+                        break;
+                    case 'low':
+                        qualityText = '⚠️ Calidad baja (menos de 12 semanas)';
+                        qualityClass = 'quality-low';
+                        break;
+                    default:
+                        qualityText = '⚠️ Datos insuficientes para calcular MACD';
+                        qualityClass = 'quality-low';
+                }
+                
+                macdQualityEl.textContent = qualityText;
+                macdQualityEl.className = `data-quality ${qualityClass}`;
+                
+                if (activityChart) activityChart.destroy();
+                
+                activityChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Mensajes por semana',
+                            data: activityData,
+                            borderColor: '#ff7b00',
+                            backgroundColor: 'rgba(255, 123, 0, 0.1)',
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#FFD1A9',
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#374151',
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    title: function(tooltipItems) {
+                                        return `Semana ${sortedWeeks[tooltipItems[0].dataIndex].split('-W')[1]}`;
+                                    },
+                                    label: function(context) {
+                                        return `Mensajes: ${context.parsed.y.toLocaleString()}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#4B5563',
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                },
+                                grid: {
+                                    color: '#E5E7EB'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#4B5563'
+                                },
+                                grid: {
+                                    color: '#E5E7EB'
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function createMACDChart() {
+                const ctx = document.getElementById('macdChart').getContext('2d');
+                
+                if (!chatData.macd || chatData.macd.macdLine.length === 0) {
+                    return;
+                }
+                
+                // Ordenar semanas cronológicamente
+                const sortedWeeks = Object.keys(chatData.activity)
+                    .filter(week => week !== "Fecha desconocida")
+                    .sort((a, b) => {
+                        const [yearA, weekA] = a.split('-W').map(Number);
+                        const [yearB, weekB] = b.split('-W').map(Number);
+                        return yearA - yearB || weekA - weekB;
+                    });
+                
+                // Ajustar etiquetas para que coincidan con la longitud del MACD
+                const startIndex = sortedWeeks.length - chatData.macd.macdLine.length;
+                const macdLabels = sortedWeeks.slice(startIndex).map(week => `Semana ${week.split('-W')[1]}`);
+                
+                if (macdChart) macdChart.destroy();
+                
+                macdChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: macdLabels,
+                        datasets: [
+                            {
+                                type: 'line',
+                                label: 'Línea MACD',
+                                data: chatData.macd.macdLine,
+                                borderColor: '#4caf50',
+                                borderWidth: 2,
+                                fill: false
+                            },
+                            {
+                                type: 'line',
+                                label: 'Línea de Señal',
+                                data: chatData.macd.signalLine,
+                                borderColor: '#f44336',
+                                borderWidth: 2,
+                                fill: false
+                            },
+                            {
+                                type: 'bar',
+                                label: 'Histograma',
+                                data: chatData.macd.histogram,
+                                backgroundColor: chatData.macd.histogram.map(v => v >= 0 ? 'rgba(76, 175, 80, 0.5)' : 'rgba(244, 67, 54, 0.5)')
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#4B5563',
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                },
+                                grid: {
+                                    color: '#E5E7EB'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#4B5563'
+                                },
+                                grid: {
+                                    color: '#E5E7EB'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function toggleMACD() {
+                const isHidden = getComputedStyle(macdChartContainer).display === 'none';
+                if (isHidden) {
+                    macdChartContainer.style.display = 'block';
+                    toggleMACDButton.innerHTML = '<i class="fas fa-chart-line"></i> Ocultar MACD';
+                    createMACDChart();
+                } else {
+                    macdChartContainer.style.display = 'none';
+                    toggleMACDButton.innerHTML = '<i class="fas fa-chart-line"></i> Mostrar MACD';
+                }
+            }
+            
+            function createParticipantsChart() {
+                const ctx = document.getElementById('participantsChart').getContext('2d');
+                
+                // Obtener los 10 participantes más activos
+                const participants = Object.entries(chatData.participants)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 10);
+                
+                const participantNames = participants.map(p => p[0]);
+                const messageCounts = participants.map(p => p[1]);
+                
+                if (participantsChart) participantsChart.destroy();
+                
+                participantsChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: participantNames,
+                        datasets: [{
+                            label: 'Mensajes',
+                            data: messageCounts,
+                            backgroundColor: '#FFD1A9',
+                            borderColor: '#ff7b00',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#4B5563'
+                                },
+                                grid: {
+                                    color: '#E5E7EB'
+                                },
+                                beginAtZero: true
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#4B5563'
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function createMessageTypeChart() {
+                const ctx = document.getElementById('messageTypeChart').getContext('2d');
+                
+                const messageTypeData = {
+                    'Texto': chatData.messageTypes.text,
+                    'Multimedia': chatData.messageTypes.media,
+                    'Eliminados': chatData.messageTypes.deleted,
+                    'Sistema': chatData.messageTypes.system,
+                    'Solicitudes': chatData.messageTypes.joinRequests
+                };
+                
+                if (messageTypeChart) messageTypeChart.destroy();
+                
+                messageTypeChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(messageTypeData),
+                        datasets: [{
+                            data: Object.values(messageTypeData),
+                            backgroundColor: [
+                                '#FFD1A9',
+                                '#ff7b00',
+                                '#ffcc00',
+                                '#4ecca3',
+                                '#ff9a76'
+                            ],
+                            borderColor: '#FFF5EB',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    color: '#4B5563',
+                                    padding: 20,
+                                    font: {
+                                        size: 13
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Función para obtener el nombre del país por código ISO
+            function getCountryName(isoCode) {
+                return countryNames[isoCode] || isoCode;
+            }
+
+            // Función para obtener el código ISO del país por código de teléfono
+            function getCountryISO(phoneNumber) {
+                if (!phoneNumber || !phoneNumber.includes('+')) {
+                    return null;
+                }
+                
+                // Ordenar códigos de país por longitud (más largos primero) para evitar coincidencias incorrectas
+                const sortedCodes = Object.keys(countryCodes).sort((a, b) => b.length - a.length);
+                
+                for (const code of sortedCodes) {
+                    if (phoneNumber.startsWith(code)) {
+                        return countryCodes[code];
+                    }
+                }
+                
+                return null;
+            }
+
+            // Función para agrupar participantes por país
+            function groupParticipantsByCountry() {
+                const countries = {};
+                
+                Object.entries(chatData.participants).forEach(([participant, messageCount]) => {
+                    // Solo incluir usuarios con número de teléfono
+                    if (participant && participant.includes('+')) {
+                        const countryISO = getCountryISO(participant);
+                        if (countryISO) {
+                            const countryName = getCountryName(countryISO);
+                            if (!countries[countryName]) {
+                                countries[countryName] = {
+                                    name: countryName,
+                                    iso: countryISO,
+                                    messageCount: 0,
+                                    participants: []
+                                };
+                            }
+                            countries[countryName].messageCount += messageCount;
+                            countries[countryName].participants.push({
+                                name: participant,
+                                messageCount: messageCount
+                            });
+                        }
+                    }
+                });
+                
+                return countries;
+            }
+
+            function createCountriesChart() {
+                const ctx = document.getElementById('countriesChart').getContext('2d');
+                
+                const countries = groupParticipantsByCountry();
+                const topCountries = Object.values(countries)
+                    .sort((a, b) => b.messageCount - a.messageCount)
+                    .slice(0, 10);
+                
+                const countryNames = topCountries.map(c => c.name);
+                const messageCounts = topCountries.map(c => c.messageCount);
+                
+                if (countriesChart) countriesChart.destroy();
+                
+                countriesChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: countryNames,
+                        datasets: [{
+                            label: 'Mensajes',
+                            data: messageCounts,
+                            backgroundColor: '#4ecca3',
+                            borderColor: '#2d7d5a',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#4B5563'
+                                },
+                                grid: {
+                                    color: '#E5E7EB'
+                                },
+                                beginAtZero: true
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#4B5563'
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createCountriesTable(topN = 10) {
+                const countries = groupParticipantsByCountry();
+                const topCountries = Object.values(countries)
+                    .sort((a, b) => b.messageCount - a.messageCount)
+                    .slice(0, topN);
+                
+                let tableHTML = `
+                    <div class="participants-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>País</th>
+                                    <th>Mensajes</th>
+                                    <th>% del total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                topCountries.forEach((country, index) => {
+                    const percentage = ((country.messageCount / chatData.totalMessages) * 100).toFixed(1);
+                    const flag = `<img src="https://flagsapi.com/${country.iso}/flat/24.png" alt="${country.iso}" style="width: 24px; height: 18px; border-radius: 3px; margin-left: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);" title="${country.name}">`;
+                    
+                    tableHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td style="display: flex; align-items: center; gap: 8px;">
+                                <span>${country.name}</span>
+                                <span style="display: flex; align-items: center;">${flag}</span>
+                            </td>
+                            <td>${country.messageCount.toLocaleString()}</td>
+                            <td>${percentage}%</td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += `
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="scroll-indicator">
+                        <i class="fas fa-arrows-alt-h"></i> Desliza horizontalmente para ver todas las columnas
+                    </div>
+                `;
+                
+                // Agregar botones de mostrar más/menos
+                const totalCountries = Object.keys(countries).length;
+                if (topN === 10 && totalCountries > 10) {
+                    tableHTML += `
+                        <button id="showMoreCountriesBtn" class="toggle-button">
+                            <i class="fas fa-chevron-down"></i> Mostrar más países (TOP 50)
+                        </button>
+                    `;
+                } else if (topN === 50) {
+                    tableHTML += `
+                        <button id="showLessCountriesBtn" class="toggle-button">
+                            <i class="fas fa-chevron-up"></i> Mostrar menos países (TOP 10)
+                        </button>
+                    `;
+                }
+                
+                document.getElementById('countriesTable').innerHTML = tableHTML;
+                
+                // Asignar eventos a los botones
+                if (document.getElementById('showMoreCountriesBtn')) {
+                    document.getElementById('showMoreCountriesBtn').addEventListener('click', () => {
+                        createCountriesTable(50);
+                    });
+                }
+                if (document.getElementById('showLessCountriesBtn')) {
+                    document.getElementById('showLessCountriesBtn').addEventListener('click', () => {
+                        createCountriesTable(10);
+                    });
+                }
+            }
+
+            function createParticipantsTable(topN = 10) {
+                const participants = Object.entries(chatData.participants)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, topN);
+                
+                let tableHTML = `
+                    <div class="participants-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Participante</th>
+                                    <th>Mensajes</th>
+                                    <th>% del total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                participants.forEach(([participant, count], index) => {
+                    const percentage = ((count / chatData.totalMessages) * 100).toFixed(1);
+                    const flag = getCountryFlag(participant);
+                    tableHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td style="display: flex; align-items: center; gap: 8px;">
+                                <span>${participant}</span>
+                                <span style="display: flex; align-items: center;">${flag}</span>
+                            </td>
+                            <td>${count.toLocaleString()}</td>
+                            <td>${percentage}%</td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += `
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="scroll-indicator">
+                        <i class="fas fa-arrows-alt-h"></i> Desliza horizontalmente para ver todas las columnas
+                    </div>
+                `;
+                
+                // Agregar botones de mostrar más/menos
+                const totalParticipants = Object.keys(chatData.participants).length;
+                if (topN === 10 && totalParticipants > 10) {
+                    tableHTML += `
+                        <button id="showMoreBtn" class="toggle-button">
+                            <i class="fas fa-chevron-down"></i> Mostrar más (TOP 100)
+                        </button>
+                    `;
+                } else if (topN === 100) {
+                    tableHTML += `
+                        <button id="showLessBtn" class="toggle-button">
+                            <i class="fas fa-chevron-up"></i> Mostrar menos (TOP 10)
+                        </button>
+                    `;
+                }
+                
+                document.getElementById('participantsTable').innerHTML = tableHTML;
+                
+                // Asignar eventos a los botones
+                if (document.getElementById('showMoreBtn')) {
+                    document.getElementById('showMoreBtn').addEventListener('click', () => {
+                        createParticipantsTable(100);
+                    });
+                }
+                if (document.getElementById('showLessBtn')) {
+                    document.getElementById('showLessBtn').addEventListener('click', () => {
+                        createParticipantsTable(10);
+                    });
+                            }
+            }
+
+            // Función para obtener usuarios de México
+            function getMexicoUsers() {
+                const mexicoUsers = {};
+                
+                Object.entries(chatData.participants).forEach(([participant, messageCount]) => {
+                    // Solo incluir usuarios con número de teléfono que empiece con +52
+                    if (participant && participant.startsWith('+52')) {
+                        mexicoUsers[participant] = messageCount;
+                    }
+                });
+                
+                return mexicoUsers;
+            }
+
+            // Función para obtener la bandera de Jalisco para usuarios +52 33
+            function getJaliscoFlag() {
+                return `<img src="/icons/Bandera-jal.avif" alt="Jalisco" style="width: 24px; height: 18px; border-radius: 3px; margin-left: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);" title="Jalisco">`;
+            }
+
+            function createMexicoChart() {
+                const ctx = document.getElementById('mexicoChart').getContext('2d');
+                
+                const mexicoUsers = getMexicoUsers();
+                const topUsers = Object.entries(mexicoUsers)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 10);
+                
+                const userNames = topUsers.map(([user, _]) => user);
+                const messageCounts = topUsers.map(([_, count]) => count);
+                
+                if (mexicoChart) mexicoChart.destroy();
+                
+                mexicoChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: userNames,
+                        datasets: [{
+                            label: 'Mensajes',
+                            data: messageCounts,
+                            backgroundColor: '#115c2c',
+                            borderColor: '#0a3d1f',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#4B5563'
+                                },
+                                grid: {
+                                    color: '#E5E7EB'
+                                },
+                                beginAtZero: true
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#4B5563'
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createMexicoTable(topN = 10) {
+                const mexicoUsers = getMexicoUsers();
+                const topUsers = Object.entries(mexicoUsers)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, topN);
+                
+                let tableHTML = `
+                    <div class="participants-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Usuario</th>
+                                    <th>Mensajes</th>
+                                    <th>% del total MX</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                const totalMexicoMessages = Object.values(mexicoUsers).reduce((sum, count) => sum + count, 0);
+                
+                topUsers.forEach(([user, count], index) => {
+                    const percentage = ((count / totalMexicoMessages) * 100).toFixed(1);
+                    let flag = '';
+                    
+                    // Verificar si es un usuario de Jalisco (+52 33)
+                    // Los usuarios de Jalisco muestran la bandera del estado en lugar de la bandera de México
+                    if (user.startsWith('+52 33')) {
+                        flag = getJaliscoFlag();
+                    }
+                    
+                    tableHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td style="display: flex; align-items: center; gap: 8px;">
+                                <span>${user}</span>
+                                ${flag ? `<span style="display: flex; align-items: center;">${flag}</span>` : ''}
+                            </td>
+                            <td>${count.toLocaleString()}</td>
+                            <td>${percentage}%</td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += `
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="scroll-indicator">
+                        <i class="fas fa-arrows-alt-h"></i> Desliza horizontalmente para ver todas las columnas
+                    </div>
+                `;
+                
+                // Agregar botones de mostrar más/menos
+                const totalMexicoUsers = Object.keys(mexicoUsers).length;
+                if (topN === 10 && totalMexicoUsers > 10) {
+                    tableHTML += `
+                        <button id="showMoreMexicoBtn" class="toggle-button">
+                            <i class="fas fa-chevron-down"></i> Mostrar más usuarios MX (TOP 50)
+                        </button>
+                    `;
+                } else if (topN === 50) {
+                    tableHTML += `
+                        <button id="showLessMexicoBtn" class="toggle-button">
+                            <i class="fas fa-chevron-up"></i> Mostrar menos usuarios MX (TOP 10)
+                        </button>
+                    `;
+                }
+                
+                document.getElementById('mexicoTable').innerHTML = tableHTML;
+                
+                // Asignar eventos a los botones
+                if (document.getElementById('showMoreMexicoBtn')) {
+                    document.getElementById('showMoreMexicoBtn').addEventListener('click', () => {
+                        createMexicoTable(50);
+                    });
+                }
+                if (document.getElementById('showLessMexicoBtn')) {
+                    document.getElementById('showLessMexicoBtn').addEventListener('click', () => {
+                        createMexicoTable(10);
+                    });
+                }
+            }
+
+            
+            // Base de datos de códigos de área de México (cargada desde archivo externo)
+            let mexicoAreaCodes = {};
+            
+            // Cargar la base de datos de códigos de área de México
+            showDatabaseLoadingIndicator();
+            fetch('../pwa/bases-de-datos/mexico-area-codes.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('No se pudo cargar la base de datos de códigos de área de México');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    mexicoAreaCodes = data.mexicoAreaCodes;
+                    databasesLoaded.mexicoAreaCodes = true;
+                    console.log('Base de datos de códigos de área de México cargada exitosamente');
+                    
+                    // Ocultar indicador si todas las bases de datos están listas
+                    if (areDatabasesReady()) {
+                        hideDatabaseLoadingIndicator();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cargar la base de datos de códigos de área de México:', error);
+                    // Fallback: usar una versión mínima de la base de datos
+                    mexicoAreaCodes = {
+                        '33': 'Jalisco',
+                        '55': 'Ciudad de México',
+                        '81': 'Nuevo León'
+                    };
+                    databasesLoaded.mexicoAreaCodes = true;
+                    
+                    // Ocultar indicador si todas las bases de datos están listas
+                    if (areDatabasesReady()) {
+                        hideDatabaseLoadingIndicator();
+                    }
+                });
+
+            // Función para obtener el nombre del estado por código de área
+            function getMexicoStateName(areaCode) {
+                return mexicoAreaCodes[areaCode] || 'Estado desconocido';
+            }
+
+            // Función para obtener usuarios agrupados por estado
+            function getMexicoUsersByState() {
+                const states = {};
+                const unclassifiedUsers = []; // Para depuración
+                
+                Object.entries(chatData.participants).forEach(([participant, messageCount]) => {
+                    // Solo incluir usuarios con número de teléfono que empiece con +52
+                    if (participant && participant.startsWith('+52')) {
+                        // Extraer código de área (2 o 3 dígitos después del +52)
+                        // Intentar primero con 3 dígitos, luego con 2 dígitos
+                        let areaCode = null;
+                        let stateName = null;
+                        
+                        // Intentar con 3 dígitos primero
+                        const match3 = participant.match(/\+52\s*(\d{3})/);
+                        if (match3) {
+                            areaCode = match3[1];
+                            stateName = getMexicoStateName(areaCode);
+                        }
+                        
+                        // Si no se encontró con 3 dígitos, intentar con 2 dígitos
+                        if (!stateName || stateName === 'Estado desconocido') {
+                            const match2 = participant.match(/\+52\s*(\d{2})/);
+                            if (match2) {
+                                areaCode = match2[1];
+                                stateName = getMexicoStateName(areaCode);
+                            }
+                        }
+                        
+                        // Solo procesar si se encontró un estado válido
+                        if (stateName && stateName !== 'Estado desconocido') {
+                            if (!states[stateName]) {
+                                states[stateName] = {
+                                    name: stateName,
+                                    areaCode: areaCode,
+                                    messageCount: 0,
+                                    participants: []
+                                };
+                            }
+                            states[stateName].messageCount += messageCount;
+                            states[stateName].participants.push({
+                                name: participant,
+                                messageCount: messageCount
+                            });
+                        } else {
+                            // Para depuración: guardar usuarios no clasificados
+                            unclassifiedUsers.push({
+                                participant: participant,
+                                messageCount: messageCount,
+                                extractedAreaCode: areaCode
+                            });
+                        }
+                    }
+                });
+                
+                // Para depuración: mostrar usuarios no clasificados en consola
+                if (unclassifiedUsers.length > 0) {
+                    console.log('Usuarios mexicanos no clasificados:', unclassifiedUsers);
+                }
+                
+                return states;
+            }
+
+            function createMexicoStatesChart() {
+                const ctx = document.getElementById('mexicoStatesChart').getContext('2d');
+                
+                const states = getMexicoUsersByState();
+                const topStates = Object.values(states)
+                    .sort((a, b) => b.messageCount - a.messageCount)
+                    .slice(0, 10);
+                
+                const stateNames = topStates.map(s => s.name);
+                const messageCounts = topStates.map(s => s.messageCount);
+                
+                if (mexicoStatesChart) mexicoStatesChart.destroy();
+                
+                mexicoStatesChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: stateNames,
+                        datasets: [{
+                            label: 'Mensajes',
+                            data: messageCounts,
+                            backgroundColor: '#8B4513',
+                            borderColor: '#654321',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#4B5563'
+                                },
+                                grid: {
+                                    color: '#E5E7EB'
+                                },
+                                beginAtZero: true
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#4B5563'
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createMexicoStatesTable(topN = 10) {
+                const states = getMexicoUsersByState();
+                const topStates = Object.values(states)
+                    .sort((a, b) => b.messageCount - a.messageCount)
+                    .slice(0, topN);
+                
+                let tableHTML = `
+                    <div class="participants-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Estado</th>
+                                    <th>Mensajes</th>
+                                    <th>% del total MX</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                const totalMexicoMessages = Object.values(states).reduce((sum, state) => sum + state.messageCount, 0);
+                
+                topStates.forEach((state, index) => {
+                    const percentage = ((state.messageCount / totalMexicoMessages) * 100).toFixed(1);
+                    let flag = '';
+                    
+                    // Solo mostrar bandera de Jalisco para el estado de Jalisco
+                    if (state.name === 'Jalisco') {
+                        flag = getJaliscoFlag();
+                    }
+                    
+                    tableHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td style="display: flex; align-items: center; gap: 8px;">
+                                <span>${state.name}</span>
+                                ${flag ? `<span style="display: flex; align-items: center;">${flag}</span>` : ''}
+                            </td>
+                            <td>${state.messageCount.toLocaleString()}</td>
+                            <td>${percentage}%</td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += `
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="scroll-indicator">
+                        <i class="fas fa-arrows-alt-h"></i> Desliza horizontalmente para ver todas las columnas
+                    </div>
+                `;
+                
+                // Agregar botones de mostrar más/menos
+                const totalStates = Object.keys(states).length;
+                if (topN === 10 && totalStates > 10) {
+                    tableHTML += `
+                        <button id="showMoreStatesBtn" class="toggle-button">
+                            <i class="fas fa-chevron-down"></i> Mostrar más estados (TOP 32)
+                        </button>
+                    `;
+                } else if (topN === 32) {
+                    tableHTML += `
+                        <button id="showLessStatesBtn" class="toggle-button">
+                            <i class="fas fa-chevron-up"></i> Mostrar menos estados (TOP 10)
+                        </button>
+                    `;
+                }
+                
+                document.getElementById('mexicoStatesTable').innerHTML = tableHTML;
+                
+                // Asignar eventos a los botones
+                if (document.getElementById('showMoreStatesBtn')) {
+                    document.getElementById('showMoreStatesBtn').addEventListener('click', () => {
+                        createMexicoStatesTable(32);
+                    });
+                }
+                if (document.getElementById('showLessStatesBtn')) {
+                    document.getElementById('showLessStatesBtn').addEventListener('click', () => {
+                        createMexicoStatesTable(10);
+                    });
+                }
+            }
+
+            // Base de datos de códigos de país con códigos ISO para FlagsAPI (cargada desde archivo externo)
+            let countryCodes = {};
+            let countryNames = {};
+            
+            // Cargar la base de datos de códigos de país
+            fetch('../pwa/bases-de-datos/country-codes.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('No se pudo cargar la base de datos de códigos de país');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    countryCodes = data.countryCodes;
+                    countryNames = data.countryNames;
+                    databasesLoaded.countryCodes = true;
+                    databasesLoaded.countryNames = true;
+                    console.log('Base de datos de códigos de país cargada exitosamente');
+                    
+                    // Ocultar indicador si todas las bases de datos están listas
+                    if (areDatabasesReady()) {
+                        hideDatabaseLoadingIndicator();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cargar la base de datos de códigos de país:', error);
+                    // Fallback: usar una versión mínima de la base de datos
+                    countryCodes = {
+                        '+1': 'US',
+                        '+52': 'MX',
+                        '+34': 'ES'
+                    };
+                    countryNames = {
+                        'US': 'Estados Unidos',
+                        'MX': 'México',
+                        'ES': 'España'
+                    };
+                    databasesLoaded.countryCodes = true;
+                    databasesLoaded.countryNames = true;
+                    
+                    // Ocultar indicador si todas las bases de datos están listas
+                    if (areDatabasesReady()) {
+                        hideDatabaseLoadingIndicator();
+                    }
+                });
+
+            // Función para detectar el código de país y obtener la bandera
+            function getCountryFlag(participant) {
+                // Si el participante no es un número de teléfono, retornar icono de usuario
+                if (!participant || !participant.includes('+')) {
+                    return '<i class="fas fa-user" style="color: #6b7280; font-size: 18px; margin-left: 6px;"></i>';
+                }
+                
+                // Verificar si es un usuario de Jalisco (+52 33)
+                if (participant.startsWith('+52 33')) {
+                    return getJaliscoFlag();
+                }
+                
+                // Buscar el código de país más largo que coincida
+                let countryCode = null;
+                let flag = '<i class="fas fa-globe" style="color: #6b7280; font-size: 18px; margin-left: 6px;"></i>'; // Icono por defecto para códigos no reconocidos
+                
+                // Ordenar códigos de país por longitud (más largos primero) para evitar coincidencias incorrectas
+                const sortedCodes = Object.keys(countryCodes).sort((a, b) => b.length - a.length);
+                
+                for (const code of sortedCodes) {
+                    if (participant.startsWith(code)) {
+                        countryCode = code;
+                        const isoCode = countryCodes[code];
+                        flag = `<img src="https://flagsapi.com/${isoCode}/flat/24.png" alt="${isoCode}" style="width: 24px; height: 18px; border-radius: 3px; margin-left: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);" title="${getCountryName(isoCode)}">`;
+                        break;
+                    }
+                }
+                
+                return flag;
+            }
+
+            // Variables para controlar el estado de carga de las bases de datos
+            let databasesLoaded = {
+                mexicoAreaCodes: false,
+                countryCodes: false,
+                countryNames: false
+            };
+            
+            // Función para mostrar el indicador de carga de bases de datos
+            function showDatabaseLoadingIndicator() {
+                const indicator = document.getElementById('databaseLoadingIndicator');
+                if (indicator) {
+                    indicator.style.display = 'block';
+                }
+            }
+            
+            // Función para ocultar el indicador de carga de bases de datos
+            function hideDatabaseLoadingIndicator() {
+                const indicator = document.getElementById('databaseLoadingIndicator');
+                if (indicator) {
+                    indicator.style.display = 'none';
+                }
+            }
+            
+            // Función para verificar si todas las bases de datos están cargadas
+            function areDatabasesReady() {
+                return databasesLoaded.mexicoAreaCodes && 
+                       databasesLoaded.countryCodes && 
+                       databasesLoaded.countryNames;
+            }
+            
+            // Función para cargar datos de ejemplo cuando las bases de datos estén listas
+            function loadSampleDataWhenReady() {
+                if (!areDatabasesReady()) {
+                    // Si las bases de datos no están listas, esperar un poco y volver a intentar
+                    setTimeout(loadSampleDataWhenReady, 100);
+                    return;
+                }
+                
+                // Asegurarse de que el elemento dataSection existe
+                const dataSection = document.getElementById('dataSection');
+                
+                // Ruta relativa desde Subpaginas/estadisticas.html
+                fetch('../pwa/bases-de-datos/datos-ejemplo-chat.json')
+                    .then(response => {
+                        if (!response.ok) throw new Error('No se pudo cargar el archivo de ejemplo');
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data && Array.isArray(data.ejemplo)) {
+                        console.log('Datos de ejemplo cargados, procesando...');
+                            const sampleData = data.ejemplo.join('\n');
+                            parseChatFile(sampleData);
+                            displayStatistics();
+                            if (dataSection) dataSection.style.display = 'block';
+                        
+                        // Habilitar el botón de chat después de cargar los datos de ejemplo
+                        console.log('Llamando a checkAndEnableChatBtn...');
+                        checkAndEnableChatBtn();
+                        } else {
+                        console.log('Error: El archivo de ejemplo no tiene el formato esperado');
+                            mostrarErrorCargaEjemplo('El archivo de ejemplo no tiene el formato esperado.');
+                        }
+                    })
+                    .catch(err => {
+                        mostrarErrorCargaEjemplo('No se pudo cargar el archivo de datos de ejemplo: ' + err.message);
+                    });
+
+                function mostrarErrorCargaEjemplo(msg) {
+                    if (dataSection) {
+                        dataSection.style.display = 'block';
+                        dataSection.innerHTML = `<div style='color:#b91c1c;background:#fee2e2;padding:1.5rem;border-radius:8px;text-align:center;font-weight:600;'>${msg}</div>`;
+                    } else {
+                        alert(msg);
+                    }
+                }
+            }
+            
+            // Función para verificar y habilitar el botón de chat periódicamente
+            function checkAndEnableChatBtn() {
+                console.log('Verificando si hay mensajes para habilitar el botón...');
+                if (chatData.messages && chatData.messages.length > 0) {
+                    console.log('Mensajes encontrados, habilitando botón...');
+                    enableChatBtnIfReady();
+                } else {
+                    console.log('No hay mensajes aún, verificando de nuevo en 500ms...');
+                    // Si aún no hay mensajes, verificar de nuevo en 500ms
+                    setTimeout(checkAndEnableChatBtn, 500);
+                }
+            }
+            
+            // Cargar datos de ejemplo al inicio -- Base de datos
+            window.addEventListener('DOMContentLoaded', () => {
+                // Iniciar la carga de datos de ejemplo cuando las bases de datos estén listas
+                loadSampleDataWhenReady();
+                
+                // Habilitar el botón de chat después de un tiempo para asegurar que los datos estén cargados
+                setTimeout(checkAndEnableChatBtn, 1000);
+            });
+
+            // Agregar botón para abrir el chat y el contenedor del chat SOLO si no existe
+            let chatBtn = document.getElementById('openChatBtn');
+            if (!chatBtn) {
+                console.log('Creando botón Ver Chat...');
+                const navButtons = document.querySelector('.nav-buttons');
+                if (!navButtons) {
+                    console.log('navButtons no encontrado');
+                } else {
+                chatBtn = document.createElement('button');
+                chatBtn.id = 'openChatBtn';
+                chatBtn.className = 'nav-button';
+                chatBtn.innerHTML = '<i class="fas fa-comments"></i> Ver Chat';
+                chatBtn.disabled = true;
+                navButtons.insertBefore(chatBtn, navButtons.firstChild);
+                    console.log('Botón Ver Chat creado exitosamente');
+            }
+            } else {
+                console.log('Botón Ver Chat ya existe');
+            }
+            
+            // Contenedor del chat (modal)
+            if (!document.getElementById('chatModal')) {
+                console.log('Creando modal del chat...');
+                const chatModal = document.createElement('div');
+                chatModal.id = 'chatModal';
+                chatModal.style.display = 'none';
+                chatModal.style.position = 'fixed';
+                chatModal.style.top = '0';
+                chatModal.style.left = '0';
+                chatModal.style.width = '100vw';
+                chatModal.style.height = '100vh';
+                chatModal.style.background = 'rgba(0,0,0,0.3)';
+                chatModal.style.zIndex = '9999';
+                chatModal.innerHTML = `
+                  <div id="chatModalContent" style="background:white;width:100vw;height:100vh;overflow:hidden;position:absolute;top:0;left:0;border-radius:0;box-shadow:none;display:flex;flex-direction:column;">
+                    <div style="padding:1rem;border-bottom:1px solid #FFD1A9;display:flex;align-items:center;justify-content:space-between;">
+                      <span style='font-weight:700;font-size:1.2rem;color:#ff7b00'><i class='fas fa-comments'></i> Chat simulado</span>
+                      <button id="closeChatModal" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#ff7b00"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div id="chatMessages" style="flex:1;overflow-y:auto;padding:1rem;background:#FFF5EB;"></div>
+                    <div style="padding:0.7rem;border-top:1px solid #FFD1A9;display:flex;flex-direction:column;gap:0.5rem;">
+                      <!-- Selector de tipo de búsqueda -->
+                      <div id="searchTypeSelector" style="display:flex;gap:4px;background:#f3f4f6;border-radius:6px;padding:2px;">
+                        <button id="searchMessagesBtn" class="search-type-btn active" style="flex:1;padding:6px 12px;border:none;border-radius:4px;background:#ff7b00;color:white;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;">
+                          <i class="fas fa-search"></i> Mensajes
+                        </button>
+                        <button id="searchUsersBtn" class="search-type-btn" style="flex:1;padding:6px 12px;border:none;border-radius:4px;background:transparent;color:#6b7280;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;">
+                          <i class="fas fa-user"></i> Usuarios
+                        </button>
+                      </div>
+                      <input id="chatInput" type="text" placeholder="Buscar mensajes..." style="width:100%;padding:0.5rem 1rem;border-radius:6px;border:1px solid #FFD1A9;outline:none;box-sizing:border-box;">
+                      <button id="sendChatBtn" style="background:#ff7b00;color:#fff;font-weight:600;padding:0.5rem 1.2rem;border-radius:6px;border:none;cursor:pointer;opacity:1;width:100%;display:none;"><i class="fas fa-times"></i> Limpiar</button>
+                    </div>
+                  </div>
+                `;
+                document.body.appendChild(chatModal);
+                console.log('Modal del chat creado exitosamente');
+            } else {
+                console.log('Modal del chat ya existe');
+            }
+            
+            // Habilitar el botón de chat cuando haya mensajes
+            function enableChatBtnIfReady() {
+                if (!chatBtn) {
+                    console.log('chatBtn no encontrado');
+                    return;
+                }
+                
+                const hasMessages = chatData.messages && chatData.messages.length > 0;
+                console.log('Verificando mensajes:', chatData.messages ? chatData.messages.length : 'undefined');
+                
+                chatBtn.disabled = !hasMessages;
+                chatBtn.style.opacity = chatBtn.disabled ? '0.5' : '1';
+                chatBtn.style.cursor = chatBtn.disabled ? 'not-allowed' : 'pointer';
+                
+                // Agregar título para explicar por qué está deshabilitado
+                if (chatBtn.disabled) {
+                    chatBtn.title = 'Carga un archivo de chat para habilitar esta función';
+                    console.log('Botón deshabilitado');
+                } else {
+                    chatBtn.title = 'Ver chat simulado con los mensajes cargados';
+                    console.log('Botón habilitado');
+                }
+            }
+            
+            // Modificar renderChatMessages para resaltar coincidencias
+            function renderChatMessages() {
+                const chatMessages = document.getElementById('chatMessages');
+                if (!chatMessages || !chatData.messages) return;
+                
+                const total = chatData.messages.length;
+                const itemHeight = 72;
+                const buffer = 6;
+                const visibleCount = Math.ceil(chatMessages.clientHeight / itemHeight) + buffer;
+                const scrollTop = chatMessages.scrollTop;
+                const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - Math.floor(buffer/2));
+                const endIndex = Math.min(total, startIndex + visibleCount);
+                const paddingTop = startIndex * itemHeight;
+                const paddingBottom = (total - endIndex) * itemHeight;
+                let html = `<div style='height:${paddingTop}px;'></div>`;
+                
+                const currentState = searchState[currentSearchType];
+                
+                for (let i = startIndex; i < endIndex; i++) {
+                    const msg = chatData.messages[i];
+                    let bubbleStyle = '';
+                    let senderHtml = '';
+                    let textHtml = '';
+                    let dateHtml = '';
+                    let fecha = '';
+                    let hora = '';
+                    
+                    if (msg.dateObj) {
+                        fecha = msg.dateObj.toLocaleDateString();
+                        hora = msg.dateObj.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+                    } else if (msg.raw) {
+                        const match = msg.raw.match(/(\d{2}\/\d{2}\/\d{2}) (\d{1,2}:\d{2})/);
+                        if (match) {
+                            fecha = match[1];
+                            hora = match[2];
+                        }
+                    }
+                    
+                    // Verificar si es resultado de búsqueda
+                    let isSearchResult = false;
+                    let isCurrent = false;
+                    if (currentState && currentState.results && currentState.results.length > 0) {
+                        const foundIdx = currentState.results.findIndex(r => r.idx === i);
+                        if (foundIdx !== -1) {
+                            isSearchResult = true;
+                            if (foundIdx === currentState.currentIndex) isCurrent = true;
+                        }
+                    }
+                    
+                    if (msg.type === 'system' || !msg.sender) {
+                        bubbleStyle = `
+                            background: #f3f4f6;
+                            color: #6b7280;
+                            font-style: italic;
+                            text-align: center;
+                            padding: 0.5rem;
+                            margin: 0.5rem 0;
+                            border-radius: 8px;
+                            font-size: 0.9rem;
+                        `;
+                        senderHtml = '';
+                        textHtml = msg.text || msg.raw || '';
+                        dateHtml = '';
+                    } else {
+                        const isOwnMessage = msg.sender === 'Tú';
+                        const backgroundColor = isOwnMessage ? '#FFD1A9' : '#f3f4f6';
+                        const textColor = isOwnMessage ? '#1f2937' : '#374151';
+                        const alignSelf = isOwnMessage ? 'flex-end' : 'flex-start';
+                        
+                        bubbleStyle = `
+                            background: ${backgroundColor};
+                            color: ${textColor};
+                            padding: 0.75rem 1rem;
+                            border-radius: 18px;
+                            max-width: 70%;
+                            word-wrap: break-word;
+                            align-self: ${alignSelf};
+                            margin: 0.25rem 0;
+                            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                        `;
+                        
+                        const flag = getCountryFlag(msg.sender);
+                        senderHtml = `
+                            <div style="font-weight: 600; color: #374151; margin-bottom: 0.25rem; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                            <span>${msg.sender}</span>
+                            <span style="display: flex; align-items: center;">${flag}</span>
+                            </div>
+                        `;
+                        
+                        if (msg.type === 'media') {
+                            textHtml = `<span style="color: #6b7280;"><i class='fas fa-photo-video'></i> <b>Multimedia</b></span>`;
+                        } else if (msg.type === 'deleted') {
+                            textHtml = `<span style="color: #ef4444;"><i class='fas fa-trash'></i> Mensaje eliminado</span>`;
+                        } else if (msg.type === 'joinRequest') {
+                            // Para solicitudes de unirse, extraer el nombre del usuario y mostrar su bandera
+                            const joinText = msg.text;
+                            const userName = joinText.replace(' solicitó unirse.', '').replace('solicitó unirse.', '').trim();
+                            const flag = getCountryFlag(userName);
+                            textHtml = `<span style="color: #059669;">
+                                <i class='fas fa-user-plus'></i> 
+                                <span style="display: flex; align-items: center; gap: 6px; margin-left: 4px;">
+                                    <span>${joinText}</span>
+                                    <span style="display: flex; align-items: center;">${flag}</span>
+                                </span>
+                            </span>`;
+                        } else {
+                            textHtml = msg.text || '';
+                        }
+                        
+                        let fechaHora = (fecha && hora) ? `${fecha} ${hora}` : (hora || fecha);
+                        dateHtml = fechaHora ? `
+                            <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 0.25rem;">
+                                ${fechaHora}
+                            </div>
+                        ` : '';
+                    }
+                    
+                    // Resaltar si es resultado de búsqueda
+                    if (isSearchResult) {
+                        const highlightColor = isCurrent ? '#fef3c7' : '#fefce8';
+                        const borderColor = isCurrent ? '#f59e0b' : '#fbbf24';
+                        bubbleStyle += `background: ${highlightColor} !important; border: 2px solid ${borderColor} !important;`;
+                    }
+                    
+                    html += `
+                        <div style="display: flex; justify-content: ${msg.sender === 'Tú' ? 'flex-end' : 'flex-start'}; margin: 0.5rem 0;">
+                            <div style="${bubbleStyle}">
+                                ${senderHtml}
+                                <div>${textHtml}</div>
+                                ${dateHtml}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                html += `<div style='height:${paddingBottom}px;'></div>`;
+                chatMessages.innerHTML = html;
+            }
+            
+            // Al abrir el chat, inicializar la virtualización y el scroll
+            chatBtn.addEventListener('click', () => {
+                console.log('Botón Ver Chat clickeado');
+                const chatMessages = document.getElementById('chatMessages');
+                if (!chatMessages) {
+                    console.log('chatMessages no encontrado');
+                    return;
+                }
+                
+                console.log('Abriendo modal del chat...');
+                
+                // Configurar la interfaz de búsqueda
+                ensureSearchResultBar();
+                setupSearchEvents('messages');
+                
+                // Limpiar búsquedas anteriores
+                if (searchState.messages) {
+                    searchState.messages.results = [];
+                    searchState.messages.currentIndex = -1;
+                }
+                if (searchState.users) {
+                    searchState.users.results = [];
+                    searchState.users.currentIndex = -1;
+                }
+                
+                // Ocultar barra de resultados al abrir el chat
+                const searchResultBar = document.getElementById('searchResultBar');
+                if (searchResultBar) {
+                    searchResultBar.style.display = 'none';
+                }
+                
+                renderChatMessages();
+                chatMessages.onscroll = function() {
+                    renderChatMessages();
+                };
+                document.getElementById('chatModal').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                console.log('Modal del chat abierto');
+            });
+            
+            // Función para cambiar el tipo de búsqueda
+            function switchSearchType(type) {
+                const messagesBtn = document.getElementById('searchMessagesBtn');
+                const usersBtn = document.getElementById('searchUsersBtn');
+                const chatInput = document.getElementById('chatInput');
+                const sendBtn = document.getElementById('sendChatBtn');
+                
+                if (!messagesBtn || !usersBtn || !chatInput || !sendBtn) return;
+                
+                currentSearchType = type;
+                
+                // Actualizar estilos de botones
+                if (type === 'messages') {
+                    messagesBtn.style.background = '#ff7b00';
+                    messagesBtn.style.color = 'white';
+                    usersBtn.style.background = 'transparent';
+                    usersBtn.style.color = '#6b7280';
+                    messagesBtn.classList.add('active');
+                    usersBtn.classList.remove('active');
+                    
+                    chatInput.placeholder = 'Buscar mensajes...';
+                    sendBtn.innerHTML = '<i class="fas fa-times"></i> Limpiar';
+                    sendBtn.style.background = '#ff7b00';
+                } else {
+                    usersBtn.style.background = '#4ecca3';
+                    usersBtn.style.color = 'white';
+                    messagesBtn.style.background = 'transparent';
+                    messagesBtn.style.color = '#6b7280';
+                    usersBtn.classList.add('active');
+                    messagesBtn.classList.remove('active');
+                    
+                    chatInput.placeholder = 'Buscar usuarios (ej: +52 33)...';
+                    sendBtn.innerHTML = '<i class="fas fa-times"></i> Limpiar';
+                    sendBtn.style.background = '#4ecca3';
+                }
+                
+                // Restaurar el estado de búsqueda del tipo actual
+                const currentState = searchState[type];
+                if (currentState && currentState.keyword) {
+                    chatInput.value = currentState.keyword;
+                    sendBtn.style.display = 'block';
+                } else {
+                    chatInput.value = '';
+                    sendBtn.style.display = 'none';
+                }
+                
+                // Actualizar barra de resultados
+                updateSearchResultBar();
+                renderChatMessages();
+                
+                // Configurar eventos según el tipo
+                setupSearchEvents(type);
+            }
+            
+            // Función para buscar usuarios
+            function searchUsers(keyword) {
+                if (!keyword || !keyword.trim()) {
+                    searchState.users.results = [];
+                    searchState.users.currentIndex = -1;
+                    searchState.users.keyword = '';
+                    updateSearchResultBar();
+                    renderChatMessages();
+                    return;
+                }
+                
+                const lowerKeyword = keyword.toLowerCase();
+                let results = [];
+                
+                // Buscar mensajes de usuarios que coincidan con el patrón
+                chatData.messages.forEach((msg, idx) => {
+                    if (msg.sender && msg.sender.toLowerCase().includes(lowerKeyword)) {
+                        results.push({ msg, idx });
+                    }
+                });
+                
+                // Actualizar estado
+                searchState.users.results = results;
+                searchState.users.currentIndex = results.length > 0 ? 0 : -1;
+                searchState.users.keyword = keyword;
+                
+                updateSearchResultBar();
+                renderChatMessages();
+                
+                if (results.length > 0) {
+                    scrollToSearchResult();
+                }
+            }
+            
+            // Función para buscar mensajes (existente, pero actualizada)
+            function searchMessages(keyword) {
+                if (!keyword || !keyword.trim()) {
+                    searchState.messages.results = [];
+                    searchState.messages.currentIndex = -1;
+                    searchState.messages.keyword = '';
+                    updateSearchResultBar();
+                    renderChatMessages();
+                    return;
+                }
+                
+                const lowerKeyword = keyword.toLowerCase();
+                let results = [];
+                
+                // Buscar en el contenido de los mensajes
+                chatData.messages.forEach((msg, idx) => {
+                    if (msg.text && msg.text.toLowerCase().includes(lowerKeyword)) {
+                        results.push({ msg, idx });
+                    }
+                });
+                
+                // Actualizar estado
+                searchState.messages.results = results;
+                searchState.messages.currentIndex = results.length > 0 ? 0 : -1;
+                searchState.messages.keyword = keyword;
+                
+                updateSearchResultBar();
+                renderChatMessages();
+                
+                if (results.length > 0) {
+                    scrollToSearchResult();
+                }
+            }
+            
+            // Cerrar el chat correctamente (delegación de eventos)
+            document.addEventListener('click', function(e) {
+                if (e.target && (e.target.id === 'closeChatModal' || (e.target.closest && e.target.closest('#closeChatModal')))) {
+                    document.getElementById('chatModal').style.display = 'none';
+                    document.body.style.overflow = ''; // Restaurar scroll
+                }
+            });
+            
+            // Habilitar el input para búsqueda
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendChatBtn');
+            if (chatInput) {
+                chatInput.disabled = false;
+                chatInput.placeholder = 'Buscar mensajes...';
+            }
+            if (sendBtn) {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<i class="fas fa-times"></i> Limpiar';
+                sendBtn.style.cursor = 'pointer';
+                sendBtn.style.opacity = '1';
+                sendBtn.style.display = 'none'; // Inicialmente oculto
+            }
+            
+            // Habilitar el botón de chat cuando se analice un archivo
+            document.getElementById('fileInput').addEventListener('change', () => {
+                setTimeout(checkAndEnableChatBtn, 300);
+            });
+            
+            // También al cargar datos de ejemplo
+            window.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndEnableChatBtn, 300);
+            });
+
+
+
+            // --- BÚSQUEDA DE MENSAJES EN EL CHAT SIMULADO ---
+            // Configurar eventos de búsqueda según el modo
+            function setupSearchEvents(type) {
+                const chatInput = document.getElementById('chatInput');
+                const sendChatBtn = document.getElementById('sendChatBtn');
+                
+                if (!chatInput || !sendChatBtn) return;
+                
+                // Limpiar eventos anteriores
+                chatInput.oninput = null;
+                chatInput.onkeypress = null;
+                chatInput.onkeydown = null;
+                sendChatBtn.onclick = null;
+                
+                // Configurar nuevos eventos
+                chatInput.oninput = () => {
+                    const keyword = chatInput.value.trim();
+                    
+                    // Mostrar/ocultar botón de limpiar
+                    if (keyword.length > 0) {
+                        sendChatBtn.style.display = 'block';
+                    } else {
+                        sendChatBtn.style.display = 'none';
+                    }
+                    
+                    if (type === 'users') {
+                        searchUsers(keyword);
+                    } else {
+                        searchMessages(keyword);
+                    }
+                };
+                
+                chatInput.onkeypress = (e) => {
+                    if (e.key === 'Enter') {
+                        const keyword = chatInput.value.trim();
+                        if (type === 'users') {
+                            searchUsers(keyword);
+                        } else {
+                            searchMessages(keyword);
+                        }
+                    }
+                };
+                
+                // Agregar evento para la tecla Escape
+                chatInput.onkeydown = (e) => {
+                    if (e.key === 'Escape') {
+                        // Limpiar el campo de búsqueda
+                        chatInput.value = '';
+                        sendChatBtn.style.display = 'none';
+                        
+                        // Limpiar búsquedas
+                        if (type === 'users') {
+                            searchUsers('');
+                } else {
+                            searchMessages('');
+                        }
+                    }
+                };
+                
+                sendChatBtn.onclick = () => {
+                    // Limpiar el campo de búsqueda
+                    chatInput.value = '';
+                    sendChatBtn.style.display = 'none';
+                    
+                    // Limpiar búsquedas
+                    if (type === 'users') {
+                        searchUsers('');
+                } else {
+                        searchMessages('');
+                    }
+                    
+                    // Enfocar el campo de entrada
+                    chatInput.focus();
+                };
+            }
+            
+            // Crear contenedor de resultados de búsqueda
+            function ensureSearchResultBar() {
+                if (!document.getElementById('searchResultBar')) {
+                    const chatModalContent = document.getElementById('chatModalContent');
+                    const searchBar = document.createElement('div');
+                    searchBar.id = 'searchResultBar';
+                    searchBar.style = 'width:100%;background:#fffbe6;border-bottom:1px solid #FFD1A9;padding:0.7rem 1rem;display:none;flex-direction:column;gap:0.5rem;z-index:2;';
+                    chatModalContent.insertBefore(searchBar, chatModalContent.children[1]);
+                }
+            }
+            
+            // Buscar mensajes o usuarios
+            function searchMessages(keyword) {
+                if (!keyword || !keyword.trim()) {
+                    searchState.messages.results = [];
+                    searchState.messages.currentIndex = -1;
+                    searchState.messages.keyword = '';
+                    updateSearchResultBar();
+                    renderChatMessages();
+                    return;
+                }
+                
+                const lowerKeyword = keyword.toLowerCase();
+                let results = [];
+                
+                // Buscar en el contenido de los mensajes
+                chatData.messages.forEach((msg, idx) => {
+                    if (msg.text && msg.text.toLowerCase().includes(lowerKeyword)) {
+                        results.push({ msg, idx });
+                    }
+                });
+                
+                // Actualizar estado
+                searchState.messages.results = results;
+                searchState.messages.currentIndex = results.length > 0 ? 0 : -1;
+                searchState.messages.keyword = keyword;
+                
+                updateSearchResultBar();
+                renderChatMessages();
+                
+                if (results.length > 0) {
+                    scrollToSearchResult();
+                }
+            }
+            
+            // Función para buscar usuarios
+            function searchUsers(keyword) {
+                if (!keyword || !keyword.trim()) {
+                    searchState.users.results = [];
+                    searchState.users.currentIndex = -1;
+                    searchState.users.keyword = '';
+                    updateSearchResultBar();
+                    renderChatMessages();
+                    return;
+                }
+                
+                const lowerKeyword = keyword.toLowerCase();
+                let results = [];
+                
+                // Buscar mensajes de usuarios que coincidan con el patrón
+                chatData.messages.forEach((msg, idx) => {
+                    if (msg.sender && msg.sender.toLowerCase().includes(lowerKeyword)) {
+                        results.push({ msg, idx });
+                    }
+                });
+                
+                // Actualizar estado
+                searchState.users.results = results;
+                searchState.users.currentIndex = results.length > 0 ? 0 : -1;
+                searchState.users.keyword = keyword;
+                
+                updateSearchResultBar();
+                renderChatMessages();
+                
+                if (results.length > 0) {
+                    scrollToSearchResult();
+                }
+            }
+            
+            // Actualizar barra de resultados
+            function updateSearchResultBar() {
+                ensureSearchResultBar();
+                const bar = document.getElementById('searchResultBar');
+                const currentState = searchState[currentSearchType];
+                const searchKeyword = currentState.keyword || '';
+                
+                // Si no hay término de búsqueda, ocultar la barra
+                if (!searchKeyword.trim()) {
+                    bar.style.display = 'none';
+                    return;
+                }
+                
+                if (currentState.results.length === 0) {
+                    // Mostrar mensaje de error solo si hay término de búsqueda
+                    bar.style.display = 'flex';
+                    const errorMessage = currentSearchType === 'users' 
+                        ? `No se encontraron usuarios que contengan "${searchKeyword}"`
+                        : `No se encontraron mensajes que contengan "${searchKeyword}"`;
+                    
+                    bar.innerHTML = `
+                        <div style='display:flex;align-items:center;gap:0.8rem;'>
+                            <i class='fas fa-exclamation-triangle' style='color:#f59e0b;font-size:1.2rem;'></i>
+                            <span style='font-weight:600;color:#f59e0b;'>${errorMessage}</span>
+                        </div>
+                        <div style='font-size:0.9rem;color:#6b7280;margin-top:4px;'>
+                            <i class='fas fa-lightbulb'></i> 
+                            ${currentSearchType === 'users' 
+                                ? 'Intenta buscar por parte del nombre o número de teléfono (ej: +52 33)'
+                                : 'Intenta con palabras más cortas o sinónimos'
+                            }
+                        </div>
+                    `;
+                    return;
+                }
+                
+                bar.style.display = 'flex';
+                const searchTypeText = currentSearchType === 'users' ? 'usuarios encontrados' : 'coincidencias encontradas';
+                bar.innerHTML = `
+                    <div style='display:flex;align-items:center;gap:1.2rem;'>
+                        <span style='font-weight:600;color:#ff7b00;'>${searchTypeText}: ${currentState.results.length.toLocaleString()}</span>
+                        <button id='goFirstBtn' style='background:#FFD1A9;color:#1F2937;font-weight:600;padding:0.3rem 1rem;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;'><i class='fas fa-arrow-down'></i></button>
+                        <button id='goLastBtn' style='background:#FFD1A9;color:#1F2937;font-weight:600;padding:0.3rem 1rem;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;'><i class='fas fa-arrow-up'></i></button>
+                        <button id='resetSearchBtn' title='Reiniciar navegación' style='background:#ff7b00;color:#fff;font-weight:600;padding:0.3rem 1rem;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:background 0.2s;'><i class='fas fa-undo'></i></button>
+                    </div>
+                    <div style='font-size:0.95rem;color:#6b7280;'>Navega entre las ${searchTypeText} usando los botones.</div>
+                `;
+                
+                // Botón ir a la primera (navegación hacia adelante)
+                document.getElementById('goFirstBtn').onclick = () => {
+                    if (currentState.results.length === 0) return;
+                    if (currentState.currentIndex === -1) {
+                        currentState.currentIndex = 0;
+                    } else {
+                        currentState.currentIndex = (currentState.currentIndex + 1) % currentState.results.length;
+                    }
+                    renderChatMessages();
+                    scrollToSearchResult();
+                };
+                
+                // Botón ir a la última (navegación hacia atrás)
+                document.getElementById('goLastBtn').onclick = () => {
+                    if (currentState.results.length === 0) return;
+                    if (currentState.currentIndex === -1) {
+                        currentState.currentIndex = currentState.results.length - 1;
+                    } else {
+                        currentState.currentIndex = (currentState.currentIndex - 1 + currentState.results.length) % currentState.results.length;
+                    }
+                    renderChatMessages();
+                    scrollToSearchResult();
+                };
+                
+                // Botón de reseteo
+                document.getElementById('resetSearchBtn').onclick = () => {
+                    currentState.currentIndex = currentState.results.length > 0 ? 0 : -1;
+                    renderChatMessages();
+                    scrollToSearchResult();
+                };
+            }
+            
+            // Scroll al resultado actual
+            function scrollToSearchResult() {
+                const currentState = searchState[currentSearchType];
+                if (currentState.results.length === 0 || currentState.currentIndex === -1) return;
+                const chatMessages = document.getElementById('chatMessages');
+                const idx = currentState.results[currentState.currentIndex].idx;
+                const itemHeight = 72;
+                // Centrar el mensaje en pantalla
+                chatMessages.scrollTop = Math.max(0, (idx - 2) * itemHeight);
+            }
+            
+            // Configurar eventos de los botones de tipo de búsqueda
+            document.addEventListener('DOMContentLoaded', () => {
+                // Configurar eventos para los botones de tipo de búsqueda
+                const messagesBtn = document.getElementById('searchMessagesBtn');
+                const usersBtn = document.getElementById('searchUsersBtn');
+                
+                if (messagesBtn) {
+                    messagesBtn.addEventListener('click', () => switchSearchType('messages'));
+                }
+                if (usersBtn) {
+                    usersBtn.addEventListener('click', () => switchSearchType('users'));
+                }
+            });
+            
+            // Inicializar el chat
+            function initChat() {
+                renderChatMessages();
+                setupSearchEvents('messages');
+            }
+            
+            // Cargar datos simulados al inicio
+            initChat();
+            
+            // Función para recargar las estadísticas cuando las bases de datos estén disponibles
+            function reloadStatisticsIfNeeded() {
+                if (areDatabasesReady() && chatData.totalMessages > 0) {
+                    console.log('Recargando estadísticas con bases de datos disponibles...');
+                    displayStatistics();
+                }
+            }
+            
+            // Verificar periódicamente si las bases de datos están listas para recargar estadísticas
+            function checkAndReloadStatistics() {
+                if (!areDatabasesReady()) {
+                    setTimeout(checkAndReloadStatistics, 200);
+                    return;
+                }
+                reloadStatisticsIfNeeded();
+            }
+            
+            // Iniciar la verificación cuando se cargue la página
+            window.addEventListener('DOMContentLoaded', () => {
+                checkAndReloadStatistics();
+                
+                // Configurar eventos para los botones de tipo de búsqueda
+                const messagesBtn = document.getElementById('searchMessagesBtn');
+                const usersBtn = document.getElementById('searchUsersBtn');
+                
+                if (messagesBtn) {
+                    messagesBtn.addEventListener('click', () => switchSearchType('messages'));
+                }
+                if (usersBtn) {
+                    usersBtn.addEventListener('click', () => switchSearchType('users'));
+                }
+            });
+        </script>
+
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+
+</body>
+</html>

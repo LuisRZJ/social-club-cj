@@ -1,0 +1,99 @@
+{
+  "noticias": [
+    {
+      "id": 1,
+      "categoria": "Pagina lite",
+      "texto": "Nueva <a href='https://bit.ly/3NI8quV'><span style='background-color: #6fa8dc; color: #2b00fe;'>página Lite</span></a> disponible para las personas con mal internet, en ella podrán leer las reglas.",
+      "activo": true
+    },
+    {
+      "id": 2,
+      "categoria": "Discord",
+      "texto": "Nuestro <a href='http://discord.gg/UvbjCF4sRw'><span style='background-color: #6fa8dc; color: #2b00fe;'>servidor de discord</span></a> va rumbo a las 500 personas!",
+      "activo": true
+    },
+    {
+      "id": 3,
+      "categoria": "Admins",
+      "texto": "Estamos buscando gente que quiera ser admin de nuestros grupos, toque <a href='https://socialclubcj.blogspot.com/2023/03/quieres-ser-admin.html'><span style='background-color: #6fa8dc; color: #2b00fe;'>aquí</span></a> si esta interesado en ser parte del equipo!",
+      "activo": true
+    },
+    {
+      "id": 4,
+      "categoria": "Comunidad",
+      "texto": "¿Quieres incluir tu grupo en esta comunidad? Visite <a href='https://socialclubcj.blogspot.com/2023/03/colaboraciones.html'><span style='background-color: #6fa8dc; color: #2b00fe;'>colaboraciones</span></a> para mas detalles.",
+      "activo": true
+    },
+    {
+      "id": 5,
+      "categoria": "Minecraft",
+      "texto": "¿Juegas Minecraft? Porque no prueba <a href='https://socialclubcj.blogspot.com/2023/03/sobre-el-servidor-principal-de-minecraft.html'><span style='background-color: #6fa8dc; color: #2b00fe;'>nuestro servidor</span></a>?",
+      "activo": true
+    },
+    {
+      "id": 6,
+      "categoria": "Discord",
+      "texto": "Nuestro servidor ya tiene habilitada la Incorporación ¡ya puedes elegir tus roles totalmente personalizables! [<a href='http://discord.gg/UvbjCF4sRw'><span style='background-color: #6fa8dc; color: #2b00fe;'>Ir al servidor</span></a>]",
+      "activo": true
+    },
+    {
+      "id": 7,
+      "categoria": "Comunidad",
+      "texto": "¿Conoces cuales son nuestros grupos oficiales? Si aun no los conoces... Visite la entrada <a href='https://socialclubcj.blogspot.com/2023/03/grupos-oficiales.html'><span style='background-color: #6fa8dc; color: #2b00fe;'>grupos oficiales</span></a>.",
+      "activo": true
+    },
+    {
+      "id": 8,
+      "categoria": "Comunidad",
+      "texto": "Tenemos un nuevo grupo disponible en la comunidad: <a href='https://bit.ly/3pTXX6C' style='background-color: #6fa8dc;'><span style='color: #2b00fe;'>Club Gaming ahora en Truth</span></a>.",
+      "activo": true
+    },
+    {
+      "id": 9,
+      "categoria": "Comunidad",
+      "texto": "¿Conoces quien creo esta comunidad? toque <a href='https://wa.me/523335953130' style='background-color: #6fa8dc;'><span style='color: #2b00fe;'>aquí</span></a> para saberlo.",
+      "activo": true
+    },
+    {
+      "id": 10,
+      "categoria": "Comunidad",
+      "texto": "¡Estamos activos desde 2021!",
+      "activo": true
+    },
+    {
+      "id": 11,
+      "categoria": "Comunidad",
+      "texto": "¿Tienes alguna sugerencia? Puedes <a href='mailto:soporteclubgaming@gmail.com' style='background-color: #6fa8dc;'><span style='color: #2b00fe;'>contactarnos</span></a> y contarnos tus ideas para mejorar algo de esta comunidad.",
+      "activo": true
+    },
+    {
+      "id": 12,
+      "categoria": "Comunidad",
+      "texto": "Somos de las pocas comunidades con una página web. 🌐",
+      "activo": true
+    },
+    {
+      "id": 13,
+      "categoria": "Comunidad",
+      "texto": "Pss... Ese \"🔼\" que esta en todas la entradas sirve para ir a la parte superior de la entrada, pruebe a usarlo!",
+      "activo": true
+    },
+    {
+      "id": 14,
+      "categoria": "Signal",
+      "texto": "Nuestros grupos de signal estan en crecimiento, visite <a href='https://socialclubcj.blogspot.com/2023/03/grupos-oficiales.html' style='background-color: #6fa8dc;'><span style='color: #2b00fe;'>comunidad</span></a> para conocerlos mejor.",
+      "activo": true
+    },
+    {
+      "id": 15,
+      "categoria": "Comunidad",
+      "texto": "🤔 La gente lee estas cosas?",
+      "activo": true
+    }
+  ],
+  "configuracion": {
+    "velocidad_animacion": 120,
+    "mostrar_categoria": true,
+    "separador_categoria": " | "
+  }
+} 

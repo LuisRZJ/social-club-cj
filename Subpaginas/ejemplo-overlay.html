@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Ejemplo Overlay Independiente | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+  
+  <!-- Script del overlay independiente -->
+  <script src="/pwa/overlay-carga-independiente.js"></script>
+  
+  <!-- Estilos específicos para la página de ejemplo -->
+  <style>
+    .demo-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .demo-section {
+      background: rgba(255, 209, 169, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255, 209, 169, 0.2);
+      backdrop-filter: blur(10px);
+    }
+    
+    .demo-subtitle {
+      color: #374151;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .demo-description {
+      font-size: 1.1rem;
+      color: #6b7280;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .feature-item {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 209, 169, 0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .feature-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #FFD1A9, #ffb07a);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      color: white;
+      font-size: 1.2rem;
+    }
+    
+    .feature-content h3 {
+      color: #374151;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .feature-content p {
+      color: #6b7280;
+      line-height: 1.5;
+    }
+    
+    .code-example {
+      background: #1f2937;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .code-example h3 {
+      color: #f3f4f6;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .code-example pre {
+      background: #111827;
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+    
+    .code-example code {
+      color: #10b981;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+    
+    .api-section {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 209, 169, 0.3);
+    }
+    
+    .api-section h3 {
+      color: #374151;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .api-methods {
+      display: grid;
+      gap: 1rem;
+    }
+    
+    .method-item {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 1rem;
+      border-left: 4px solid #FFD1A9;
+    }
+    
+    .method-item code {
+      background: #e5e7eb;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: #374151;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    .method-item p {
+      color: #6b7280;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+    
+    .test-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .test-btn {
+      background: linear-gradient(135deg, #FFD1A9, #ffb07a);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .test-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 176, 122, 0.3);
+    }
+    
+    .test-btn:active {
+      transform: translateY(0);
+    }
+    
+    .test-info {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    
+    .test-info p {
+      color: #1e40af;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .tech-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .tech-item {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 209, 169, 0.3);
+    }
+    
+    .tech-item h4 {
+      color: #374151;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .tech-item p {
+      color: #6b7280;
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .demo-container {
+        padding: 1rem;
+      }
+      
+      .demo-section {
+        padding: 1.5rem;
+      }
+      
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .test-buttons {
+        grid-template-columns: 1fr;
+      }
+      
+      .tech-features {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Tema oscuro */
+    [data-theme="dark"] .demo-section {
+      background: rgba(26, 14, 0, 0.3);
+      border-color: rgba(255, 209, 169, 0.1);
+    }
+    
+    [data-theme="dark"] .demo-subtitle {
+      color: #f3f4f6;
+    }
+    
+    [data-theme="dark"] .demo-description {
+      color: #d1d5db;
+    }
+    
+    [data-theme="dark"] .feature-item {
+      background: #1f2937;
+      border-color: rgba(255, 209, 169, 0.1);
+    }
+    
+    [data-theme="dark"] .feature-content h3 {
+      color: #f3f4f6;
+    }
+    
+    [data-theme="dark"] .feature-content p {
+      color: #d1d5db;
+    }
+    
+    [data-theme="dark"] .api-section {
+      background: #1f2937;
+      border-color: rgba(255, 209, 169, 0.1);
+    }
+    
+    [data-theme="dark"] .api-section h3 {
+      color: #f3f4f6;
+    }
+    
+    [data-theme="dark"] .method-item {
+      background: #111827;
+    }
+    
+    [data-theme="dark"] .method-item code {
+      background: #374151;
+      color: #f3f4f6;
+    }
+    
+    [data-theme="dark"] .method-item p {
+      color: #d1d5db;
+    }
+    
+    [data-theme="dark"] .tech-item {
+      background: #1f2937;
+      border-color: rgba(255, 209, 169, 0.1);
+    }
+    
+    [data-theme="dark"] .tech-item h4 {
+      color: #f3f4f6;
+    }
+    
+    [data-theme="dark"] .tech-item p {
+      color: #d1d5db;
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+  <!-- El overlay se creará automáticamente por el script independiente -->
+
+  <div class="main-content" id="mainContent">
+    <!-- Header con menú hamburguesa -->
+    <header class="header-comunidad">
+      <div class="header-content">
+        <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+        <span class="header-title">CGN</span>
+        <span class="header-legend">Sin tiempo para descansos</span>
+      </div>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación">
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+      </button>
+      <nav class="menu-desplegable" id="menuDesplegable">
+        <ul>
+          <li><a href="/index.html">Inicio</a></li>
+          <li><a href="/faq.html">FAQ</a></li>
+          <li><a href="/socios.html">Socios</a></li>
+          <li><a href="/ajustes.html">Ajustes</a></li>
+          <li><a href="/contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <!-- Barra de progreso de scroll -->
+      <div id="scroll-progress-container">
+        <div id="scroll-progress-bar"></div>
+      </div>
+    </header>
+    
+    <div class="content-container">
+      <section class="demo-container">
+        <h1 class="page-title">
+          <i class="fas fa-rocket"></i> 
+          Ejemplo de Overlay Independiente
+        </h1>
+        
+        <div class="demo-section">
+          <h2 class="demo-subtitle">
+            <i class="fas fa-info-circle"></i>
+            ¿Cómo funciona?
+          </h2>
+          
+          <div class="demo-content">
+            <p class="demo-description">
+              Esta página demuestra el uso del overlay de carga independiente. El script se encarga de:
+            </p>
+            
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-icon">
+                  <i class="fas fa-search"></i>
+                </div>
+                <div class="feature-content">
+                  <h3>Detección Automática</h3>
+                  <p>Detecta automáticamente cuando el JavaScript principal ha terminado de cargar</p>
+                </div>
+              </div>
+              
+              <div class="feature-item">
+                <div class="feature-icon">
+                  <i class="fas fa-palette"></i>
+                </div>
+                <div class="feature-content">
+                  <h3>Efectos Modernos</h3>
+                  <p>Incluye efectos de aparición y desaparición con animaciones suaves</p>
+                </div>
+              </div>
+              
+              <div class="feature-item">
+                <div class="feature-icon">
+                  <i class="fas fa-moon"></i>
+                </div>
+                <div class="feature-content">
+                  <h3>Soporte de Temas</h3>
+                  <p>Se adapta automáticamente al tema claro/oscuro de la página</p>
+                </div>
+              </div>
+              
+              <div class="feature-item">
+                <div class="feature-icon">
+                  <i class="fas fa-code"></i>
+                </div>
+                <div class="feature-content">
+                  <h3>Fácil Implementación</h3>
+                  <p>Solo necesitas incluir el script en tu página HTML</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="demo-section">
+          <h2 class="demo-subtitle">
+            <i class="fas fa-cogs"></i>
+            Configuración
+          </h2>
+          
+          <div class="code-example">
+            <h3>Código de Implementación:</h3>
+            <pre><code>&lt;!-- Incluir el script del overlay independiente --&gt;
+&lt;script src="/pwa/overlay-carga-independiente.js"&gt;&lt;/script&gt;
+
+&lt;!-- El overlay se crea automáticamente --&gt;
+&lt;div class="main-content" id="mainContent"&gt;
+  &lt;!-- Tu contenido aquí --&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+          
+          <div class="api-section">
+            <h3>API Disponible:</h3>
+            <div class="api-methods">
+              <div class="method-item">
+                <code>window.independentLoadingOverlay.updateProgress(message, percentage)</code>
+                <p>Actualiza el mensaje de progreso del overlay</p>
+              </div>
+              
+              <div class="method-item">
+                <code>window.independentLoadingOverlay.hide()</code>
+                <p>Oculta el overlay con efecto de desaparición</p>
+              </div>
+              
+              <div class="method-item">
+                <code>window.independentLoadingOverlay.show()</code>
+                <p>Muestra el overlay nuevamente</p>
+              </div>
+              
+              <div class="method-item">
+                <code>window.independentLoadingOverlay.restart()</code>
+                <p>Reinicia completamente el overlay</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="demo-section">
+          <h2 class="demo-subtitle">
+            <i class="fas fa-flask"></i>
+            Pruebas Interactivas
+          </h2>
+          
+          <div class="test-buttons">
+            <button class="test-btn" onclick="testShowOverlay()">
+              <i class="fas fa-eye"></i>
+              Mostrar Overlay
+            </button>
+            
+            <button class="test-btn" onclick="testHideOverlay()">
+              <i class="fas fa-eye-slash"></i>
+              Ocultar Overlay
+            </button>
+            
+            <button class="test-btn" onclick="testUpdateProgress()">
+              <i class="fas fa-sync"></i>
+              Actualizar Progreso
+            </button>
+            
+            <button class="test-btn" onclick="testRestartOverlay()">
+              <i class="fas fa-redo"></i>
+              Reiniciar Overlay
+            </button>
+            
+            <button class="test-btn" onclick="testGetStatus()">
+              <i class="fas fa-info-circle"></i>
+              Ver Estado
+            </button>
+            
+            <button class="test-btn" onclick="testForceComplete()">
+              <i class="fas fa-bolt"></i>
+              Forzar Finalización
+            </button>
+          </div>
+          
+          <div class="test-info">
+            <p>
+              <i class="fas fa-lightbulb"></i>
+              <strong>Consejo:</strong> Usa estos botones para probar las diferentes funcionalidades del overlay independiente.
+            </p>
+          </div>
+        </div>
+        
+        <div class="demo-section">
+          <h2 class="demo-subtitle">
+            <i class="fas fa-chart-line"></i>
+            Características Técnicas
+          </h2>
+          
+          <div class="tech-features">
+            <div class="tech-item">
+              <h4><i class="fas fa-clock"></i> Timeout de Detección</h4>
+              <p>10 segundos máximo de espera para detectar el JavaScript principal</p>
+            </div>
+            
+            <div class="tech-item">
+              <h4><i class="fas fa-tachometer-alt"></i> Intervalo de Verificación</h4>
+              <p>Verifica cada 100ms si el sistema principal ha terminado</p>
+            </div>
+            
+            <div class="tech-item">
+              <h4><i class="fas fa-palette"></i> Efectos Visuales</h4>
+              <p>Animaciones suaves con backdrop-filter y transformaciones CSS</p>
+            </div>
+            
+            <div class="tech-item">
+              <h4><i class="fas fa-mobile-alt"></i> Responsive</h4>
+              <p>Completamente adaptable a todos los tamaños de pantalla</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Panel de acciones expandible -->
+    <div class="panel-acciones">
+      <div class="panel-expansion" id="panelExpansion">
+        <div class="panel-content">
+          <button class="action-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <i class="fas fa-arrow-up"></i>
+            <span>Arriba</span>
+          </button>
+          
+          <button class="action-btn" onclick="window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'})">
+            <i class="fas fa-arrow-down"></i>
+            <span>Abajo</span>
+          </button>
+          
+          <button class="action-btn" onclick="window.sharePage ? window.sharePage() : alert('Función de compartir no disponible')">
+            <i class="fas fa-share-alt"></i>
+            <span>Compartir</span>
+          </button>
+          
+          <button class="action-btn" onclick="window.print()">
+            <i class="fas fa-print"></i>
+            <span>Imprimir</span>
+          </button>
+        </div>
+      </div>
+      
+      <button class="view-more-btn" id="viewMoreBtn" onclick="window.togglePanel ? window.togglePanel() : null">
+        <i class="fas fa-ellipsis-h"></i>
+        <span id="viewMoreText">Ver más</span>
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-comunidad">
+      <div class="footer-content">
+        <p>&copy; <span id="currentYear">2022-2024</span> Comunidad Gaming Network. Todos los derechos reservados.</p>
+        <div class="footer-links">
+          <a href="/Legal/politica-de-privacidad.html">Privacidad</a>
+          <a href="/Legal/politica-de-cookies.html">Cookies</a>
+          <a href="/contacto.html">Contacto</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Script principal del proyecto -->
+  <script src="/pwa/javascript.js"></script>
+  
+  <!-- Scripts de prueba para el overlay -->
+  <script>
+    // Funciones de prueba para el overlay independiente
+    function testShowOverlay() {
+      if (window.independentLoadingOverlay) {
+        window.independentLoadingOverlay.showWithFade();
+        console.log('🧪 [Test] Overlay mostrado');
+      } else {
+        alert('Overlay independiente no disponible');
+      }
+    }
+    
+    function testHideOverlay() {
+      if (window.independentLoadingOverlay) {
+        window.independentLoadingOverlay.hide();
+        console.log('🧪 [Test] Overlay ocultado');
+      } else {
+        alert('Overlay independiente no disponible');
+      }
+    }
+    
+    function testUpdateProgress() {
+      if (window.independentLoadingOverlay) {
+        const messages = [
+          'Procesando datos...',
+          'Cargando recursos...',
+          'Inicializando componentes...',
+          'Verificando conexión...',
+          'Finalizando carga...'
+        ];
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        const randomPercentage = Math.floor(Math.random() * 100);
+        
+        window.independentLoadingOverlay.updateProgress(randomMessage, randomPercentage);
+        console.log(`🧪 [Test] Progreso actualizado: ${randomMessage} (${randomPercentage}%)`);
+      } else {
+        alert('Overlay independiente no disponible');
+      }
+    }
+    
+        function testRestartOverlay() {
+        if (window.independentLoadingOverlay) {
+            window.independentLoadingOverlay.restart();
+            console.log('🧪 [Test] Overlay reiniciado');
+        } else {
+            alert('Overlay independiente no disponible');
+        }
+    }
+    
+    function testGetStatus() {
+        if (window.independentLoadingOverlay && window.independentLoadingOverlay.getMainScriptStatus) {
+            const status = window.independentLoadingOverlay.getMainScriptStatus();
+            console.log('📊 [Test] Estado del JS principal:', status);
+            alert(`Estado del JS Principal:\n\n` +
+                  `Detectado: ${status.detected}\n` +
+                  `Completado: ${status.completed}\n` +
+                  `Global Completado: ${status.globalCompleted}\n` +
+                  `Tiempo de Completación: ${status.completionTime ? new Date(status.completionTime).toLocaleTimeString() : 'N/A'}\n` +
+                  `Body Loading Active: ${status.bodyLoadingActive}\n` +
+                  `Overlay Principal Existe: ${status.mainOverlayExists}`);
+        } else {
+            alert('Función de estado no disponible');
+        }
+    }
+    
+    function testForceComplete() {
+        if (window.independentLoadingOverlay && window.independentLoadingOverlay.forceComplete) {
+            window.independentLoadingOverlay.forceComplete();
+            console.log('🧪 [Test] Finalización forzada');
+        } else {
+            alert('Función de finalización forzada no disponible');
+        }
+    }
+    
+    // Mostrar información de estado en la consola
+    console.log('🚀 [Ejemplo] Página de ejemplo cargada');
+    console.log('📋 [Ejemplo] Overlay independiente disponible:', !!window.independentLoadingOverlay);
+  </script>
+</body>
+</html> 

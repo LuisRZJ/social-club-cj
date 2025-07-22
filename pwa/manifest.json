@@ -1,0 +1,16 @@
+{
+  "name": "Comunidad CGN",
+  "short_name": "CGN App",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFD1A9",
+  "theme_color": "#FFD1A9",
+  "description": "Aplicación Web Progresiva de la comunidad CGN",
+  "icons": [
+    {
+      "src": "/icons/Logo-CGN.avif",
+      "sizes": "512x512",
+      "type": "image/avif"
+    }
+  ]
+}

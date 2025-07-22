@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador de Diferencias de Código | CGN</title>
+    <link rel="manifest" href="/pwa/manifest.json">
+    <meta name="theme-color" content="#FFD1A9">
+    <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilos base consistentes */
+        html, body {
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF5EB;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+            color: #1F2937;
+        }
+        
+        .header-comunidad {
+            background-color: #FFF5EB;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .header-logo {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .header-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #1F2937;
+        }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            flex: 1;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #4B5563;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: #FFD1A9;
+            box-shadow: 0 0 0 3px rgba(255, 209, 169, 0.1);
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .btn-analyze {
+            background-color: #FFD1A9;
+            color: #1F2937;
+            font-weight: 600;
+            padding: 1rem 2rem;
+            border-radius: 0.375rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-analyze:hover {
+            background-color: #ffb07a;
+            transform: translateY(1px);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-analyze:disabled {
+            background-color: #D1D5DB;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .results-container {
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .results-header {
+            background-color: #F3F4F6;
+            padding: 1rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+            border-bottom: 2px solid #E5E7EB;
+        }
+        
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin: 0;
+        }
+        
+        .diff-section {
+            margin-bottom: 2rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .diff-header {
+            background-color: #F9FAFB;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #E5E7EB;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .diff-content {
+            padding: 1rem;
+            background-color: white;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .diff-line {
+            padding: 0.25rem 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            border-radius: 0.25rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .diff-added {
+            background-color: #D1FAE5;
+            color: #065F46;
+            border-left: 4px solid #10B981;
+        }
+        
+        .diff-removed {
+            background-color: #FEE2E2;
+            color: #991B1B;
+            border-left: 4px solid #EF4444;
+        }
+        
+        .diff-modified {
+            background-color: #FEF3C7;
+            color: #92400E;
+            border-left: 4px solid #F59E0B;
+        }
+        
+        .diff-unchanged {
+            background-color: #F9FAFB;
+            color: #6B7280;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: #F9FAFB;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            border: 1px solid #E5E7EB;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1F2937;
+        }
+        
+        .stat-label {
+            color: #6B7280;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            border: 4px solid #F3F4F6;
+            border-top: 4px solid #FFD1A9;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background-color: #FEE2E2;
+            color: #991B1B;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid #EF4444;
+        }
+        
+        .success-message {
+            background-color: #D1FAE5;
+            color: #065F46;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid #10B981;
+        }
+
+        /* Estilos para la vista previa del código */
+        .preview-section {
+            margin: 2rem 0;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .preview-header {
+            background-color: #F9FAFB;
+            padding: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-header h3 {
+            margin: 0;
+            color: #1F2937;
+            font-size: 1.2rem;
+        }
+
+        .copy-button {
+            background-color: #3B82F6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-button:hover {
+            background-color: #2563EB;
+        }
+
+        .code-preview {
+            background-color: #1F2937;
+            padding: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .result-code {
+            color: #F9FAFB;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .changes-details {
+            margin-top: 2rem;
+        }
+
+        .change-item {
+            background-color: #F9FAFB;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #3B82F6;
+        }
+
+        .change-title {
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .change-description {
+            color: #6B7280;
+            font-size: 0.9rem;
+        }
+        
+        .file-input-container {
+            margin-bottom: 1rem;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-input-label {
+            display: inline-block;
+            background-color: #F3F4F6;
+            color: #374151;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            border: 1px solid #D1D5DB;
+            transition: all 0.3s ease;
+        }
+        
+        .file-input-label:hover {
+            background-color: #E5E7EB;
+        }
+        
+        .paste-button {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .paste-button:hover {
+            background-color: #BFDBFE;
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .diff-content {
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header-comunidad">
+        <div class="header-content">
+            <img src="/icons/Logo-CGN.avif" alt="Logo CGN" class="header-logo">
+            <h1 class="header-title">Analizador de Diferencias</h1>
+        </div>
+        <a href="/" style="text-decoration: none; color: #1F2937;">
+            <i class="fas fa-home" style="font-size: 1.5rem;"></i>
+        </a>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <h1>Actualizador Automático de Código</h1>
+        <p class="subtitle">
+            Aplica automáticamente las mejoras detectadas de una página actualizada a tu código base
+        </p>
+
+        <!-- Formulario de entrada -->
+        <div class="form-section">
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-file-code"></i> Código Base (Tu página actual)
+                </label>
+                <div class="file-input-container">
+                    <input type="file" id="fileInput1" class="file-input" accept=".html,.htm">
+                    <label for="fileInput1" class="file-input-label">
+                        <i class="fas fa-upload"></i> Cargar archivo
+                    </label>
+                    <button type="button" class="paste-button" onclick="pasteFromClipboard('code1')">
+                        <i class="fas fa-paste"></i> Pegar del portapapeles
+                    </button>
+                </div>
+                <textarea 
+                    id="code1" 
+                    class="form-textarea" 
+                    placeholder="Pega aquí tu código HTML base que quieres actualizar..."
+                ></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-code"></i> Código con Mejoras (Página actualizada)
+                </label>
+                <div class="file-input-container">
+                    <input type="file" id="fileInput2" class="file-input" accept=".html,.htm">
+                    <label for="fileInput2" class="file-input-label">
+                        <i class="fas fa-upload"></i> Cargar archivo
+                    </label>
+                    <button type="button" class="paste-button" onclick="pasteFromClipboard('code2')">
+                        <i class="fas fa-paste"></i> Pegar del portapapeles
+                    </button>
+                </div>
+                <textarea 
+                    id="code2" 
+                    class="form-textarea" 
+                    placeholder="Pega aquí el código HTML con las mejoras que quieres aplicar..."
+                ></textarea>
+            </div>
+        </div>
+
+        <!-- Botón de análisis -->
+        <div class="button-container">
+            <button id="analyzeBtn" class="btn-analyze" onclick="applyImprovements()">
+                <i class="fas fa-magic"></i> Aplicar Mejoras Automáticamente
+            </button>
+        </div>
+
+        <!-- Indicador de carga -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Analizando y aplicando mejoras...</p>
+        </div>
+
+        <!-- Contenedor de resultados -->
+        <div id="resultsContainer" class="results-container">
+            <div class="results-header">
+                <h2 class="results-title">Código Actualizado Generado</h2>
+            </div>
+
+            <!-- Estadísticas de cambios aplicados -->
+            <div id="statsContainer" class="stats-container">
+                <!-- Las estadísticas se generarán dinámicamente -->
+            </div>
+
+            <!-- Vista previa del código resultante -->
+            <div class="preview-section">
+                <div class="preview-header">
+                    <h3><i class="fas fa-eye"></i> Vista Previa del Código Resultante</h3>
+                    <button id="copyBtn" class="copy-button" onclick="copyResultCode()">
+                        <i class="fas fa-copy"></i> Copiar Código
+                    </button>
+                </div>
+                <div class="code-preview">
+                    <pre id="resultCode" class="result-code"></pre>
+                </div>
+            </div>
+
+            <!-- Detalles de cambios aplicados -->
+            <div id="changesDetails">
+                <!-- Los detalles se generarán dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let currentAnalysis = null;
+
+        // Función para pegar desde el portapapeles
+        async function pasteFromClipboard(textareaId) {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById(textareaId).value = text;
+                showMessage('Código pegado exitosamente', 'success');
+            } catch (err) {
+                showMessage('Error al acceder al portapapeles. Asegúrate de que el sitio tenga permisos.', 'error');
+            }
+        }
+
+        // Función para mostrar mensajes
+        function showMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
+            messageDiv.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-triangle' : 'check-circle'}"></i> ${message}`;
+            
+            const container = document.querySelector('.main-container');
+            container.insertBefore(messageDiv, container.firstChild);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        // Función para aplicar mejoras
+        function applyImprovements() {
+            const code1 = document.getElementById('code1').value.trim();
+            const code2 = document.getElementById('code2').value.trim();
+            
+            if (!code1 || !code2) {
+                showMessage('Por favor, ingresa código en ambos campos', 'error');
+                return;
+            }
+
+            // Mostrar carga
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultsContainer').style.display = 'none';
+            document.getElementById('analyzeBtn').disabled = true;
+
+            // Simular procesamiento (en un caso real, esto sería más complejo)
+            setTimeout(() => {
+                const updatedCode = applyCodeImprovements(code1, code2);
+                displayResults(updatedCode);
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('resultsContainer').style.display = 'block';
+                document.getElementById('analyzeBtn').disabled = false;
+            }, 1500);
+        }
+
+        // Función para aplicar mejoras al código
+        function applyCodeImprovements(code1, code2) {
+            let updatedCode = code1; // Iniciar con el código base
+            const changesApplied = [];
+
+            // Extraer secciones de código
+            const sections1 = extractCodeSections(code1);
+            const sections2 = extractCodeSections(code2);
+
+            // Aplicar mejoras HTML
+            const htmlChanges = applyHTMLImprovements(updatedCode, sections2.html);
+            updatedCode = htmlChanges.code;
+            changesApplied.push(...htmlChanges.changes);
+
+            // Aplicar mejoras CSS
+            const cssChanges = applyCSSImprovements(updatedCode, sections2.css);
+            updatedCode = cssChanges.code;
+            changesApplied.push(...cssChanges.changes);
+
+            // Aplicar mejoras JavaScript
+            const jsChanges = applyJSImprovements(updatedCode, sections2.js);
+            updatedCode = jsChanges.code;
+            changesApplied.push(...jsChanges.changes);
+
+            return {
+                code: updatedCode,
+                changes: changesApplied
+            };
+        }
+
+        // Función para extraer secciones de código
+        function extractCodeSections(code) {
+            const sections = {
+                html: '',
+                css: '',
+                js: ''
+            };
+
+            // Extraer HTML (todo lo que no esté en <style> o <script>)
+            const htmlMatch = code.match(/<html[^>]*>([\s\S]*?)<\/html>/i);
+            if (htmlMatch) {
+                sections.html = htmlMatch[1];
+            } else {
+                sections.html = code;
+            }
+
+            // Extraer CSS
+            const cssMatches = code.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
+            if (cssMatches) {
+                sections.css = cssMatches.map(match => {
+                    const content = match.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+                    return content ? content[1] : '';
+                }).join('\n');
+            }
+
+            // Extraer JavaScript
+            const jsMatches = code.match(/<script[^>]*>([\s\S]*?)<\/script>/gi);
+            if (jsMatches) {
+                sections.js = jsMatches.map(match => {
+                    const content = match.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
+                    return content ? content[1] : '';
+                }).join('\n');
+            }
+
+            return sections;
+        }
+
+        // Función para aplicar mejoras HTML
+        function applyHTMLImprovements(baseCode, improvedHTML) {
+            const changes = [];
+            let updatedCode = baseCode;
+
+            // Buscar elementos HTML que no existen en el código base
+            const htmlElements = extractHTMLModules(improvedHTML);
+            
+            htmlElements.forEach(element => {
+                // Verificar si el elemento ya existe en el código base
+                const elementExists = baseCode.includes(element.content);
+                
+                if (!elementExists) {
+                    // Insertar el elemento en una posición apropiada
+                    updatedCode = insertHTMLElement(updatedCode, element);
+                    changes.push({
+                        type: 'HTML',
+                        action: 'Añadido',
+                        description: element.description,
+                        element: element.name
+                    });
+                }
+            });
+
+            return { code: updatedCode, changes };
+        }
+
+        // Función para aplicar mejoras CSS
+        function applyCSSImprovements(baseCode, improvedCSS) {
+            const changes = [];
+            let updatedCode = baseCode;
+
+            // Extraer reglas CSS de las mejoras
+            const cssRules = extractCSSModules(improvedCSS);
+            
+            cssRules.forEach(rule => {
+                // Verificar si la regla ya existe en el código base
+                const ruleExists = baseCode.includes(rule.content);
+                
+                if (!ruleExists) {
+                    // Insertar la regla CSS en el head o en un tag style
+                    updatedCode = insertCSSRule(updatedCode, rule);
+                    changes.push({
+                        type: 'CSS',
+                        action: 'Añadido',
+                        description: rule.description,
+                        element: rule.name
+                    });
+                }
+            });
+
+            return { code: updatedCode, changes };
+        }
+
+        // Función para aplicar mejoras JavaScript
+        function applyJSImprovements(baseCode, improvedJS) {
+            const changes = [];
+            let updatedCode = baseCode;
+
+            // Extraer funciones y objetos JS de las mejoras
+            const jsModules = extractJSModules(improvedJS);
+            
+            jsModules.forEach(module => {
+                // Verificar si el módulo ya existe en el código base
+                const moduleExists = baseCode.includes(module.content);
+                
+                if (!moduleExists) {
+                    // Insertar el módulo JS antes del cierre del body
+                    updatedCode = insertJSModule(updatedCode, module);
+                    changes.push({
+                        type: 'JavaScript',
+                        action: 'Añadido',
+                        description: module.description,
+                        element: module.name
+                    });
+                }
+            });
+
+            return { code: updatedCode, changes };
+        }
+
+        // Función para insertar elemento HTML
+        function insertHTMLElement(baseCode, element) {
+            // Buscar el body para insertar elementos HTML
+            const bodyMatch = baseCode.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+            
+            if (bodyMatch) {
+                const bodyContent = bodyMatch[1];
+                const newBodyContent = bodyContent + '\n    ' + element.content;
+                return baseCode.replace(bodyMatch[0], `<body>${newBodyContent}\n</body>`);
+            }
+            
+            return baseCode;
+        }
+
+        // Función para insertar regla CSS
+        function insertCSSRule(baseCode, rule) {
+            // Buscar tag style existente
+            const styleMatch = baseCode.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+            
+            if (styleMatch) {
+                // Añadir la regla al style existente
+                const styleContent = styleMatch[1];
+                const newStyleContent = styleContent + '\n' + rule.content;
+                return baseCode.replace(styleMatch[0], `<style>\n${newStyleContent}\n</style>`);
+            } else {
+                // Crear nuevo tag style en el head
+                const headMatch = baseCode.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
+                
+                if (headMatch) {
+                    const headContent = headMatch[1];
+                    const newHeadContent = headContent + '\n<style>\n' + rule.content + '\n</style>';
+                    return baseCode.replace(headMatch[0], `<head>${newHeadContent}\n</head>`);
+                }
+            }
+            
+            return baseCode;
+        }
+
+        // Función para insertar módulo JavaScript
+        function insertJSModule(baseCode, module) {
+            // Buscar tag script existente
+            const scriptMatch = baseCode.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
+            
+            if (scriptMatch) {
+                // Añadir el módulo al script existente
+                const scriptContent = scriptMatch[1];
+                const newScriptContent = scriptContent + '\n' + module.content;
+                return baseCode.replace(scriptMatch[0], `<script>\n${newScriptContent}\n</script>`);
+            } else {
+                // Crear nuevo tag script antes del cierre del body
+                const bodyCloseMatch = baseCode.match(/<\/body>/i);
+                
+                if (bodyCloseMatch) {
+                    return baseCode.replace('</body>', `<script>\n${module.content}\n</script>\n</body>`);
+                }
+            }
+            
+            return baseCode;
+        }
+
+        // Función para extraer módulos HTML
+        function extractHTMLModules(htmlCode) {
+            const modules = [];
+            
+            // Extraer elementos principales (div, section, article, etc.)
+            const mainElements = htmlCode.match(/<(div|section|article|header|footer|main|nav|aside)[^>]*>[\s\S]*?<\/\1>/gi);
+            if (mainElements) {
+                mainElements.forEach((element, index) => {
+                    const tagName = element.match(/<(\w+)/i)[1];
+                    const id = element.match(/id=["']([^"']+)["']/i);
+                    const className = element.match(/class=["']([^"']+)["']/i);
+                    
+                    modules.push({
+                        name: `${tagName}${id ? `#${id[1]}` : ''}${className ? `.${className[1].split(' ')[0]}` : ''}`,
+                        type: 'HTML Element',
+                        content: element.trim(),
+                        description: `Elemento ${tagName}${id ? ` con ID "${id[1]}"` : ''}${className ? ` con clase "${className[1]}"` : ''}`
+                    });
+                });
+            }
+
+            // Extraer formularios
+            const forms = htmlCode.match(/<form[^>]*>[\s\S]*?<\/form>/gi);
+            if (forms) {
+                forms.forEach((form, index) => {
+                    const action = form.match(/action=["']([^"']+)["']/i);
+                    modules.push({
+                        name: `Form${action ? `-${action[1]}` : `-${index}`}`,
+                        type: 'HTML Form',
+                        content: form.trim(),
+                        description: `Formulario${action ? ` con acción "${action[1]}"` : ''}`
+                    });
+                });
+            }
+
+            // Extraer listas
+            const lists = htmlCode.match(/<(ul|ol)[^>]*>[\s\S]*?<\/\1>/gi);
+            if (lists) {
+                lists.forEach((list, index) => {
+                    const tagName = list.match(/<(\w+)/i)[1];
+                    modules.push({
+                        name: `${tagName.toUpperCase()}-List-${index}`,
+                        type: 'HTML List',
+                        content: list.trim(),
+                        description: `Lista ${tagName === 'ul' ? 'no ordenada' : 'ordenada'}`
+                    });
+                });
+            }
+
+            return modules;
+        }
+
+        // Función para extraer módulos CSS
+        function extractCSSModules(cssCode) {
+            const modules = [];
+            
+            // Extraer reglas CSS completas
+            const cssRules = cssCode.match(/[^}]+{[^}]+}/g);
+            if (cssRules) {
+                cssRules.forEach((rule, index) => {
+                    const selector = rule.match(/^([^{]+)/);
+                    const properties = rule.match(/{([^}]+)}/);
+                    
+                    if (selector && properties) {
+                        const selectorText = selector[1].trim();
+                        const isMediaQuery = selectorText.includes('@media');
+                        const isKeyframe = selectorText.includes('@keyframes');
+                        
+                        let moduleType = 'CSS Rule';
+                        if (isMediaQuery) moduleType = 'CSS Media Query';
+                        else if (isKeyframe) moduleType = 'CSS Animation';
+                        
+                        modules.push({
+                            name: selectorText.replace(/[^\w-]/g, '-').substring(0, 50),
+                            type: moduleType,
+                            content: rule.trim(),
+                            description: `${moduleType}: ${selectorText}`
+                        });
+                    }
+                });
+            }
+
+            // Extraer variables CSS
+            const cssVars = cssCode.match(/:root\s*{[^}]+}/gi);
+            if (cssVars) {
+                cssVars.forEach((vars, index) => {
+                    modules.push({
+                        name: 'CSS-Variables',
+                        type: 'CSS Variables',
+                        content: vars.trim(),
+                        description: 'Variables CSS personalizadas'
+                    });
+                });
+            }
+
+            return modules;
+        }
+
+        // Función para extraer módulos JavaScript
+        function extractJSModules(jsCode) {
+            const modules = [];
+            
+            // Extraer funciones
+            const functions = jsCode.match(/function\s+(\w+)\s*\([^)]*\)\s*{[\s\S]*?}/g);
+            if (functions) {
+                functions.forEach((func, index) => {
+                    const funcName = func.match(/function\s+(\w+)/);
+                    if (funcName) {
+                        modules.push({
+                            name: funcName[1],
+                            type: 'JavaScript Function',
+                            content: func.trim(),
+                            description: `Función: ${funcName[1]}`
+                        });
+                    }
+                });
+            }
+
+            // Extraer arrow functions
+            const arrowFunctions = jsCode.match(/const\s+(\w+)\s*=\s*\([^)]*\)\s*=>\s*{[\s\S]*?}/g);
+            if (arrowFunctions) {
+                arrowFunctions.forEach((func, index) => {
+                    const funcName = func.match(/const\s+(\w+)/);
+                    if (funcName) {
+                        modules.push({
+                            name: funcName[1],
+                            type: 'JavaScript Arrow Function',
+                            content: func.trim(),
+                            description: `Arrow Function: ${funcName[1]}`
+                        });
+                    }
+                });
+            }
+
+            // Extraer event listeners
+            const eventListeners = jsCode.match(/addEventListener\s*\([^)]+\)/g);
+            if (eventListeners) {
+                eventListeners.forEach((listener, index) => {
+                    modules.push({
+                        name: `Event-Listener-${index}`,
+                        type: 'JavaScript Event Listener',
+                        content: listener.trim(),
+                        description: `Event Listener: ${listener}`
+                    });
+                });
+            }
+
+            // Extraer objetos
+            const objects = jsCode.match(/const\s+(\w+)\s*=\s*{[\s\S]*?};/g);
+            if (objects) {
+                objects.forEach((obj, index) => {
+                    const objName = obj.match(/const\s+(\w+)/);
+                    if (objName) {
+                        modules.push({
+                            name: objName[1],
+                            type: 'JavaScript Object',
+                            content: obj.trim(),
+                            description: `Objeto: ${objName[1]}`
+                        });
+                    }
+                });
+            }
+
+            return modules;
+        }
+
+        // Función para escapar HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Función para mostrar resultados
+        function displayResults(result) {
+            // Mostrar estadísticas
+            displayStats(result.changes);
+
+            // Mostrar código resultante
+            document.getElementById('resultCode').textContent = result.code;
+
+            // Mostrar detalles de cambios
+            displayChangesDetails(result.changes);
+        }
+
+        // Función para mostrar estadísticas
+        function displayStats(changes) {
+            const statsContainer = document.getElementById('statsContainer');
+            
+            const htmlChanges = changes.filter(c => c.type === 'HTML').length;
+            const cssChanges = changes.filter(c => c.type === 'CSS').length;
+            const jsChanges = changes.filter(c => c.type === 'JavaScript').length;
+            
+            statsContainer.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${htmlChanges}</div>
+                    <div class="stat-label">Elementos HTML Añadidos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${cssChanges}</div>
+                    <div class="stat-label">Reglas CSS Añadidas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${jsChanges}</div>
+                    <div class="stat-label">Funciones JS Añadidas</div>
+                </div>
+            `;
+        }
+
+        // Función para mostrar detalles de cambios
+        function displayChangesDetails(changes) {
+            const changesContainer = document.getElementById('changesDetails');
+            
+            if (changes.length === 0) {
+                changesContainer.innerHTML = `
+                    <div class="change-item">
+                        <div class="change-title">No se aplicaron cambios</div>
+                        <div class="change-description">
+                            No se detectaron mejoras nuevas para aplicar al código base.
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            let changesHTML = '<div class="changes-details">';
+            changesHTML += '<h3 style="color: #1F2937; margin-bottom: 1rem;">Detalles de Cambios Aplicados</h3>';
+            
+            changes.forEach(change => {
+                changesHTML += `
+                    <div class="change-item">
+                        <div class="change-title">
+                            <i class="fas fa-${getChangeIcon(change.type)}"></i> 
+                            ${change.action} - ${change.type}
+                        </div>
+                        <div class="change-description">
+                            <strong>${change.element}</strong>: ${change.description}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            changesHTML += '</div>';
+            changesContainer.innerHTML = changesHTML;
+        }
+
+        // Función para obtener icono según el tipo de cambio
+        function getChangeIcon(type) {
+            switch(type) {
+                case 'HTML': return 'code';
+                case 'CSS': return 'palette';
+                case 'JavaScript': return 'cog';
+                default: return 'plus';
+            }
+        }
+
+        // Función para copiar el código resultante
+        function copyResultCode() {
+            const resultCode = document.getElementById('resultCode').textContent;
+            
+            navigator.clipboard.writeText(resultCode).then(() => {
+                showMessage('Código copiado al portapapeles exitosamente', 'success');
+                
+                // Cambiar temporalmente el texto del botón
+                const copyBtn = document.getElementById('copyBtn');
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> ¡Copiado!';
+                copyBtn.style.backgroundColor = '#10B981';
+                
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                    copyBtn.style.backgroundColor = '#3B82F6';
+                }, 2000);
+            }).catch(err => {
+                showMessage('Error al copiar el código', 'error');
+            });
+        }
+
+        // Event listeners para archivos
+        document.getElementById('fileInput1').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('code1').value = e.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        document.getElementById('fileInput2').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('code2').value = e.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Event listener para Enter en textareas
+        document.getElementById('code1').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                applyImprovements();
+            }
+        });
+
+        document.getElementById('code2').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                applyImprovements();
+            }
+        });
+    </script>
+    
+</body>
+</html>

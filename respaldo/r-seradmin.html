@@ -1,0 +1,641 @@
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SBF35VN6QD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SBF35VN6QD');
+    </script>
+  
+    <!-- Google ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2137167581893293"
+            crossorigin="anonymous"></script>
+  
+    <!-- iconos bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  
+    <!-- iconos font awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <script src="/respaldo/Overlay-desc.js"></script>
+
+    <!-- Fuente Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+    <style>
+      /* Estilos base con fuente Inter */
+      body {
+        font-family: 'Inter', sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        background: linear-gradient(90deg, #e8e8e8, #f5ffff);
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+  
+      /* Encabezados */
+      h1, h2, h3 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+  
+      /* Párrafos */
+      p {
+        margin-bottom: 15px;
+      }
+  
+      /* Enlaces */
+      a {
+        color: #007bff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+  
+      a:hover {
+        color: #0056b3;
+      }
+  
+      /* Estilos específicos */
+      footer a:hover {
+        border-bottom: 2px solid black;
+      }
+  
+      .post-title.entry-title {
+        text-align: center;
+      }
+  
+      /* Botones */
+      .boton {
+        background-color: white;
+        color: black;
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+      }
+  
+      .btn-disc {
+        display: inline-block;
+        padding: 10px 20px;
+        border: 2px solid purple;
+        border-radius: 20px;
+        background-color: transparent;
+        color: MediumPurple;
+        font-size: 16px;
+        text-decoration: none;
+        text-align: center;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+        transition: background-color 0.3s, color 0.3s;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+      }
+  
+      .btn-disc:hover {
+        background-color: rgba(160, 110, 230, 0.5);
+        color: white;
+      }
+  
+      .copi {
+        background-color: #008CBA;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+      }
+  
+      .download-btn {
+        background-color: #3CB371;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+      }
+  
+      .form {
+        background-color: #673AB7;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px #888888;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+      }
+  
+      /* Títulos de página */
+      .h1 {
+        font-size: 2.1em;
+        text-align: center;
+        background: linear-gradient(to right, Crimson 20%, black 40%, red 100%);
+        -webkit-background-clip: text;
+        color: transparent;
+        padding: 20px;
+        margin: 20px 0;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+      }
+  
+      .h2-cont {
+        font-size: 2.5em;
+        text-align: center;
+        background: linear-gradient(to right, #0D6EFD 0%, #0DCAF0 50%, #0050EF 100%);
+        -webkit-background-clip: text;
+        color: transparent;
+        padding: 10px;
+        margin: 20px 0 15px 0;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+      }
+  
+      .h2-faq {
+        font-size: 2.5em;
+        text-align: center;
+        background: linear-gradient(to right, #FA6800 0%, #FFD700 50%, #FF8C00 100%);
+        -webkit-background-clip: text;
+        color: transparent;
+        padding: 10px;
+        margin: 20px 0 15px 0;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+      }
+  
+      /* Texto solo visible en la vista previa */
+      .hidden {
+        display: none;
+      }
+  
+      /* Listas */
+      ol, ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+  
+      /* Imágenes */
+      .imagen-redondeada {
+        border-radius: 20px;
+      }
+  
+      /* Subrayados */
+      .underline1 {
+        text-decoration: underline;
+        text-decoration-color: orange;
+      }
+  
+      /* Márgenes */
+      .sin-margen-superior {
+        margin-top: 0;
+      }
+  
+      /* Línea horizontal */
+      hr {
+        border: 0;
+        height: 1px;
+        background: #333;
+        background-image: linear-gradient(to right, #ccc, #333, #ccc);
+        margin: 25px 0;
+      }
+  
+      /* Menú índice */
+      .dropbtn {
+        background-color: #3498db;
+        color: white;
+        padding: 12px 20px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        margin-bottom: 10px;
+      }
+  
+      .dropdown {
+        margin: 20px 0;
+      }
+  
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 200px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+  
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        transition: background-color 0.3s;
+      }
+  
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+  
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+  
+      /* Secciones */
+      section {
+        margin-bottom: 30px;
+        padding: 25px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+  
+      #seccion1, #seccion2, #seccion3, #seccion4 {
+        scroll-margin-top: 80px;
+        transition: all 0.3s ease;
+      }
+  
+      #seccion1.resaltado, #seccion2.resaltado2, #seccion3.resaltado3, #seccion4.resaltado4 {
+        background-color: #f0f0f0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      }
+  
+      /* Detalles desplegables */
+      details {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        background-color: white;
+      }
+  
+      details[open] {
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+  
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+        padding: 5px 0;
+        font-family: 'Inter', sans-serif;
+        display: list-item;
+      }
+  
+      /* Barra de progreso */
+      .progress-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        z-index: 1000;
+        background-color: rgba(0,0,0,0.1);
+      }
+  
+      .progress-bar {
+        height: 100%;
+        background-color: #ff0000;
+        width: 0;
+        transition: width 0.1s ease-in-out;
+      }
+  
+      /* Tiempo de lectura */
+      .reading-time {
+        text-align: right;
+        margin-bottom: 15px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+      }
+  
+      .reading-time i {
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <!-- Barra de progreso -->
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  
+    <div id="top"></div>
+    <div id="spinner" class="spinner"></div>
+  
+    <!-- Título principal -->
+    <h1 class="h1">SER ADMINISTRADOR</h1>
+  
+    <!-- Tiempo de lectura -->
+    <div class="reading-time">
+      <p><i class="bi bi-clock"></i> <b><span style="color:green">15</span> minutos.</b></p>
+    </div>
+  
+    <!-- Menú índice -->
+    <div class="dropdown">
+      <button class="dropbtn">Índice</button>
+      <div class="dropdown-content">
+        <a href="#seccion1" onclick="resaltarSeccion()"><i class="bi bi-journal-bookmark-fill"></i> Introducción</a>
+        <hr>
+        <a href="#seccion2" onclick="resaltarSeccion2()"><i class="bi bi-ubuntu"></i> Áreas de operación</a>
+        <hr>
+        <a href="#seccion3" onclick="resaltarSeccion3()"><i class="bi bi-back"></i> Beneficios y requisitos</a>
+        <hr>
+        <a href="#seccion4" onclick="resaltarSeccion4()"><i class="bi bi-person-fill-add"></i> Proceso de selección</a>
+      </div>
+    </div>
+  
+    <!-- Sección 1 -->
+    <section id="seccion1">
+      <h1>Los administradores</h1>
+  
+      <p><strong>Bienvenidos a la sección dedicada a los administradores de nuestra comunidad.</strong> En este espacio, nos proponemos resaltar la trascendental función que desempeñan los administradores en la configuración y mantenimiento de un entorno digital seguro y enriquecedor. Su papel va más allá de la moderación, siendo fundamentales en la creación de una experiencia positiva para cada miembro.</p>
+  
+      <p><strong>¿Quieres ser administrador?</strong> Buenas noticias, además de hablar sobre todo lo relacionado con nuestros administradores, <u class="underline1">¡también puedes descubrir lo que se necesita para ser uno!</u> <br>
+      Aquí se hablará sobre todo aquello que necesitas para ser el próximo administrador. Desde los requisitos básicos hasta los beneficios exclusivos que tendrás cuando seas un administrador, así que no esperes más, ¡tu oportunidad esta aquí!</p>
+  
+      <p><strong>¿Interesado en conocer las reglas de los administradores?</strong> Así es. En nuestra comunidad, los administradores también tienen reglas específicas que respetar, <u class="underline1">creemos que es ideal que los administradores también tengan reglas específicas para respetar para procurar mantener la calidad del personal, asegurarnos de no tener administradores corruptos y, en definitiva, que tu sepas que es lo que se espera de ellos</u>.</p>
+  
+      <p><strong>¿Encontraste a un administrador corrupto?</strong> Los administradores tienen una responsabilidad muy grande en la comunidad, no vamos a tolerar cualquier mínimo acto de corrupción del personal. Tenemos reglas claras sobre lo que los administradores pueden y no hacer, <u class="underline1">así que si notas que un administrador está abusando de su posición como administrador no dudes ni un momento en reportarlo</u>, queremos que la comunidad sea un espacio libre de una administración ineficaz. <br>
+      Mas adelante te daremos más información hacerca de este importante tema.</p>
+    </section>
+  
+    <!-- Sección 2 -->
+    <section id="seccion2">
+      <h2>Áreas de operación</h2>
+  
+      <p><strong>Los administradores actúan como guardianes de la integridad de nuestra comunidad</strong>, asumiendo responsabilidades clave que abarcan desde la moderación de contenidos hasta la gestión de roles. Detallaremos meticulosamente estas tareas esenciales y exploraremos las diversas áreas en las que desempeñan un papel fundamental.</p>
+  
+      <p><strong>Pero antes, ¿Porque deverías conocer esto?</strong> <br>
+      Comprender las áreas de operación de nuestros administradores es esencial para construir una comunidad sólida y transparente. Aquí te explicamos por qué este conocimiento beneficia a todos los usuarios:<br><br>
+  
+      <strong>Has click en alguna de las opciones para saber más.</strong></p>
+  
+      <details>
+        <summary style="color:dodgerblue">Claridad en las espectativas</summary>
+        <hr>
+        <p>Conocer las áreas específicas en las que operan los administradores proporciona claridad sobre sus funciones y responsabilidades. Esto ayuda a los miembros a entender qué esperar y cómo interactuar de manera constructiva en diferentes contextos del servidor.</p>
+      </details>
+  
+      <details>
+        <summary style="color:dodgerblue">Facilita la comunicación</summary>
+        <hr>
+        <p>La transparencia en las áreas de operación fomenta una comunicación más efectiva. Los usuarios pueden dirigirse a los administradores con mayor precisión, sabiendo quién es el punto focal para consultas o problemas relacionados con roles, moderación, eventos, entre otros.</p>
+      </details>
+  
+      <details>
+        <summary style="color:dodgerblue">Optimización de recursos</summary>
+        <hr>
+        <p>Al conocer las áreas específicas de enfoque de los administradores, la comunidad puede optimizar recursos y esfuerzos. Esto evita malentendidos y asegura que las consultas se dirijan al administrador más capacitado para abordarlas, agilizando así el proceso de resolución.</p>
+      </details>
+  
+      <details>
+        <summary style="color:dodgerblue">Empoderamiento de la comunidad</summary>
+        <hr>
+        <p>La información sobre las áreas de operación empodera a la comunidad. Los miembros pueden participar más activamente al comprender cómo contribuir de manera efectiva y cómo colaborar con los administradores para mejorar la experiencia general en la comunidad.</p>
+      </details>
+  
+      <details>
+        <summary style="color:dodgerblue">Creación de una comunidad informada</summary>
+        <hr>
+        <p>Una comunidad informada es una comunidad más sólida. Al conocer las áreas específicas de operación, los usuarios se vuelven conscientes de la estructura organizativa de la comunidad y cómo cada administrador contribuye a su funcionamiento general.</p>
+      </details>
+  
+      <p>En resumen, la transparencia en las áreas de operación de los administradores no solo fortalece la confianza en la comunidad, <u class="underline1">sino que también crea un ambiente en el que los usuarios se sientan capacitados y comprometidos en su interacción diaria</u>.</p>
+      <br>
+  
+      <h2>Conoce las áreas de operación</h2>
+  
+      <p>Aquí exploraremos las responsabilidades centrales de los administradores y las diversas áreas en las que desempeñan un papel crucial para mantener nuestra comunidad vibrante y segura.<br><br>
+      <strong>Responsabilidades clave</strong> <br>
+      Como administrador, te convertirás en el guardián de nuestra comunidad, asegurándote de que todos los miembros disfruten de una experiencia positiva. Tus tareas incluirán la moderación activa del chat, la gestión de roles y permisos, y la intervención en situaciones conflictivas para garantizar un ambiente armonioso. <u class="underline1">Conoce algunas áreas de operación a continuación:</u><br><br>
+  
+      <strong>Has click en alguna de las opciones para saber más.</strong></p>
+  
+      <details>
+        <summary style="color:darkorange">Moderación de chat</summary>
+        <hr>
+        <p>Vigila y modera las conversaciones para mantener un tono respetuoso y evitar violaciones de las reglas del grupo en el que te encuentres.</p>
+      </details>
+  
+      <details>
+        <summary style="color:darkorange">Gestión de permisos</summary>
+        <hr>
+        <p>Administra roles y permisos para garantizar que cada miembro tenga acceso adecuado a las funciones según su nivel de participación.</p>
+      </details>
+  
+      <details>
+        <summary style="color:darkorange">Supervisión de canales de comunicación</summary>
+        <hr>
+        <p>Dedica atención especial a áreas específicas del grupo, como canales de bienvenida, sugerencias o eventos, para asegurarte de que todo funcione sin problemas.</p>
+      </details>
+  
+      <details>
+        <summary style="color:darkorange">Resolución de conflictos</summary>
+        <hr>
+        <p>Interviene y resuelve disputas entre miembros de manera imparcial, fomentando un entorno de respeto mutuo.</p>
+      </details>
+  
+      <p><strong>Importancia de tu Rol:</strong> Como administrador, tu influencia se extiende a todas estas áreas, contribuyendo directamente al éxito y la cohesión de nuestra comunidad. Tu dedicación y enfoque en estas responsabilidades son esenciales para mantener un ambiente positivo y acogedor para todos.<br> <br>
+      <u class="underline1">Recuerda, cada acción que tomes como administrador tiene un impacto significativo en la experiencia de los miembros</u>.</p>
+    </section>
+  
+    <!-- Sección 3 -->
+    <section id="seccion3">
+      <h2>Beneficios y requisitos</h2>
+  
+      <p><strong>¿Te intriga conocer los beneficios exclusivos asociados al rol de administrador?</strong> Acompáñanos en este análisis detallado, donde abordaremos no solo las recompensas, sino también los rigurosos requisitos que delimitan este compromiso. Ser un administrador conlleva un conjunto único de responsabilidades y exigencias que fortalecen la integridad de nuestra comunidad. <br> <br>
+      <u class="underline1">¡Aquí te presentamos la sección que destaca tanto los privilegios emocionantes como los requisitos esenciales para aquellos que desean asumir el rol de administrador en nuestro servidor!</u></p>
+  
+      <p><strong>Beneficios de ser Administrador:</strong> Convertirse en administrador es un paso significativo, y conlleva una serie de beneficios especiales:<br><br>
+  
+      <strong>Has click en alguna de las opciones para saber más.</strong></p>
+  
+      <details>
+        <summary style="color:#198754">Acceso exclusivo</summary>
+        <hr>
+        <p>Obtendrás acceso a funciones y canales de comunicación exclusivos diseñados para la colaboración eficiente y la toma de decisiones.</p>
+      </details>
+  
+      <details>
+        <summary style="color:#198754">Participación en decisiones clave</summary>
+        <hr>
+        <p>Contribuirás a la toma de decisiones importantes que afectan a la comunidad y sus actividades.</p>
+      </details>
+  
+      <details>
+        <summary style="color:#198754">Reconocimiento especial</summary>
+        <hr>
+        <p>Tu dedicación y contribución se reconocerán públicamente, mostrando tu importancia en nuestra comunidad.</p>
+      </details>
+  
+      <details>
+        <summary style="color:#198754">Influencia positiva</summary>
+        <hr>
+        <p>Tendrás la oportunidad de influir positivamente en la dirección y cultura de nuestra comunidad.</p>
+      </details>
+      <br>
+  
+      <p><strong>Requisitos para ser Administrador:</strong> Para mantener la integridad de nuestro equipo administrativo, hay ciertos requisitos que debes cumplir:<br><br>
+  
+      <strong>Has click en alguna de las opciones para saber más.</strong></p>
+  
+      <details>
+        <summary style="color:darkorange">Requisitos básicos</summary>
+        <hr>
+        <p>Podrás no cumplir con los demás requisitos, <strong>pero mientras cumplas con estos requisitos básicos</strong> serás elegible para ser un nuevo administrador.</p>
+  
+        <p><strong>1. Tener mínimo 13 años</strong> <br>
+        necesitamos asegurarnos de que cumples con el mínimo de edad que piden las condiciones de uso de las apps en las que operamos.</p>
+  
+        <p><strong>2. Conocimiento avanzado de las reglas</strong> <br>
+        Queremos asegurarnos de tener a administradores capaces en nuestras filas, y es muy necesario que conozcas a la perfección las reglas; Como aplicarlas, sanciones aplicables en cada caso, excepciones y/o variaciones a las reglas en determinados contextos... <br>
+        <a href="https://socialclubcj.blogspot.com/search/label/Reglas">Conoce las reglas de la comunidad aquí</a>.</p>
+  
+        <p><strong>3. Comprender la posición de los administradores</strong> <br>
+        Queremos recordarte que, al menos en nuestra comunidad, los administradores tienen que cumplir con todas las reglas y normas aplicables, al igual que todos los usuarios de la comunidad. <br>
+        <u class="underline1">Inclusive los administradores deben de seguir unas reglas espesificas para ellos</u> <small><u>(que se mencionan en esta entrada)</u></small>, <u class="underline1">así que aquí no se dejará nada a la especulación cuando se trata de los administradores y las reglas.</u>
+        <br>
+        Obviamente incumplir las <a href="#">reglas de los administradores</a> y/o las <a href="https://socialclubcj.blogspot.com/2023/03/reglas-generales.html">Reglas generales</a> podría comprometer tu posición como administrador, así que atento a esto.</p>
+  
+        <p><strong>4. Discreción y confidencialidad</strong> <br>
+        Cómo administrador de algún grupo de esta comunidad, es importante ser discreto en las situaciones que lo requieran.
+        Debes ser capaz de manter información confidencial de el grupo en secreto en caso de ser necesario durante tu labor como administrador en algún grupo de esta comunidad.</p>
+  
+        <p><strong>5. Disponibilidad y flexibilidad de horario</strong> <br>
+        Ser un administrador en nuestra comunidad no es cualquier cosa ni para cualquier persona, aquí buscamos a los más capaces en muchos sentidos. <u class="underline1">La disponibilidad regular es clave para abordar situaciones y contribuir de manera efectiva</u>. <br>
+        <u class="underline1">Necesitamos a gente disponible a cualquier hora* y para cualquier situación</u> para poder hacerle frente a las diversas situaciones de peligro que puedan llegar a surgir. <br>
+        <small style="color:#DDDDDD">*A menos claro, de que surgan situaciones de fuerza mayor.</small></p>
+  
+        <strong>6. Antigüedad</strong>
+        <p>Por motivos de seguridad para la comunidad y los usuarios en general pedimos un mínimo de 2 meses de antigüedad en el grupo o los grupos en los que quieres obtener el admin. <u class="underline1">OBLIGATORIO</u></p>
+  
+        <strong>7. Actividad</strong>
+        <p>Un administrador no puede ser inactivo, sino cuál es el sentido de darle admin a una persona en esa situación. Es por eso que comprobaremos tu actividad en el grupo en el que quieres el admin y nos aseguraremos de que sea superior a los 250 mensajes en general para poder considerarte. <u class="underline1">OBLIGATORIO</u></p>
+      </details>
+  
+      <details>
+        <summary style="color:darkorange">Comportamiento ejemplar</summary>
+        <hr>
+        <p>Debes ser un ejemplo de respeto y cumplimiento de las <a href="https://socialclubcj.blogspot.com/2023/03/reglas-generales.html">Reglas generales</a>.</p>
+      </details>
+  
+      <details>
+        <summary style="color:darkorange">Conocimiento profundo</summary>
+        <hr>
+        <p>Tener un conocimiento sólido de las <a href="https://socialclubcj.blogspot.com/search/label/Reglas">normas y políticas de la comunidad</a> es esencial.</p>
+      </details>
+  
+      <details>
+        <summary style="color:darkorange">Disponibilidad de horario</summary>
+        <hr>
+        <p>La disponibilidad regular es clave para abordar situaciones y contribuir de manera efectiva.</p>
+      </details>
+  
+      <details>
+        <summary style="color:darkorange">Recomendación y/o nominación</summary>
+        <hr>
+        <p>A menudo, se espera que los nuevos administradores sean recomendados por miembros existentes o nominados por la comunidad.</p>
+      </details>
+  
+      <p><strong>Tu Rol, Tu Compromiso:</strong> Convertirse en administrador no solo implica privilegios, sino también un compromiso significativo con el bienestar de la comunidad. Si cumples con estos requisitos y estás listo para asumir el desafío, tu contribución será invaluable. <br> <br>
+      <u class="underline1">¡Gracias por considerar el rol de administrador y por ser parte vital de nuestra comunidad!</u></p>
+    </section>
+  
+    <!-- Sección 4 -->
+    <section id="seccion4">
+      <h2>Proceso de selección</h2>
+  
+      <p>Sigue los siguientes pasos para convertirte en el nuevo administrador, en WhatsApp, discord, telegram... Sea cuál sea el grupo en el que quieras serlo.</p>
+  
+      <p><strong>1. Responde a nuestro formulario de aptitud</strong><br>
+      Desde el formulario tú nos ayudarás a ayudarte. Nos darás información sobre porque te interesa ser administrador, cuales son las medidas que planeas tomar y porque deveriamos darte el administrador. <a href="https://forms.gle/omNLEDYwjySXYp2V6">Formulario de aptitud</a></p>
+  
+      <p><strong>2. Contacta con un administrador</strong><br>
+      Si ya ha respondido al formulario, póngase en contacto con alguno de los administradores de la comunidad, de preferencia que estén en el grupo donde quieres el administrador. Mándale evidencias qué demuestren que haz respondido al formulario y háblale un poco sobre tú interés en ser admin, eso nos ayudará a tomar una decisión más pronto.</p>
+  
+      <br>
+      <h3>IMPORTANTE</h3>
+      <p>Necesitamos en el equipo a gente competente y capaz de manejar las situaciones que se presenten, informarte que podrías ser rechazado si:<br><br>
+  
+      <strong>•</strong> No cumples con nuestros estándares.<br>
+      <strong>•</strong> No tienes buen comportamiento en la comunidad.<br>
+      <strong>•</strong> Incumpliste las reglas.<br>
+      <strong>•</strong> Creemos que tu llegada causará un daño a ese grupo o la comunidad.<br>
+      <strong>•</strong> Ya haz sido rechazado anteriormente.<br><br>
+  
+      <strong>¡Gracias por estar interesado!</strong><br>
+      Tu contribución ayudará a mejorar ese grupo y la comunidad para todos, <u class="underline1">¡No te olvides de participar!</u></p>
+    </section>
+  
+    <!-- Scripts -->
+    <script>
+      window.addEventListener('scroll', updateProgressBar);
+  
+      function updateProgressBar() {
+        const progressBar = document.getElementById('progressBar');
+        const totalHeight = document.body.scrollHeight - window.innerHeight;
+        const scrolledHeight = window.scrollY;
+        const percentageScrolled = (scrolledHeight / totalHeight) * 100;
+        progressBar.style.width = percentageScrolled + '%';
+      }
+  
+      function resaltarSeccion() {
+        var seccion = document.getElementById('seccion1');
+        seccion.classList.add('resaltado');
+        setTimeout(function() {
+          seccion.classList.remove('resaltado');
+        }, 700);
+      }
+  
+      function resaltarSeccion2() {
+        var seccion = document.getElementById('seccion2');
+        seccion.classList.add('resaltado2');
+        setTimeout(function() {
+          seccion.classList.remove('resaltado2');
+        }, 700);
+      }
+  
+      function resaltarSeccion3() {
+        var seccion = document.getElementById('seccion3');
+        seccion.classList.add('resaltado3');
+        setTimeout(function() {
+          seccion.classList.remove('resaltado3');
+        }, 700);
+      }
+  
+      function resaltarSeccion4() {
+        var seccion = document.getElementById('seccion4');
+        seccion.classList.add('resaltado4');
+        setTimeout(function() {
+          seccion.classList.remove('resaltado4');
+        }, 700);
+      }
+    </script>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  </body>
+  
