@@ -217,7 +217,7 @@ class CountdownTimer {
             <div class="countdown-expired">
                 <div class="expired-icon">🎉</div>
                 <div class="expired-title">¡Versión Inaugurada!</div>
-                <div class="expired-message">La página ya está en la v2. ¡Revisa los cambios!</div>
+                <div class="expired-message">La página ya está en la v3. ¡Revisa los cambios!</div>
             </div>
         `;
     }
@@ -232,7 +232,7 @@ class CountdownTimer {
 // Inicializar el contador cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
     // Fecha objetivo
-    const targetDate = '2025-07-25T18:00:00';
+    const targetDate = '2026-01-01T18:00:00';
     
     // Crear el contador
     const countdown = new CountdownTimer(targetDate, 'countdown-container');
@@ -244,3 +244,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
