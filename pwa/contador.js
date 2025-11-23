@@ -98,7 +98,7 @@ class CountdownTimer {
         this.container.innerHTML = `
             <div class="countdown-container">
                 <div class="countdown-label">Cuenta atrás para:</div>
-                <div class="countdown-title">Actualización de página a la v2</div>
+                <div class="countdown-title">Actualización de página a la v3</div>
                 <div class="countdown-timer">
                     ${yearsSection}
                     <div class="countdown-item">
@@ -244,4 +244,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
 
