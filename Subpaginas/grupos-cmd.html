@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Grupos de la Comunidad | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+    
+    <div class="content-container">
+      <h1 class="page-main-title">Grupos de la Comunidad</h1>
+      <p class="page-subtitle">
+        Conéctate con nosotros a través de diferentes plataformas. Únete a nuestros grupos oficiales.
+      </p>
+
+      <!-- Sección WhatsApp -->
+      <section class="platform-section whatsapp-section">
+        <div class="flex items-center">
+          <div class="section-icon">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <h2 class="section-heading">WhatsApp</h2>
+        </div>
+        
+        <!-- COMUNIDAD -->
+        <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/Logo-cmd.avif"> 
+            ⚡𝗖𝗢𝗠𝗨𝗡𝗜𝗗𝗔𝗗 𝗖𝗚𝗡 𝟰 🌐
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>1,100 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-comments"></i>
+              <span>Activo diariamente</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <span>Oficial</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Comunidad principal para discusiones generales, anuncios y organización de eventos. 
+            Comparte noticias, fotos y mantente conectado con todos los usuarios.
+          </p>
+          <a target="_blank" href="https://chat.whatsapp.com/BZE5u5UJTto5YHePcWtUSh"><button class="join-button">
+            <i class="fab fa-whatsapp"></i> 
+            Unirse a la Comunidad
+          </button></a>
+        </div>
+
+        <br>
+
+         <!-- COMUNIDAD ALIANZAS -->
+         <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/Logo-alianzas.avif"> 
+            ⚡𝗖𝗢𝗠𝗨𝗡𝗜𝗗𝗔𝗗 𝗖𝗚𝗡 | ALIANZAS 🌐
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>350 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-comments"></i>
+              <span>Activo</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <span>Oficial</span>
+            </div>
+          </div>
+          <p class="group-description">
+            En la comunidad de alianzas puedes agregar tu grupo sin restricciones, eso te otorgará una serie de beneficios para la actividad de tu grupo. <a style="color:coral;" href="/Subpaginas/alianzas.html"><u>Saber más...</u></a>
+          </p>
+          <a target="_blank" href="https://chat.whatsapp.com/Fg6Duj0q02KKneY6In9Qzh"><button class="join-button">
+            <i class="fab fa-whatsapp"></i> 
+            Unirse a la Comunidad
+          </button></a>
+        </div>
+
+        <br>
+
+        <!-- CANAL -->
+        <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/Logo-canal.avif"> 
+            ⚡𝗖𝗢𝗠𝗨𝗡𝗜𝗗𝗔𝗗 𝗖𝗚𝗡 | NOVEDADES 🌐
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>50 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-comments"></i>
+              <span>Activo regularmente</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <span>Oficial</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Canal principal para discusiones generales, anuncios y organización de eventos. 
+            Se comparten noticias, fotos y  más. Mantente conectado con toda la comunidad.
+          </p>
+          <div class="group-buttons">
+            <a target="_blank" href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V"><button class="join-button">
+              <i class="fab fa-whatsapp"></i> Unirse al canal
+            </button></a>
+          </div>
+        </div>
+
+        <BR><BR>
+
+        <!-- GRUPO 1 -->
+        <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/Fortnite.jpg">
+            𝙁𝙊𝙍𝙏𝙉𝙄𝙏𝙀
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>200 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-comments"></i>
+              <span>Activo diariamente</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <span>Oficial</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Grupo principal para discusiones generales, anuncios y organización de eventos de FN. 
+            Unete y encuentra un equipo en el juego.
+          </p>
+          <div class="group-buttons">
+            <a target="_blank" href="https://chat.whatsapp.com/CD1GMmGahQO9S8wiWe1zvN"><button class="join-button">
+              <i class="fab fa-whatsapp"></i> Unirse al grupo
+            </button></a>
+            <a href="/clasificaciones/WA/Fortnite.html"><button class="ranking-button" title="Ver clasificación">
+              <i class="fas fa-chart-bar"></i>
+            </button></a>
+          </div>
+        </div>
+
+        <br>
+
+        <!-- GRUPO 2 -->
+        <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/Sin-reglas.jpg">
+            𝙎𝙞𝙣 𝙧𝙚𝙜𝙡𝙖𝙨 🔥
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>100 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-comments"></i>
+              <span>Activo diariamente</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <span>Oficial</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Grupo sin reglas, puedes mandar lo que sea por el chat sin riesgo a baneos! 
+            Comparte cualquier cosa y mantente conectado con toda la comunidad.
+          </p>
+          <div class="group-buttons">
+            <a target="_blank" href="https://chat.whatsapp.com/ItwERrUNGS24KQzSwrAYeN"><button class="join-button">
+              <i class="fab fa-whatsapp"></i> Unirse al grupo
+            </button></a>
+            <a href="/clasificaciones/WA/Sin-reglas.html"><button class="ranking-button" title="Ver clasificación">
+              <i class="fas fa-chart-bar"></i>
+            </button></a>
+          </div>
+        </div>
+
+        <br>
+
+        <!-- GRUPO 3 -->
+        <div class="group-card">
+          <h3 class="group-name">
+           <img src="/icons/grupos/Amistades.jpg">
+           ♦ 𝗔𝗠𝗜𝗦𝗧𝗔𝗗𝗘𝗦 𝟮𝟰/𝟳
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>230 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-comments"></i>
+              <span>Activo diariamente</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <span>Oficial</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Grupo general para discusiones generales, anuncios y organización de eventos. 
+            Comparte noticias, fotos y mantente conectado con toda la comunidad de forma más relajada..
+          </p>
+          <div class="group-buttons">
+            <a target="_blank" href="https://chat.whatsapp.com/HecsFOmJiAs1zBhNUiWVHJ"><button class="join-button">
+              <i class="fab fa-whatsapp"></i> Unirse al grupo
+            </button></a>
+            <a href="/clasificaciones/WA/Amistades.html"><button class="ranking-button" title="Ver clasificación">
+              <i class="fas fa-chart-bar"></i>
+            </button></a>
+          </div>
+        </div>
+
+        <br>
+
+         <!-- GRUPO 4 -->
+         <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/Ver-estados.jpg">
+            𝘼𝙂𝙂 𝙔 𝙑𝙀𝙍 𝙀𝙎𝙏𝘼𝘿𝙊𝙎
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>115 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-comments"></i>
+              <span>Activo diariamente</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <span>Oficial</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Grupo para agregar a otros usuarios y ver estados, o tambien para compartir de forma directa tus estados.
+          </p>
+          <div class="group-buttons">
+            <a target="_blank" href="https://chat.whatsapp.com/Kx9BrNjjOeYJ05oIEaseqQ"><button class="join-button">
+              <i class="fab fa-whatsapp"></i> Unirse al grupo
+            </button></a>
+            <a href="/clasificaciones/WA/Ver-estados.html"><button class="ranking-button" title="Ver clasificación">
+              <i class="fas fa-chart-bar"></i>
+            </button></a>
+          </div>
+        </div>
+
+        <br>
+
+         <!-- GRUPO 5 -->
+         <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/Minecraft-CMT2.jpg"> 
+            🌐MINECRAFT COMMUNITY 2.0🔰
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>150 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-comments"></i>
+              <span>Activo diariamente</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <span>Oficial</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Grupo para hablar con otros usuarios de la comunidad sobre Minecraft y sus temas relacionados.
+          </p>
+          <div class="group-buttons">
+            <a target="_blank" href="https://chat.whatsapp.com/GG1ijj4AC61ElRzgPcl74B"><button class="join-button">
+              <i class="fab fa-whatsapp"></i> Unirse al grupo
+            </button></a>
+            <a href="/clasificaciones/WA/Minecraft-cmt2.html"><button class="ranking-button" title="Ver clasificación">
+              <i class="fas fa-chart-bar"></i>
+            </button></a>
+          </div>
+        </div>
+
+        <br>
+
+         <!-- GRUPO 6 -->
+         <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/AH.jpg"> 
+            𝘼𝙍𝙍𝙄𝙑𝘼𝙇 𝙄𝙉 𝙃𝙀𝙇𝙇
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>100 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-comments"></i>
+              <span>Activo diariamente</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <span>Oficial</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Grupo secundario de Minecraft pero enfocado a nuestro servidor de MC, desde aqui puedes hablar sobre el server de forma centralizada.
+          </p>
+          <div class="group-buttons">
+            <a target="_blank" href="https://chat.whatsapp.com/L0zEAk2dZVyIkqbdGEYGFS"><button class="join-button">
+              <i class="fab fa-whatsapp"></i> Unirse al grupo
+            </button></a>
+            <a href="/clasificaciones/WA/AH.html"><button class="ranking-button" title="Ver clasificación">
+              <i class="fas fa-chart-bar"></i>
+            </button></a>
+          </div>
+        </div>
+
+        <br>
+
+         <!-- GRUPO 7 -->
+         <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/Roblox.jpg"> 
+            𝙍𝙊𝘽𝙇𝙊𝙓
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>70 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-comments"></i>
+              <span>Activo diariamente</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <span>Oficial</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Grupo para hablar sobre temas relacionados con roblox, cualquier tipo de experiencia.
+          </p>
+          <div class="group-buttons">
+            <a target="_blank" href="https://chat.whatsapp.com/GR1khO6TUCQErKrZbRX9eD"><button class="join-button">
+              <i class="fab fa-whatsapp"></i> Unirse al grupo
+            </button></a>
+            <a href="/clasificaciones/WA/Roblox.html"><button class="ranking-button" title="Ver clasificación">
+              <i class="fas fa-chart-bar"></i>
+            </button></a>
+          </div>
+        </div>
+
+        <br>
+
+         <!-- GRUPO 8 -->
+         <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/EH.jpg"> 
+            Emergency Hamburg
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>110 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-comments"></i>
+              <span>Activo diariamente</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <span>Oficial</span>
+            </div>
+          </div>
+          <p class="group-description">
+            ¿Juegas o conoces el juego de EH en Roblox?
+            Desde este grupo puedes hablar sobre temas especificos del mismo y planificar jugadas.
+          </p>
+          <div class="group-buttons">
+            <a target="_blank" href="https://chat.whatsapp.com/I6KqeJVr7WPHHZp2Y5yAzo"><button class="join-button">
+              <i class="fab fa-whatsapp"></i> Unirse al grupo
+            </button></a>
+            <a href="/clasificaciones/WA/EH.html"><button class="ranking-button" title="Ver clasificación">
+              <i class="fas fa-chart-bar"></i>
+            </button></a>
+          </div>
+        </div>
+
+        <br>
+
+      </section>
+
+      <!-- Sección Signal -->
+      <section class="platform-section signal-section">
+        <div class="flex items-center">
+          <div class="section-icon">
+            <i class="fab fa-keybase"></i>
+          </div>
+          <h2 class="section-heading">Signal</h2>
+        </div>
+        
+        <!-- GRUPO 1 -->
+        <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/amistades-signal.avif">  
+            ♦ 𝗔𝗠𝗜𝗦𝗧𝗔𝗗𝗘𝗦 𝟮𝟰/𝟳 ♦
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>725 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-lock"></i>
+              <span>Encriptado</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-shield-alt"></i>
+              <span>Seguro</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Grupo enfocado en discusiones privadas y seguras. Ideal para conversaciones 
+            que requieren mayor privacidad y protección de datos.
+          </p>
+          <a target="_blank" href="https://signal.group/#CjQKIAW3n9F5GSAmRib5mLww0llVis1EkJL044YiTEIz7PzxEhBIQk8skNMG_w1UvG4Cgdmc"><button class="join-button">
+            <i class="fab fa-keybase"></i> Unirse al grupo
+          </button></a>
+        </div>
+
+        <br>
+
+        <!-- GRUPO 2 -->
+        <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/minecraft-signal.avif"> 
+            🌐MINECRAFT COMMUNITY 2.0🔰
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>150 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-lock"></i>
+              <span>Encriptado</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-shield-alt"></i>
+              <span>Seguro</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Grupo enfocado en discusiones privadas y seguras para hablar sobre Minecraft. Ideal para conversaciones 
+            que requieren mayor privacidad y protección de datos.
+          </p>
+          <a target="_blank" href="https://signal.group/#CjQKIHw67wRpeiaphWNXWSVdxsXmmYIBjjfIPMNgr1cppoGZEhAKFYkfaZCitqDBpF-xGZnE"><button class="join-button">
+            <i class="fab fa-keybase"></i> Unirse al grupo
+          </button></a>
+        </div>
+
+      </section>
+
+      <!-- Sección Telegram -->
+      <section class="platform-section telegram-section">
+        <div class="flex items-center">
+          <div class="section-icon">
+            <i class="fab fa-telegram"></i>
+          </div>
+          <h2 class="section-heading">Telegram</h2>
+        </div>
+        
+        <!-- GRUPO 1 -->
+        <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/club-gaming.avif"> 
+            ᴄʟᴜʙ ɢʌᴍɪиɢ c.j (>‿⁠◕⁠)
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-globe"></i>
+              <span>900 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-file"></i>
+              <span>Comparte archivos</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-robot"></i>
+              <span>Bots útiles</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Grupo internacional con miembros de todo el mundo. Comparte archivos grandes, 
+            utiliza bots para automatizar tareas y participa en canales temáticos.
+          </p>
+          <a target="_blank" href="https://t.me/CGNcj"><button class="join-button">
+            <i class="fab fa-telegram"></i> Unirse al grupo
+          </button></a>
+        </div>
+
+        <br>
+
+         <!-- GRUPO 2 -->
+         <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/comunidad-telegram.avif">
+            ⚡𝗖𝗢𝗠𝗨𝗡𝗜𝗗𝗔𝗗 𝗖𝗚𝗡⚡
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-globe"></i>
+              <span>300 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-file"></i>
+              <span>Participa en actividades</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-robot"></i>
+              <span>Bots útiles</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Comunidad internacional con miembros de todo el mundo. Participa en diferentes eventos y enterate de las ultimas novedades.
+          </p>
+          <a target="_blank" href="https://t.me/community_cgn"><button class="join-button">
+            <i class="fab fa-telegram"></i> Unirse al grupo
+          </button></a>
+        </div>
+
+      </section>
+
+      <!-- Sección Discord -->
+      <section class="platform-section discord-section">
+        <div class="flex items-center">
+          <div class="section-icon">
+            <i class="fab fa-discord"></i>
+          </div>
+          <h2 class="section-heading">Discord</h2>
+        </div>
+        
+        <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/club-gaming.avif"> 
+            CLUB GAMING
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <span>1,880 miembros</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-gamepad"></i>
+              <span>Eventos gaming</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-hashtag"></i>
+              <span>+20 canales</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Servidor con múltiples canales para diferentes intereses. Participa en chats de voz, 
+            eventos de gaming, sesiones de estudio y más. ¡Siempre hay algo ocurriendo!
+          </p>
+          <a target="_blank" href="https://discord.gg/ugjT9h2X8f"><button class="join-button">
+            <i class="fab fa-discord"></i> Unirse al servidor
+          </button></a>
+        </div>
+      </section>
+
+      <!-- Sección Truth Social -->
+      <section class="platform-section truth-section">
+        <div class="flex items-center">
+          <div class="section-icon">
+            <i class="fas fa-feather-alt"></i>
+          </div>
+          <h2 class="section-heading">Truth Social</h2>
+        </div>
+        
+        <div class="group-card">
+          <h3 class="group-name">
+            <img src="/icons/grupos/club-gaming.avif"> 
+            CGN Oficial
+          </h3>
+          <div class="group-stats">
+            <div class="stat-item">
+              <i class="fas fa-bullhorn"></i>
+              <span>Anuncios</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-newspaper"></i>
+              <span>Noticias</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Verificado</span>
+            </div>
+          </div>
+          <p class="group-description">
+            Perfil oficial de la comunidad en Truth Social. Mantente actualizado con nuestros últimos 
+            anuncios, noticias y contenido exclusivo. ¡Síguenos para no perderte nada!
+          </p>
+          <a target="_blank" href="https://bit.ly/3pTXX6C"><button class="join-button">
+            <i class="fas fa-external-link-alt"></i> Seguir en Truth
+          </button></a>
+        </div>
+      </section>
+
+      <!-- Botones de navegación horizontales -->
+      <div class="nav-buttons">
+        <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+        </div>
+        <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+        </a>
+      </div>
+    </div>
+
+        <!-- COMPONENTE UPDATE MODAL -->
+        <div data-include="/componentes/update-modal.html"></div>
+
+        <!-- COMPONENTE FOOTER -->
+        <div data-include="/componentes/footer.html"></div>
+
+        <!-- COMPONENTE FIXED BAR -->
+        <div data-include="/componentes/bottom-bar.html"></div>
+
+        <!-- COMPONENTE PANEL EXPANSION -->
+        <div data-include="/componentes/panel-expansion.html"></div>
+
+        <!-- COMPONENTE CHAT OVERLAY -->
+        <div data-include="/componentes/chat-overlay.html"></div>
+
+        <!-- COMPONENTE THEME HELP -->
+        <div data-include="/componentes/theme-help.html"></div>
+
+        <!-- COMPONENTE CONTEXT MENU -->
+        <div data-include="/componentes/context-menu.html"></div>
+
+        <!-- PARTE AUXILIAR, FALTA DE JS -->
+        <noscript>
+            <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+        </noscript>
+
+        <script src="/componentes/cargador.js"></script>
+        <script src="/HECKS-BOT/javascript.js"></script>
+        <script src="/pwa/noticias.js"></script>
+        <script src="/pwa/javascript.js"></script>
+  </div> <!-- Cierre del main-content -->
+</body>
+</html>

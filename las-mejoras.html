@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Mejoras | CGN</title>
+
+  <!-- CSS Modulares de la plataforma -->
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+
+  <!-- Script bloqueante ultraligero para aplicar tema de inmediato (sin flash blanco) -->
+  <script>
+    (function () {
+      try {
+        const temaGlobal = localStorage.getItem('preferencia-tema');
+        const root = document.documentElement;
+        if (temaGlobal === 'oscuro') {
+          root.setAttribute('data-theme', 'dark');
+        } else if (temaGlobal === 'automatico' || !temaGlobal) {
+          const hora = new Date().getHours();
+          const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (hora >= 20 || hora < 7 || prefiereOscuro) {
+            root.setAttribute('data-theme', 'dark');
+          }
+        }
+      } catch (e) {
+        console.error('Error al aplicar tema en las-mejoras.html', e);
+      }
+    })();
+  </script>
+
+  <style>
+    /* ==========================================
+       ESTILOS ESPECÍFICOS DE LAS TARJETAS DE MEJORAS
+       ========================================== */
+    .titulo-seccion {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #FFD1A9;
+      position: relative;
+    }
+    
+    .titulo-seccion::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: #ffb07a;
+    }
+    
+    .descripcion-seccion {
+      text-align: center;
+      color: #4B5563;
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+
+    .mejoras-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .tarjeta-mejora {
+      background: linear-gradient(145deg, #ffffff, #f9fafb);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .tarjeta-mejora:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tarjeta-header {
+      background-color: #FFD1A9;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-bottom: 1px solid #ffb07a;
+    }
+    
+    .tarjeta-icono {
+      font-size: 2rem;
+      color: #1F2937;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .tarjeta-titulo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin: 0;
+    }
+    
+    .tarjeta-contenido {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .tarjeta-descripcion {
+      color: #4B5563;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+    
+    .tarjeta-fecha {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #6B7280;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .tarjeta-fecha i {
+      color: #FFD1A9;
+    }
+    
+    .tarjeta-boton {
+      display: inline-block;
+      background-color: #FFD1A9;
+      color: #1F2937;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    .tarjeta-boton:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tarjeta-boton:active {
+      transform: translateY(0);
+    }
+
+    /* ==========================================
+       ESTILOS MODO OSCURO ESPECÍFICOS DE MEJORAS
+       ========================================== */
+    [data-theme="dark"] .titulo-seccion {
+      color: #f3f4f6 !important;
+      border-bottom-color: #FFD1A9 !important;
+    }
+    
+    [data-theme="dark"] .descripcion-seccion {
+      color: #d1d5db !important;
+    }
+    
+    [data-theme="dark"] .tarjeta-mejora {
+      background: linear-gradient(145deg, #23232a, #1a1a1a) !important;
+      border-color: #374151 !important;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    [data-theme="dark"] .tarjeta-mejora:hover {
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    [data-theme="dark"] .tarjeta-header {
+      background-color: #374151 !important;
+      border-bottom-color: #4B5563 !important;
+    }
+    
+    [data-theme="dark"] .tarjeta-icono {
+      background: rgba(255, 255, 255, 0.1) !important;
+      color: #FFD1A9 !important;
+    }
+    
+    [data-theme="dark"] .tarjeta-titulo {
+      color: #f3f4f6 !important;
+    }
+    
+    [data-theme="dark"] .tarjeta-descripcion {
+      color: #d1d5db !important;
+    }
+    
+    [data-theme="dark"] .tarjeta-fecha {
+      color: #9CA3AF !important;
+    }
+    
+    [data-theme="dark"] .tarjeta-fecha i {
+      color: #FFD1A9 !important;
+    }
+    
+    [data-theme="dark"] .tarjeta-boton {
+      background-color: #374151 !important;
+      color: #FFD1A9 !important;
+      border: 1px solid #FFD1A9 !important;
+    }
+    
+    [data-theme="dark"] .tarjeta-boton:hover {
+      background-color: #4B5563 !important;
+      color: #FFD1A9 !important;
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+
+    <div class="content-container">
+      <!-- Botones de navegación horizontales -->
+      <div class="nav-buttons">
+        <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+        </div>
+      </div>
+      <br>
+
+      <!-- Nueva sección de mejoras -->
+      <div class="titulo-seccion">Últimas Mejoras</div>
+      <p class="descripcion-seccion">Descubre las últimas actualizaciones que hemos implementado para mejorar tu experiencia en nuestra comunidad</p>
+      
+      <!-- Contenedor de tarjetas de mejoras -->
+      <div class="mejoras-container">
+
+        <!-- Tarjeta 1 -->
+        <div class="tarjeta-mejora">
+          <div class="tarjeta-header">
+            <div class="tarjeta-icono">
+              <i class="fa-solid fa-paper-plane"></i>
+            </div>
+            <h3 class="tarjeta-titulo">Inicio de la comunidad</h3>
+          </div>
+          <div class="tarjeta-contenido">
+            <p class="tarjeta-descripcion">Se crea el primer grupo de la comunidad, nuestro servidor de discord fue solo el inicio de algo más grande.</p>
+            <div class="tarjeta-fecha"> 
+              <i class="far fa-calendar"></i>
+              <span>Implementado: 7 de Junio, 2021</span>
+            </div>
+            <a href="/las-mejoras/act-001.html" class="tarjeta-boton">Ver detalles</a>
+          </div>
+        </div>
+        
+        <!-- Tarjeta 2 -->
+        <div class="tarjeta-mejora">
+          <div class="tarjeta-header">
+            <div class="tarjeta-icono">
+              <i class="fab fa-whatsapp"></i>
+            </div>
+            <h3 class="tarjeta-titulo">La comunidad en WhatsApp</h3>
+          </div>
+          <div class="tarjeta-contenido">
+            <p class="tarjeta-descripcion">El inicio formal de las actividades comienza aquí. Descubre lo que hay detras del primer grupo funcional de la CMD.</p>
+            <div class="tarjeta-fecha">
+              <i class="far fa-calendar"></i>
+              <span>Implementado: 30 de Abril, 2022</span>
+            </div>
+            <a href="/las-mejoras/act-002.html" class="tarjeta-boton">Ver detalles</a>
+          </div>
+        </div>
+
+        <!-- Tarjeta 3 -->
+        <div class="tarjeta-mejora">
+          <div class="tarjeta-header">
+            <div class="tarjeta-icono">
+              <i class="fa-brands fa-discord"></i>
+            </div>
+            <h3 class="tarjeta-titulo">Lanzamiento del primer bot de DS de la CMD</h3>
+          </div>
+          <div class="tarjeta-contenido">
+            <p class="tarjeta-descripcion">El inicio de nuestro primer bot funcional en el servidor de discord, revisa el informe completo.</p>
+            <div class="tarjeta-fecha">
+              <i class="far fa-calendar"></i>
+              <span>Implementado: 11 de Julio, 2023</span>
+            </div>
+            <a href="/las-mejoras/act-1-bot-ds.html" class="tarjeta-boton">Ver detalles</a>
+          </div>
+        </div>
+
+        <!-- Tarjeta 4 -->
+        <div class="tarjeta-mejora">
+          <div class="tarjeta-header">
+            <div class="tarjeta-icono">
+              <i class="fa-brands fa-discord"></i>
+            </div>
+            <h3 class="tarjeta-titulo">Lanzamiento del segundo bot de DS de la CMD</h3>
+          </div>
+          <div class="tarjeta-contenido">
+            <p class="tarjeta-descripcion">Nuestro segundo bot funcional en el servidor de discord ha llegado para expandir las funcionalidades, revisa el informe completo.</p>
+            <div class="tarjeta-fecha">
+              <i class="far fa-calendar"></i>
+              <span>Implementado: 6 de Julio, 2024</span>
+            </div>
+            <a href="/las-mejoras/act-2-bot-ds.html" class="tarjeta-boton">Ver detalles</a>
+          </div>
+        </div>
+        
+        <!-- Tarjeta 5 -->
+        <div class="tarjeta-mejora">
+          <div class="tarjeta-header">
+            <div class="tarjeta-icono">
+              <i class="fas fa-paint-brush"></i>
+            </div>
+            <h3 class="tarjeta-titulo">La página se actualiza a la v1.0</h3>
+          </div>
+          <div class="tarjeta-contenido">
+            <p class="tarjeta-descripcion">Rediseño completo de la interfaz de usuario para mejorar la navegación y experiencia visual. Más intuitiva, rápida y accesible desde cualquier dispositivo. Además de otros cambios.</p>
+            <div class="tarjeta-fecha">
+              <i class="far fa-calendar"></i>
+              <span>Implementado: 17 de Junio, 2025</span>
+            </div>
+            <a href="/las-mejoras/act-999.html" class="tarjeta-boton">Ver detalles</a>
+          </div>
+        </div> 
+
+        <!-- Tarjeta 6 -->
+        <div class="tarjeta-mejora">
+          <div class="tarjeta-header">
+            <div class="tarjeta-icono">
+              <i class="fas fa-paint-brush"></i>
+            </div>
+            <h3 class="tarjeta-titulo">La página se actualiza a la v1.5</h3>
+          </div>
+          <div class="tarjeta-contenido">
+            <p class="tarjeta-descripcion">Segunda parte de la actualización pasada para completar ciertos desarrollos pendientes.</p>
+            <div class="tarjeta-fecha">
+              <i class="far fa-calendar"></i>
+              <span>Implementado: 30 de Junio, 2025</span>
+            </div>
+            <a href="/las-mejoras/act-1000.html" class="tarjeta-boton">Ver detalles</a>
+          </div>
+        </div>
+
+        <!-- Tarjeta 7 -->
+        <div class="tarjeta-mejora">
+          <div class="tarjeta-header">
+            <div class="tarjeta-icono">
+              <i class="fas fa-paint-roller"></i>
+            </div>
+            <h3 class="tarjeta-titulo">La página se actualiza a la v2.0 - v2.1</h3>
+          </div>
+          <div class="tarjeta-contenido">
+            <p class="tarjeta-descripcion">Nueva etapa de mejoras, optimización y cambios visuales en la plataforma. Consulta los detalles y el registro de cambios.</p>
+            <div class="tarjeta-fecha">
+              <i class="far fa-calendar"></i>
+              <span>Implementado: 22 de Julio, 2025</span>
+            </div>
+            <a href="/las-mejoras/act-1001.html" class="tarjeta-boton">Ver detalles</a>
+          </div>
+        </div>
+
+        <!-- Tarjeta 8 -->
+        <div class="tarjeta-mejora">
+          <div class="tarjeta-header">
+            <div class="tarjeta-icono">
+              <i class="fa-brands fa-discord"></i>
+            </div>
+            <h3 class="tarjeta-titulo">Lanzamiento del tercer bot de DS de la CMD</h3>
+          </div>
+          <div class="tarjeta-contenido">
+            <p class="tarjeta-descripcion">Nuestro tercer bot funcional en el servidor de discord ha llegado en remplazo de los anteriores, con funciones mejoradas. Revisa el informe completo.</p>
+            <div class="tarjeta-fecha">
+              <i class="far fa-calendar"></i>
+              <span>Implementado: 25 de Julio, 2025</span>
+            </div>
+            <a href="/las-mejoras/act-3-bot-ds.html" class="tarjeta-boton">Ver detalles</a>
+          </div>
+        </div>
+
+        <!-- Tarjeta 9 -->
+        <div class="tarjeta-mejora">
+          <div class="tarjeta-header">
+            <div class="tarjeta-icono">
+              <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <h3 class="tarjeta-titulo">Lanzamiento del primer bot para wa. de la CMD</h3>
+          </div>
+          <div class="tarjeta-contenido">
+            <p class="tarjeta-descripcion">Nuestro primer bot funcional en whatsapp ha llegado para expandir las funcionalidades en los grupos, revisa el informe completo.</p>
+            <div class="tarjeta-fecha">
+              <i class="far fa-calendar"></i>
+              <span>Implementado: 6 de Agosto, 2025</span>
+            </div>
+            <a href="/las-mejoras/act1-bot-wa.html" class="tarjeta-boton">Ver detalles</a>
+          </div>
+        </div>
+
+        <!-- Tarjeta 10 -->
+        <div class="tarjeta-mejora">
+          <div class="tarjeta-header">
+            <div class="tarjeta-icono">
+              <i class="fas fa-paint-roller"></i>
+            </div>
+            <h3 class="tarjeta-titulo">La página se actualiza a la v2.5</h3>
+          </div>
+          <div class="tarjeta-contenido">
+            <p class="tarjeta-descripcion">Nueva gran atualización a la página que incorpora nuevas funciones, mejoras y optimizaciones. Consulta los detalles en este registro de cambios.</p>
+            <div class="tarjeta-fecha">
+              <i class="far fa-calendar"></i>
+              <span>Implementado: 7 de Octubre, 2025</span>
+            </div>
+            <a href="/las-mejoras/act-1002.html" class="tarjeta-boton">Ver detalles</a>
+          </div>
+        </div>
+
+        <!-- Tarjeta 11 -->
+        <div class="tarjeta-mejora">
+          <div class="tarjeta-header">
+            <div class="tarjeta-icono">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <h3 class="tarjeta-titulo">La página se actualiza a la v3.0 (V3)</h3>
+          </div>
+          <div class="tarjeta-contenido">
+            <p class="tarjeta-descripcion">Gran actualización arquitectónica que migra todo el sitio a un sistema modular asíncrono unificado, reduciendo el código repetido en más de 20,000 líneas y optimizando Hecks Bot y el teletipo de noticias.</p>
+            <div class="tarjeta-fecha">
+              <i class="far fa-calendar"></i>
+              <span>Implementado: 27 de Junio, 2026</span>
+            </div>
+            <a href="/las-mejoras/act-1003.html" class="tarjeta-boton">Ver detalles</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+  </div> <!-- Cierre del main-content -->
+
+  <!-- COMPONENTE THEME HELP -->
+  <div data-include="/componentes/theme-help.html"></div>
+
+  <!-- COMPONENTE CONTEXT MENU -->
+  <div data-include="/componentes/context-menu.html"></div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <!-- SCRIPT CARGADOR DE COMPONENTES MODULARES -->
+  <script src="/componentes/cargador.js"></script>
+  <!-- SCRIPT DE SOPORTE HECKS-BOT -->
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <!-- SCRIPT DE NOTICIAS -->
+  <script src="/pwa/noticias.js"></script>
+  <!-- SCRIPT DE PANTALLA CARGA -->
+  <script src="/pwa/javascript.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Botón "Volver" inteligente
+      const backButton = document.getElementById('backButton');
+      if (backButton) {
+        backButton.addEventListener('click', function() {
+          if (document.referrer && document.referrer !== window.location.href) {
+            window.history.back();
+          } else {
+            window.location.href = '/index.html';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Tema - CGN</title>
+  
+  <!-- Script para detectar tema antes de que se renderice la página -->
+  <script>
+    (function() {
+      const temaGuardado = localStorage.getItem('preferencia-tema');
+      if (temaGuardado) {
+        document.documentElement.classList.add('theme-controlled');
+        if (temaGuardado === 'oscuro') {
+          document.documentElement.classList.add('dark-theme');
+        }
+      }
+    })();
+  </script>
+  
+  <style>
+    :root {
+      --color-primary: #FFD1A9;
+      --color-bg-primary: #FFF5EB;
+      --color-text-primary: #1F2937;
+    }
+
+    /* Modo oscuro - solo se aplica si NO hay tema guardado */
+    @media (prefers-color-scheme: dark) {
+      html:not(.theme-controlled) :root {
+        --color-primary: #FFB07A;
+        --color-bg-primary: #1A1A1A;
+        --color-text-primary: #E5E5E5;
+      }
+    }
+
+    /* Desactivar media query cuando el tema está controlado por JavaScript */
+    html.theme-controlled {
+      --color-primary: #FFD1A9 !important;
+      --color-bg-primary: #FFF5EB !important;
+      --color-text-primary: #1F2937 !important;
+    }
+
+    /* Tema oscuro controlado por JavaScript */
+    html.theme-controlled.dark-theme {
+      --color-primary: #FFB07A !important;
+      --color-bg-primary: #1A1A1A !important;
+      --color-text-primary: #E5E5E5 !important;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--color-bg-primary);
+      color: var(--color-text-primary);
+      padding: 20px;
+      margin: 0;
+      transition: all 0.3s;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--color-bg-primary);
+      padding: 30px;
+      border-radius: 12px;
+      border: 2px solid var(--color-primary);
+    }
+
+    h1 {
+      color: var(--color-text-primary);
+      text-align: center;
+    }
+
+    .status {
+      background: var(--color-primary);
+      color: var(--color-text-primary);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      font-weight: 500;
+    }
+
+    .btn {
+      background: var(--color-primary);
+      color: var(--color-text-primary);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+      transform: translateY(-1px);
+    }
+
+    .info {
+      background: rgba(0,0,0,0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 Test de Sistema de Temas</h1>
+    
+    <div class="status" id="status">
+      Cargando estado...
+    </div>
+    
+    <div class="info">
+      <h3>¿Qué debería pasar?</h3>
+      <ul>
+        <li><strong>Sin tema guardado:</strong> Usa el tema del sistema (claro/oscuro automático)</li>
+        <li><strong>Con tema guardado:</strong> Usa el tema guardado sin flash inicial</li>
+        <li><strong>Sin mezcla:</strong> No debería haber estilos mezclados</li>
+      </ul>
+    </div>
+    
+    <button class="btn" onclick="guardarTema('claro')">Guardar Claro</button>
+    <button class="btn" onclick="guardarTema('oscuro')">Guardar Oscuro</button>
+    <button class="btn" onclick="limpiarTema()">Limpiar Tema</button>
+    <button class="btn" onclick="recargar()">Recargar Página</button>
+    
+    <div class="info">
+      <h3>Estado actual:</h3>
+      <p><strong>Tema guardado:</strong> <span id="temaGuardado">-</span></p>
+      <p><strong>Clases HTML:</strong> <span id="clasesHtml">-</span></p>
+      <p><strong>Media query activo:</strong> <span id="mediaQuery">-</span></p>
+    </div>
+  </div>
+
+  <script>
+    function actualizarEstado() {
+      const temaGuardado = localStorage.getItem('preferencia-tema');
+      const clasesHtml = document.documentElement.className;
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      document.getElementById('temaGuardado').textContent = temaGuardado || 'Ninguno';
+      document.getElementById('clasesHtml').textContent = clasesHtml || 'Ninguna';
+      document.getElementById('mediaQuery').textContent = mediaQuery ? 'Sí (Oscuro)' : 'No (Claro)';
+      
+      const status = document.getElementById('status');
+      if (temaGuardado) {
+        status.innerHTML = `
+          <strong>✅ Tema controlado por JavaScript</strong><br>
+          Tema guardado: ${temaGuardado}<br>
+          Clases: ${clasesHtml}
+        `;
+      } else {
+        status.innerHTML = `
+          <strong>🔄 Tema automático del sistema</strong><br>
+          Media query: ${mediaQuery ? 'Oscuro' : 'Claro'}<br>
+          Clases: ${clasesHtml}
+        `;
+      }
+    }
+    
+    function guardarTema(tema) {
+      localStorage.setItem('preferencia-tema', tema);
+      document.documentElement.classList.add('theme-controlled');
+      if (tema === 'oscuro') {
+        document.documentElement.classList.add('dark-theme');
+      } else {
+        document.documentElement.classList.remove('dark-theme');
+      }
+      actualizarEstado();
+    }
+    
+    function limpiarTema() {
+      localStorage.removeItem('preferencia-tema');
+      document.documentElement.classList.remove('theme-controlled', 'dark-theme');
+      actualizarEstado();
+    }
+    
+    function recargar() {
+      window.location.reload();
+    }
+    
+    // Actualizar estado al cargar
+    actualizarEstado();
+  </script>
+</body>
+</html> 

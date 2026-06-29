@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Editor de texto | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+/* Estilos del Editor de Texto */
+.editor-container {
+  margin-top: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 50, 150, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.info-box {
+  background: #f0f5ff;
+  padding: 15px;
+  margin: 0;
+  border-radius: 0;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #e0e6f0;
+  color: #4a6fa5;
+}
+
+.editor-sections {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 25px;
+  gap: 25px;
+}
+
+.input-section, .output-section {
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e6f0;
+  font-weight: 400;
+}
+
+.section-title i {
+  margin-right: 10px;
+  font-size: 1.3rem;
+  color: #4a6fa5;
+}
+
+.input-container {
+  position: relative;
+}
+
+#text-input {
+  width: 100%;
+  height: 200px;
+  padding: 15px;
+  border: 1px solid #e0e6f0;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  resize: vertical;
+  font-family: inherit;
+  background: #f8fafd;
+  color: #333;
+  transition: border-color 0.2s;
+  padding-right: 50px;
+}
+
+#text-input:focus {
+  border-color: #4a6fa5;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.1);
+}
+
+.paste-btn {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background: #4a6fa5;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.paste-btn:hover {
+  background: #3a5a85;
+  transform: scale(1.05);
+}
+
+.tool-status {
+  text-align: center;
+  margin: 0;
+  padding: 15px;
+  background: #f8fafd;
+  border-radius: 0;
+  font-weight: 500;
+  border-bottom: 1px solid #e0e6f0;
+  color: #4a6fa5;
+}
+
+.tool-status span {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding: 20px;
+  background-color: #f8fafd;
+  border-radius: 0;
+  justify-content: center;
+  border-bottom: 1px solid #e0e6f0;
+}
+
+.style-btn {
+  flex: 1;
+  min-width: 130px;
+  padding: 12px 15px;
+  border: 1px solid #d0d9e7;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: white;
+  color: #2c3e50;
+  position: relative;
+}
+
+.style-btn i {
+  font-size: 1.1rem;
+  color: #4a6fa5;
+}
+
+.style-btn:hover {
+  border-color: #4a6fa5;
+  background: #f0f5ff;
+}
+
+.style-btn.active {
+  background: #4a6fa5;
+  border-color: #4a6fa5;
+  color: white;
+}
+
+.style-btn.active i {
+  color: white;
+}
+
+.invisible-counter {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(74, 111, 165, 0.9);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 8px;
+  min-width: 24px;
+  text-align: center;
+  line-height: 1;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.output-box {
+  width: 100%;
+  height: 200px;
+  padding: 20px;
+  border: 1px solid #e0e6f0;
+  border-radius: 8px;
+  background-color: #f8fafd;
+  overflow: auto;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #000;
+}
+
+.output-box.bold {
+  font-weight: bold;
+}
+
+.output-box.italic {
+  font-style: italic;
+}
+
+.output-box.bold-italic {
+  font-weight: bold;
+  font-style: italic;
+}
+
+.output-box.invisible {
+  color: #ccc;
+  font-style: italic;
+}
+
+.output-box.invisible::before {
+  content: '[Caracteres invisibles] ';
+  color: #999;
+  font-size: 0.9em;
+}
+
+.action-btns {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.copy-btn {
+  background: #4a6fa5;
+  color: white;
+}
+
+.copy-btn:hover {
+  background: #3a5a85;
+}
+
+.reset-btn {
+  background: #f0f5ff;
+  color: #4a6fa5;
+  border: 1px solid #d0d9e7;
+}
+
+.reset-btn:hover {
+  background: #e0e6f0;
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  background: #4a6fa5;
+  color: white;
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateX(200%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.permission-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.permission-modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transform: translateY(20px);
+  transition: transform 0.3s;
+}
+
+.permission-modal.active .modal-content {
+  transform: translateY(0);
+}
+
+.modal-content i {
+  font-size: 3rem;
+  color: #4a6fa5;
+  margin-bottom: 20px;
+}
+
+.modal-content h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-weight: 400;
+}
+
+.modal-content p {
+  margin-bottom: 25px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.modal-btn {
+  padding: 12px 25px;
+  background: #4a6fa5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-btn:hover {
+  background: #3a5a85;
+}
+
+@media (max-width: 768px) {
+  .editor-sections {
+    flex-direction: column;
+    padding: 15px;
+    gap: 20px;
+  }
+  
+  .input-section, .output-section {
+    width: 100%;
+  }
+  
+  .style-btn {
+    min-width: 110px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+  
+  #text-input {
+    height: 180px;
+  }
+  
+  .output-box {
+    height: 180px;
+  }
+}
+
+footer {
+  background-color: #FFF5EB;
+  padding: 2.5rem 1rem 4rem 1rem;
+  border-top: 1px solid #E5E7EB;
+  margin-top: auto;
+  position: relative;
+}
+
+
+    /* Editor de texto en modo oscuro */
+    body.dark-theme .editor-container {
+      background: #23232a !important;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45) !important;
+    }
+    
+    body.dark-theme .info-box {
+      background: #33334a !important;
+      color: #FFD1A9 !important;
+      border-bottom: 1px solid #4a4a5a !important;
+    }
+    
+    body.dark-theme .section-title {
+      color: #f3f4f6 !important;
+      border-bottom: 1px solid #4a4a5a !important;
+    }
+    
+    body.dark-theme .section-title i {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme #text-input {
+      background: #33334a !important;
+      color: #f3f4f6 !important;
+      border-color: #4a4a5a !important;
+    }
+    
+    body.dark-theme #text-input:focus {
+      border-color: #FFD1A9 !important;
+      box-shadow: 0 0 0 2px rgba(255, 209, 169, 0.1) !important;
+    }
+    
+    body.dark-theme #text-input::placeholder {
+      color: #929292b0 !important;
+    }
+    
+    body.dark-theme .paste-btn {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .paste-btn:hover {
+      background: #ffb07a !important;
+    }
+    
+    body.dark-theme .tool-status {
+      background: #33334a !important;
+      color: #FFD1A9 !important;
+      border-bottom: 1px solid #4a4a5a !important;
+    }
+    
+    body.dark-theme .tool-status span {
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .controls {
+      background-color: #33334a !important;
+      border-bottom: 1px solid #4a4a5a !important;
+    }
+    
+    body.dark-theme .style-btn {
+      background: #23232a !important;
+      color: #f3f4f6 !important;
+      border-color: #4a4a5a !important;
+    }
+    
+    body.dark-theme .style-btn i {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme .style-btn:hover {
+      border-color: #FFD1A9 !important;
+      background: #33334a !important;
+    }
+    
+    body.dark-theme .style-btn.active {
+      background: #FFD1A9 !important;
+      border-color: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .style-btn.active i {
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .invisible-counter {
+      background: rgba(255, 209, 169, 0.9) !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .output-box {
+      background-color: #33334a !important;
+      color: #f3f4f6 !important;
+      border-color: #4a4a5a !important;
+    }
+    
+    body.dark-theme .output-box.invisible {
+      color: #929292b0 !important;
+    }
+    
+    body.dark-theme .output-box.invisible::before {
+      color: #929292b0 !important;
+    }
+    
+    body.dark-theme .action-btns {
+      background: #33334a !important;
+    }
+    
+    body.dark-theme .copy-btn {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .copy-btn:hover {
+      background: #ffb07a !important;
+    }
+    
+    body.dark-theme .reset-btn {
+      background: #33334a !important;
+      color: #FFD1A9 !important;
+      border-color: #4a4a5a !important;
+    }
+    
+    body.dark-theme .reset-btn:hover {
+      background: #4a4a5a !important;
+    }
+    
+    body.dark-theme .notification {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .permission-modal {
+      background: rgba(0, 0, 0, 0.7) !important;
+    }
+    
+    body.dark-theme .modal-content {
+      background: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .modal-content h2 {
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .modal-content p {
+      color: #929292b0 !important;
+    }
+    
+    body.dark-theme .modal-content i {
+      color: #FFD1A9 !important;
+    }
+    
+    body.dark-theme .modal-btn {
+      background: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .modal-btn:hover {
+      background: #ffb07a !important;
+    }
+
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+  
+  <div class="content-container">
+    <h1 class="page-title">Editor de texto</h1>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+    <!-- Editor de texto -->
+    <div class="editor-container">
+        <div class="info-box">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Editor de texto:</strong> Herramienta para formatear y transformar texto con estilos Unicode. 
+                Escribe tu texto y aplica diferentes formatos.
+            </div>
+        </div>
+        
+        <div class="editor-sections">
+            <div class="input-section">
+                <h2 class="section-title"><i class="fas fa-keyboard"></i> Entrada de Texto</h2>
+                <div class="input-container">
+                    <textarea id="text-input" placeholder="Escribe tu texto o usa el botón de pegar..."></textarea>
+                    <button class="paste-btn" id="paste-btn" title="Pegar desde portapapeles">
+                        <i class="fas fa-paste"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="output-section">
+                <h2 class="section-title"><i class="fas fa-eye"></i> Vista Previa</h2>
+                <div id="output-box" class="output-box"></div>
+            </div>
+        </div>
+        
+        <div class="tool-status">
+            Herramienta activa: <span id="active-tool">Ninguna</span>
+        </div>
+        
+        <div class="controls">
+            <button class="style-btn" id="bold-btn">
+                <i class="fas fa-bold"></i> Negrita
+            </button>
+            <button class="style-btn" id="italic-btn">
+                <i class="fas fa-italic"></i> Cursiva
+            </button>
+            <button class="style-btn" id="bold-italic-btn">
+                <i class="fas fa-bold"></i><i class="fas fa-italic"></i> Negrita + Cursiva
+            </button>
+            <button class="style-btn" id="invisible-btn">
+                <i class="fas fa-eye-slash"></i> Invisibles
+                <span class="invisible-counter">1/9</span>
+            </button>
+            <button class="style-btn" id="transform-btn">
+                <i class="fas fa-text-height"></i> Transformar
+            </button>
+        </div>
+        
+        <div class="action-btns">
+            <button class="action-btn copy-btn" id="copy-btn">
+                <i class="fas fa-copy"></i> Copiar Texto
+            </button>
+            <button class="action-btn reset-btn" id="reset-btn">
+                <i class="fas fa-redo"></i> Restablecer
+            </button>
+        </div>
+    </div>
+
+    <!-- Notificación -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i> ¡Texto copiado al portapapeles!
+    </div>
+    
+    <!-- Modal de permisos -->
+    <div class="permission-modal" id="permission-modal">
+        <div class="modal-content">
+            <i class="fas fa-clipboard-question"></i>
+            <h2>Permiso para acceder al portapapeles</h2>
+            <p>Para poder pegar contenido directamente desde tu portapapeles, necesitamos tu permiso. Esta acción es segura y solo se utiliza para la función de pegado en este editor.</p>
+            <p>Haz clic en "Permitir" cuando tu navegador te lo solicite.</p>
+            <button class="modal-btn" id="modal-ok-btn">Entendido</button>
+        </div>
+    </div>
+
+  </div>
+
+
+    <!-- COMPONENTE UPDATE MODAL -->
+    <div data-include="/componentes/update-modal.html"></div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <script src="/componentes/cargador.js"></script>
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+
+    <script>
+      // Adaptar a componentesCargados
+      document.addEventListener('componentesCargados', function() {
+// JavaScript del Editor de Texto
+    // Referencias a los elementos del DOM del editor
+    const textInput = document.getElementById('text-input');
+    const outputBox = document.getElementById('output-box');
+    const boldBtn = document.getElementById('bold-btn');
+    const italicBtn = document.getElementById('italic-btn');
+    const transformBtn = document.getElementById('transform-btn');
+    const copyBtn = document.getElementById('copy-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const pasteBtn = document.getElementById('paste-btn');
+    const notification = document.getElementById('notification');
+    const activeTool = document.getElementById('active-tool');
+    const permissionModal = document.getElementById('permission-modal');
+    const modalOkBtn = document.getElementById('modal-ok-btn');
+    
+    // Mapeo de caracteres Unicode para estilos
+    const unicodeStyles = {
+        bold: {
+            'a': '𝗮', 'b': '𝗯', 'c': '𝗰', 'd': '𝗱', 'e': '𝗲', 'f': '𝗳', 'g': '𝗴', 'h': '𝗵', 'i': '𝗶', 'j': '𝗷',
+            'k': '𝗸', 'l': '𝗹', 'm': '𝗺', 'n': '𝗻', 'o': '𝗼', 'p': '𝗽', 'q': '𝗾', 'r': '𝗿', 's': '𝘀', 't': '𝘁',
+            'u': '𝘂', 'v': '𝘃', 'w': '𝘄', 'x': '𝘅', 'y': '𝘆', 'z': '𝘇',
+            'A': '𝗔', 'B': '𝗕', 'C': '𝗖', 'D': '𝗗', 'E': '𝗘', 'F': '𝗙', 'G': '𝗚', 'H': '𝗛', 'I': '𝗜', 'J': '𝗝',
+            'K': '𝗞', 'L': '𝗟', 'M': '𝗠', 'N': '𝗡', 'O': '𝗢', 'P': '𝗣', 'Q': '𝗤', 'R': '𝗥', 'S': '𝗦', 'T': '𝗧',
+            'U': '𝗨', 'V': '𝗩', 'W': '𝗪', 'X': '𝗫', 'Y': '𝗬', 'Z': '𝗭',
+            '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰', '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵',
+            ' ': ' ', '.': '.', ',': ',', ';': ';', ':': ':', '!': '!', '?': '?', '(': '(', ')': ')'
+        },
+        italic: {
+            'a': '𝘢', 'b': '𝘣', 'c': '𝘤', 'd': '𝘥', 'e': '𝘦', 'f': '𝘧', 'g': '𝘨', 'h': '𝘩', 'i': '𝘪', 'j': '𝘫',
+            'k': '𝘬', 'l': '𝘭', 'm': '𝘮', 'n': '𝘯', 'o': '𝘰', 'p': '𝘱', 'q': '𝘲', 'r': '𝘳', 's': '𝘴', 't': '𝘵',
+            'u': '𝘶', 'v': '𝘷', 'w': '𝘸', 'x': '𝘹', 'y': '𝘺', 'z': '𝘻',
+            'A': '𝘈', 'B': '𝘉', 'C': '𝘊', 'D': '𝘋', 'E': '𝘌', 'F': '𝘍', 'G': '𝘎', 'H': '𝘏', 'I': '𝘐', 'J': '𝘑',
+            'K': '𝘒', 'L': '𝘓', 'M': '𝘔', 'N': '𝘕', 'O': '𝘖', 'P': '𝘗', 'Q': '𝘘', 'R': '𝘙', 'S': '𝘚', 'T': '𝘛',
+            'U': '𝘜', 'V': '𝘝', 'W': '𝘞', 'X': '𝘟', 'Y': '𝘠', 'Z': '𝘡',
+            ' ': ' ', '.': '.', ',': ',', ';': ';', ':': ':', '!': '!', '?': '?', '(': '(', ')': ')'
+        },
+        'bold-italic': {
+            'a': '𝙖', 'b': '𝙗', 'c': '𝙘', 'd': '𝙙', 'e': '𝙚', 'f': '𝙛', 'g': '𝙜', 'h': '𝙝', 'i': '𝙞', 'j': '𝙟',
+            'k': '𝙠', 'l': '𝙡', 'm': '𝙢', 'n': '𝙣', 'o': '𝙤', 'p': '𝙥', 'q': '𝙦', 'r': '𝙧', 's': '𝙨', 't': '𝙩',
+            'u': '𝙪', 'v': '𝙫', 'w': '𝙬', 'x': '𝙭', 'y': '𝙮', 'z': '𝙯',
+            'A': '𝙰', 'B': '𝙱', 'C': '𝙲', 'D': '𝙳', 'E': '𝙴', 'F': '𝙵', 'G': '𝙶', 'H': '𝙷', 'I': '𝙸', 'J': '𝙹',
+            'K': '𝙺', 'L': '𝙻', 'M': '𝙼', 'N': '𝙽', 'O': '𝙾', 'P': '𝙿', 'Q': '𝚀', 'R': '𝚁', 'S': '𝚂', 'T': '𝚃',
+            'U': '𝚄', 'V': '𝚅', 'W': '𝚆', 'X': '𝚇', 'Y': '𝚈', 'Z': '𝚉',
+            '0': '𝟶', '1': '𝟷', '2': '𝟸', '3': '𝟹', '4': '𝟺', '5': '𝟻', '6': '𝟼', '7': '𝟽', '8': '𝟾', '9': '𝟿',
+            ' ': ' ', '.': '.', ',': ',', ';': ';', ':': ':', '!': '!', '?': '?', '(': '(', ')': ')'
+        },
+        invisible: {
+            ' ': '\u200B', // Zero Width Space
+            'a': '\u200B', 'b': '\u200B', 'c': '\u200B', 'd': '\u200B', 'e': '\u200B', 'f': '\u200B', 'g': '\u200B', 'h': '\u200B', 'i': '\u200B', 'j': '\u200B',
+            'k': '\u200B', 'l': '\u200B', 'm': '\u200B', 'n': '\u200B', 'o': '\u200B', 'p': '\u200B', 'q': '\u200B', 'r': '\u200B', 's': '\u200B', 't': '\u200B',
+            'u': '\u200B', 'v': '\u200B', 'w': '\u200B', 'x': '\u200B', 'y': '\u200B', 'z': '\u200B',
+            'A': '\u200B', 'B': '\u200B', 'C': '\u200B', 'D': '\u200B', 'E': '\u200B', 'F': '\u200B', 'G': '\u200B', 'H': '\u200B', 'I': '\u200B', 'J': '\u200B',
+            'K': '\u200B', 'L': '\u200B', 'M': '\u200B', 'N': '\u200B', 'O': '\u200B', 'P': '\u200B', 'Q': '\u200B', 'R': '\u200B', 'S': '\u200B', 'T': '\u200B',
+            'U': '\u200B', 'V': '\u200B', 'W': '\u200B', 'X': '\u200B', 'Y': '\u200B', 'Z': '\u200B',
+            '0': '\u200B', '1': '\u200B', '2': '\u200B', '3': '\u200B', '4': '\u200B', '5': '\u200B', '6': '\u200B', '7': '\u200B', '8': '\u200B', '9': '\u200B',
+            '.': '\u200B', ',': '\u200B', ';': '\u200B', ':': '\u200B', '!': '\u200B', '?': '\u200B', '(': '\u200B', ')': '\u200B'
+        }
+    };
+    
+    // Caracteres invisibles disponibles
+    const invisibleCharacters = {
+        'zero-width-space': '\u200B', // Espacio de ancho cero
+        'zero-width-non-joiner': '\u200C', // No-joiner de ancho cero
+        'zero-width-joiner': '\u200D', // Joiner de ancho cero
+        'left-to-right-mark': '\u200E', // Marca de izquierda a derecha
+        'right-to-left-mark': '\u200F', // Marca de derecha a izquierda
+        'word-joiner': '\u2060', // Unión de palabras
+        'invisible-separator': '\u2063', // Separador invisible
+        'invisible-plus': '\u2064' // Más invisible
+    };
+    
+    // Variables de estado para los estilos
+    let activeStyles = {
+        bold: false,
+        italic: false,
+        'bold-italic': false,
+        invisible: false
+    };
+    
+    let transformCase = 'none';
+    let permissionRequested = false;
+    let invisibleCharacterIndex = 0; // Contador para caracteres invisibles
+    
+    // Array de caracteres invisibles con sus nombres
+    const invisibleCharacterTypes = [
+        { name: 'Invisibles', type: 'zero-width-space', description: 'Espacio de ancho cero' },
+        { name: 'Espacio Cero', type: 'zero-width-space', description: 'Espacio de ancho cero' },
+        { name: 'No-Joiner', type: 'zero-width-non-joiner', description: 'No-joiner de ancho cero' },
+        { name: 'Joiner', type: 'zero-width-joiner', description: 'Joiner de ancho cero' },
+        { name: 'LTR Mark', type: 'left-to-right-mark', description: 'Marca LTR' },
+        { name: 'RTL Mark', type: 'right-to-left-mark', description: 'Marca RTL' },
+        { name: 'Word Joiner', type: 'word-joiner', description: 'Unión de palabras' },
+        { name: 'Separador', type: 'invisible-separator', description: 'Separador invisible' },
+        { name: 'Invisible +', type: 'invisible-plus', description: 'Más invisible' }
+    ];
+    
+    // Función para mostrar el modal de permisos
+    function showPermissionModal() {
+        permissionModal.classList.add('active');
+    }
+    
+    // Función para ocultar el modal de permisos
+    function hidePermissionModal() {
+        permissionModal.classList.remove('active');
+    }
+    
+    // Función para aplicar estilos Unicode
+    function applyUnicodeStyles(text, styles) {
+        if (!text) return text;
+        
+        let result = '';
+        
+        for (let char of text) {
+            let styledChar = char;
+            
+            // Aplicar estilos
+            if (styles.bold && unicodeStyles.bold[char]) {
+                styledChar = unicodeStyles.bold[char];
+            } else if (styles.italic && unicodeStyles.italic[char]) {
+                styledChar = unicodeStyles.italic[char];
+            } else if (styles['bold-italic'] && unicodeStyles['bold-italic'][char]) {
+                styledChar = unicodeStyles['bold-italic'][char];
+            }
+            
+            result += styledChar;
+        }
+        
+        return result;
+    }
+    
+    // Función para actualizar la vista previa
+    function updatePreview() {
+        let text = textInput.value;
+        
+        // Aplicar transformación de mayúsculas/minúsculas
+        if (transformCase === 'uppercase') {
+            text = text.toUpperCase();
+        } else if (transformCase === 'lowercase') {
+            text = text.toLowerCase();
+        } else if (transformCase === 'capitalize') {
+            text = text.replace(/\b\w/g, char => char.toUpperCase());
+        }
+        
+        // Aplicar estilos Unicode
+        if (activeStyles.bold || activeStyles.italic || activeStyles['bold-italic']) {
+            text = applyUnicodeStyles(text, activeStyles);
+        }
+        
+        // Actualizar el contenido
+        outputBox.textContent = text;
+        
+        // Aplicar clases de estilo para CSS
+        outputBox.className = 'output-box';
+        if (activeStyles.bold) {
+            outputBox.classList.add('bold');
+        } else if (activeStyles.italic) {
+            outputBox.classList.add('italic');
+        } else if (activeStyles['bold-italic']) {
+            outputBox.classList.add('bold-italic');
+        }
+        
+        // Actualizar estado de botones
+        boldBtn.classList.toggle('active', activeStyles.bold);
+        italicBtn.classList.toggle('active', activeStyles.italic);
+        document.getElementById('bold-italic-btn').classList.toggle('active', activeStyles['bold-italic']);
+        
+        // Actualizar indicador de herramienta activa
+        updateActiveToolIndicator();
+    }
+    
+    // Función para actualizar el indicador de herramienta activa
+    function updateActiveToolIndicator() {
+        if (activeStyles.bold) {
+            activeTool.textContent = 'Negrita';
+        } else if (activeStyles.italic) {
+            activeTool.textContent = 'Cursiva';
+        } else if (activeStyles['bold-italic']) {
+            activeTool.textContent = 'Negrita + Cursiva';
+        } else {
+            activeTool.textContent = 'Ninguna';
+        }
+    }
+    
+    // Función para alternar estilos (solo uno activo a la vez)
+    function toggleStyle(style) {
+        // Si se está activando un estilo, desactivar el otro
+        if (!activeStyles[style]) {
+            if (style === 'bold') {
+                activeStyles.italic = false;
+                activeStyles['bold-italic'] = false;
+            } else if (style === 'italic') {
+                activeStyles.bold = false;
+                activeStyles['bold-italic'] = false;
+            } else {
+                activeStyles.bold = false;
+                activeStyles.italic = false;
+            }
+            activeStyles[style] = true;
+        } else {
+            // Si ya está activo, desactivarlo
+            activeStyles[style] = false;
+        }
+        
+        updatePreview();
+    }
+    
+    // Función para rotar entre transformaciones de texto
+    function rotateTransform() {
+        const cases = ['none', 'uppercase', 'lowercase', 'capitalize'];
+        const currentIndex = cases.indexOf(transformCase);
+        transformCase = cases[(currentIndex + 1) % cases.length];
+        
+        // Actualizar el botón según la transformación actual
+        if (transformCase === 'uppercase') {
+            transformBtn.innerHTML = '<i class="fas fa-text-height"></i> Mayúsculas';
+        } else if (transformCase === 'lowercase') {
+            transformBtn.innerHTML = '<i class="fas fa-text-height"></i> Minúsculas';
+        } else if (transformCase === 'capitalize') {
+            transformBtn.innerHTML = '<i class="fas fa-text-height"></i> Capitalizar';
+        } else {
+            transformBtn.innerHTML = '<i class="fas fa-text-height"></i> Transformar';
+        }
+        
+        updatePreview();
+    }
+    
+    // Función para manejar caracteres invisibles
+    function handleInvisibleCharacters() {
+        const invisibleBtn = document.getElementById('invisible-btn');
+        
+        // Obtener el carácter actual
+        const currentChar = invisibleCharacterTypes[invisibleCharacterIndex];
+        
+        // Copiar el carácter al portapapeles
+        copyInvisibleCharacter(currentChar.type);
+        
+        // Mostrar notificación
+        showNotification(`${currentChar.description} copiado al portapapeles`);
+        
+        // Avanzar al siguiente carácter
+        invisibleCharacterIndex = (invisibleCharacterIndex + 1) % invisibleCharacterTypes.length;
+        
+        // Obtener el siguiente carácter para actualizar el botón
+        const nextChar = invisibleCharacterTypes[invisibleCharacterIndex];
+        const counterText = `${invisibleCharacterIndex + 1}/${invisibleCharacterTypes.length}`;
+        
+        // Actualizar el botón
+        invisibleBtn.innerHTML = `<i class="fas fa-eye-slash"></i> ${nextChar.name}<span class="invisible-counter">${counterText}</span>`;
+    }
+    
+    // Función para copiar un carácter invisible específico
+    function copyInvisibleCharacter(type) {
+        const character = invisibleCharacters[type];
+        
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(character).then(() => {
+                // Notificación ya se muestra en handleInvisibleCharacters
+            }).catch(err => {
+                console.error('Error al copiar carácter invisible:', err);
+                fallbackCopyText(character);
+            });
+        } else {
+            fallbackCopyText(character);
+        }
+    }
+    
+    // Función para copiar el texto formateado
+    function copyFormattedText() {
+        const text = outputBox.textContent;
+        
+        // Usar la API del portapapeles moderna
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('¡Texto copiado al portapapeles!');
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                fallbackCopyText(text);
+            });
+        } else {
+            fallbackCopyText(text);
+        }
+    }
+    
+    // Método alternativo para copiar
+    function fallbackCopyText(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '0';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            showNotification('¡Texto copiado al portapapeles!');
+        } catch (err) {
+            console.error('Error al copiar:', err);
+        }
+        
+        document.body.removeChild(textArea);
+    }
+    
+    // Función para pegar desde el portapapeles
+    function pasteFromClipboard() {
+        // Mostrar el modal de permisos si es la primera vez
+        if (!permissionRequested) {
+            showPermissionModal();
+            return;
+        }
+        
+        if (navigator.clipboard) {
+            navigator.clipboard.readText()
+                .then(text => {
+                    textInput.value = text;
+                    updatePreview();
+                    showNotification('¡Texto pegado desde portapapeles!');
+                })
+                .catch(err => {
+                    console.error('Error al pegar:', err);
+                    showNotification('Permiso denegado. Haz clic en "Permitir" cuando se solicite.');
+                    showPermissionModal();
+                });
+        } else {
+            showNotification('Tu navegador no soporta esta función');
+        }
+    }
+    
+    // Mostrar notificación
+    function showNotification(message) {
+        notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+        notification.classList.add('show');
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+    
+    // Función para restablecer todo
+    function resetAll() {
+        textInput.value = '';
+        outputBox.textContent = '';
+        activeStyles = {
+            bold: false,
+            italic: false,
+            'bold-italic': false,
+            invisible: false
+        };
+        transformCase = 'none';
+        invisibleCharacterIndex = 0; // Resetear contador de caracteres invisibles
+        outputBox.className = 'output-box';
+        transformBtn.innerHTML = '<i class="fas fa-text-height"></i> Transformar';
+        if (document.getElementById('invisible-btn')) {
+            document.getElementById('invisible-btn').innerHTML = '<i class="fas fa-eye-slash"></i> Invisibles<span class="invisible-counter">1/8</span>';
+        }
+        updatePreview();
+    }
+    
+    // Event Listeners del editor
+    if (textInput) textInput.addEventListener('input', updatePreview);
+    if (boldBtn) boldBtn.addEventListener('click', () => toggleStyle('bold'));
+    if (italicBtn) italicBtn.addEventListener('click', () => toggleStyle('italic'));
+    if (document.getElementById('bold-italic-btn')) document.getElementById('bold-italic-btn').addEventListener('click', () => toggleStyle('bold-italic'));
+    if (document.getElementById('invisible-btn')) document.getElementById('invisible-btn').addEventListener('click', handleInvisibleCharacters);
+    if (transformBtn) transformBtn.addEventListener('click', rotateTransform);
+    if (copyBtn) copyBtn.addEventListener('click', copyFormattedText);
+    if (resetBtn) resetBtn.addEventListener('click', resetAll);
+    if (pasteBtn) pasteBtn.addEventListener('click', pasteFromClipboard);
+    if (modalOkBtn) modalOkBtn.addEventListener('click', () => {
+        hidePermissionModal();
+        permissionRequested = true;
+        pasteFromClipboard(); // Intentar de nuevo después de aceptar
+    });
+    
+    // Cerrar modal al hacer clic fuera del contenido
+    if (permissionModal) {
+        permissionModal.addEventListener('click', (e) => {
+            if (e.target === permissionModal) {
+                hidePermissionModal();
+            }
+        });
+    }
+    
+    // Inicializar vista previa si los elementos existen
+    if (textInput && outputBox) {
+        updatePreview();
+    }
+      });
+    </script>
+</body>
+</html>

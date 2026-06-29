@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Política de Privacidad | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .privacy-content {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    .clause-section {
+      background: var(--bg-secondary, #f9fafb);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      transition: all 0.3s ease;
+    }
+    .clause-section:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      transform: translateY(-2px);
+    }
+    .clause-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-title, #1f2937);
+      margin-bottom: 1.25rem;
+      border-bottom: 2px solid #FFD1A9;
+      padding-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .clause-text {
+      color: var(--text-body, #4b5563);
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+    .clause-text p {
+      margin-bottom: 1rem;
+    }
+    .clause-text p:last-child {
+      margin-bottom: 0;
+    }
+    .clause-list {
+      list-style-type: none;
+      padding-left: 0;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    .clause-list li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .clause-list li::before {
+      content: "•";
+      color: #ffb07a;
+      font-size: 1.5rem;
+      position: absolute;
+      left: 0;
+      top: -0.25rem;
+    }
+    .highlight {
+      background: #ffebd8;
+      border-left: 4px solid #ffb07a;
+      padding: 1.25rem;
+      border-radius: 4px 12px 12px 4px;
+      margin-top: 1.5rem;
+      color: #7c2d12;
+      font-size: 0.975rem;
+    }
+    
+    /* Dark Theme Support */
+    [data-theme="dark"] .clause-section {
+      background: #23232a;
+      border-color: #374151;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    }
+    [data-theme="dark"] .clause-title {
+      color: #f3f4f6;
+      border-bottom-color: #ea580c;
+    }
+    [data-theme="dark"] .clause-text {
+      color: #d1d5db;
+    }
+    [data-theme="dark"] .highlight {
+      background: rgba(234, 88, 12, 0.1);
+      border-left-color: #ea580c;
+      color: #ffedd5;
+    }
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+
+    <div class="content-container">
+    <h1 class="page-title">Política de Privacidad</h1>
+    
+   
+    
+    <!-- Contenido de política de privacidad -->
+    <div class="privacy-content">
+      <div class="clause-section">
+        <h2 class="clause-title">Cláusula preliminar</h2>
+        <div class="clause-text">
+          <p>En <strong>C</strong>lub <strong>G</strong>ami<strong>n</strong>g (CGN) nos comprometemos a proteger la privacidad de nuestros miembros. Esta política describe cómo recopilamos, usamos y protegemos la información personal que obtenemos a través de nuestros servicios, incluyendo nuestro servidor de Discord, grupos de WhatsApp y Telegram, Signal y servidor de Minecraft Bedrock. Al utilizar nuestra comunidad y sus servicios, aceptas las prácticas descritas en esta política.</p>
+          
+          <div class="highlight">
+            <p><strong>🔐 Jurisdicción y legislación aplicable</strong><br>Este sistema de moderación opera bajo las leyes mexicanas de protección de datos (LFPDPPP), y está administrado por individuos sin ánimo de lucro. Al unirse a la comunidad y aceptar sus reglas, el usuario acepta someterse a la jurisdicción de los tribunales competentes en Guadalajara, Jalisco, México, para cualquier disputa legal que pudiera surgir.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="clause-section">
+        <h2 class="clause-title">📜 1. Reglas del Grupo & Política de Moderación</h2>
+        <div class="clause-text">
+          <p>Para mantener un ambiente seguro y agradable para todos los miembros, recopilamos y procesamos cierta información relacionada con tu actividad en la comunidad:</p>
+          
+          <ul class="clause-list">
+            <li><strong>Reglas:</strong> Este grupo se rige por un código de conducta basado en el respeto, la no discriminación, y la prohibición de spam, publicidad no solicitada o contenido sensible.</li>
+            <li><strong>Régimen de sanciones:</strong> Cualquier incumplimiento será sancionado según su gravedad, pudiendo incluir advertencias, silenciamientos temporales o expulsión.</li>
+            <li><strong>Registro de sanciones:</strong> En caso de infracción, el sistema podrá registrar los siguientes datos en una base comunitaria compartida con otros grupos aliados:
+            <br>
+            <strong>1. </strong>Nombre de usuario (username)
+            <br>
+            <strong>2. </strong>ID de Telegram (si aplica)
+            <br>
+            <strong>3. </strong>Fecha y hora de la infracción
+            <br>
+            <strong>4. </strong>Tipo o categoría de la falta
+            <br>
+            <strong>5. </strong>Nombre del grupo donde ocurrió</li>
+            
+          </ul>
+          
+          <p>🔒 Esta base es utilizada exclusivamente para fines de moderación interna y prevención de reincidencias. No se compartirá con terceros ni se usará con fines comerciales.</p>
+          <p>🕓 La información no se elimina automáticamente al abandonar el grupo. Sin embargo, el usuario puede solicitar la eliminación de su registro manualmente, bajo un proceso de verificación de identidad descrito en nuestra política.</p>
+          <p>✅ Al permancer en la comunidad, entendemos que estas de a cuerdo con las reglas de la comunidad y esta política. En caso contrario puedes abandonar los grupos.</p>
+        </div>
+      </div>
+      
+      <div class="clause-section">
+        <h2 class="clause-title">👥 2. Usuarios Preexistentes</h2>
+        <div class="clause-text">
+          <p>Si eras miembro de CGN antes de la implementación de esta política (17 de junio de 2025):</p>
+          
+          <ul class="clause-list">
+            <li>Tus datos históricos de actividad permanecen en nuestros registros, pero se rigen por esta nueva política.</li>
+            <li>Tienes el derecho solicitar la eliminación de tus datos personales en cualquier momento, sujeto a limitaciones legítimas.</li>
+            <li>Se te aplicarán las mismas protecciones de privacidad que a los nuevos miembros.</li>
+          </ul>
+          
+          <p>Si no estás de acuerdo con esta política, puedes solicitar la eliminación de tus datos asociados y/o salir de la comunidad.</p>
+        </div>
+      </div>
+      
+      <div class="clause-section">
+        <h2 class="clause-title">🗃️ 3. Base de Datos de Infracciones</h2>
+        <div class="clause-text">
+          <p>Mantenemos una base de datos de infracciones para garantizar la seguridad y consistencia en nuestras acciones moderativas:</p>
+          
+          <ul class="clause-list">
+            <li>Registramos infracciones de normas, incluyendo fecha, tipo de infracción, y sanción aplicada.</li>
+            <li>Los datos se almacenan de forma segura y solo son accesibles para el equipo de moderación.</li>
+            <li>Las infracciones con 180 días de antiguedad o más son aptas para su eliminación de la base de datos.</li>
+            <li>Las infracciones graves (acoso, spam o que involucren a administradores) pueden mantenerse indefinidamente.</li>
+          </ul>
+          
+          <p>Esta base de datos nos permite aplicar sanciones apropiadas y consistentes, y proteger a la comunidad de usuarios problemáticos recurrentes.</p>
+        </div>
+      </div>
+      
+      <div class="clause-section">
+        <h2 class="clause-title">🗑️ 4. Política de Eliminación de Datos por Solicitud</h2>
+        <div class="clause-text">
+          <p>Respetamos tu derecho a controlar tu información personal:</p>
+          
+          <ul class="clause-list">
+            <li>Puedes solicitar la eliminación de tus datos personales en cualquier momento contactando a nuestro equipo de soporte.</li>
+            <li>Responderemos a tu solicitud dentro de un plazo máximo de 3 días.</li>
+            <li>Algunos datos pueden retenerse por razones legítimas (registros de moderación, obligaciones legales, seguridad de la comunidad).</li>
+            <li>La eliminación de datos puede resultar en la pérdida de acceso a ciertos servicios o funciones de la comunidad, en función de los servicios en los que se usaban.</li>
+          </ul>
+          
+          <div class="highlight">
+            <p><strong>Importante</strong><br>Los datos no se eliminan de forma automatica, necesitas hablar con soporte por medio de la página de contacto.<br>En el caso de la base de datos, esta es de acceso restringido, pero puedes consultar registros individuales de forma libre.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="clause-section">
+        <h2 class="clause-title">📌 5. Consideraciones Adicionales</h2>
+        <div class="clause-text">
+          <p>Otras consideraciones importantes sobre nuestra política de privacidad:</p>
+          
+          <ul class="clause-list">
+            <li><strong>Menores de edad:</strong> No recopilamos intencionalmente datos de menores de 13 años. Si descubrimos que hemos recopilado dichos datos, los eliminaremos inmediatamente.</li>
+            <li><strong>Cambios en la política:</strong> Actualizamos esta política periódicamente. Te notificaremos con la suficiente antelación si ocurre alguna actualización.</li>
+            <li><strong>Transferencias de datos:</strong> Como comunidad global, tus datos pueden procesarse fuera de tu país de residencia, siempre con protecciones adecuadas.</li>
+            <li><strong>Seguridad:</strong> Implementamos medidas técnicas y organizativas para proteger tus datos contra acceso no autorizado o pérdida.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="clause-section">
+        <h2 class="clause-title">🌐 6. Servicios de Terceros y Geolocalización</h2>
+        <div class="clause-text">
+          <p>Para ofrecer una experiencia de usuario optimizada (como la conversión automática de los horarios de atención a tu zona horaria local con precisión de ciudad), nuestro sitio web puede utilizar APIs de geolocalización de terceros de forma completamente client-side:</p>
+          <ul class="clause-list">
+            <li><strong>Geolocalización por IP:</strong> Consultamos de forma anónima el servicio de terceros `freeipapi.com` para estimar tu ciudad, región y país en base a tu dirección IP.</li>
+            <li><strong>Privacidad de los datos:</strong> CGN no recopila, almacena ni registra tu dirección IP ni tu ubicación física en ninguno de nuestros servidores. La consulta se procesa en tiempo real en tu navegador y los datos de ubicación solo se utilizan localmente para ajustar la visualización de los horarios.</li>
+            <li><strong>Control del usuario:</strong> En caso de lecturas erróneas (como por uso de VPN) o si prefieres no utilizar la geolocalización por IP, dispones de un botón de alternancia en la sección de contacto para desactivar este servicio y utilizar la ubicación aproximada del sistema basada en tu zona horaria local. Tu preferencia se guardará de forma local en tu navegador mediante `localStorage`.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+     <!-- Botones de navegación horizontales -->
+     <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+    </div>
+
+  </div>
+
+    <!-- COMPONENTE UPDATE MODAL -->
+    <div data-include="/componentes/update-modal.html"></div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <script src="/componentes/cargador.js"></script>
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Contacto | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .contact-form-container {
+      max-width: 600px;
+      margin: 0 auto 2rem auto;
+      padding: 2rem;
+      background-color: #f9fafb;
+      border-radius: 0.5rem;
+      border: 1px solid #e5e7eb;
+    }
+    
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .form-label {
+      font-weight: 600;
+      color: #374151;
+      font-size: 0.9rem;
+    }
+    
+    .form-input,
+    .form-textarea {
+      padding: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.375rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: white;
+    }
+    
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: #FFD1A9;
+      box-shadow: 0 0 0 3px rgba(255, 209, 169, 0.1);
+    }
+    
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    .submit-btn {
+      background: linear-gradient(135deg, #FFD1A9 0%, #ffb07a 100%);
+      color: #374151;
+      font-weight: 600;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-height: 48px;
+    }
+    
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .success-message,
+    .error-message {
+      text-align: center;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .success-message {
+      background-color: #d1fae5;
+      border: 2px solid #10b981;
+      color: #065f46;
+    }
+    
+    .error-message {
+      background-color: #fee2e2;
+      border: 2px solid #ef4444;
+      color: #991b1b;
+    }
+    
+    .success-message i,
+    .error-message i {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    
+    .success-message h3,
+    .error-message h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Estilos para el contador de límite */
+    #limitCounter {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+    
+    #limitCounter a {
+      color: inherit;
+      text-decoration: underline;
+    }
+    
+    #limitCounter a:hover {
+      opacity: 0.8;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-button {
+        width: 100%;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .back-to-top {
+        top: -20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      
+      .cgn-icon {
+        height: 50px;
+        width: 100px;
+      }
+      
+      .contact-form-container {
+        padding: 1.5rem;
+        margin: 0 1rem 2rem 1rem;
+      }
+    }
+
+
+    body.dark-theme .contact-form-container {
+      background-color: #2d2d35 !important;
+      border-color: #4b5563 !important;
+    }
+    
+    body.dark-theme .form-label {
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .form-input,
+    body.dark-theme .form-textarea {
+      background-color: #23232a !important;
+      border-color: #4b5563 !important;
+      color: #f3f4f6 !important;
+    }
+    
+    body.dark-theme .form-input:focus,
+    body.dark-theme .form-textarea:focus {
+      border-color: #FFD1A9 !important;
+      box-shadow: 0 0 0 3px rgba(255, 209, 169, 0.2) !important;
+    }
+    
+    body.dark-theme .submit-btn {
+      background: linear-gradient(135deg, #FFD1A9 0%, #ffb07a 100%) !important;
+      color: #23232a !important;
+    }
+    
+    body.dark-theme .success-message {
+      background-color: rgba(16, 185, 129, 0.1) !important;
+      border-color: #10b981 !important;
+      color: #d1fae5 !important;
+    }
+    
+    body.dark-theme .error-message {
+      background-color: rgba(239, 68, 68, 0.1) !important;
+      border-color: #ef4444 !important;
+      color: #fee2e2 !important;
+    }
+    
+    /* Contador de límite en modo oscuro */
+    body.dark-theme #limitCounter {
+      background-color: rgba(55, 65, 81, 0.1) !important;
+    }
+
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+  
+  <div class="content-container">
+    <h1 class="page-title">Formulario de contacto</h1>
+    
+    <!-- Formulario de contacto con EmailJS -->
+    <div class="contact-form-container">
+      <form id="contactForm" class="contact-form">
+        <div class="form-group">
+          <label for="user_name" class="form-label">Nombre completo *</label>
+          <input type="text" id="user_name" name="user_name" class="form-input" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="user_email" class="form-label">Correo electrónico *</label>
+          <input type="email" id="user_email" name="user_email" class="form-input" required>
+          <div id="limitCounter"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="subject" class="form-label">Asunto *</label>
+          <input type="text" id="subject" name="subject" class="form-input" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="message" class="form-label">Mensaje *</label>
+          <textarea id="message" name="message" class="form-textarea" rows="6" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <button type="submit" id="submitBtn" class="submit-btn">
+            <span class="btn-text">Enviar mensaje</span>
+            <span class="btn-loading" style="display: none;">
+              <i class="fas fa-spinner fa-spin"></i> Enviando...
+            </span>
+          </button>
+        </div>
+      </form>
+      
+      <!-- Mensaje de éxito -->
+      <div id="successMessage" class="success-message" style="display: none;">
+        <i class="fas fa-check-circle"></i>
+        <h3>¡Mensaje enviado!</h3>
+        <p>Gracias por contactarnos. Te responderemos lo antes posible.</p>
+      </div>
+      
+      <!-- Mensaje de error -->
+      <div id="errorMessage" class="error-message" style="display: none;">
+        <i class="fas fa-exclamation-circle"></i>
+        <h3>Error al enviar</h3>
+        <p id="errorText">Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo.</p>
+      </div>
+    </div>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  </div>
+
+
+    <!-- COMPONENTE UPDATE MODAL -->
+    <div data-include="/componentes/update-modal.html"></div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="/componentes/cargador.js"></script>
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+
+    <script>
+      document.addEventListener('componentesCargados', function() {
+  // ===== CONFIGURACIÓN DE EMAILJS =====
+  // Inicializar EmailJS
+  (function() {
+    // Reemplaza 'TU_PUBLIC_KEY' con tu API Key pública de EmailJS
+    emailjs.init('YdNF4w99dWvDnL1ij');
+  })();
+
+  // Función para enviar el formulario
+      const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    const errorText = document.getElementById('errorText');
+
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Mostrar estado de carga
+      submitBtn.disabled = true;
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline-flex';
+      
+      // Ocultar mensajes previos
+      successMessage.style.display = 'none';
+      errorMessage.style.display = 'none';
+      
+      // ===== SISTEMA DE PROTECCIÓN CONTRA SPAM =====
+      const userEmail = document.getElementById('user_email').value;
+      const userName = document.getElementById('user_name').value;
+      
+      // Verificar límite de envíos
+      const emailLimit = checkEmailLimit(userEmail);
+      
+      if (emailLimit.isLimited) {
+        // Mostrar mensaje de límite alcanzado
+        showLimitMessage(emailLimit);
+        return;
+      }
+      
+      // Obtener datos del formulario
+      const formData = {
+        // Datos principales del formulario
+        user_name: userName,
+        user_email: userEmail,
+        subject: document.getElementById('subject').value,
+        message: document.getElementById('message').value,
+        
+        // Datos adicionales útiles para la plantilla
+        name: userName, // Alias para compatibilidad
+        email: userEmail, // Alias para compatibilidad
+        title: document.getElementById('subject').value, // Alias para compatibilidad
+        
+        // Información adicional del contexto
+        time: new Date().toLocaleString('es-ES', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: 'America/Mexico_City'
+        }),
+        
+        // Información del navegador y dispositivo
+        user_agent: navigator.userAgent,
+        page_url: window.location.href,
+        referrer: document.referrer || 'Directo',
+        
+        // Información de la zona horaria del usuario
+        user_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        
+        // Información adicional del formulario
+        form_timestamp: new Date().toISOString(),
+        ip_location: 'Detectado automáticamente' // EmailJS puede detectar la IP
+      };
+      
+      // Registrar el envío antes de enviar
+      recordEmailSend(userEmail);
+      
+      // Enviar email usando EmailJS
+      // Reemplaza 'TU_SERVICE_ID' y 'TU_TEMPLATE_ID' con tus IDs reales
+      emailjs.send('service_8g2txjv', 'template_7jwq2te', formData)
+        .then(function(response) {
+          console.log('SUCCESS!', response.status, response.text);
+          
+          // Mostrar mensaje de éxito
+          successMessage.style.display = 'block';
+          
+          // Limpiar formulario
+          contactForm.reset();
+          
+          // Ocultar mensaje después de 5 segundos
+          setTimeout(() => {
+            successMessage.style.display = 'none';
+          }, 5000);
+        })
+        .catch(function(error) {
+          console.log('FAILED...', error);
+          
+          // Mostrar mensaje de error
+          errorText.textContent = 'Error: ' + (error.text || 'No se pudo enviar el mensaje. Por favor, inténtalo de nuevo.');
+          errorMessage.style.display = 'block';
+          
+          // Ocultar mensaje después de 8 segundos
+          setTimeout(() => {
+            errorMessage.style.display = 'none';
+          }, 8000);
+        })
+        .finally(function() {
+          // Restaurar botón
+          submitBtn.disabled = false;
+          btnText.style.display = 'inline';
+          btnLoading.style.display = 'none';
+        });
+    });
+
+  // ===== FUNCIONES DEL SISTEMA DE PROTECCIÓN =====
+  
+  // Configuración del límite
+  const LIMIT_CONFIG = {
+    maxEmails: 2, // Máximo 2 emails por semana
+    periodDays: 7, // Período de 7 días
+    storageKey: 'email_send_limit'
+  };
+  
+  // Verificar límite de envíos por email
+  function checkEmailLimit(email) {
+    const storage = JSON.parse(localStorage.getItem(LIMIT_CONFIG.storageKey) || '{}');
+    const emailData = storage[email] || { count: 0, firstSend: null, lastSend: null };
+    
+    const now = new Date();
+    const firstSend = emailData.firstSend ? new Date(emailData.firstSend) : null;
+    
+    // Si es el primer envío o han pasado más de 7 días desde el primer envío
+    if (!firstSend || (now - firstSend) > (LIMIT_CONFIG.periodDays * 24 * 60 * 60 * 1000)) {
+      return {
+        isLimited: false,
+        remaining: LIMIT_CONFIG.maxEmails,
+        resetDate: new Date(now.getTime() + (LIMIT_CONFIG.periodDays * 24 * 60 * 60 * 1000))
+      };
+    }
+    
+    // Verificar si ha alcanzado el límite
+    if (emailData.count >= LIMIT_CONFIG.maxEmails) {
+      const resetDate = new Date(firstSend.getTime() + (LIMIT_CONFIG.periodDays * 24 * 60 * 60 * 1000));
+      return {
+        isLimited: true,
+        remaining: 0,
+        resetDate: resetDate,
+        daysUntilReset: Math.ceil((resetDate - now) / (24 * 60 * 60 * 1000))
+      };
+    }
+    
+    return {
+      isLimited: false,
+      remaining: LIMIT_CONFIG.maxEmails - emailData.count,
+      resetDate: new Date(firstSend.getTime() + (LIMIT_CONFIG.periodDays * 24 * 60 * 60 * 1000))
+    };
+  }
+  
+  // Registrar envío de email
+  function recordEmailSend(email) {
+    const storage = JSON.parse(localStorage.getItem(LIMIT_CONFIG.storageKey) || '{}');
+    const now = new Date();
+    
+    if (!storage[email]) {
+      storage[email] = {
+        count: 1,
+        firstSend: now.toISOString(),
+        lastSend: now.toISOString()
+      };
+    } else {
+      storage[email].count++;
+      storage[email].lastSend = now.toISOString();
+    }
+    
+    localStorage.setItem(LIMIT_CONFIG.storageKey, JSON.stringify(storage));
+  }
+  
+  // Mostrar mensaje de límite alcanzado
+  function showLimitMessage(limitInfo) {
+    const errorMessage = document.getElementById('errorMessage');
+    const errorText = document.getElementById('errorText');
+    
+    const resetDate = limitInfo.resetDate.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    errorText.innerHTML = `
+      <strong>Límite de envíos alcanzado</strong><br><br>
+      Has alcanzado el límite de ${LIMIT_CONFIG.maxEmails} mensajes por semana.<br><br>
+      <strong>Próxima recarga disponible el:</strong> ${resetDate}<br><br>
+      <strong>Para contacto urgente:</strong><br>
+      📧 <a href="mailto:soporteclubgaming@gmail.com" style="color: #1D4ED8;">soporteclubgaming@gmail.com</a><br>
+      📱 <a href="https://t.me/CGNcj" style="color: #1D4ED8;">Telegram</a><br>
+      🌐 <a href="https://discord.gg/FBNZ5v7keR" style="color: #1D4ED8;">Discord</a>
+    `;
+    
+    errorMessage.style.display = 'block';
+    
+    // Ocultar mensaje después de 15 segundos
+    setTimeout(() => {
+      errorMessage.style.display = 'none';
+    }, 15000);
+    
+    // Restaurar botón
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    
+    submitBtn.disabled = false;
+    btnText.style.display = 'inline';
+    btnLoading.style.display = 'none';
+  }
+  
+  // Actualizar contador en tiempo real
+  function updateLimitCounter() {
+    const emailInput = document.getElementById('user_email');
+    const nameInput = document.getElementById('user_name');
+    const limitCounter = document.getElementById('limitCounter');
+    
+    if (!limitCounter) return;
+    
+    const email = emailInput.value.trim();
+    const name = nameInput.value.trim();
+    
+    if (email && name) {
+      const limitInfo = checkEmailLimit(email);
+      
+      if (limitInfo.isLimited) {
+        limitCounter.innerHTML = `
+          <div style="color: #dc2626; font-size: 0.9rem; margin-top: 0.5rem;">
+            <i class="fas fa-exclamation-triangle"></i> 
+            Límite alcanzado. Próxima recarga el: ${limitInfo.resetDate.toLocaleDateString('es-ES')}
+          </div>
+        `;
+      } else {
+        limitCounter.innerHTML = `
+          <div style="color: #059669; font-size: 0.9rem; margin-top: 0.5rem;">
+            <i class="fas fa-check-circle"></i> 
+            ${limitInfo.remaining} de ${LIMIT_CONFIG.maxEmails} envíos disponibles esta semana
+          </div>
+        `;
+      }
+    } else {
+      limitCounter.innerHTML = `
+        <div style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">
+          <i class="fas fa-info-circle"></i> 
+          Límite: ${LIMIT_CONFIG.maxEmails} mensajes por semana
+        </div>
+      `;
+    }
+  }
+  
+  // Inicializar contador en tiempo real
+    const emailInput = document.getElementById('user_email');
+    const nameInput = document.getElementById('user_name');
+    
+    if (emailInput && nameInput) {
+      emailInput.addEventListener('input', updateLimitCounter);
+      nameInput.addEventListener('input', updateLimitCounter);
+      
+      // Actualizar contador inicial
+      setTimeout(updateLimitCounter, 500);
+    }
+
+  </script>
+
+      });
+    </script>
+</body>
+</html>

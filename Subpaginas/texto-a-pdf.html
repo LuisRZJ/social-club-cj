@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Texto a PDF | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Estilos específicos si existieran */
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+  
+  <div class="content-container">
+    <h1 class="page-title">Texto a PDF</h1>
+
+
+    <div class="pdf-generator-container">
+        <div class="input-area">
+          <textarea id="inputText" placeholder="Escribe o pega tu texto aquí..."></textarea>
+          <button id="pasteBtn" class="paste-button" title="Pegar del portapapeles (puede requerir permisos)">
+            <i class="fas fa-paste"></i>
+          </button>
+          <div class="text-counter">
+            <span id="charCount">0</span> caracteres | 
+            <span id="lineCount">0</span> líneas
+          </div>
+        </div>
+        
+        <div class="filename-container">
+          <label class="filename-label" for="filename">Nombre del archivo PDF (opcional):</label>
+          <input type="text" id="filename" class="filename-input" placeholder="Ej: mi-documento-importante">
+          <div class="filename-hint">
+            Si no proporciona un nombre, se usará: <span id="autoFilename">Generador de PDF - 22/06/25 - 14:30:45 - 1</span>
+          </div>
+        </div>
+        
+        <div class="actions">
+          <button id="genBtn">Generar PDF</button>
+          <button id="resetBtn">Limpiar</button>
+        </div>
+        
+        <div class="progress-container">
+          <div id="progress">Esperando para generar...</div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+        
+        <div class="info-box">
+          <div class="info-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </svg>
+            <h3>Información del documento</h3>
+          </div>
+          <div class="info-content">
+            <div class="info-item">
+              <span class="info-label">Líneas máximas:</span>
+              <span class="info-value">150,000</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Tamaño de bloque:</span>
+              <span class="info-value">500 líneas</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Formato:</span>
+              <span class="info-value">PDF/A4</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Líneas actuales:</span>
+              <span class="info-value"><span id="currentLineCount">0</span></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Caracteres:</span>
+              <span class="info-value"><span id="currentCharCount">0</span></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Documentos generados:</span>
+              <span class="info-value"><span id="docCounter">0</span></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Estado:</span>
+              <span class="info-value"><span id="statusIndicator">Listo</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Incluir la librería jsPDF -->
+      <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  </div>
+
+
+    <!-- COMPONENTE UPDATE MODAL -->
+    <div data-include="/componentes/update-modal.html"></div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <script src="/componentes/cargador.js"></script>
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+
+    <script>
+      document.addEventListener('componentesCargados', function() {
+  const { jsPDF } = window.jspdf;
+  const blockSize = 500;
+  const lineHeight = 12;
+  const paragraphSpacing = 18;
+  const margin = 40;
+  const maxLines = 150000;
+  let pageHeight;
+
+  // Elementos UI
+  const inputText = document.getElementById('inputText');
+  const charCountElement = document.getElementById('charCount');
+  const lineCountElement = document.getElementById('lineCount');
+  const currentCharCount = document.getElementById('currentCharCount');
+  const currentLineCount = document.getElementById('currentLineCount');
+  const statusIndicator = document.getElementById('statusIndicator');
+  const genBtn = document.getElementById('genBtn');
+  const progressText = document.getElementById('progress');
+  const progressFill = document.getElementById('progressFill');
+  const docCounterElement = document.getElementById('docCounter');
+  const filenameInput = document.getElementById('filename');
+  const autoFilenameElement = document.getElementById('autoFilename');
+  const pasteBtn = document.getElementById('pasteBtn');
+
+  // Variables de estado
+  let docCounter = 0;
+  let downloadCounter = 1;
+
+  // Función para actualizar contadores
+  function updateCounters() {
+    const text = inputText.value;
+    const charCount = text.length;
+    const lineCount = text.split(/\r\n|\r|\n/).length;
+    
+    charCountElement.textContent = charCount.toLocaleString();
+    lineCountElement.textContent = lineCount.toLocaleString();
+    currentCharCount.textContent = charCount.toLocaleString();
+    currentLineCount.textContent = lineCount.toLocaleString();
+    
+    // Actualizar indicador de estado
+    if (lineCount > maxLines) {
+      statusIndicator.textContent = "Límite excedido";
+      statusIndicator.className = "warning";
+    } else if (lineCount > 10000) {
+      statusIndicator.textContent = "Documento grande";
+      statusIndicator.className = "warning";
+    } else if (lineCount > 0) {
+      statusIndicator.textContent = "Listo para generar";
+      statusIndicator.className = "success";
+    } else {
+      statusIndicator.textContent = "Listo";
+      statusIndicator.className = "";
+    }
+    
+    // Actualizar nombre automático
+    updateAutoFilename();
+  }
+
+  // Función para actualizar el nombre automático
+  function updateAutoFilename() {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = String(now.getFullYear()).slice(2);
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+    autoFilenameElement.textContent = 
+      `Generador de PDF - ${day}/${month}/${year} - ${hours}:${minutes}:${seconds} - ${downloadCounter}`;
+  }
+
+  // Inicializar contadores
+  updateCounters();
+  
+  // Event listeners
+  inputText.addEventListener('input', updateCounters);
+  filenameInput.addEventListener('input', updateAutoFilename);
+  pasteBtn.addEventListener('click', pasteFromClipboard);
+
+  // Función para dividir texto en líneas optimizada
+  function optimizedSplitTextToSize(text, maxWidth, doc) {
+    const lines = [];
+    let currentLine = '';
+    
+    // Dividir por saltos de línea naturales primero
+    const paragraphs = text.split(/\r\n|\r|\n/);
+    
+    for (let paragraph of paragraphs) {
+      if (paragraph.length === 0) {
+        lines.push('');
+        continue;
+      }
+      
+      // Si el párrafo completo cabe, añadirlo directamente
+      if (doc.getStringUnitWidth(paragraph) * doc.internal.getFontSize() <= maxWidth) {
+        lines.push(paragraph);
+        continue;
+      }
+      
+      // Dividir palabras
+      const words = paragraph.split(' ');
+      for (let word of words) {
+        const testLine = currentLine + (currentLine ? ' ' : '') + word;
+        const testWidth = doc.getStringUnitWidth(testLine) * doc.internal.getFontSize();
+        
+        if (testWidth <= maxWidth) {
+          currentLine = testLine;
+        } else {
+          if (currentLine) lines.push(currentLine);
+          currentLine = word;
+        }
+      }
+      
+      if (currentLine) {
+        lines.push(currentLine);
+        currentLine = '';
+      }
+    }
+    
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+    
+    return lines;
+  }
+
+  // Función para generar el PDF
+  async function generatePDF() {
+    const raw = inputText.value.trim();
+    if (!raw) return alert('Por favor ingresa algún texto');
+    
+    // Deshabilitar botón durante la generación
+    genBtn.disabled = true;
+    genBtn.textContent = 'Generando...';
+    
+    // Preparar elementos UI
+    progressText.textContent = 'Preparando documento...';
+    progressFill.style.width = '0%';
+    
+    // Crear documento PDF
+    const doc = new jsPDF({ 
+      unit: 'pt', 
+      format: 'a4',
+      hotfixes: ["px_scaling"]
+    });
+    
+    pageHeight = doc.internal.pageSize.getHeight();
+    const maxWidth = doc.internal.pageSize.getWidth() - margin * 2;
+    
+    // Procesar el texto en bloques
+    const totalChars = raw.length;
+    const charPerBlock = 10000;
+    const blocks = [];
+    
+    // Dividir el texto en bloques más pequeños
+    for (let i = 0; i < totalChars; i += charPerBlock) {
+      blocks.push(raw.substring(i, i + charPerBlock));
+    }
+    
+    let allLines = [];
+    let processedBlocks = 0;
+    
+    // Procesar cada bloque
+    for (const block of blocks) {
+      const blockLines = optimizedSplitTextToSize(block, maxWidth, doc);
+      allLines = allLines.concat(blockLines);
+      
+      // Actualizar progreso
+      processedBlocks++;
+      const blockProgress = Math.round((processedBlocks / blocks.length) * 100);
+      progressText.textContent = `Preparando líneas... (${blockProgress}%)`;
+      progressFill.style.width = `${blockProgress}%`;
+      
+      // Permitir que el navegador respire
+      await new Promise(r => setTimeout(r, 10));
+    }
+    
+    // Limitar a las líneas máximas permitidas
+    if (allLines.length > maxLines) {
+      allLines = allLines.slice(0, maxLines);
+      progressText.textContent = `Advertencia: Se ha limitado el documento a ${maxLines.toLocaleString()} líneas`;
+      await new Promise(r => setTimeout(r, 2000));
+    }
+    
+    const totalLines = allLines.length;
+    const chunks = [];
+    
+    // Crear chunks para procesamiento
+    for (let i = 0; i < totalLines; i += blockSize) {
+      chunks.push(allLines.slice(i, i + blockSize));
+    }
+    
+    // Procesar cada chunk
+    let processedLines = 0;
+    for (let idx = 0; idx < chunks.length; idx++) {
+      const lines = chunks[idx];
+      let cursorY = margin;
+      
+      if (idx > 0) doc.addPage();
+      
+      for (const line of lines) {
+        if (cursorY > pageHeight - margin) {
+          doc.addPage();
+          cursorY = margin;
+        }
+        doc.text(line, margin, cursorY);
+        
+        // Espacio vertical entre párrafos
+        if (line.trim() === '') {
+          cursorY += paragraphSpacing;
+        } else {
+          cursorY += lineHeight;
+        }
+      }
+      
+      processedLines += lines.length;
+      
+      // Actualizar progreso
+      const percentage = Math.round((processedLines / totalLines) * 100);
+      progressText.textContent = `Procesado ${processedLines.toLocaleString()} de ${totalLines.toLocaleString()} líneas (${percentage}%)`;
+      progressFill.style.width = `${percentage}%`;
+      
+      // Permitir que el navegador respire
+      await new Promise(r => setTimeout(r, 10));
+    }
+    
+    // Finalizar
+    progressText.textContent = `¡Documento completado! Total: ${processedLines.toLocaleString()} líneas`;
+    progressFill.style.width = '100%';
+    progressFill.style.background = 'linear-gradient(90deg, #5fa4f2, #3d8be6)';
+    
+    // Determinar el nombre del archivo
+    let filename = filenameInput.value.trim();
+    if (!filename) {
+      // Generar nombre automático
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = String(now.getFullYear()).slice(2);
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      
+      filename = `Generador de PDF - ${day}/${month}/${year} - ${hours}:${minutes}:${seconds} - ${downloadCounter}`;
+      downloadCounter++;
+    }
+    
+    // Asegurarse de que tiene extensión .pdf
+    if (!filename.toLowerCase().endsWith('.pdf')) {
+      filename += '.pdf';
+    }
+    
+    // Descargar
+    doc.save(filename);
+    docCounter++;
+    docCounterElement.textContent = docCounter;
+    
+    // Restaurar UI
+    setTimeout(() => {
+      genBtn.disabled = false;
+      genBtn.textContent = 'Generar PDF';
+      progressText.textContent = 'Listo para generar otro documento';
+    }, 2000);
+  }
+
+  // Event listeners
+  genBtn.addEventListener('click', generatePDF);
+  
+  document.getElementById('resetBtn').onclick = () => {
+    inputText.value = '';
+    filenameInput.value = '';
+    progressText.textContent = 'Esperando para generar...';
+    progressFill.style.width = '0%';
+    updateCounters();
+  };
+
+  // Actualizar el nombre automático periódicamente
+  setInterval(updateAutoFilename, 1000);
+
+  // Función para pegar del portapapeles
+  async function pasteFromClipboard() {
+    try {
+      // Verificar si la API Clipboard está disponible
+      if (!navigator.clipboard) {
+        throw new Error('API Clipboard no disponible en este navegador');
+      }
+
+      // Deshabilitar botón temporalmente
+      pasteBtn.disabled = true;
+      pasteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      
+      // Intentar obtener el contenido del portapapeles
+      const text = await navigator.clipboard.readText();
+      
+      if (text) {
+        // Insertar el texto en el textarea
+        const currentValue = inputText.value;
+        const cursorPos = inputText.selectionStart;
+        
+        // Insertar el texto en la posición del cursor
+        const newValue = currentValue.substring(0, cursorPos) + text + currentValue.substring(cursorPos);
+        inputText.value = newValue;
+        
+        // Actualizar contadores
+        updateCounters();
+        
+        // Feedback visual de éxito
+        pasteBtn.innerHTML = '<i class="fas fa-check"></i>';
+        pasteBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        
+        setTimeout(() => {
+          pasteBtn.innerHTML = '<i class="fas fa-paste"></i>';
+          pasteBtn.style.background = 'linear-gradient(135deg, #5fa4f2, #3d8be6)';
+          pasteBtn.disabled = false;
+        }, 1000);
+        
+      } else {
+        throw new Error('El portapapeles está vacío');
+      }
+      
+    } catch (error) {
+      console.error('Error al pegar del portapapeles:', error);
+      
+      // Feedback visual de error
+      pasteBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+      pasteBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+      
+      // Mensajes específicos según el tipo de error
+      let errorMessage = 'No se pudo acceder al portapapeles.';
+      
+      if (error.name === 'NotAllowedError') {
+        errorMessage = 'Permiso denegado. El navegador necesita acceso al portapapeles. Puedes usar Ctrl+V (Cmd+V en Mac) como alternativa.';
+      } else if (error.name === 'NotSupportedError') {
+        errorMessage = 'Tu navegador no soporta el acceso al portapapeles. Usa Ctrl+V (Cmd+V en Mac) para pegar.';
+      } else if (error.message.includes('HTTPS')) {
+        errorMessage = 'El acceso al portapapeles requiere HTTPS. Usa Ctrl+V (Cmd+V en Mac) como alternativa.';
+      } else if (error.message.includes('vacío')) {
+        errorMessage = 'El portapapeles está vacío. Copia algún texto primero.';
+      } else {
+        errorMessage = 'Error al acceder al portapapeles. Usa Ctrl+V (Cmd+V en Mac) como alternativa.';
+      }
+      
+      // Mostrar mensaje de error
+      alert(errorMessage);
+      
+      setTimeout(() => {
+        pasteBtn.innerHTML = '<i class="fas fa-paste"></i>';
+        pasteBtn.style.background = 'linear-gradient(135deg, #5fa4f2, #3d8be6)';
+        pasteBtn.disabled = false;
+      }, 2000);
+    }
+  }
+
+      });
+    </script>
+</body>
+</html>

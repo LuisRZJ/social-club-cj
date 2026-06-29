@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Integrador de Código | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .paste-btn {
+      position: absolute;
+      top: 32px;
+      right: 12px;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      font-size: var(--font-size-xs);
+      background-color: var(--color-success);
+      color: var(--color-text-primary);
+    }
+    
+    .paste-btn:hover {
+      background-color: var(--color-success-hover);
+    }
+    
+    #btnGenerate, #btnDownload {
+      display: inline-block;
+    }
+    
+    h2 {
+      margin-top: var(--spacing-xxl);
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-semibold);
+      transition: color var(--transition-normal);
+    }
+    
+    .preview-container {
+      display: flex;
+      gap: var(--spacing-xl);
+      margin-top: var(--spacing-md);
+      max-width: 100%;
+      flex-wrap: wrap;
+    }
+    
+    .preview-box {
+      flex: 1 1 45%;
+      height: 400px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      background: var(--color-bg-secondary);
+      overflow: auto;
+      box-shadow: var(--shadow-box);
+      position: relative;
+      padding: var(--spacing-xxl) var(--spacing-md) var(--spacing-md);
+      transition: all var(--transition-normal);
+    }
+    
+    .preview-box:hover {
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+    
+    .preview-box h3 {
+      position: absolute;
+      top: 5px;
+      left: var(--spacing-md);
+      margin: 0;
+      font-size: var(--font-size-md);
+      color: var(--color-text-primary);
+      background: var(--color-bg-primary);
+      padding: 2px 6px;
+      border-radius: var(--border-radius-sm);
+      font-weight: var(--font-weight-medium);
+      transition: all var(--transition-normal);
+    }
+    
+    #previewCode {
+      white-space: pre-wrap;
+      font-family: var(--font-family-mono);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+      transition: color var(--transition-normal);
+    }
+    
+    #previewRendered {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: var(--border-radius-sm);
+    }
+
+
+    /* Elementos específicos del integrador de código */
+    html.dark-theme h1 {
+      color: #f3f4f6 !important;
+    }
+    
+    html.dark-theme h2 {
+      color: #f3f4f6 !important;
+    }
+    
+    html.dark-theme label {
+      color: #f3f4f6 !important;
+    }
+    
+    html.dark-theme textarea {
+      background-color: #23232a !important;
+      color: #f3f4f6 !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    html.dark-theme textarea:focus {
+      border-color: #FFD1A9 !important;
+      box-shadow: 0 0 0 3px rgba(255, 209, 169, 0.2) !important;
+    }
+    
+    html.dark-theme button {
+      background-color: #23232a !important;
+      color: #FFD1A9 !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    html.dark-theme button:hover {
+      background-color: #33334a !important;
+      color: #FFD1A9 !important;
+    }
+    
+    html.dark-theme .paste-btn {
+      background-color: #22c55e !important;
+      color: #f3f4f6 !important;
+    }
+    
+    html.dark-theme .paste-btn:hover {
+      background-color: #16a34a !important;
+    }
+    
+    html.dark-theme .preview-box {
+      background-color: #23232a !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    html.dark-theme .preview-box h3 {
+      background-color: #1a0e00 !important;
+      color: #f3f4f6 !important;
+    }
+    
+    html.dark-theme #previewCode {
+      color: #9CA3AF !important;
+    }
+    
+
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+  
+  <div class="content-container">
+    <h1 class="page-title">Integrador de Código</h1>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+    </div>
+
+  <div class="field-group">
+    <label for="baseHtml">HTML Base:</label>
+    <button class="paste-btn" data-target="baseHtml">Pegar</button>
+    <textarea id="baseHtml" placeholder="Pega aquí tu HTML base..."></textarea>
+  </div>
+
+  <div class="field-group">
+    <label for="addHtml">Fragmento HTML a insertar (opcional):</label>
+    <button class="paste-btn" data-target="addHtml">Pegar</button>
+    <textarea id="addHtml" placeholder="Pega aquí tu fragmento HTML..."></textarea>
+  </div>
+
+  <div class="field-group">
+    <label for="addCss">Fragmento CSS a insertar (opcional):</label>
+    <button class="paste-btn" data-target="addCss">Pegar</button>
+    <textarea id="addCss" placeholder="Pega aquí tu CSS..."></textarea>
+  </div>
+
+  <div class="field-group">
+    <label for="addJs">Fragmento JavaScript a insertar (opcional):</label>
+    <button class="paste-btn" data-target="addJs">Pegar</button>
+    <textarea id="addJs" placeholder="Pega aquí tu JavaScript..."></textarea>
+  </div>
+
+  <button id="btnGenerate">Generar Integración</button>
+  <button id="btnDownload" disabled>Descargar HTML Final</button>
+
+  <h2>Vistas Previas:</h2>
+  <div class="preview-container">
+    <div class="preview-box">
+      <h3>Código Final (sin ejecutar)</h3>
+      <div id="previewCode"></div>
+    </div>
+    <div class="preview-box">
+      <h3>Vista Ejecutada</h3>
+      <iframe id="previewRendered"></iframe>
+    </div>
+  </div>
+
+  </div>
+
+    <!-- COMPONENTE UPDATE MODAL -->
+    <div data-include="/componentes/update-modal.html"></div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <script src="/componentes/cargador.js"></script>
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+
+    <script>
+      document.addEventListener('componentesCargados', function() {
+    // Función para pegar desde portapapeles
+    document.querySelectorAll('.paste-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const targetId = btn.getAttribute('data-target');
+        try {
+          const text = await navigator.clipboard.readText();
+          document.getElementById(targetId).value = text;
+        } catch (err) {
+          alert('No se pudo acceder al portapapeles.');
+        }
+      });
+    });
+
+    document.getElementById('btnGenerate').addEventListener('click', function() {
+      const baseHtml = document.getElementById('baseHtml').value;
+      const addHtml  = document.getElementById('addHtml').value;
+      const addCss   = document.getElementById('addCss').value;
+      const addJs    = document.getElementById('addJs').value;
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(baseHtml, 'text/html');
+
+      if (addHtml.trim()) {
+        const container = document.createElement('div');
+        container.innerHTML = addHtml;
+        doc.body.appendChild(container);
+      }
+      if (addCss.trim()) {
+        let styleTag = doc.head.querySelector('style[data-generated]');
+        if (!styleTag) {
+          styleTag = doc.createElement('style');
+          styleTag.setAttribute('data-generated', 'true');
+          doc.head.appendChild(styleTag);
+        }
+        styleTag.textContent += '\n' + addCss;
+      }
+      if (addJs.trim()) {
+        const scriptTag = doc.createElement('script');
+        scriptTag.setAttribute('data-generated', 'true');
+        scriptTag.textContent = addJs;
+        doc.body.appendChild(scriptTag);
+      }
+
+      const finalHtml = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+
+      // Código final
+      document.getElementById('previewCode').textContent = finalHtml;
+      // Render
+      document.getElementById('previewRendered').srcdoc = finalHtml;
+
+      // Descarga
+      const btnDownload = document.getElementById('btnDownload');
+      const blob = new Blob([finalHtml], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      btnDownload.href = url;
+      btnDownload.download = 'integrated.html';
+      btnDownload.disabled = false;
+    });
+
+    // Prevenir descarga si está deshabilitado
+    document.getElementById('btnDownload').addEventListener('click', function(e) {
+      if (this.disabled) e.preventDefault();
+    });
+
+    // Función para expandir/contraer el panel de acciones
+    function togglePanel() {
+      const panelExpansion = document.getElementById('panelExpansion');
+      const viewMoreBtn = document.getElementById('viewMoreBtn');
+      const viewMoreText = document.getElementById('viewMoreText');
+      const viewMoreIcon = document.querySelector('#viewMoreBtn i');
+      
+      if (panelExpansion.classList.contains('expanded')) {
+        // Contraer el panel
+        panelExpansion.classList.remove('expanded');
+        viewMoreBtn.classList.remove('expanded');
+        viewMoreText.textContent = 'Ver más';
+        viewMoreIcon.className = 'fas fa-ellipsis-h';
+        document.body.style.overflow = '';
+      } else {
+        // Expandir el panel
+        panelExpansion.classList.add('expanded');
+        viewMoreBtn.classList.add('expanded');
+        viewMoreText.textContent = 'Ver menos';
+        viewMoreIcon.className = 'fas fa-compress';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    // Función para verificar si el panel está expandido
+    function isPanelExpanded() {
+      return document.getElementById('panelExpansion').classList.contains('expanded');
+    }
+
+    // Función para establecer el overflow correcto basado en el estado del panel
+    function setCorrectOverflow() {
+      if (isPanelExpanded()) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Función para compartir la página
+    function sharePage() {
+      const pageTitle = document.title || 'CGN - Comunidad Gaming Network';
+      const pageUrl = window.location.href;
+      
+      // Verificar si la API Web Share está disponible
+      if (navigator.share) {
+        navigator.share({
+          title: pageTitle,
+          url: pageUrl,
+          text: '¡Mira esta página de la Comunidad Gaming Network!'
+        }).then(() => {
+          console.log('Contenido compartido exitosamente');
+        }).catch((error) => {
+          console.log('Error al compartir:', error);
+          // Fallback: copiar URL al portapapeles
+          fallbackShare();
+        });
+      } else {
+        // Fallback para navegadores que no soportan Web Share API
+        fallbackShare();
+      }
+    }
+
+    // Función de respaldo para compartir
+    function fallbackShare() {
+      const pageUrl = window.location.href;
+      
+      // Intentar copiar al portapapeles
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(pageUrl).then(() => {
+          // Mostrar notificación de éxito
+          showShareNotification('¡URL copiada al portapapeles!');
+        }).catch(() => {
+          // Si falla clipboard, mostrar URL en alert
+          alert('Comparte esta URL: ' + pageUrl);
+        });
+      } else {
+        // Fallback final: mostrar URL en alert
+        alert('Comparte esta URL: ' + pageUrl);
+      }
+    }
+
+    // Función para mostrar notificación de compartir
+    function showShareNotification(message) {
+      // Crear elemento de notificación
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: rgba(255, 209, 169, 0.95);
+        color: #374151;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 10000;
+        font-size: 14px;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      `;
+      notification.textContent = message;
+      
+      // Agregar al DOM
+      document.body.appendChild(notification);
+      
+      // Animar entrada
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 100);
+      
+      // Remover después de 3 segundos
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // Botón "Volver arriba"
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // Botón "Ir al final"
+    const goToBottomBtn = document.getElementById('goToBottomBtn');
+    goToBottomBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+      });
+    });
+
+
+      });
+    </script>
+</body>
+</html>

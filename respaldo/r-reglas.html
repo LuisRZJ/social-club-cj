@@ -1,0 +1,1782 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <!-- iconos bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- iconos font awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <script src="/respaldo/Overlay-desc.js"></script>
+
+
+    <style>
+    
+/* Fuente Inter desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Aplicar Inter a todo el documento */
+* {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corrección de márgenes y estilos base */
+body {
+    background: linear-gradient(90deg, #f0f4f8, #e6f7ff);
+    color: #333;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Estilos de encabezado */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 30px 0;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.h1 {
+    font-size: 2.8em;
+    text-align: center;
+    background: linear-gradient(to right, #FA6800 10%, #F0A30A 20%, lightgreen 100%);
+    -webkit-background-clip: text;
+    color: transparent;
+    padding: 20px;
+    margin: 0;
+}
+
+/* Secciones de contenido */
+section {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 1.8em;
+    color: #2c3e50;
+    margin-top: 0;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+p {
+    margin-bottom: 15px;
+    font-size: 1.05em;
+    line-height: 1.7;
+}
+
+/* Separadores */
+hr {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #3498db, transparent);
+    margin: 30px 0;
+}
+
+/* Acordeones/Detalles */
+details {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+details[open] {
+    background-color: #f8fdff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #2c3e50;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+summary:hover {
+    background-color: #f0f8ff;
+}
+
+/* Barra de progreso */
+.progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    z-index: 1000;
+    background: rgba(230, 230, 230, 0.5);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+    width: 0;
+    transition: width 0.1s ease-in-out;
+}
+
+/* Botón para volver arriba */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #3498db;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background: #2980b9;
+    transform: translateY(-3px);
+}
+
+/* Índice de contenido */
+.index-container {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.dropbtn {
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: white;
+    padding: 15px 20px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    width: 100%;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    z-index: 1;
+    border-radius: 10px;
+    overflow: hidden;
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    color: #2c3e50;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+    font-size: 1em;
+}
+
+.dropdown-content a:hover {
+    background-color: #f0f8ff;
+    color: #3498db;
+}
+
+/* Elementos de texto especiales */
+.azul1 {
+    color: #3498db;
+    font-weight: 600;
+}
+
+.underline1 {
+    text-decoration: underline;
+    text-decoration-color: #ff9a3d;
+    text-underline-offset: 4px;
+}
+
+/* Tiempo de lectura */
+.reading-time {
+    text-align: right;
+    margin-bottom: 25px;
+    padding: 10px 15px;
+    background: white;
+    border-radius: 10px;
+    display: inline-block;
+    float: right;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.reading-time p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.reading-time span {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .h1 {
+        font-size: 2.2em;
+        padding: 15px;
+    }
+    
+    section {
+        padding: 20px;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    .dropdown-content {
+        max-height: 300px;
+        position: relative;
+    }
+    
+    .index-container {
+        padding: 20px;
+    }
+    
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+    }
+}
+
+@media (max-width: 480px) {
+    .h1 {
+        font-size: 1.8em;
+    }
+    
+    .dropbtn {
+        font-size: 16px;
+        padding: 12px 15px;
+    }
+    
+    .dropdown-content a {
+        padding: 12px 15px;
+        font-size: 0.95em;
+    }
+    
+    section {
+        padding: 18px;
+    }
+}
+    
+    </style>
+   
+</head>
+  
+  
+  
+  
+ 
+  
+  
+  <!-- <script> /* JS del círculo de carga */
+    const spinner = document.getElementById('spinner');
+const overlay = document.querySelector('.overlay111');
+
+function showLoadingSpinner() {
+  spinner.style.display = 'block';
+  overlay.style.display = 'block';
+  document.body.classList.add('no-scroll111');
+}
+
+function hideLoadingSpinner() {
+  spinner.style.display = 'none';
+  overlay.style.display = 'none';
+  document.body.classList.remove('no-scroll111');
+}
+    
+    window.addEventListener('load', () => {
+  const spinner = document.getElementById('spinner');
+  spinner.style.display = 'none';
+});
+     
+  </script>  -->
+
+<body>
+  
+  <!-- Barra de progreso -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  
+  
+  <!--aquí el mensaje solo visible en la vista previa de blogger-->
+ 
+  <!--<img alt="" class="hidden" src="https://media.discordapp.net/attachments/1081755978082566237/1189383916562427924/ClipDropImage1702073755821.png?ex=659df717&is=658b8217&hm=e0891f78c1bcfbcdcc7593cd22f9aac16cd8d54bfc418eab45fa8ac20d4ad4a2&" /> -->
+
+
+  <!--    ||||||||||PAGINA VISIBLE||||||||||    -->
+
+  <div id="top"></div>
+
+  
+
+  <div id="spinner" class="spinner"></div> 
+
+  
+
+  
+
+
+    <header>
+        <h1 class="h1">Reglas generales</h1>
+    </header>
+    
+   <!-- <a href="https://socialclubcj.blogspot.com/search/label/Reglas">
+      <button class="boton-etiqueta">Reglas</button></a> -->
+    
+  
+ 
+    <!--tiempo de lectura-->
+<div style="text-align: right;">
+  <div style="align-items: center; display: flex; justify-content: flex-end;">
+    <p><i class="bi bi-clock"></i> <b> <span style="color:green">25</span> minutos.</b></p> 
+  </div>
+    </div>
+    
+ <hr />
+    
+<div class="dropdown">
+  <button class="dropbtn">Índice </button>
+  <div class="dropdown-content">
+    <a href="#seccion1" onclick="resaltarSeccion()">Regla №1</a>
+    <hr>
+    <a href="#seccion2" onclick="resaltarSeccion2()">Regla №2</a>
+    <hr>
+    <a href="#seccion3" onclick="resaltarSeccion3()">Regla №3</a>
+    <hr>
+    <a href="#seccion4" onclick="resaltarSeccion4()">Regla №4</a>
+    <hr>
+    <a href="#seccion5" onclick="resaltarSeccion5()">Regla №5</a>
+    <hr>
+    <a href="#seccion6" onclick="resaltarSeccion6()">Regla №6</a>
+    <hr>
+    <a href="#seccion7" onclick="resaltarSeccion7()">Regla №7</a>
+    <hr>
+    <a href="#seccion8" onclick="resaltarSeccion8()">Regla №8</a>
+    <hr>
+    <a href="#seccion9" onclick="resaltarSeccion9()">Regla №9</a>
+    <hr>
+    <a href="#seccion10" onclick="resaltarSeccion10()">Regla №10</a>
+    <hr>
+    <a href="#seccion11" onclick="resaltarSeccion11()">Regla №11</a>
+    <hr>
+    <a href="#seccion12" onclick="resaltarSeccion12()">Regla №12</a>
+    <hr>
+    <a href="#seccion13" onclick="resaltarSeccion13()">Regla №13</a>
+    <hr>
+    <a href="#seccion14" onclick="resaltarSeccion14()">Regla №14</a>
+    <hr>
+    <a href="#seccion15" onclick="resaltarSeccion15()">Regla №15</a>
+    <hr>
+    <a href="#seccion16" onclick="resaltarSeccion16()">Regla №16</a>
+    <hr>
+    <a href="#seccion17" onclick="resaltarSeccion17()">Regla №17</a>
+    <hr>
+    <a href="#seccion18" onclick="resaltarSeccion18()">Regla №18</a>
+    <hr>
+    <a href="#seccion19" onclick="resaltarSeccion19()">Regla №19</a>
+    <hr>
+    <a href="#seccion20" onclick="resaltarSeccion20()">Regla №20</a>
+    <hr>
+    <a href="#seccion21" onclick="resaltarSeccion21()">Regla №21</a>
+    <hr>
+    <a href="#seccion22" onclick="resaltarSeccion22()">Regla №22</a>
+    <hr>
+    <a href="#seccion23" onclick="resaltarSeccion23()">Regla №23</a>
+    <hr>
+    <a href="#seccion24" onclick="resaltarSeccion24()">Regla №24</a>
+    <hr>
+    <a href="#seccion25" onclick="resaltarSeccion25()">Reglas de los admins</a>
+  </div>
+</div>
+
+<hr>
+ 
+    <section id="seccion1">
+   
+      <h2>Cosas a tener en cuenta | Regla №1</h2>
+      
+      <p>Las <strong>Reglas generales</strong> son las normas que deberás de conocer y respetar para no tener problemas relacionados con el incumplimiento a las mismas, además de poder asegurar tu permanencia en la comunidad. <br> <br>
+      
+<strong>Reglas generales</strong> son exactamente eso, reglas generales para todos los grupos de nuestra comunidad. Así tú no tendrás mayores dificultades para recordar alguna regla específica de algún grupo en específico, sólo tómate unos minutos y estarás asegurando tu continuidad con nosotros.</p>
+      
+      <p>Recuerda que estas reglas están diseñadas para mantener un ambiente respetuoso y adecuado para todos. Si en algún momento tienes alguna pregunta o inquietud, <strong>no dudes en contactar al equipo de moderación.</strong> <br> <br>
+
+Para poder mantener un orden dentro de la comunidad, es necesario que sigas las siguientes reglas para evitar ser sancionado. <u class="underline1">Pero primero, asegúrate de conocer los siguientes 'detalles':</u></p>
+      
+      <p><strong class="azul1">1.</strong> <strong>Reglas para toda la comunidad</strong> <br>
+       Estas reglas son aplicables a todos los grupos de la comunidad, salvo que se indique una excepción específica para algún grupo en la <a href="https://socialclubcj.blogspot.com/2023/09/comunidad.html">sección de grupos</a> de nuestra CMD.
+      </p>
+      
+      <p><strong class="azul1">2.</strong> <strong>Aplicación de las reglas</strong> <br>
+       Las reglas que estás por conocer no solo se aplican a los grupos y a tu comportamiento en ellos, sino que también son válidas y completamente aplicables a tus interacciones en el MD (privado) de los usuarios a los que contactes por privado usando la comunidad. Atento a lo que les compartes, ya que también puedes ser sancionado si tienes un mal comportamiento en el privado de los usuarios de la comunidad. 
+      </p>
+      
+      <p><strong class="azul1">3.</strong> <strong>El desconocimiento con o sin querer de las reglas</strong> <br>
+       La ignorancia de estas reglas no será un motivo válido para incumplirlas, mucho menos para usarse como apelación ante una sanción. Tu eres el único responsable de conocer y respetar todas las normas aplicables a fin de garantizar un ambiente respetuoso para todos. No conocer una regla específica no te exime de su aplicación. 
+      </p>
+      
+      <p><strong class="azul1">4.</strong> <strong>El español al hablar</strong> <br>
+        Para garantizar una buena convivencia, así también para garantizar una moderación buena y eficaz, le pedimos amablemente que todas las pláticas en la comunidad se realicen en el idioma español.
+      </p>
+      
+      <p><strong class="azul1">5.</strong> <strong>Discreción en las sanciones</strong> <br>
+       Nos reservamos el derecho de aplicar sanciones a quién consideremos necesario a nuestra discreción. 
+      </p>
+      
+      <p><strong class="azul1">6.</strong> <strong>Actualización de las reglas</strong> <br>
+       Las reglas están sujetas a cambios en cualquier momento. Cuándo las reglas se actualizen, se te notificará mediante los canales de comunicación oficiales en la comunidad, además recuerda que te daremos un par de días para que te adaptes a las nuevas reglas, y en caso de que alguien no siga los nuevos lineamientos, será sancionado. 
+      </p>
+      
+      <p><strong class="azul1">7.</strong> <strong>Cumple con todos los términos de servicio aplicables</strong> <br>
+       Te recomendamos que en nuestra comunidad también rigen los términos de servicio y las condiciones de uso de y en las respectivas aplicaciones en las que operamos. Serán sancionados todos aquellos que sean descubiertos incumpliendo los ya mencionados. 
+      </p>
+      
+      <p><strong class="azul1">8.</strong> <strong>Vacíos en las normativas</strong> <br>
+        Nuestras reglas comunitarias han evolucionado durante años, eliminando cualquier posibilidad de lagunas normativas. Está estrictamente prohibido aprovechar supuestos vacíos para obtener ventajas injustas sobre otros miembros o la comunidad en su conjunto.</p>
+      
+      <p><strong class="azul1">9.</strong> <strong>¿Necesitas incumplir alguna regla?</strong> <br>
+        Contacta con el dueño del grupo en el que te encuentres y dale una buena razón para que se te autorize incumplir alguna regla, no se garantiza una autorización pero si una buena atención.</p>
+      <br>
+      
+      <h3>Última modificación a las reglas: 09/01/24</h3>
+      
+      <strong>Has click en alguna de las reglas para saber más.</strong>
+      
+      <hr>
+      
+      <details>
+  <summary style="color:dodgerblue">Tip del minuto</summary>
+  
+  <hr>
+ 
+     
+      <div id="mensajeElegido"><strong>Cargando pista...</strong> Espere.</div>
+      </details>
+      
+        <hr>
+      
+      <h2>Regla №1</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> Respeto mutuo</summary>
+  
+  <hr>
+        <p><strong>1.1:</strong> Todos deben respetar a los demás, sin importar género, orientación sexual, raza, religión, nacionalidad, edad o habilidades. <br> <br>
+
+          <strong>1.2:</strong> Evita enviar contenido ofensivo en el grupo, como mensajes, fotos, videos, stickers, audios o archivos. <br> <br>
+
+          <strong>1.3:</strong> No se permite el acoso, bullying, extorsión, estafas, amenazas o intimidación en ningún grupo de esta comunidad.</p>
+        
+        <p><strong>¿Cuando se aplicará la regla exactamente?</strong> <br>
+        La regla se aplicará en situaciones donde cualquier contenido, incluso humor o sarcasmo, pueda ser interpretado como ofensivo. La determinación de si alguien se siente ofendido será subjetiva, considerando la percepción del afectado como válida para evitar una comunidad tóxica o dañina</p>    
+        
+      </details>
+      
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        <p><strong>•</strong> Evita comentarios despectivos o burlas relacionadas con género, orientación sexual, raza, religión, nacionalidad, edad o habilidades. <br> <br>
+   
+       
+          <strong>•</strong> No envíes contenido ofensivo, ya sean mensajes, fotos, videos, stickers, audios o archivos. <br> <br>
+          
+          <strong>•</strong> Abstente de participar en acoso, bullying, extorsión, estafas, amenazas o intimidación en cualquier grupo de la comunidad. <br> <br>
+          
+          Recuerda que la percepción del afectado es primordial; si alguien se siente ofendido, consideraremos esa perspectiva para mantener una comunidad positiva y respetuosa.</p>
+          
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion2">
+      
+      <h2>Regla №2</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> Prohibido el spam</summary>
+  
+  <hr>
+        
+        <p><strong>2.1</strong> Evite hacer spam o enviar mensajes excesivos que no contribuyan a la conversación. <br> <br>
+        
+          <strong>2.2</strong> Sabemos que en determinados contextos es posible llegar a enviar una cantidad muy grande de stickers de forma seguida al grupo, pero recuerda, nosotros solo permitiremos como máximo el envío consecutivo de 5 stickers al grupo en un corto periodo de tiempo.</p>
+        
+        <p><strong>¿Cuando se aplicará la regla exactamente?</strong> <br>
+        La normativa establece que se deben evitar mensajes excesivos que no contribuyan a la conversación. En cuanto al envío de stickers, solo se permitirá el envío consecutivo de hasta 5 stickers en un corto periodo de tiempo.</p>
+ 
+      </details>
+      
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        <p><strong>•</strong> Evita enviar mensajes excesivos que no contribuyan a la conversación. <br> <br>
+          
+          <strong>•</strong> Limita el envío consecutivo de stickers a un máximo de 5 en un corto periodo de tiempo.</p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion3">
+      
+      <h2>Regla №3</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> Prohibido el contenido +18</summary>
+  
+  <hr>
+        
+        <p><strong>3.1</strong> Absténgase de compartir contenido que incluya material sexualmente explícito, NSFW, violento, ilegal o cualquier otro contenido exclusivo para mayores de edad.</p>
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        
+<p><strong>•</strong> No participe en la distribución o promoción de este tipo de contenido en ninguna parte de nuestra comunidad. <br> <br>
+  
+  <strong>•</strong> Asegúrese de reportar con los admins a usuarios que pongan en riesgo a nuestra audiencia menor de edad, no queremos hacerles pasar un mal momento.</p>
+ 
+      </details>
+        
+    </section>
+    
+    <hr>
+    
+    <section id="seccion4">
+      
+      <h2>Regla №4</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> Sin discusiones politicas</summary>
+  
+  <hr>
+        <p><strong>4.1</strong> No se permite cualquier tipo de discusión o plática política para evitar conflictos irrelevantes y mantener el tema de la comunidad.</p>
+ 
+      </details>
+      
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion5">
+      
+      <h2>Regla №5</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No links | QR de grupos</summary>
+  
+  <hr>
+        <p><strong>5.1</strong> Está prohibido mandar grupos, comunidades, servidores o cualquier otra forma de chats grupales en el grupo sin la autorización de algún administrador, tampoco está permitido hablar, hacer promoción o incitar a la gente a entrar a chats grupales de cualquier tipo y sin importar de en qué app este ese chat grupal.</p>
+        
+        <p><strong>Excepciones</strong> <br>
+          <strong>1.</strong> Los únicos links/QR 'S de chats grupales que puedes mandar sin riesgo a qué te eliminen o eliminen el mensaje, son los de los grupos de esta comunidad. Si quieres saber cuáles son, <a href="https://socialclubcj.blogspot.com/2023/09/comunidad.html">toca aquí</a>. <br> <br>
+          
+          <strong>2.</strong> Si quieres dar a conocer tus grupos en esta comunidad puedes hacer <a href="https://socialclubcj.blogspot.com/2023/03/colaboraciones.html">alianza</a> con nosotros, o bien puedes mandar tus enlaces a alguno de nuestros 2 grupos de publicidad designados para eso en <a href="https://chat.whatsapp.com/JDKxJ2EeyPKLsO7EGA3Eyp">WhatsApp</a> y <a href="https://discord.com/channels/851472623887843369/1079941485597827123">Discord</a> respectivamente. <br> <br>
+          
+          <u class="underline1">Los grupos de publicidad son los únicos en los que la regla №5 está desactivada. Ahí podrás mandar cualquier link de grupo sin riego a sanciones.</u>
+          
+      </details>
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        
+        <p><strong>•</strong> No compartas enlaces donde no deberías, sigue las reglas y usa solo los canales de difusión autorizados. <br> <br>
+          
+          <strong>•</strong> Aunque en los grupos de publicidad puedas compartir tus grupos, eso no quiere decir que las demás reglas no importen, Asegúrate de que el grupo a compartir no incumpla con ninguna regla de nuestra comunidad.</p> 
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion6">
+      
+      <h2>Regla №6</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No propaganda de servidores de Minecraft</summary>
+  
+  <hr>
+        
+        <p><strong>6.1</strong> Está estrictamente prohibido hacer propaganda de servidores de Minecraft que no sea <a href="https://socialclubcj.blogspot.com/2023/09/servidor-minecraft-bedrock.html">Blockade</a>. <br> <br>
+          
+          <strong>6.2</strong> Entiéndase como propaganda las siguientes cosas: Mandar los datos de acceso a servidores externos de la comunidad, mandar mensajes cuya finalidad sea hacer que la gente conozca servidores externos al de la comunidad, pedir a los usuarios que accedan y juegen a servidores externos al de la comunidad. O cualquier otra manera que busque desvíar la atención de los usuarios sobre Blockade para que se fijen en servidores externos al de la comunidad.
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        
+        <p><strong>•</strong> Si de verdad necesitas hacer promoción de servidores externos al de la comunidad, <u class="underline1">Usa los grupos de publicidad en la comunidad</u> para hacerlo limpiamente.</p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion7">
+      
+      <h2>Regla №7</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> Procurar la actividad</summary>
+  
+  <hr>
+        
+        <p><strong>7.1</strong> Para permanecer en la comunidad es necesario que cumplas con un mínimo de mensajes para evitar una eliminación por inactividad. <br>
+          Actualmente ese mínimo está situado en: <u class="underline1">200 mensajes al mes</u>.</p>
+          
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion8">
+     
+      <h2>Regla №8</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No trabas (binarios)</summary>
+  
+  <hr>
+        
+        <p><strong>8.1</strong> Queda prohibido el envío por cualquier medio y de cualquier forma; el envío de contenido el cual: realentize, trave o imposibilite la correcta comunicación en el grupo. En cuyo caso, además de ser eliminado de la comunidad, también serás reportado con el soporte técnico de la respectiva app en donde se encuentre el grupo.</p> 
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion9">
+      
+      <h2>Regla №9</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No doxeos.</summary>
+  
+  <hr>
+        
+        <p><strong>9.1</strong> No está permitido exponer los datos personales de cualquier usuario en la comunidad o cirta información sensible sobre el sin su previa autorización comprobable.</p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion10">
+      
+      <h2>Regla №10</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No mandar cadenas o links maliciosos</summary>
+  
+  <hr>
+        
+        <p><strong>10.1</strong> Este tipo de mensajes son la gran mayoría una estafa, evite reenviar o mandar este tipo de mensajes en o a la comunidad. <br> <br>
+          
+          Entiéndase como cadenas o links maliciosos todo aquel mensaje que casi siempre viene acompañado de un enlace a una página web de dudosa procedencia y que además se te solicita ingresar a el para obtener algo que de otra manera sería difícil de conseguir o simplemente para ayudarte con una función útil para la mayoría de usuarios.</p>
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        
+        <p>Tu <strong>NO DEBES</strong> mandar este tipo de mensajes en grupos de la comunidad, o en canales no autorizados: <br> <br>
+          
+          <u>“Comparte este mensaje con 20 grupos o chats para que...”</u> <br>
+          <strong>O...</strong> <br>
+          <u>“Por el aniversario de [..] se están regalando cosas, entra a [..] para más información”</u><br>
+          <strong>O...</strong><br>
+          <u>“Ingresa al siguiente enlace para disponer de un bot multifuncional.”</u></p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion11">
+      
+      <h2>Regla №11</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> Respeto a la temática del grupo</summary>
+  
+  <hr>
+        
+        <p><strong>11.1</strong> Evite cambiar el rumbo de la conversación al de cosas o temas que no se alinean con la temática principal del grupo en el que te encuentres. Recuerda que la comunidad tiene <a href="https://socialclubcj.blogspot.com/2023/09/comunidad.html">muchas opciones</a> en lo que respecta a grupos, alguno de ellos será sobre lo que te interese hablar.</p>
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        
+        <p><strong>•</strong> En nuestro <a href="https://socialclubcj.blogspot.com/p/conoce-el-servidor-de-discord.html">servidor de discord</a> tenemos habilitados algunos canales cuyas temáticas difieren de la temática principal del servidor, prueba a conocerlos y usarlos si tienes ganar de hablar sobre temas diferentes a los establecidos.</p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion12">
+      
+      <h2>Regla №12</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No miembros corruptos</summary>
+  
+  <hr>
+        
+        <p><strong>12.1</strong> En esta comunidad tenemos una postura de 0 tolerancia hacía cualquier miembro corrupto, llámese usuario o administrador, aquí las reglas se aplicarán a todos por igual. Si te quieres pasar de listo con eso, suerte con seguir en la comunidad.</p>
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        
+        <p><strong>•</strong> Si estás en el servidor de discord y detectas algo inusual relacionado con esto, puedes habrir un nuevo ticket desde el canal de tikets y contarnos lo que pasa. <br> <br>
+          
+          <strong>•</strong> ¡No te prestes a eso! Siempre es mejor distanciarce de aquellos usuarios que solo buscan dañar el grupo o dañarte a ti. Si lo necesitas, nuestro cualificado equipo de administradores estará siempre aquí para tí.</p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion13">
+      
+      <h2>Regla №13</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No usar la comunidad para obtener acuerdos no autorizados ni recrearla en alguna parte</summary>
+  
+  <hr>
+        
+        <p><strong>13.1</strong> No es nada ético tratar de lograr acuerdos en nuestro nombre sin estar alguno de nuestros representantes presentes. <br><br>Evita sanciones y entiende que queda totalmente prohibido la reproducción parcial o total de alguna parte, cosa o sistema de nuestra comunidad. Se prohíbe cualquier intento de buscar crear o cerrar acuerdos en nuestro nombre sin la debida presencia de alguno de nuestros representantes. Y se prohíbe que uses alguno de los nombres de nuestros grupos en tus propios grupos. ¡Se original!</p>
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        
+        <p><strong>•</strong> No es necesario que compitas contra nosotros. Puedes simplemente sumarte y formar parte del cambio, conoce más en nuestra sección de <a href="https://socialclubcj.blogspot.com/2023/03/colaboraciones.html">alianzas</a>. <br> 
+          Allí encontrarás toda la información en lo que a como colaborar con nosotros respecta.</p>      
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion14">
+      
+      <h2>Regla №14</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No hacer dinámicas que incumplan alguna regla</summary>
+  
+  <hr>
+        
+        <p><strong>14.1</strong> Procura, por ejemplo, no realizar concursos en la Comunidad o a través de ella en los cuáles se realicen incumplimientos a las <strong>Reglas generales</strong>.  
+ 
+      </details>
+     
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion15">
+      
+      <h2>Regla №15</h2>  
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+     
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> Prohibido suplantar la identidad de alguien</summary>
+  
+  <hr>
+        
+        <p><strong>15.1</strong> No suplantar la identidad de una persona en el grupo, no usar su foto de perfil, no usar su nombre, no actuar como él...</p>
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        
+        <p><strong>•</strong> ¿Eres el auténtico tu pero con otro número? Verifique la regla №18 de esta página y asegúrese de cumplir con la normativa sobre el uso aceptable de las multi cuentas en el grupo.</p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion16">
+      
+      <h2>Regla №16</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> Cumplir con las reglas e indicaciones</summary>
+  
+  <hr>
+        
+        <p><strong>16.1</strong> Todos los miembros deben seguir las reglas establecidas en esta página. Así como <strong>las indicaciones que les ordenen los administradores o el dueño de grupo.</strong><br><br>
+          
+          <strong>16.2</strong> No trate de hacer justicia por su propia cuenta si usted no es un administrador, en su lugar lo mejor que puede hacer en una situación tensa es etiquetar a algún administrador, Siga las instrucciones de los admins y ayude a mantener el orden en el grupo.</p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion17">
+      
+      <h2>Regla №17</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No dañar a la comunidad</summary>
+  
+  <hr>
+        
+        <p><strong>17.1</strong> Cualquier intento, sospecha o indicio que sugiera de que 1 o varias personas tratan de crear caos en el grupo, crear historias falsas para dañar la reputación del grupo o hacer un complot para dañar de alguna manera a él grupo, sus servicios o la comunidad en su conjunto, no será tolerado y será severamente castigado.</p>
+          
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion18">
+      
+      <h2>Regla №18</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> Uso aceptable de las multicuentas</summary>
+  
+  <hr>
+        
+        <p><strong>18.1</strong> Limitamos el uso de las multi cuentas (cuentas secundarias) para prevenir potenciales incumplimientos a otras reglas, incumplimientos que podrían poner en peligro la integridad de alguno de nuestros usuarios, el grupo o la comunidad en su conjunto.<br><br>
+          
+          <strong>18.2</strong> Solo permitimos el uso de las multi cuentas en la comunidad si reune los siguientes requisitos:<br>
+          <u class="underline1">• Si tu cuenta principal no ha sido eliminada.<br>
+          • Si no haz tenido problemas con las reglas.<br>
+          • Si tiene utilidad real.<br>
+          • Si tu cuenta principal esta en el grupo/comunidad.<br>
+            • Si tenerla o usarla no causa algún problema con las reglas.</u><br><br></p>
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#198754">Recordarte que...</summary>
+  
+  <hr>
+        
+        <p><u class="underline1">(Entiéndase multi cuentas como cuentas secundarias tuyas)</u><br><br>
+          
+          <strong>No se permiten multi cuentas si tu cuenta principal no está</strong><br>
+          La razón por la cuál se tomó está decisión se basa en la necesidad de mantener la autenticidad, la transparencia, la comunicación efectiva y la integridad del grupo. Estas razones contribuyen a un ambiente saludable, confiable y cohesivo para todos los miembros.<br><br>
+          
+          <strong>Tu eres el responsable de las acciones de tu multi cuenta</strong><br>
+          Si tú Multicuenta Incumple alguna regla, el dueño de esa Multicuenta será el que reciba la sanción correspondiente; a determinación de los datos y los administradores.</p>
+         
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion19">
+      
+      <h2>Regla №19</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No mandar un MD a alguien si no es realmente necesario</summary>
+  
+  <hr>
+        
+        <p><strong>19.1</strong> Entendemos la importancia de la privacidad, pero para mantener una comunicación clara y transparente en los grupos, reservamos los mensajes directos para situaciones esenciales. Esto garantiza un ambiente comunitario donde la información relevante se comparte abiertamente en los canales designados, fomentando la participación y la colaboración entre todos los miembros.</p>
+ 
+      </details>
+      
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        
+        <p><strong>•</strong> Pide el debido permiso en el grupo, no después de contactar al usuario por MD. Acepta su decisión, después de todo tienen el grupo para hablar entre sí en caso de que la otra parte no esté de acuerdo.</p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion20">
+      
+      <h2>Regla №20</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No usar los '@' en exceso</summary>
+  
+  <hr>
+        
+        <p><strong>20.1</strong> Usar los @ (etiquetas a usuarios) en exceso, para cosas que no son para etiquetarlos, para cosas absurdas o sin motivo queda completamente prohibido.</p>
+        
+        <p><strong>20.2</strong> El @ o etiqueta que mencioné a más del 70% de los usuarios será de uso exclusivo de los administradores, siempre que usarlo no incumpla la <u class="underline1">Regla 20.1</u> <br><strong>Para calcular el 70%</strong>, multiplique el número total de usuarios con esa etiqueta por 0.7</p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion21">
+      
+      <h2>Regla №21</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No usar de mala manera al o los bots del grupo</summary>
+  
+  <hr>
+        
+        <p><strong>21.1</strong> Queda estrictamente prohibido utilizar de manera inapropiada cualquier función o servicio proporcionado por los bots en esta comunidad. Esto incluye, pero no se limita a, el uso de comandos que violen las <strong>Reglas generales</strong>, generen contenido ofensivo o perjudicial, o interfieran con el adecuado funcionamiento de los bots.</p>
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        
+        <p><strong>•</strong> Abstenerte de usar los comandos o funciones de algún bot si ves que eso incumple con las <strong>Reglas generales</strong>. En su lugar, reporta cualquier cosa inusual en lo que respecta a las funciones de los bots en caso de estar presentes en el grupo.</p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion22">
+      
+      <h2>Regla №22</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No meter un bot al grupo</summary>
+  
+  <hr>
+        
+        <p><strong>22.1</strong> La incorporación de nuevos bots al servidor está permitida solo con la aprobación previa de los administradores. Queda estrictamente prohibido añadir bots sin autorización, ya que esto puede afectar negativamente la integridad y seguridad de la comunidad.</p>
+ 
+      </details>
+      
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion23">
+      
+      <h2>Regla №23</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No flood</summary>
+  
+  <hr>
+        
+        <p><strong>23.1</strong> Esto quiere decir que no puedes mandar mensajes, o provocar que manden mensajes con o sin sentido en exceso.
+        </p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion24">
+      
+      <h2>Regla №24</h2>
+      <small>Haz click en la regla o en algún recuadro para saber los detalles.</small>
+      
+      <details>
+  <summary style="color:#FF5722"><i class="bi bi-arrows-angle-expand"></i> No aparentar ser un administrador</summary>
+  
+  <hr>
+        
+        <p><strong>24.1</strong> Para ti como miembro, está prohibido hacerse pasar por el equipo de administración, sin importar la circunstancia en la que lo hagas.
+        </p>
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#198754">Recomendaciones</summary>
+  
+  <hr>
+        
+        <p><strong>•</strong> Puedes ayudar al buen funcionamiento del grupo dándoles recomendaciones a los nuevos usuarios o a usuarios que puedan desconocer alguna regla. Lo que no puedes hacer es fingir ser un administrador y/o amenazar con sancionarle independientemente de lo que ese usuario haya hecho.</p>
+ 
+      </details>
+      
+    </section>
+    
+    <hr>
+    
+    <section id="seccion25">
+      
+      <h2>Reglas de los administradores</h2>
+      
+      <p>Estas reglas se aplican a todos los administradores, grupos y servicios de la comunidad sin ningún tipo de excepción. Al conocer las reglas de los administradores, tú también puedes ayudar a detectar a esos administradores que incumplen las reglas.</p>
+      <br>
+      
+      <h3>Última modificación a las reglas: 23/09/23</h3>
+      
+      <strong>Haz click en alguna de las reglas para saber más.</strong>
+      
+      <details>
+  <summary style="color:#FF5722">№1 | No dar administrador</summary>
+  
+  <hr>
+        
+        <p><strong>1.1</strong> Solo el dueño es el que puede dar el administrador en los grupos y servicios de esta comunidad, a menos de que el diga lo contrario.</p>
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#FF5722">№2 | No eliminar a miembros sin ningún motivo</summary>
+  
+  <hr>
+        
+        <p><strong>2.1</strong> Eliminar a un miembro que no ha incumplido las reglas está totalmente prohibido para los administradores.<br><br>
+          
+          
+          <strong>2.2</strong> Los administradores no pueden dar administrador a las personas, pero sí pueden quitar el admin a otros administradores si la situación lo requiere.</p>
+ 
+      </details>
+      
+      <details>
+  <summary style="color:#FF5722">Términos de la regla №2</summary>
+  
+  <hr>
+        
+        <p><strong>Situaciones en las que se debe aplicar la regla №2.2</strong><br>
+
+          <ol>
+            <li>A un administrador que incumpla las Reglas generales.</li>
+            <li>A un admin que incumpla la regla №1 de esta sección.</li>
+            <li>A un admin que no aplique la regla №2 de esta sección.</li>
+        </ol>        
+ 
+      </details>
+      
+      
+      <p><strong>En resumen</strong>, si un admin incumple de alguna manera alguna de las 2 reglas ya mencionadas, los administradores pueden quitarle su admin. Pero será el dueño del grupo en cuestión el que decida qué hacer con ese mal administrador.</p>
+      
+    </section>
+    
+    
+    
+    
+   <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript> 
+    
+ </body>  
+  
+  
+  
+  <!-- JS para la barra de progreso -->
+ <script>
+  window.addEventListener('scroll', updateProgressBar);
+
+function updateProgressBar() {
+  const progressBar = document.getElementById('progressBar');
+  const totalHeight = document.body.scrollHeight - window.innerHeight;
+  const scrolledHeight = window.scrollY;
+  const percentageScrolled = (scrolledHeight / totalHeight) * 100;
+
+  // Cambiar ancho gradualmente mientras se desplaza
+  progressBar.style.width = percentageScrolled + '%';
+}
+  </script> 
+ 
+  
+   
+   
+ 
+
+
+
+
+
+<!--boton para redirigir a la parte de hasta arriba de la página-
+  <style>
+    /* Estilos para el botón */
+   .fixed-button {
+  position: fixed;
+  bottom: 20px; /* Ajusta la posición vertical según tus necesidades */
+  right: 20px; /* Ajusta la posición horizontal según tus necesidades */
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: rgba(197, 197, 197, 0.2); /* Color semi-transparente */
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1.93px);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 40px;
+  transition: transform 0.3s;
+  z-index: 6;
+  overflow: hidden; /* Añadido para ocultar el desenfoque que se extiende más allá del botón */
+}
+
+    
+    /* Estilos para la animación de scroll 
+    .scroll-to-top {
+      animation: scrollAnimation 0.5s;
+    }
+    
+    @keyframes scrollAnimation {
+      0% {
+        transform: translateY(100%);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+    
+    /* Estilo para el texto del botón después de ser visitado 
+    .fixed-button:visited {
+      color: white;
+    }
+    
+    /* Estilo para desactivar la interacción del usuario 
+    .disable-interaction {
+      pointer-events: none;
+    }
+    */
+  </style> 
+
+  <!-- Botón 
+  <a class="fixed-button" href="#top" id="scrollButton">
+    <i style="color:black" class="bi bi-caret-up-square"></i>
+  </a> -->
+  
+  
+  <!-- <script>
+    // JavaScript para añadir la animación al hacer toque en el botón (para dispositivos móviles)
+    var button = document.querySelector('#scrollButton');
+    button.addEventListener('touchstart', function(event) {
+      event.preventDefault();
+      var topElement = document.querySelector('#top');
+      topElement.scrollIntoView({ behavior: 'smooth' });
+      button.classList.add('scroll-to-top');
+      button.classList.add('disable-interaction'); // Desactiva la interacción del usuario
+      setTimeout(function() {
+        button.classList.remove('scroll-to-top');
+        button.classList.remove('disable-interaction'); // Vuelve a activar la interacción del usuario
+      }, 500); // Ajusta el tiempo de la animación según la duración de tu animación CSS
+    });
+  </script> -->
+
+
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion() {
+    var seccion = document.getElementById('seccion1');
+    seccion.classList.add('resaltado');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+ <script>
+  
+ function resaltarSeccion2() {
+    var seccion = document.getElementById('seccion2');
+    seccion.classList.add('resaltado2');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado2');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+ <script>
+  
+ function resaltarSeccion3() {
+    var seccion = document.getElementById('seccion3');
+    seccion.classList.add('resaltado3');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado3');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+ <script>
+  
+ function resaltarSeccion4() {
+    var seccion = document.getElementById('seccion4');
+    seccion.classList.add('resaltado4');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado4');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+ <script>
+  
+ function resaltarSeccion5() {
+    var seccion = document.getElementById('seccion5');
+    seccion.classList.add('resaltado5');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado5');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+<script>
+  
+ function resaltarSeccion6() {
+    var seccion = document.getElementById('seccion6');
+    seccion.classList.add('resaltado6');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado6');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+ <script>
+  
+ function resaltarSeccion7() {
+    var seccion = document.getElementById('seccion7');
+    seccion.classList.add('resaltado7');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado7');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion8() {
+    var seccion = document.getElementById('seccion8');
+    seccion.classList.add('resaltado8');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado8');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion9() {
+    var seccion = document.getElementById('seccion9');
+    seccion.classList.add('resaltado9');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado9');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion10() {
+    var seccion = document.getElementById('seccion10');
+    seccion.classList.add('resaltado10');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado10');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+<script>
+  
+ function resaltarSeccion11() {
+    var seccion = document.getElementById('seccion11');
+    seccion.classList.add('resaltado11');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado11');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion12() {
+    var seccion = document.getElementById('seccion12');
+    seccion.classList.add('resaltado12');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado12');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion13() {
+    var seccion = document.getElementById('seccion13');
+    seccion.classList.add('resaltado13');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado13');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion14() {
+    var seccion = document.getElementById('seccion14');
+    seccion.classList.add('resaltado14');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado14');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+<script>
+  
+ function resaltarSeccion15() {
+    var seccion = document.getElementById('seccion15');
+    seccion.classList.add('resaltado15');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado15');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+<script>
+  
+ function resaltarSeccion16() {
+    var seccion = document.getElementById('seccion16');
+    seccion.classList.add('resaltado16');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado16');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion17() {
+    var seccion = document.getElementById('seccion17');
+    seccion.classList.add('resaltado17');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado17');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion18() {
+    var seccion = document.getElementById('seccion18');
+    seccion.classList.add('resaltado18');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado18');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion19() {
+    var seccion = document.getElementById('seccion19');
+    seccion.classList.add('resaltado19');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado19');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+<script>
+  
+ function resaltarSeccion20() {
+    var seccion = document.getElementById('seccion20');
+    seccion.classList.add('resaltado20');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado20');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+<script>
+  
+ function resaltarSeccion21() {
+    var seccion = document.getElementById('seccion21');
+    seccion.classList.add('resaltado21');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado21');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+<script>
+  
+ function resaltarSeccion22() {
+    var seccion = document.getElementById('seccion22');
+    seccion.classList.add('resaltado22');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado22');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+<script>
+  
+ function resaltarSeccion23() {
+    var seccion = document.getElementById('seccion23');
+    seccion.classList.add('resaltado23');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado23');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion24() {
+    var seccion = document.getElementById('seccion24');
+    seccion.classList.add('resaltado24');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado24');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+
+
+<script>
+  
+ function resaltarSeccion25() {
+    var seccion = document.getElementById('seccion25');
+    seccion.classList.add('resaltado25');
+    
+    // Después de un tiempo, elimina la clase 'resaltado' para quitar el resaltado
+    setTimeout(function() {
+        seccion.classList.remove('resaltado25');
+    }, 700); // Cambia este valor si deseas que el resaltado dure más o menos tiempo
+ } 
+  
+</script>
+
+
+
+<script>
+    // Array de mensajes posibles
+    var mensajes = [
+        "<strong>Ayúdanos a tener una comunidad segura</strong><br>Reporta comportamientos inusuales a los administradores disponibles.",
+        "<strong>Sugiere cambios</strong><br>Para nosotros todas las opiniones valen, estaremos encantados de escuchar tus propuestas para mejorar la comunidad para todos.",
+        "<strong>Conocer las reglas no tiene desperdicio</strong><br> No dejes que nadie te mienta sobre las reglas, siempre es bueno conocerlas de antemano para que nadie te pueda ver la cara...",
+      "Desde la última actualización a las reglas en Enero del 2024, nadie ha podido encontrar 'lagunas' en ellas.",
+      "<strong>Se exelente con todos</strong><br>Dar buena impresión es importante. Si tienes la oportunidad de conocer a un nuevo usuario, ayúdale con todo lo que desconozca sobre la comunidad.",
+      "<strong>¡Cuidado! Cuidado...</strong><br>Tenemos límites claros en lo que respecta a nuestra tolerancia a los mensajes sarcásticos y/o humorísticos a los usuarios, evita sanciones. No sabes el verdadero peso de tus palabras hasta que el daño ya esta hecho.",
+        // Agrega mÃ¡s mensajes segÃºn sea necesario
+    ];
+
+    // FunciÃ³n para elegir y mostrar un mensaje al cargar la pÃ¡gina
+    window.onload = function() {
+        // Elige un Ã­ndice aleatorio del array de mensajes
+        var indiceAleatorio = Math.floor(Math.random() * mensajes.length);
+
+        // Obtiene el elemento por su ID y actualiza su contenido
+        document.getElementById("mensajeElegido").innerHTML = mensajes[indiceAleatorio];
+    };
+</script>
+
+
+
+
+
+
+
+
+
+

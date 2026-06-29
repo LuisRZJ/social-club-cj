@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Generador QR | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Aquí se pueden agregar estilos específicos de la plantilla si es necesario */
+
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+  
+  <div class="content-container">
+    <h1 class="page-title">Generador QR</h1>
+    <p class="page-subtitle" style="margin-bottom:2.2rem; color:var(--text-secondary); font-size:1.08rem; text-align:left; max-width:500px; margin-left:auto; margin-right:auto;">
+      Genera códigos QR de manera rápida y sencilla. Solo escribe el texto, enlace o información que desees convertir, presiona "Generar QR" y descarga la imagen para compartirla o imprimirla. ¡Ideal para compartir enlaces, mensajes, WiFi y más!
+    </p>
+    <h2 class="page-main-title" style="font-size:1.3rem; margin-bottom:1.2rem; margin-top:0.5rem;">Genera tu código QR</h2>
+    <form id="qrForm" style="display:flex; flex-direction:column; gap:1.2rem; max-width:420px; margin:0 auto 0 auto;">
+      <input
+        id="qrInput"
+        type="text"
+        class="nav-button"
+        style="font-size:1.1rem; padding:0.7rem 1rem; border-radius:0.5rem; border:1px solid var(--border-primary);"
+        placeholder="Escribe aquí el texto o enlace"
+        required
+        autocomplete="off"
+      />
+      <div style="display:flex; gap:0.7rem; align-items:center; justify-content: flex-start; flex-wrap:wrap;">
+        <button
+          type="submit"
+          class="nav-button"
+          style="font-size:1.1rem; flex:1 1 180px; min-width:120px; max-width:100%;"
+        >
+          <i class="fas fa-qrcode"></i> Generar QR
+        </button>
+        <button
+          type="button"
+          id="resetQR"
+          class="nav-button"
+          style="font-size:1.1rem; opacity:0.7; flex:1 1 120px; min-width:100px; max-width:100%;"
+          disabled
+        >
+          <i class="fas fa-eraser"></i> Limpiar
+        </button>
+      </div>
+    </form>
+    <div id="qrResult" style="margin:2rem auto 0; text-align:center; display:none; max-width:420px;">
+      <canvas id="qrCanvas" style="margin:auto; background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08);"></canvas>
+      <div style="margin-top:1rem;">
+        <button id="downloadQR" class="nav-button" style="font-size:1rem; display:none;">
+          <i class="fas fa-download"></i> Descargar QR
+        </button>
+      </div>
+    </div>
+
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  </div>
+
+        <!-- COMPONENTE UPDATE MODAL -->
+        <div data-include="/componentes/update-modal.html"></div>
+
+        <!-- COMPONENTE FOOTER -->
+        <div data-include="/componentes/footer.html"></div>
+
+        <!-- COMPONENTE FIXED BAR -->
+        <div data-include="/componentes/bottom-bar.html"></div>
+
+        <!-- COMPONENTE PANEL EXPANSION -->
+        <div data-include="/componentes/panel-expansion.html"></div>
+
+        <!-- COMPONENTE CHAT OVERLAY -->
+        <div data-include="/componentes/chat-overlay.html"></div>
+
+        <!-- COMPONENTE THEME HELP -->
+        <div data-include="/componentes/theme-help.html"></div>
+
+        <!-- COMPONENTE CONTEXT MENU -->
+        <div data-include="/componentes/context-menu.html"></div>
+
+        <!-- PARTE AUXILIAR, FALTA DE JS -->
+        <noscript>
+            <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+        </noscript>
+
+        <script src="/componentes/cargador.js"></script>
+        <script src="/HECKS-BOT/javascript.js"></script>
+        <script src="/pwa/noticias.js"></script>
+        <script src="/pwa/javascript.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+
+        <script>
+      document.addEventListener('componentesCargados', function() {
+        const form = document.getElementById('qrForm');
+        const input = document.getElementById('qrInput');
+        const qrResult = document.getElementById('qrResult');
+        const qrCanvas = document.getElementById('qrCanvas');
+        const downloadBtn = document.getElementById('downloadQR');
+        const resetBtn = document.getElementById('resetQR');
+        let qr;
+
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const value = input.value.trim();
+          if (!value) return;
+          if (!qr) {
+            qr = new QRious({
+              element: qrCanvas,
+              size: 220,
+              value: value,
+              background: '#fff',
+              foreground: '#23232a'
+            });
+          } else {
+            qr.value = value;
+          }
+          qrResult.style.display = 'block';
+          downloadBtn.style.display = 'inline-block';
+          resetBtn.disabled = false;
+          resetBtn.style.opacity = 1;
+        });
+
+        downloadBtn.addEventListener('click', function() {
+          const link = document.createElement('a');
+          link.href = qrCanvas.toDataURL('image/png');
+          link.download = 'codigo-qr.png';
+          link.click();
+        });
+
+        resetBtn.addEventListener('click', function() {
+          input.value = '';
+          qrResult.style.display = 'none';
+          downloadBtn.style.display = 'none';
+          resetBtn.disabled = true;
+          resetBtn.style.opacity = 0.7;
+          if (qr) {
+            qr.value = '';
+          }
+        });
+      });
+        </script>
+
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Administración | CGN</title>
+
+  <!-- CSS Modulares de la plataforma -->
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+
+  <!-- Script bloqueante ultraligero para aplicar tema de inmediato (sin flash blanco) -->
+  <script>
+    (function () {
+      try {
+        const temaGlobal = localStorage.getItem('preferencia-tema');
+        const root = document.documentElement;
+        if (temaGlobal === 'oscuro') {
+          root.setAttribute('data-theme', 'dark');
+        } else if (temaGlobal === 'automatico' || !temaGlobal) {
+          const hora = new Date().getHours();
+          const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (hora >= 20 || hora < 7 || prefiereOscuro) {
+            root.setAttribute('data-theme', 'dark');
+          }
+        }
+      } catch (e) {
+        console.error('Error al aplicar tema en categorias-admins.html', e);
+      }
+    })();
+  </script>
+
+  <style>
+    /* NUEVOS ESTILOS PARA LAS TARJETAS */
+    .entry-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .entry-card {
+      background: white;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      border: 1px solid #FFD1A9;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .entry-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    .card-header {
+      background-color: #FFD1A9;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin: 0;
+    }
+    
+    .card-content {
+      padding: 1.5rem;
+      flex-grow: 1;
+    }
+    
+    .card-description {
+      color: #4B5563;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-link {
+      display: inline-block;
+      background-color: #1F2937;
+      color: white;
+      padding: 0.6rem 1.5rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    .card-link:hover {
+      background-color: #374151;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-icon {
+      font-size: 2rem;
+      color: #1F2937;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+      .entry-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ESTILOS MODO OSCURO ADAPTADOS */
+    [data-theme="dark"] .entry-card {
+      background: #23232a !important;
+      border: 1px solid #FFD1A9 !important;
+      color: #f3f4f6 !important;
+    }
+    [data-theme="dark"] .card-header {
+      background-color: #33334a !important;
+    }
+    [data-theme="dark"] .card-title {
+      color: #FFD1A9 !important;
+    }
+    [data-theme="dark"] .card-description {
+      color: #f3f4f6 !important;
+    }
+    [data-theme="dark"] .card-link {
+      background-color: #FFD1A9 !important;
+      color: #23232a !important;
+    }
+    [data-theme="dark"] .card-link:hover {
+      background-color: #ffb07a !important;
+      color: #23232a !important;
+    }
+    [data-theme="dark"] .card-icon {
+      color: #FFD1A9 !important;
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+    
+    <!-- COMPONENTE INSTALL MODAL PWA -->
+    <div data-include="/componentes/install-modal.html"></div>
+
+    <div class="content-container">
+      <h1 class="page-title">Administración</h1>
+      
+      <!-- Sección de tarjetas de entradas -->
+      <div class="entry-cards">
+        <!-- Tarjeta para "Ser admin" -->
+        <div class="entry-card">
+          <div class="card-header">
+            <h2 class="card-title">Ser admin</h2>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-user-shield"></i>
+            </div>
+            <p class="card-description">
+              Descubre cómo convertirte en administrador de nuestra comunidad. 
+              Conoce los requisitos, responsabilidades y beneficios de este rol esencial.
+            </p>
+            <a href="/respaldo/r-seradmin.html" class="card-link">Leer más <i class="fas fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+        
+        <!-- Tarjeta para "Reglas admins" -->
+        <div class="entry-card">
+          <div class="card-header">
+            <h2 class="card-title">Reglas admins</h2>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <p class="card-description">
+              Normas y protocolos que todo administrador debe seguir para mantener 
+              un entorno justo y seguro para todos los miembros de nuestra comunidad.
+            </p>
+            <button class="card-link">Proximamente...<i class="fas fa-arrow-right ml-2"></i></button>
+          </div>
+        </div>
+        
+        <!-- Tarjeta para "Panel de Ayuda" -->
+        <div class="entry-card">
+          <div class="card-header">
+            <h2 class="card-title">Panel de Ayuda</h2>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-life-ring"></i>
+            </div>
+            <p class="card-description">
+              Centro de ayuda completo con guías, recursos, soporte automatizado y contacto técnico. 
+              Encuentra respuestas a todas tus dudas sobre la comunidad.
+            </p>
+            <a href="/soporte/panel-de-ayuda.html" class="card-link">Ir al panel <i class="fas fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+        
+        <!-- Tarjeta para "Editor de texto" -->
+        <div class="entry-card">
+          <div class="card-header">
+            <h2 class="card-title">Editor de texto</h2>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-edit"></i>
+            </div>
+            <p class="card-description">
+              Una herramienta útil para formatear texto con estilos para usar en diferentes plataformas.
+            </p>
+            <a href="/Subpaginas/editor-texto.html" class="card-link">Usar herramienta <i class="fas fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+        
+        <!-- Tarjeta para "Texto a PDF" -->
+        <div class="entry-card">
+          <div class="card-header">
+            <h2 class="card-title">Texto a PDF</h2>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+            <p class="card-description">
+              Convierte cualquier texto en un documento PDF profesional. 
+              Herramienta ideal para crear documentos de forma rápida y fácil.
+            </p>
+            <a href="/Subpaginas/texto-a-pdf.html" class="card-link">Generar PDF <i class="fas fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+
+        <!-- Tarjeta para "Generador de QR" -->
+        <div class="entry-card">
+          <div class="card-header">
+            <h2 class="card-title">Generador de QR</h2>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-qrcode"></i>
+            </div>
+            <p class="card-description">
+              Crea códigos QR personalizados de manera sencilla para compartir enlaces, mensajes, contraseñas WiFi y más. Descarga la imagen y compártela donde quieras.
+            </p>
+            <a href="/Subpaginas/generador-qr.html" class="card-link">Ir al generador <i class="fas fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+
+        <!-- Tarjeta para "Extractor ZIP" -->
+        <div class="entry-card">
+          <div class="card-header">
+            <h2 class="card-title">Extractor ZIP</h2>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-file-archive"></i>
+            </div>
+            <p class="card-description">
+              Herramienta para extraer archivos comprimidos en formato ZIP directamente desde el navegador. Facilita la gestión de archivos sin necesidad de software adicional.
+            </p>
+            <a href="/Subpaginas/extractor-zip.html" class="card-link">Usar herramienta <i class="fas fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+
+        <!-- Tarjeta para "Combinar TXT" -->
+        <div class="entry-card">
+          <div class="card-header">
+            <h2 class="card-title">Combinar TXT</h2>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-object-group"></i>
+            </div>
+            <p class="card-description">
+              Une múltiples archivos de texto en uno solo. Ideal para combinar listas, registros o cualquier tipo de información textual de forma rápida y eficiente.
+            </p>
+            <a href="/Subpaginas/combinar-txt.html" class="card-link">Usar herramienta <i class="fas fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+
+        <!-- Tarjeta para "Recortador TXT" -->
+        <div class="entry-card">
+          <div class="card-header">
+            <h2 class="card-title">Recortador TXT</h2>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-cut"></i>
+            </div>
+            <p class="card-description">
+              Herramienta para recortar y editar archivos de texto. Permite eliminar secciones específicas, extraer fragmentos o dividir archivos de texto grandes.
+            </p>
+            <a href="/Subpaginas/recortador-txt.html" class="card-link">Usar herramienta <i class="fas fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de navegación horizontales -->
+      <div class="nav-buttons">
+        <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+        </div>
+        <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+        </a>
+      </div>
+    </div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+  </div> <!-- Cierre del main-content -->
+
+  <!-- COMPONENTE THEME HELP -->
+  <div data-include="/componentes/theme-help.html"></div>
+
+  <!-- COMPONENTE CONTEXT MENU -->
+  <div data-include="/componentes/context-menu.html"></div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <!-- SCRIPT CARGADOR DE COMPONENTES MODULARES -->
+  <script src="/componentes/cargador.js"></script>
+  <!-- SCRIPT DE SOPORTE HECKS-BOT -->
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <!-- SCRIPT DE NOTICIAS -->
+  <script src="/pwa/noticias.js"></script>
+  <!-- SCRIPT DE PANTALLA CARGA -->
+  <script src="/pwa/javascript.js"></script>
+</body>
+</html>

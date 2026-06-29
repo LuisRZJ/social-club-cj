@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anuncio Exclusivo</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/icons/Logo-CGN.avif" />
+  <link rel="apple-touch-icon" href="/icons/Logo-CGN.avif" />
+  <meta name="theme-color" content="#FFD1A9" />
+
+  <!-- CSS Modulares base -->
+  <link rel="stylesheet" href="/pwa/estilos.css" />
+  <link rel="stylesheet" href="/pwa/temas.css" />
+  <link rel="stylesheet" href="/pwa/componentes.css" />
+
+  <!-- Tailwind via CDN para diseño de cuadrículas y espaciados -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--color-primary, #FFD1A9)',
+            secondary: 'var(--color-secondary, #ffb07a)',
+            background: 'var(--bg-primary, #ffffff)',
+            text: 'var(--text-primary, #1F2937)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body class="transition-colors duration-300 min-h-screen flex flex-col items-center">
+
+  <script>
+      // Cargar el tema instantáneamente para evitar parpadeo blanco
+      (function () {
+        const tema = localStorage.getItem('preferencia-tema');
+        const root = document.documentElement;
+        if (tema === 'oscuro') root.setAttribute('data-theme', 'dark');
+        else if (tema === 'automatico') {
+          const h = new Date().getHours();
+          if (h >= 20 || h < 7) root.setAttribute('data-theme', 'dark');
+        }
+      })();
+  </script>
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <div class="main-content w-full flex flex-col items-center" id="mainContent">
+    <!-- COMPONENTE: Temporizador flotante de cuenta regresiva -->
+    <div data-include="/componentes/temporizador-anuncio.html"></div>
+
+    <!-- Contenedor Principal -->
+    <main
+      class="custom-container my-24 mx-4 p-8 bg-[var(--bg-primary)] rounded-xl shadow-lg w-full max-w-4xl relative border border-[var(--border-primary)]">
+      <h1 class="text-3xl font-bold text-center mb-4 mt-6 text-[var(--text-primary)] page-title" id="tituloPrincipal">
+        Título del Anuncio</h1>
+      <p class="text-lg text-center text-[var(--text-secondary)] mb-8 max-w-2xl mx-auto descripcion-principal"
+        id="subtituloPrincipal">
+        Subtítulo descriptivo del anuncio.
+      </p>
+
+      <!-- Imagen -->
+      <div class="contenedor-imagen">
+        <div class="etiqueta-imagen">
+          <i class="fas fa-image"></i>
+          <span id="etiquetaTexto">Destacado</span>
+        </div>
+        <img id="imagenAnuncio" src="" alt="Imagen de anuncio" />
+      </div>
+
+      <!-- Servicios / Tarjetas -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 seccion-servicios" id="contenedorServicios">
+        <!-- Se llenan por JS -->
+      </div>
+
+      <!-- Botón de acción -->
+      <div class="text-center mb-10">
+        <a href="#" class="btn-accion-principal desactivado" id="btnAccionPrincipal">
+          <i class="fa-solid fa-arrow-right"></i>
+          <span id="textoBtnAccion">Comenzar ahora</span>
+        </a>
+      </div>
+
+      <!-- Botones de Navegación Finales -->
+      <div class="flex justify-center items-center gap-4 mt-8 border-t border-[var(--border-primary)] pt-8 select-none">
+        <button class="btn-volver" id="volverBtn" title="Volver a la página anterior" aria-label="Volver">
+          <i class="fa-solid fa-arrow-left"></i> Volver
+        </button>
+        <button class="btn-cerrar desactivado" id="cerrarBtn" title="Cerrar anuncio" aria-label="Cerrar anuncio"
+          disabled>
+          <i class="fa-solid fa-times text-xl mr-2"></i> Cerrar
+        </button>
+      </div>
+    </main>
+
+  </div> <!-- Cierre del main-content -->
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <!-- SCRIPT CARGADOR DE COMPONENTES MODULARES -->
+  <script src="/componentes/cargador.js"></script>
+  <!-- SCRIPT DE PANTALLA CARGA -->
+  <script src="/pwa/javascript.js"></script>
+  <!-- SCRIPT ESPECÍFICO DEL ANUNCIO -->
+  <script src="/js/anuncios/anuncio.js"></script>
+
+</body>
+
+</html>

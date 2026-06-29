@@ -1,0 +1,70 @@
+<!-- Panel de expansión separado -->
+<div class="panel-expansion" id="panelExpansion">
+    <!-- Contenedor para el contenido expandido -->
+    <div class="expanded-content">
+        <!-- Contenedor de noticias -->
+        <div class='news-container'>
+            <div class='title'>
+                Novedades
+            </div>
+
+            <ul>
+                <!-- Las noticias se cargarán dinámicamente desde noticias.json -->
+            </ul>
+        </div>
+        <div class="news-separator-top"></div>
+
+        <!-- Sección de categorías -->
+        <div class="categories-section-panel">
+            <div class="categories-title-panel">Categorías</div>
+            <div class="categories-tags-panel">
+                <a href="/categorias-comunidad.html" class="category-tag-panel comunidad"><i class="fas fa-users"></i>
+                    Comunidad</a>
+                <a href="/categorias-mc.html" class="category-tag-panel minecraft"><i class="fas fa-cube"></i>
+                    Minecraft</a>
+                <a href="/categorias-reglas.html" class="category-tag-panel reglas"><i class="fas fa-book"></i>
+                    Reglas</a>
+                <a href="/categorias-admins.html" class="category-tag-panel administracion"><i
+                        class="fas fa-user-shield"></i> Administración</a>
+            </div>
+        </div>
+        <div class="news-separator-bottom"></div>
+
+        <!-- Sección de tema -->
+        <div class="theme-section-panel"
+            style="width:100%; margin: 0 0 10px 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+            <div class="categories-title-panel"
+                style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center; text-align: center;">
+                <span style="display: flex; align-items: center; gap: 8px;">
+                    Tema
+                    <button id="themeHelpBtn" type="button"
+                        style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: var(--popup-text-color); font-size: var(--font-size-7xl); display: flex; align-items: center;">
+                        <i class="fas fa-question-circle"></i>
+                    </button>
+                </span>
+            </div>
+            <div class="theme-buttons-panel"
+                style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+                <button class="theme-btn" title="Automático" type="button">
+                    <i class="fas fa-adjust"></i> Automático
+                    <span class="theme-indicator"></span>
+                </button>
+                <button class="theme-btn" title="Eficiencia" type="button">
+                    <i class="fas fa-bolt"></i> Eficiencia
+                    <span class="theme-indicator"></span>
+                </button>
+                <button class="theme-btn" title="Claro" type="button">
+                    <i class="fas fa-sun"></i> Claro
+                    <span class="theme-indicator"></span>
+                </button>
+                <button class="theme-btn" title="Oscuro" type="button">
+                    <i class="fas fa-moon"></i> Oscuro
+                    <span class="theme-indicator"></span>
+                </button>
+            </div>
+            <div class="action-separator"
+                style="position: relative; left: 50%; transform: translateX(-50%); width: 100vw; height: 4px; background-color: rgba(255,255,255,0.3); margin: 14px 0 0 0; border-radius: 2px; z-index: 100;">
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Panel de Ajustes | CGN</title>
+
+  <!-- CSS Modulares de la plataforma -->
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+
+  <!-- Script bloqueante ultraligero para aplicar tema de inmediato (sin flash blanco) -->
+  <script>
+    (function () {
+      try {
+        const temaGlobal = localStorage.getItem('preferencia-tema');
+        const root = document.documentElement;
+        if (temaGlobal === 'oscuro') {
+          root.setAttribute('data-theme', 'dark');
+        } else if (temaGlobal === 'automatico' || !temaGlobal) {
+          const hora = new Date().getHours();
+          const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (hora >= 20 || hora < 7 || prefiereOscuro) {
+            root.setAttribute('data-theme', 'dark');
+          }
+        }
+      } catch (e) {
+        console.error('Error al aplicar tema en ajustes.html', e);
+      }
+    })();
+  </script>
+
+  <style>
+    /* Estilos específicos para la página de ajustes */
+    .ajustes-header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      background: var(--color-primary, #FFD1A9);
+      color: var(--text-primary, #374151);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-primary, #e2e8f0);
+    }
+    
+    .h1-ajustes {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-primary, #1e293b);
+      position: relative;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--color-primary, #FFD1A9);
+    }
+    
+    .h1-ajustes::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: var(--color-secondary, #ffb07a);
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary, #64748b);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .progress-container {
+      margin: 40px 0;
+    }
+    
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: var(--text-secondary, #64748b);
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background: var(--bg-tertiary, #f1f5f9);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      width: 35%;
+      background: var(--color-secondary, #ffb07a);
+      border-radius: 4px;
+      position: relative;
+    }
+    
+    .progress-fill::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    .features-section {
+      margin: 50px 0 30px;
+    }
+    
+    .section-title-ajustes {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: var(--text-primary, #1e293b);
+      text-align: center;
+      position: relative;
+      padding-bottom: 15px;
+    }
+    
+    .section-title-ajustes::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: var(--color-secondary, #ffb07a);
+      border-radius: 2px;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+    
+    .feature-card {
+      background: var(--bg-secondary, #ffffff);
+      border: 1px solid var(--border-primary, #E5E7EB);
+      border-radius: 10px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      border-color: var(--color-primary, #FFD1A9);
+    }
+    
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--bg-tertiary, #FFF5EB);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+      color: var(--color-secondary, #FF7D33);
+      font-size: 1.8rem;
+    }
+    
+    .feature-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--text-primary, #1e293b);
+    }
+    
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--text-secondary, #64748b);
+      line-height: 1.7;
+    }
+    
+    .development-status {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 50px;
+    }
+    
+    .status-in-progress {
+      background: var(--bg-tertiary, #fff5eb);
+      color: #b45309;
+      border: 1px solid var(--color-primary, #FFD1A9);
+    }
+    
+    .status-planned {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+    
+    .status-completed {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+    
+    .development-note {
+      background: var(--bg-tertiary, #FFF5EB);
+      border-left: 4px solid var(--color-secondary, #FFB07A);
+      padding: 20px;
+      border-radius: 0 6px 6px 0;
+      margin-top: 40px;
+      font-size: 0.95rem;
+      color: var(--text-secondary, #a86b2d);
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Overlay de página discontinuada */
+    .discontinued-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--overlay-light, rgba(255, 245, 235, 0.8));
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .discontinued-container {
+      max-width: 600px;
+      margin: 3rem auto 2rem auto;
+      padding: 2.5rem 2rem;
+      border-radius: 0.5rem;
+      background-color: var(--bg-secondary, white);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      text-align: center;
+      border: 1px solid var(--border-primary, transparent);
+    }
+    
+    .discontinued-icon {
+      font-size: 4rem;
+      color: var(--color-primary, #FFD1A9);
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    
+    .discontinued-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary, #1F2937);
+      margin-bottom: 1.2rem;
+    }
+    
+    .discontinued-message {
+      font-size: 1.1rem;
+      color: var(--text-secondary, #4B5563);
+      margin-bottom: 2.2rem;
+      line-height: 1.6;
+    }
+    
+    .discontinued-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .discontinued-button {
+      background-color: var(--color-primary, #FFD1A9);
+      color: var(--text-primary, #374151) !important;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--border-primary, rgba(0, 0, 0, 0.1));
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .discontinued-button:hover {
+      background-color: var(--color-secondary, #ffb07a);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .discontinued-button i {
+      margin-right: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .discontinued-container {
+        padding: 1.5rem 0.5rem;
+        margin: 1rem;
+      }
+      .discontinued-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .discontinued-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+    
+    <!-- COMPONENTE INSTALL MODAL PWA -->
+    <div data-include="/componentes/install-modal.html"></div>
+
+    <div class="content-container custom-container my-12 mx-auto p-8 rounded-xl shadow-lg w-full max-w-4xl bg-[var(--bg-secondary)] border border-[var(--border-primary)]">
+      <div class="ajustes-header">
+        <span class="status-badge">EN DESARROLLO</span>
+        <h1 class="h1-ajustes">Panel de Ajustes del Proyecto</h1>
+        <p class="subtitle text-[var(--text-secondary)]">Estamos desarrollando nuevas funcionalidades para mejorar su experiencia aquí. Pronto nuevas versiones con todas las características avanzadas.</p>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-info">
+          <span>Estado de desarrollo</span>
+          <span>35% Completado</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+      
+      <div class="features-section">
+        <h2 class="section-title-ajustes">Funcionalidades en Desarrollo</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="development-status status-in-progress">En Progreso</div>
+            <div class="feature-icon">
+              <i class="fas fa-users-cog"></i>
+            </div>
+            <h3>Gestión de Permisos</h3>
+            <p>Control detallado de roles y permisos de usuario con niveles de acceso personalizables para cada integrante del equipo y área funcional en la comunidad.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="development-status status-completed">Probando</div>
+            <div class="feature-icon">
+              <i class="fas fa-bell"></i>
+            </div>
+            <h3>Configuración de Notificaciones</h3>
+            <p>Personalización de alertas y notificaciones por correo, app móvil o SMS para eventos críticos de la comunidad y actualizaciones importantes.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="development-status status-in-progress">En Progreso</div>
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Seguridad y Privacidad</h3>
+            <p>Configuración avanzada de políticas de seguridad, autenticación de dos factores, y controles de privacidad de datos.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="development-status status-planned">Próximamente</div>
+            <div class="feature-icon">
+              <i class="fas fa-plug"></i>
+            </div>
+            <h3>Integraciones</h3>
+            <p>Conexiones con herramientas externas para la visualización de datos importantes directo desde aquí.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="development-status status-in-progress">En Progreso</div>
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Reportes Personalizados</h3>
+            <p>Creación y programación de reportes personalizados con métricas específicas de cada grupo en la comunidad para análisis avanzados.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="development-status status-planned">Próximamente</div>
+            <div class="feature-icon">
+              <i class="fa-solid fa-circle-half-stroke"></i>
+            </div>
+            <h3>Configuración de tema</h3>
+            <p>Capacidad para personalizar la apariencia de la plataforma activando el modo oscuro para una experiencia visual más cómoda y adaptada a tus preferencias.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="development-note">
+        <p><strong>Nota del equipo de I+D:</strong> Estamos trabajando activamente para completar estas funcionalidades. La versión final de esta página incluirá todas las características enumeradas con opciones adicionales para una experiencia completa. :)</p>
+      </div>
+      
+      <!-- Botones de navegación horizontales -->
+      <div class="nav-buttons">
+        <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+        </div>
+        <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+        </a>
+      </div>
+    </div>
+
+    <!-- Overlay de página discontinuada -->
+    <div class="discontinued-overlay" id="discontinuedOverlay" style="display: none;">
+      <div class="discontinued-container">
+        <div class="discontinued-icon"><i class="fas fa-exclamation-triangle"></i></div>
+        <div class="discontinued-title">Página Descontinuada</div>
+        <div class="discontinued-message">
+          La página de ajustes ha sido descontinuada. Los ajustes ahora se gestionan desde el panel de acciones ubicado en la parte inferior de todas las páginas. Utiliza los siguientes botones de ayuda para continuar.
+        </div>
+        <div class="discontinued-buttons">
+          <a href="/index.html" class="discontinued-button"><i class="fas fa-home"></i> Ir al Inicio</a>
+          <a href="/faq.html" class="discontinued-button"><i class="fas fa-question-circle"></i> Ver FAQ</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+  </div> <!-- Cierre del main-content -->
+
+  <!-- COMPONENTE THEME HELP -->
+  <div data-include="/componentes/theme-help.html"></div>
+
+  <!-- COMPONENTE CONTEXT MENU -->
+  <div data-include="/componentes/context-menu.html"></div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <!-- SCRIPT CARGADOR DE COMPONENTES MODULARES -->
+  <script src="/componentes/cargador.js"></script>
+  <!-- SCRIPT DE SOPORTE HECKS-BOT -->
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <!-- SCRIPT DE NOTICIAS -->
+  <script src="/pwa/noticias.js"></script>
+  <!-- SCRIPT DE PANTALLA CARGA -->
+  <script src="/pwa/javascript.js"></script>
+
+  <script>
+    document.addEventListener('componentesCargados', function() {
+      // Mostrar overlay de página discontinuada
+      const discontinuedOverlay = document.getElementById('discontinuedOverlay');
+      if (discontinuedOverlay) {
+        discontinuedOverlay.style.display = 'flex';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Act 999 | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Aquí se pueden agregar estilos específicos de la plantilla si es necesario */
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+
+    <div class="content-container">
+    <h1 class="page-title">La página se actualiza a la versión 1.0</h1>
+    
+    <!-- Nuevo contenido agregado -->
+    <div class="update-container">
+      <div class="update-tag-row">
+        <span class="update-tag added">
+          <i class="fas fa-plus-circle"></i> AÑADIDO
+        </span>
+        <span class="update-tag date">
+          <i class="far fa-calendar-alt"></i> 17 de junio del 2025
+        </span>
+      </div>
+      
+      <hr class="update-divider">
+      
+      <p class="info-text">Actualización con mejoras significativas en el diseño de la mayoría de los elementos de la página, acompañada de correcciones de errores y optimizaciones menores de estabilidad. Se deja atras a la versión Beta para brindar una experiencia más completa.</p>
+      
+      <h2 class="update-subtitle">¿Qué se agregó?</h2>
+      <ul class="update-list">
+        <li>Creación de 10 nuevas subpáginas funcionales</li>
+        <li>Migración de todas del entradas de nuestra antigua página</li>
+        <li>Creación de una base de datos con registros de usuarios problemáticos en la comunidad<br>(<a style="color:#0400ff" href="/base-de-datos.html">accesible desde aquí</a>)</li>
+        <li>Rediseño total a la página de inicio</li>
+        <li>Barra de progreso en todas las páginas</li>
+        <li>Nuevo bot de ayuda disponible desde la página de ajustes e inicio.</li>
+        <li>Nuevas entradas en la sección de <strong>🔥 Recursos populares</strong> de la página de inicio</li>
+        <li>Creación de una política sobre el uso de datos personales de nuestros usuarios<br>(<a style="color:#0400ff" href="/Legal/politica-de-privacidad.html">accesible desde aquí</a>)</li>
+        <li>Compatibilidad mejorada con dispositivos móviles</li>
+        <li>Capacidad para apoyar al proyecto por medio de una donación, desde la página de inicio.</li>
+        <li>Y otros cambios menores para mejorar el diseño y rendimiento general...</li>
+      </ul>
+    </div>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+        <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+        <i class="fas fa-list"></i> Ver Categorías
+      </a>
+    </div>
+  </div>
+
+    <!-- COMPONENTE UPDATE MODAL -->
+    <div data-include="/componentes/update-modal.html"></div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <script src="/componentes/cargador.js"></script>
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidad CGN | Inicio</title>
+    <link rel="manifest" href="/pwa/manifest.json">
+    <meta name="theme-color" content="#FFD1A9">
+    <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+    <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+    <link rel="stylesheet" href="/pwa/estilos.css">
+    <link rel="stylesheet" href="/pwa/temas.css">
+    <link rel="stylesheet" href="/pwa/componentes.css">
+    <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+</head>
+
+<body class="text-gray-800">
+    <!-- Overlay de carga -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div style="position: relative;">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loadingText">Cargando scripts...</div>
+        </div>
+        <div class="loading-version">V3</div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="main-content" id="mainContent">
+
+        <!-- COMPONENTE HEADER -->
+        <div data-include="/componentes/header.html"></div>
+
+
+
+        <div class="main-container">
+            <!-- NUEVO CONTENEDOR DE BIENVENIDA ESTILO TARJETA SOBRE FONDO -->
+            <div class="contenedor-bienvenida-gdl">
+                <img src="/imagenes/IMG-IA/Vistas-edificio2.avif" alt="No deberías ver esto..."
+                    class="bienvenida-gdl-fondo">
+                <div class="bienvenida-gdl-overlay">
+                    <div class="bienvenida-gdl-tarjeta">
+                        <div class="bienvenida-gdl-titulo">¡Hola! Buenas {timestrap}, ¿Qué tal?</div>
+                        <div class="bienvenida-gdl-info">Guadalajara - {timestrap} p.m.</div>
+                        <div class="bienvenida-gdl-cede">
+                            <span class="bienvenida-gdl-cede-span">
+                                <i class="fa-solid fa-house"></i> Cede
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIN NUEVO CONTENEDOR DE BIENVENIDA -->
+
+            <!--
+        <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="logo-comunidad">
+        <h1>Bienvenido a la Comunidad CGN</h1>
+        <div class="subtitle">
+            Un espacio para compartir, aprender y conectar con personas afines. 
+            Únete a nuestra comunidad de entusiastas de la tecnología, gaming y desarrollo.
+        </div> -->
+
+            <!-- COMPONENTE INSTALL MODAL PWA -->
+            <div data-include="/componentes/install-modal.html"></div>
+
+
+
+            <!-- Contador Regresivo 
+        <div class="countdown-wrapper">
+            <div id="countdown-container"></div>
+        </div> -->
+
+            <div class="botones-comunidad">
+                <a href="/anuncios/anuncio.html?destino=%2Fcategorias.html" class="boton-comunidad"
+                    style="background-color: #DBEAFE; color: #1E40AF; border: 2px solid #3B82F6;">
+                    <i class="fas fa-list"></i>ㅤVer categorías
+                </a>
+                <a href="/anuncios/anuncio.html?destino=https%3A%2F%2Fredes-cgn.vercel.app%2F" class="boton-comunidad"
+                    style="background-color: #D1FAE5; color: #065F46; border: 2px solid #10B981;">
+                    <i class="fas fa-share-alt"></i>ㅤRedes
+                </a>
+            </div>
+
+            <!-- Carrusel de Novedades - Solucionado -->
+            <div class="carrusel-container">
+                <h2 class="carrusel-titulo">🔥 Recursos populares</h2>
+                <div class="carrusel" id="carrusel">
+                    <!-- Tarjeta 1 -->
+                    <div class="tarjeta-novedad">
+                        <div class="tarjeta-imagen" style="background-color: #a9cbff7e;">
+                            <i class="fa-solid fa-globe fa-3x"></i>
+                        </div>
+                        <div class="tarjeta-contenido">
+                            <h3 class="tarjeta-titulo">Conoce los grupos</h3>
+                            <p class="tarjeta-descripcion">Participa en los grupos más relevantes y activos, conoce a
+                                gente con tus mismos intereses.</p>
+                            <a href="/anuncios/anuncio.html?destino=%2FSubpaginas%2Fgrupos-cmd.html"
+                                class="tarjeta-enlace">Ver página</a>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 2 -->
+                    <div class="tarjeta-novedad">
+                        <div class="tarjeta-imagen" style="background-color: #85ff7a7c;">
+                            <i class="fa-solid fa-medal fa-3x"></i>
+                        </div>
+                        <div class="tarjeta-contenido">
+                            <h3 class="tarjeta-titulo">Analisis de actividad</h3>
+                            <p class="tarjeta-descripcion">Conoce la actividad de cualquier grupo con nuestro preciso
+                                algoritmo de analisis.</p>
+                            <a href="/anuncios/anuncio.html?destino=%2FSubpaginas%2Festadisticas.html"
+                                class="tarjeta-enlace">Ver página</a>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 3 -->
+                    <div class="tarjeta-novedad">
+                        <div class="tarjeta-imagen" style="background-color: #ff9e5e80;">
+                            <i class="fa-solid fa-file-invoice fa-3x"></i>
+                        </div>
+                        <div class="tarjeta-contenido">
+                            <h3 class="tarjeta-titulo">Las reglas</h3>
+                            <p class="tarjeta-descripcion">Conoce las reglas de la comunidad, solo unos minutos y evita
+                                alguna eliminación. 🛂</p>
+                            <a href="/anuncios/anuncio.html?destino=%2FSubpaginas%2Freglas-generales.html"
+                                class="tarjeta-enlace">Ver página</a>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 4 -->
+                    <div class="tarjeta-novedad">
+                        <div class="tarjeta-imagen" style="background-color: #5ef4ff80;">
+                            <i class="fa-solid fa-database fa-3x"></i>
+                        </div>
+                        <div class="tarjeta-contenido">
+                            <h3 class="tarjeta-titulo">Conoce la base de datos</h3>
+                            <p class="tarjeta-descripcion"><strong>¿Notas a alguien actuando raro?</strong><br>Ahora
+                                puedes corroborar las sospechas gracias a la base de datos de la comunidad.</p>
+                            <a href="/anuncios/anuncio.html?destino=%2Fbase-de-datos.html" class="tarjeta-enlace">Ver
+                                página</a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="carrusel-controles">
+                    <div class="carrusel-control activo" data-index="0"></div>
+                    <div class="carrusel-control" data-index="1"></div>
+                    <div class="carrusel-control" data-index="2"></div>
+                    <div class="carrusel-control" data-index="3"></div>
+                </div>
+            </div>
+
+            <!-- Botón de Tablas de clasificación -->
+            <div style="display: flex; justify-content: center; margin-bottom: 2rem; position: relative;">
+                <a href="/anuncios/anuncio.html?destino=%2Fclasificaciones%2Fpanel.html" class="boton-comunidad"
+                    style="background-color: #FEE2E2; color: #991B1B; border: 2px solid #DC2626;">
+                    <i class="fas fa-trophy"></i>ㅤTablas de clasificación
+                </a>
+                <span class="etiqueta-nuevo">¡Nuevo!</span>
+            </div>
+
+            <div class="seccion-futuro">
+                <h2>Próximamente en CGN</h2>
+                <ul>
+                    <li>Noticias y anuncios exclusivos de la comunidad</li>
+                    <li>Calendario de eventos y actividades programadas</li>
+                    <li>Recursos y guías para nuevos miembros</li>
+                    <li>Galería de proyectos destacados por miembros</li>
+                </ul>
+            </div>
+
+            <!--  Sección de apoyo a la comunidad  -->
+            <div class="seccion-futuro seccion-apoyo">
+                <h2>Apoya a la Comunidad</h2>
+                <p class="apoyo-texto">
+                    Tu apoyo nos ayuda a mantener y mejorar la comunidad. Cada contribución hace la diferencia.
+                </p>
+                <div class="apoyo-botones">
+                    <!-- Widget original oculto -->
+                    <div class="ccwallet__tipbox__button" data-code="DXLMKFEO" data-button-type="button"
+                        data-button-text=" Apoya el Proyecto" data-button-style="white" style="display:none;"></div>
+                    <!-- Botón personalizado -->
+                    <a href="/anuncios/anuncio.html?destino=/donaciones.html" class="boton-comunidad boton-apoyo">💖
+                        Apoya el Proyecto</a>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- COMPONENTE MODAL ACTUALIZACIÓN -->
+        <div data-include="/componentes/update-modal.html"></div>
+
+
+
+        <!-- COMPONENTE FOOTER -->
+        <div data-include="/componentes/footer.html"></div>
+
+
+
+
+
+        <!-- COMPONENTE FIXED BAR -->
+        <div data-include="/componentes/bottom-bar.html"></div>
+
+
+        <!-- COMPONENTE PANEL EXPANSION -->
+        <div data-include="/componentes/panel-expansion.html"></div>
+
+
+        <!-- COMPONENTE CHAT OVERLAY -->
+        <div data-include="/componentes/chat-overlay.html"></div>
+
+    </div>
+    </div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <script src="/componentes/cargador.js"></script>
+
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+    <script src="/pwa/contador.js"></script>
+    <script src="/js/raiz/index.js"></script>
+
+    </div> <!-- Cierre del main-content -->
+
+</body>
+
+</html>

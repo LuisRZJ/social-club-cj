@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="var(--primary-color)">
+
+  
+  <script>
+    // Si JavaScript se activa:
+    window.location.href = "/index.html";
+  </script>
+
+  <title>JavaScript Desactivado | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Variables CSS para el tema de colores */
+    :root {
+      /* Colores principales */
+      --primary-color: #FFD1A9;
+      --primary-hover: #ffb07a;
+      --primary-dark: #e6b894;
+      
+      /* Colores de fondo */
+      --bg-primary: #FFF5EB;
+      --bg-secondary: white;
+      --bg-warning: #fffbeb;
+      
+      /* Colores de texto */
+      --text-primary: #374151;
+      --text-secondary: #4B5563;
+      --text-dark: #1F2937;
+      --text-warning: #b45309;
+      --text-link: #1D4ED8;
+      --text-warning-icon: #f59e0b;
+      
+      /* Colores de bordes */
+      --border-light: #E5E7EB;
+      --border-warning: #fde68a;
+      --border-dark: rgba(0, 0, 0, 0.1);
+      
+      /* Colores de navegadores */
+      --chrome-color: #4285F4;
+      --firefox-color: #FF7139;
+      --edge-color: #0078D7;
+      --safari-color: #000000;
+      
+      /* Sombras */
+      --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+      --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-heavy: 0 4px 8px rgba(0, 0, 0, 0.15);
+      
+      /* Espaciado */
+      --spacing-xs: 0.5rem;
+      --spacing-sm: 0.75rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2rem;
+      --spacing-2xl: 2.5rem;
+    }
+
+    /* Modo oscuro */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        /* Colores principales */
+        --primary-color: #FFB366;
+        --primary-hover: #ff9933;
+        --primary-dark: #e6994d;
+        
+        /* Colores de fondo */
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --bg-warning: #2d1f0a;
+        
+        /* Colores de texto */
+        --text-primary: #e5e5e5;
+        --text-secondary: #b3b3b3;
+        --text-dark: #ffffff;
+        --text-warning: #fbbf24;
+        --text-link: #60a5fa;
+        --text-warning-icon: #f59e0b;
+        
+        /* Colores de bordes */
+        --border-light: #404040;
+        --border-warning: #92400e;
+        --border-dark: rgba(255, 255, 255, 0.1);
+        
+        /* Sombras */
+        --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.3);
+        --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        --shadow-heavy: 0 4px 8px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    /* Estilos base de la página */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Contenedor principal del contenido */
+    .content-container {
+      max-width: 700px;
+      margin: var(--spacing-xl) auto;
+      padding: var(--spacing-xl);
+      border-radius: 0.5rem;
+      background-color: var(--bg-secondary);
+      box-shadow: var(--shadow-medium);
+      flex: 1;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    /* Estilos para los encabezados de sección */
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-sm);
+      padding-bottom: var(--spacing-xs);
+      border-bottom: 1px solid var(--border-light);
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    /* Estilos para los párrafos de información */
+    .info-text {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: var(--spacing-xs);
+      transition: color 0.3s ease;
+    }
+    
+    /* Botones de navegación horizontales */
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      margin-top: var(--spacing-2xl);
+    }
+    
+    .nav-button {
+      background-color: var(--primary-color);
+      color: var(--text-primary);
+      font-weight: 600;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-light);
+      border: 1px solid var(--border-dark);
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    
+    .nav-button:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-heavy);
+    }
+    
+    .nav-button:active {
+      transform: translateY(0);
+      box-shadow: var(--shadow-light);
+    }
+    
+    .nav-button i {
+      margin-right: var(--spacing-xs);
+    }
+    
+    /* Pie de página */
+    footer {
+      background-color: var(--bg-primary);
+      padding: var(--spacing-2xl) var(--spacing-md);
+      border-top: 1px solid var(--border-light);
+      margin-top: auto;
+      position: relative;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-2xl);
+    }
+    
+    .footer-section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: var(--spacing-lg);
+      position: relative;
+      padding-bottom: var(--spacing-xs);
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: var(--primary-color);
+    }
+    
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .footer-links a {
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+    
+    .footer-links a:hover {
+      color: var(--text-link);
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: var(--spacing-sm);
+      color: var(--primary-color);
+      width: 20px;
+      text-align: center;
+    }
+    
+    .footer-bottom {
+      max-width: 1200px;
+      margin: var(--spacing-md) auto 0;
+      padding-top: var(--spacing-sm);
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+    
+    .copyright {
+      font-weight: 600;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: color 0.3s ease;
+    }
+    
+    .copyright span {
+      color: var(--primary-color);
+      transition: color 0.3s ease;
+    }
+    
+    /* Botón "Volver arriba" en el pie de página */
+    .back-to-top {
+      position: absolute;
+      top: -25px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: var(--text-primary);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: var(--shadow-medium);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .back-to-top:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-3px);
+    }
+    
+    .back-to-top:active {
+      transform: translateY(0);
+    }
+    
+    /* Nuevo estilo para el ícono del pie de página */
+    .cgn-icon {
+      height: 50px;
+      width: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      box-shadow: var(--shadow-light);
+      border: 1px solid var(--border-dark);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .cgn-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Responsive para móviles */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: var(--spacing-md);
+      }
+      
+      .nav-button {
+        width: 100%;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .back-to-top {
+        top: -20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      
+      .cgn-icon {
+        height: 50px;
+        width: 100px;
+      }
+    }
+
+    .h1 {
+      font-size: 2.5rem;        
+      font-weight: bold;      
+      line-height: 1.5;        
+      margin: 0 0 0.5em 0;
+      color: var(--text-primary);
+      transition: color 0.3s ease;
+    }
+
+    /* Estilos para la página de JS deshabilitado */
+    .warning-container {
+      background-color: var(--bg-warning);
+      border: 2px solid var(--border-warning);
+      border-radius: 0.5rem;
+      padding: var(--spacing-lg);
+      margin: var(--spacing-xl) 0;
+      display: flex;
+      align-items: flex-start;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .warning-icon {
+      font-size: 2.5rem;
+      color: var(--text-warning-icon);
+      margin-right: var(--spacing-lg);
+      flex-shrink: 0;
+      transition: color 0.3s ease;
+    }
+    
+    .browser-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-lg);
+      margin-top: var(--spacing-lg);
+    }
+    
+    .browser-card {
+      background: var(--bg-secondary);
+      border-radius: 0.5rem;
+      box-shadow: var(--shadow-medium);
+      overflow: hidden;
+      flex: 1;
+      min-width: 250px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .browser-header {
+      background-color: var(--primary-color);
+      padding: var(--spacing-md);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      color: var(--text-dark);
+      transition: color 0.3s ease;
+    }
+    
+    .browser-icon {
+      font-size: 1.5rem;
+    }
+    
+    .browser-steps ol {
+      padding: var(--spacing-md) var(--spacing-lg);
+      counter-reset: step-counter;
+      list-style: none;
+    }
+    
+    .browser-steps li {
+      counter-increment: step-counter;
+      margin-bottom: var(--spacing-md);
+      padding-left: 2rem;
+      position: relative;
+      color: var(--text-secondary);
+      transition: color 0.3s ease;
+    }
+    
+    .browser-steps li:before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: var(--primary-color);
+      color: var(--text-dark);
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+    
+    .js-required-text {
+      font-size: 1.25rem;
+      text-align: center;
+      margin: var(--spacing-lg) 0;
+      color: var(--text-warning);
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+</head>
+<body class="text-gray-800">
+
+    <!--
+  <header class="header-comunidad">
+    <div class="header-content">
+      <img src="/icons/Logo-CGN.avif" alt="Logo Comunidad" class="header-logo">
+      <span class="header-title">CGN</span>
+    </div>
+  </header> -->
+  
+  <div class="content-container">
+    <h1 class="h1" style="text-align: center;">JavaScript Desactivado</h1>
+    
+    <div class="warning-container">
+      <div class="warning-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div>
+        <h2 class="section-title">Se requiere JavaScript para acceder a esta página</h2>
+        <p class="info-text">Nuestro sitio web necesita JavaScript para funcionar correctamente. Parece que JavaScript está desactivado en tu navegador.</p>
+        <p class="info-text">La mayoría de las funcionalidades de esta página —incluyendo el menú de navegación, botones clave y desplegables informativos— dependen del uso de JavaScript para su correcta visualización. En consecuencia, la página resulta prácticamente inutilizable si este recurso está deshabilitado, debido a la estructura y componentes implementados.</p>
+      </div>
+    </div>
+    
+    <p class="js-required-text">Por favor, habilita JavaScript en tu navegador para continuar</p>
+    
+    <div class="section-title">Cómo habilitar JavaScript en tu navegador</div>
+    
+    <div class="browser-steps">
+      <!-- Google Chrome -->
+      <div class="browser-card">
+        <div class="browser-header">
+          <i class="fab fa-chrome browser-icon" style="color: var(--chrome-color);"></i>
+          Google Chrome
+        </div>
+        <ol>
+          <li>Abre el menú de Chrome (⋮) en la esquina superior derecha</li>
+          <li>Selecciona "Configuración"</li>
+          <li>Haz clic en "Privacidad y seguridad"</li>
+          <li>Selecciona "Configuración del sitio"</li>
+          <li>Haz clic en "JavaScript"</li>
+          <li>Activa "Permitido (recomendado)"</li>
+          <li>Recarga la página</li>
+        </ol>
+      </div>
+      
+      <!-- Mozilla Firefox -->
+      <div class="browser-card">
+        <div class="browser-header">
+          <i class="fab fa-firefox-browser browser-icon" style="color: var(--firefox-color);"></i>
+          Mozilla Firefox
+        </div>
+        <ol>
+          <li>Escribe "about:config" en la barra de direcciones</li>
+          <li>Acepta la advertencia de riesgo</li>
+          <li>Busca "javascript.enabled"</li>
+          <li>Haz doble clic en la preferencia para cambiar su valor a "true"</li>
+          <li>Recarga la página</li>
+        </ol>
+      </div>
+      
+      <!-- Microsoft Edge -->
+      <div class="browser-card">
+        <div class="browser-header">
+          <i class="fab fa-edge browser-icon" style="color: var(--edge-color);"></i>
+          Microsoft Edge
+        </div>
+        <ol>
+          <li>Abre el menú de Edge (...) en la esquina superior derecha</li>
+          <li>Selecciona "Configuración"</li>
+          <li>Haz clic en "Cookies y permisos del sitio"</li>
+          <li>Selecciona "JavaScript"</li>
+          <li>Activa la opción "Permitido"</li>
+          <li>Recarga la página</li>
+        </ol>
+      </div>
+      
+      <!-- Safari -->
+      <div class="browser-card">
+        <div class="browser-header">
+          <i class="fab fa-safari browser-icon" style="color: var(--safari-color);"></i>
+          Safari
+        </div>
+        <ol>
+          <li>Abre el menú "Safari" en la barra superior</li>
+          <li>Selecciona "Preferencias"</li>
+          <li>Haz clic en la pestaña "Seguridad"</li>
+          <li>Marca la casilla "Habilitar JavaScript"</li>
+          <li>Cierra la ventana de preferencias</li>
+          <li>Recarga la página</li>
+        </ol>
+      </div>
+    </div>
+
+   
+    
+  </div>
+
+  <!-- Pie de página -->
+  <footer>
+
+<!--    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <div class="footer-links">
+          <a href="index.html"><i class="fas fa-home"></i> Página principal</a>
+          <a href="#"><i class="fab fa-discord"></i> Conoce el servidor de Discord</a>
+          <a href="#"><i class="fab fa-cube"></i> El servidor de Minecraft Bedrock</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Comunidad</h3>
+        <div class="footer-links">
+          <a href="#"><i class="fab fa-discord"></i> Servidor Discord</a>
+          <a href="#"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+          <a href="redes.html"><i class="fa-solid fa-map-location-dot"></i> Links directos</a>
+        </div>
+      </div>
+    </div> -->
+    
+    <div class="footer-bottom">
+        <p class="copyright">
+          <img src="/icons/Bandera-jal.avif" 
+               alt="Logo Comunidad CGN" 
+               class="cgn-icon">
+          Comunidad CGN | 2022-¿?
+        </p>
+      </div>
+
+  </footer>
+</body>
+</html>

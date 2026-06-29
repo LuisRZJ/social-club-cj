@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preguntas Frecuentes | CGN</title>
+  <link rel="manifest" href="/pwa/manifest.json">
+  <meta name="theme-color" content="#FFD1A9">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="text-gray-800 transition-colors duration-300 min-h-screen">
+
+  <script>
+    // Cargar el tema instantáneamente para evitar parpadeo blanco
+    (function () {
+      const tema = localStorage.getItem('preferencia-tema');
+      const root = document.documentElement;
+      if (tema === 'oscuro') root.setAttribute('data-theme', 'dark');
+      else if (tema === 'automatico') {
+        const h = new Date().getHours();
+        if (h >= 20 || h < 7) root.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+
+    <div data-include="/componentes/header.html"></div>
+
+    <div class="main-container">
+
+      <!-- Aviso PWA -->
+      <div id="install-prompt">
+        ¡Te recomendamos instalar nuestra PWA para una mejor experiencia!
+      </div>
+
+      <div data-include="/componentes/install-modal.html"></div>
+
+      <div class="content-container custom-container"
+        style="max-width: 1200px; margin: 2rem auto; padding: 2rem; border-radius: 0.5rem; background-color: var(--bg-primary, white); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+        <section class="faq-container">
+          <h2 class="h2-faq page-title">Preguntas Frecuentes</h2>
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <div class="accordion-item-header">¿Qué es CGN?</div>
+              <div class="accordion-item-content">CGN es una comunidad dedicada a compartir conocimiento y recursos
+                sobre tecnología, juegos y desarrollo personal. Nuestro objetivo es crear un espacio donde los miembros
+                puedan aprender, colaborar y crecer juntos.</div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-item-header">¿Que idiomas se admiten?</div>
+              <div class="accordion-item-content">Español principalmente. Así nosotros le podremos garantizar una
+                correcta moderación de nuestro lado. Aunque no lo restringimos, te recomendamos mucho usar el español al
+                hablar.</div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-item-header">¿Cuáles son las reglas de la comunidad?</div>
+              <div class="accordion-item-content">Nuestras reglas las podrás conocer en nuestra entrada dedicada a
+                ellas, Las <a href="/Subpaginas/reglas-generales.html">🔗 Reglas generales.</a> Ahí están todas las
+                reglas aplicables de la comunidad.</div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-item-header">¿Qué debo hacer si tengo un problema con otro miembro?</div>
+              <div class="accordion-item-content">Solo debes de ponerte en contacto con el admin. del grupo que más
+                prefieras. Ellos se hacen cargo de este tipo de situaciones.</div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-item-header">¿Cómo puedo contribuir a la comunidad?</div>
+              <div class="accordion-item-content">Puedes conocer todas las formas en que puedes colaborar con nosotros
+                visitando la sección correspondiente dentro de esta página. Para acceder, dirígete desde la
+                <strong>página de categorías</strong> y desplázate hasta la sección "Comunidad", donde encontrarás los
+                detalles.
+              </div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-item-header">¿Hay algún requisito para participar en los eventos de la comunidad?
+              </div>
+              <div class="accordion-item-content"><strong class="underline1">¡Ninguno!</strong><br><br>
+                Todos los miembros de la comunidad pueden participar libremente en los eventos que se lleguen a
+                organizar. No existen requisitos previos ni restricciones de ningún tipo.</div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-item-header">¿Qué debo hacer si encuentro un error en la página web o en alguna
+                divición de la comunidad?</div>
+              <div class="accordion-item-content">Puedes reportar errores como estos por medio del correo de contacto,
+                accesible desde la página de Contacto.</div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-item-header">¿Hay alguna forma de obtener ayuda si estoy teniendo dificultades en
+                algo relacionado con la comunidad?</div>
+              <div class="accordion-item-content">Si necesitas apoyo o estás enfrentando alguna dificultad relacionada
+                con la comunidad, puedes comunicarte directamente con el equipo de soporte o con los administradores.
+              </div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-item-header">¿Cómo puedo mantenerme actualizado sobre las novedades y eventos de la
+                comunidad?</div>
+              <div class="accordion-item-content">Puedes hacerlo de diferentes maneras. Puedes seguir los canales
+                oficiales, puedes visitar esta página de vez en cuando o puedes unirte al servidor de discord. Ya que en
+                este se suele dar prioridad a la hora de avisos importantes.</div>
+            </div>
+          </div>
+        </section>
+
+        <br>
+        <div class="contact-note">
+          <p>¿No encontraste la respuesta a tu pregunta? Puedes ponerte en contacto con los administradores desde la
+            página de <strong>Contacto</strong>.</p>
+        </div>
+
+        <!-- Botones de navegación horizontales -->
+        <div class="nav-buttons">
+          <div id="backButton" class="nav-button">
+            <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i> Volver
+          </div>
+          <a href="/categorias.html" class="nav-button">
+            <i class="fas fa-list" style="margin-right: 0.5rem;"></i> Ver Categorías
+          </a>
+        </div>
+      </div>
+
+    </div> <!-- Cierre de main-container -->
+
+    <div data-include="/componentes/footer.html"></div>
+    <div data-include="/componentes/bottom-bar.html"></div>
+    <div data-include="/componentes/panel-expansion.html"></div>
+    <div data-include="/componentes/chat-overlay.html"></div>
+    <div data-include="/componentes/theme-help.html"></div>
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+      <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <!-- Framework Modular Indexado -->
+    <script src="/componentes/cargador.js"></script>
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+
+    <!-- Lógica Propia de FAQ (Acordeón/Scroll) -->
+    <script src="/js/raiz/faq.js"></script>
+
+  </div> <!-- Cierre del main-content -->
+</body>
+
+</html>

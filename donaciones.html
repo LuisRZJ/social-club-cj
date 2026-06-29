@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Donaciones | CGN</title>
+
+  <!-- CSS Modulares de la plataforma -->
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+
+  <!-- Script bloqueante ultraligero para aplicar tema de inmediato (sin flash blanco) -->
+  <script>
+    (function () {
+      try {
+        const temaGlobal = localStorage.getItem('preferencia-tema');
+        const root = document.documentElement;
+        if (temaGlobal === 'oscuro') {
+          root.setAttribute('data-theme', 'dark');
+        } else if (temaGlobal === 'automatico' || !temaGlobal) {
+          const hora = new Date().getHours();
+          const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (hora >= 20 || hora < 7 || prefiereOscuro) {
+            root.setAttribute('data-theme', 'dark');
+          }
+        }
+      } catch (e) {
+        console.error('Error al aplicar tema en donaciones.html', e);
+      }
+    })();
+  </script>
+
+  <style>
+    /* ==========================================
+       ESTILOS ESPECÍFICOS DE LA PÁGINA DE DONACIONES
+       ========================================== */
+    .donation-intro {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .donation-intro p {
+      font-size: 1.125rem;
+      color: #4B5563;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .crypto-section {
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #FFD1A9;
+    }
+
+    .crypto-card {
+      background: white;
+      border: 2px solid #E5E7EB;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .crypto-card:hover {
+      border-color: #FFD1A9;
+      box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .crypto-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #E5E7EB;
+    }
+
+    .crypto-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFD1A9, #ffb07a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #374151;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .crypto-icon:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .crypto-info h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 0.25rem;
+    }
+
+    .crypto-description {
+      color: #6B7280;
+      font-size: 0.9rem;
+    }
+
+    .wallet-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    @media (min-width: 768px) {
+      .wallet-container {
+        grid-template-columns: auto 1fr;
+      }
+    }
+
+    .qr-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.75rem;
+      background: linear-gradient(135deg, #F9FAFB, #F3F4F6);
+      border-radius: 0.75rem;
+      margin-bottom: 0.75rem;
+      min-height: 0;
+      flex-shrink: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .wallet-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .wallet-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .wallet-field label {
+      font-weight: 600;
+      color: #374151;
+      font-size: 0.875rem;
+    }
+
+    .wallet-field span {
+      color: #1F2937;
+      font-weight: 500;
+    }
+
+    .address-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #F3F4F6;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid #E5E7EB;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .wallet-address {
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+      color: #1F2937;
+      word-break: break-all;
+      flex: 1;
+    }
+
+    .copy-btn {
+      background-color: #FFD1A9;
+      color: #374151;
+      border: none;
+      border-radius: 0.375rem;
+      padding: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .copy-btn:hover {
+      background-color: #ffb07a;
+      transform: scale(1.05);
+    }
+
+    .copy-btn:active {
+      transform: scale(0.95);
+    }
+
+    .risk-warning {
+      background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+      border: 2px solid #F59E0B;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .warning-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .warning-header i {
+      color: #D97706;
+      font-size: 1.5rem;
+    }
+
+    .warning-header h3 {
+      color: #92400E;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin: 0;
+    }
+
+    .warning-content p {
+      color: #78350F;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .warning-content ul {
+      color: #78350F;
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+      list-style-type: disc;
+    }
+
+    .warning-content li {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .warning-note {
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border-left: 4px solid #F59E0B;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      color: #92400E;
+    }
+
+    .warning-note i {
+      color: #D97706;
+    }
+
+    .donation-info {
+      background: linear-gradient(135deg, #E0F2FE, #B3E5FC);
+      border: 2px solid #0288D1;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .info-header i {
+      color: #0277BD;
+      font-size: 1.5rem;
+    }
+
+    .info-header h3 {
+      color: #01579B;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin: 0;
+    }
+
+    .info-content p {
+      color: #0D47A1;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .info-content ul {
+      color: #0D47A1;
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+      list-style-type: disc;
+    }
+
+    .info-content li {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .info-note {
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border-left: 4px solid #0288D1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      color: #01579B;
+    }
+
+    .info-note i {
+      color: #0277BD;
+    }
+
+    .info-action {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(2, 136, 209, 0.2);
+    }
+
+    .reports-btn {
+      background: linear-gradient(135deg, #FFD1A9, #ffb07a);
+      color: #374151;
+      font-weight: 600;
+      border: 2px solid #ffb07a;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .reports-btn:hover {
+      background: linear-gradient(135deg, #ffb07a, #ff9a56);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      color: #1F2937;
+    }
+
+    .reports-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .specialized-donations {
+      background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+      border: 2px solid #16A34A;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .specialized-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .specialized-header i {
+      color: #15803D;
+      font-size: 1.5rem;
+    }
+
+    .specialized-header h3 {
+      color: #166534;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin: 0;
+    }
+
+    .specialized-content p {
+      color: #14532D;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .platform-options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .platform-card {
+      background: white;
+      border: 1px solid #BBF7D0;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    @media (min-width: 768px) {
+      .platform-card {
+        flex-direction: row;
+      }
+    }
+
+    .platform-card:hover {
+      border-color: #16A34A;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .platform-icon {
+      background: linear-gradient(135deg, #16A34A, #22C55E);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .platform-info {
+      flex: 1;
+      width: 100%;
+    }
+
+    .platform-info h4 {
+      color: #166534;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .platform-info p {
+      color: #14532D;
+      font-size: 0.9rem;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .platform-btn {
+      background: linear-gradient(135deg, #16A34A, #22C55E);
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      flex-shrink: 0;
+    }
+
+    .platform-btn:hover {
+      background: linear-gradient(135deg, #15803D, #16A34A);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      color: white;
+    }
+
+    .crypto-card .qr-image {
+      width: 180px;
+      height: 180px;
+      border-radius: 0.5rem;
+      border: 3px solid #E5E7EB;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+      object-fit: contain;
+      background-color: white;
+      padding: 8px;
+    }
+
+    .crypto-card .qr-image:hover {
+      border-color: #FFD1A9;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      transform: scale(1.05);
+    }
+
+    /* Notificaciones emergentes */
+    #notification-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .notification {
+      background: rgb(16, 185, 129);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 0.5rem;
+      border: 2px solid rgba(5, 150, 105, 0.8);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateX(120%);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      max-width: 300px;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      background: rgba(16, 185, 129, 0.9);
+      border-color: rgba(5, 150, 105, 0.8);
+    }
+
+    /* Modal de QR expandido */
+    .qr-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .qr-modal.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .qr-modal-content {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      max-width: 90vw;
+      max-height: 90vh;
+      position: relative;
+      transform: scale(0.8);
+      transition: all 0.3s ease;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+
+    .qr-modal.show .qr-modal-content {
+      transform: scale(1);
+    }
+
+    .qr-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #FFD1A9;
+      color: #374151;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+      z-index: 10;
+    }
+
+    .qr-modal-close:hover {
+      background: #ffb07a;
+      transform: scale(1.1);
+    }
+
+    .qr-modal-image {
+      max-width: 100%;
+      max-height: 70vh;
+      min-width: 200px;
+      min-height: 200px;
+      border-radius: 0.5rem;
+      border: 3px solid #E5E7EB;
+      background: white;
+      padding: 1rem;
+      object-fit: contain;
+    }
+
+    .qr-modal-title {
+      margin-bottom: 1.5rem;
+      margin-right: 3rem;
+      color: #1F2937;
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .qr-expand-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255, 209, 169, 0.9);
+      color: #374151;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+    }
+
+    .qr-expand-btn:hover {
+      background: rgba(255, 176, 122, 0.95);
+      transform: scale(1.1);
+    }
+
+    .usdt-icon {
+      background: linear-gradient(135deg, #22C55E, #16A34A);
+      color: white;
+    }
+
+    .usdc-icon {
+      background: linear-gradient(135deg, #3B82F6, #2563EB);
+      color: white;
+    }
+
+    .lightning-separator {
+      text-align: center;
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: linear-gradient(135deg, #F9FAFB, #F3F4F6);
+      border-radius: 0.5rem;
+      border: 1px solid #D1D5DB;
+    }
+
+    .lightning-separator span {
+      color: #6B7280;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .lightning-container {
+      border-top: 2px solid #E5E7EB;
+      padding-top: 1.5rem;
+      margin-top: 1rem;
+      position: relative;
+    }
+
+    .lightning-blocker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      border-radius: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      padding: 2rem;
+    }
+
+    .lightning-blocker-content {
+      text-align: center;
+      color: white;
+    }
+
+    .lightning-blocker-icon {
+      font-size: 3rem;
+      color: #F59E0B;
+      margin-bottom: 1rem;
+      animation: pulse 2s infinite;
+    }
+
+    .lightning-blocker-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #FEF3C7;
+    }
+
+    .lightning-blocker-message {
+      font-size: 1rem;
+      color: #FDE68A;
+      line-height: 1.5;
+      max-width: 300px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.7; }
+    }
+
+    .lightning-qr.qr-image {
+      border-color: #F59E0B;
+      background-color: #FEF3C7;
+    }
+
+    .lightning-info {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background-color: #FEF3C7;
+      border-radius: 0.5rem;
+      border-left: 4px solid #F59E0B;
+    }
+
+    .lightning-info p {
+      color: #92400E;
+      font-size: 0.875rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .specialized-donations .qr-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 0.5rem;
+      border: 3px solid #BBF7D0;
+      background-color: white;
+      padding: 6px;
+    }
+
+    .specialized-donations .qr-image:hover {
+      border-color: #16A34A;
+      box-shadow: 0 6px 12px rgba(22, 163, 74, 0.3);
+      transform: scale(1.05);
+    }
+
+    .network-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .network-primary {
+      color: #1F2937;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .network-compatibility {
+      background: linear-gradient(135deg, #E0F2FE, #B3E5FC);
+      border: 1px solid #0288D1;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+    }
+
+    .compatibility-note {
+      color: #0D47A1;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.375rem;
+    }
+
+    .compatible-networks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.375rem;
+    }
+
+    .network-tag {
+      background: transparent;
+      color: #0277BD;
+      border: 2px solid #0277BD;
+      padding: 0.375rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .network-tag:hover {
+      background: rgba(2, 119, 189, 0.1);
+      color: #01579B;
+      border-color: #01579B;
+    }
+
+    .network-limitation {
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(2, 136, 209, 0.2);
+    }
+
+    .limitation-note {
+      color: #D32F2F;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin: 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      background: rgba(244, 67, 54, 0.05);
+      padding: 0.75rem;
+      border-radius: 0.375rem;
+      border-left: 3px solid #D32F2F;
+    }
+
+    /* MODO OSCURO ESPECÍFICO ADAPTADO */
+    [data-theme="dark"] .crypto-card {
+      background: #23232a !important;
+      border-color: #33334a !important;
+      color: #f3f4f6 !important;
+    }
+    [data-theme="dark"] .crypto-card:hover {
+      border-color: #FFD1A9 !important;
+      box-shadow: 0 8px 15px -3px rgba(0,0,0,0.45) !important;
+    }
+    [data-theme="dark"] .crypto-info h3,
+    [data-theme="dark"] .wallet-address,
+    [data-theme="dark"] .section-title,
+    [data-theme="dark"] .wallet-field label,
+    [data-theme="dark"] .wallet-field span,
+    [data-theme="dark"] .network-primary {
+      color: #f3f4f6 !important;
+    }
+    [data-theme="dark"] .crypto-description {
+      color: #9ca3af !important;
+    }
+    [data-theme="dark"] .address-container {
+      background-color: #33334a !important;
+      border-color: #4b5563 !important;
+    }
+    [data-theme="dark"] .copy-btn {
+      background-color: #FFD1A9 !important;
+      color: #374151 !important;
+    }
+    [data-theme="dark"] .copy-btn:hover {
+      background-color: #ffb07a !important;
+    }
+    [data-theme="dark"] .risk-warning {
+      background: linear-gradient(135deg, #78350f, #92400e) !important;
+      border-color: #f59e0b !important;
+    }
+    [data-theme="dark"] .warning-header h3 {
+      color: #fef3c7 !important;
+    }
+    [data-theme="dark"] .warning-content p,
+    [data-theme="dark"] .warning-content ul,
+    [data-theme="dark"] .warning-content li {
+      color: #fde68a !important;
+    }
+    [data-theme="dark"] .warning-note,
+    [data-theme="dark"] .info-note {
+      background-color: rgba(0, 0, 0, 0.3) !important;
+    }
+    [data-theme="dark"] .warning-note {
+      color: #fef3c7 !important;
+    }
+    [data-theme="dark"] .donation-info {
+      background: linear-gradient(135deg, #0c4a6e, #075985) !important;
+      border-color: #0288d1 !important;
+    }
+    [data-theme="dark"] .info-header h3 {
+      color: #b3e5fc !important;
+    }
+    [data-theme="dark"] .info-content p,
+    [data-theme="dark"] .info-content ul,
+    [data-theme="dark"] .info-content li {
+      color: #e0f2fe !important;
+    }
+    [data-theme="dark"] .info-note {
+      color: #b3e5fc !important;
+    }
+    [data-theme="dark"] .specialized-donations {
+      background: linear-gradient(135deg, #14532d, #166534) !important;
+      border-color: #16a34a !important;
+    }
+    [data-theme="dark"] .specialized-header h3 {
+      color: #bbf7d0 !important;
+    }
+    [data-theme="dark"] .specialized-content p,
+    [data-theme="dark"] .platform-info p,
+    [data-theme="dark"] .donation-intro p {
+      color: #dcfce7 !important;
+    }
+    [data-theme="dark"] .platform-card {
+      background: #23232a !important;
+      border-color: #16a34a !important;
+    }
+    [data-theme="dark"] .platform-card:hover {
+      border-color: #22c55e !important;
+    }
+    [data-theme="dark"] .platform-info h4 {
+      color: #bbf7d0 !important;
+    }
+    [data-theme="dark"] .lightning-separator {
+      background: linear-gradient(135deg, #1f2937, #374151) !important;
+      border-color: #4b5563 !important;
+    }
+    [data-theme="dark"] .lightning-separator span {
+      color: #9ca3af !important;
+    }
+    [data-theme="dark"] .lightning-container {
+      border-top-color: #4b5563 !important;
+    }
+    [data-theme="dark"] .lightning-info {
+      background-color: #78350f !important;
+      border-left-color: #f59e0b !important;
+    }
+    [data-theme="dark"] .lightning-info p {
+      color: #fef3c7 !important;
+    }
+    [data-theme="dark"] .network-compatibility,
+    [data-theme="dark"] .usdt-compatibility {
+      background: linear-gradient(135deg, #0c4a6e, #075985) !important;
+      border-color: #0288d1 !important;
+    }
+    [data-theme="dark"] .compatibility-note {
+      color: #b3e5fc !important;
+    }
+    [data-theme="dark"] .network-tag {
+      color: #0288d1 !important;
+      border-color: #0288d1 !important;
+    }
+    [data-theme="dark"] .network-tag:hover {
+      background: rgba(2, 119, 189, 0.2) !important;
+      color: #b3e5fc !important;
+      border-color: #b3e5fc !important;
+    }
+    [data-theme="dark"] .limitation-note {
+      color: #fca5a5 !important;
+      background: rgba(239, 68, 68, 0.1) !important;
+      border-left-color: #ef4444 !important;
+    }
+    [data-theme="dark"] .qr-section {
+      background: linear-gradient(135deg, #1f2937, #374151) !important;
+    }
+    [data-theme="dark"] .qr-image {
+      border-color: #4b5563 !important;
+      background-color: #23232a !important;
+    }
+    [data-theme="dark"] .qr-modal-content {
+      background: #23232a !important;
+      color: #f3f4f6 !important;
+    }
+    [data-theme="dark"] .qr-modal-title {
+      color: #f3f4f6 !important;
+    }
+    [data-theme="dark"] .qr-modal-image {
+      border-color: #4b5563 !important;
+      background: #23232a !important;
+    }
+    [data-theme="dark"] .qr-modal-close {
+      background: #FFD1A9 !important;
+      color: #374151 !important;
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+    
+    <!-- COMPONENTE INSTALL MODAL PWA -->
+    <div data-include="/componentes/install-modal.html"></div>
+
+    <!-- Contenedor para notificaciones emergentes -->
+    <div id="notification-container"></div>
+
+    <!-- Modal para QR expandido -->
+    <div class="qr-modal" id="qrModal">
+      <div class="qr-modal-content">
+        <button class="qr-modal-close" id="qrModalClose" aria-label="Cerrar modal">
+          <i class="fas fa-times"></i>
+        </button>
+        <h3 class="qr-modal-title" id="qrModalTitle">QR Code</h3>
+        <img id="qrModalImage" class="qr-modal-image" alt="QR Code expandido">
+      </div>
+    </div>
+
+    <div class="content-container">
+      <h1 class="page-title">Donaciones</h1>
+      
+      <!-- Descripción principal -->
+      <div class="donation-intro">
+        <p>
+          Tu apoyo es fundamental para mantener y mejorar nuestra comunidad. 
+          Aceptamos donaciones en diferentes criptomonedas para facilitar las contribuciones 
+          desde cualquier parte del mundo.
+        </p>
+      </div>
+
+      <!-- Tarjeta informativa sobre uso de donaciones -->
+      <div class="donation-info">
+        <div class="info-header">
+          <i class="fas fa-hand-holding-heart"></i>
+          <h3>¿Cómo se utilizan las donaciones?</h3>
+        </div>
+        <div class="info-content">
+          <p><strong>Compromiso de transparencia y uso responsable:</strong></p>
+          <ul>
+            <li><strong>Infraestructura del servidor:</strong> Mantenimiento y mejora de los servidores de Discord y Minecraft para garantizar estabilidad y rendimiento óptimo.</li>
+            <li><strong>Herramientas y software:</strong> Adquisición de herramientas premium, bots y software especializado para mejorar la experiencia de la comunidad.</li>
+            <li><strong>Eventos y actividades:</strong> Organización de eventos especiales, torneos, concursos y actividades que fomenten la participación y el espíritu comunitario.</li>
+            <li><strong>Desarrollo de contenido:</strong> Creación de contenido educativo, tutoriales y recursos para ayudar a los miembros a aprovechar al máximo la comunidad.</li>
+            <li><strong>Mejoras de seguridad:</strong> Implementación de medidas de seguridad avanzadas para proteger a todos los miembros de la comunidad.</li>
+          </ul>
+          <div class="info-note">
+            <i class="fas fa-shield-alt"></i>
+            La administración se compromete a publicar reportes sobre el uso de los fondos y a responder cualquier consulta sobre la gestión de las donaciones.
+          </div>
+          <div class="info-action">
+            <a href="/Subpaginas/reportes-donaciones.html" class="reports-btn">
+              <i class="fas fa-chart-line"></i>
+              Ver Reportes de Donaciones
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección de criptomonedas -->
+      <div class="crypto-section">
+        <h2 class="section-title">Criptomonedas Aceptadas</h2>
+        
+        <!-- Bitcoin -->
+        <div class="crypto-card">
+          <div class="crypto-header">
+            <div class="crypto-icon">
+              <i class="fa-brands fa-bitcoin"></i>
+            </div>
+            <div class="crypto-info">
+              <h3>Bitcoin (BTC)</h3>
+              <p class="crypto-description">La criptomoneda más establecida y ampliamente aceptada</p>
+            </div>
+          </div>
+          
+          <!-- Bitcoin On-Chain -->
+          <div class="wallet-container">
+            <div class="qr-section">
+              <img src="/imagenes/QR-wallet-btc.avif" alt="QR Bitcoin On-Chain" class="qr-image">
+              <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-wallet-btc.avif', 'Bitcoin (BTC) - On-Chain')" aria-label="Expandir QR Bitcoin">
+                <i class="fas fa-expand-alt"></i>
+              </button>
+            </div>
+            <div class="wallet-details">
+              <div class="wallet-field">
+                <label>Red:</label>
+                <span>Bitcoin (BTC) - On-Chain</span>
+              </div>
+              <div class="wallet-field">
+                <label>Dirección:</label>
+                <div class="address-container">
+                  <code class="wallet-address">bc1qgjp96l4awlk2ztukqkexcs2d03wa3rmxvzsv2f</code>
+                  <button class="copy-btn" onclick="copyToClipboard('bc1qgjp96l4awlk2ztukqkexcs2d03wa3rmxvzsv2f')">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Separador -->
+          <div class="lightning-separator">
+            <span>O usa Lightning Network para transacciones más rápidas y económicas</span>
+          </div>
+
+          <!-- Bitcoin Lightning -->
+          <div class="wallet-container lightning-container">
+            <div class="qr-section">
+              <img src="/imagenes/QR-wallet-btc.avif" alt="QR Bitcoin Lightning" class="qr-image lightning-qr">
+              <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'Bitcoin Lightning Network')" aria-label="Expandir QR Bitcoin Lightning">
+                <i class="fas fa-expand-alt"></i>
+              </button>
+            </div>
+            <div class="wallet-details">
+              <div class="wallet-field">
+                <label>Red:</label>
+                <span>Bitcoin Lightning Network</span>
+              </div>
+              <div class="wallet-field">
+                <label>Invoice Lightning:</label>
+                <div class="address-container">
+                  <code class="wallet-address">lnbc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</code>
+                  <button class="copy-btn" onclick="copyToClipboard('lnbc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh')">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="lightning-info">
+                <p><i class="fas fa-info-circle"></i> Lightning Network permite transacciones instantáneas con comisiones mínimas</p>
+              </div>
+            </div>
+            
+            <!-- Capa de bloqueo Lightning -->
+            <div class="lightning-blocker">
+              <div class="lightning-blocker-content">
+                <div class="lightning-blocker-icon">
+                  <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="lightning-blocker-title">Próximamente</h3>
+                <p class="lightning-blocker-message">
+                  Bitcoin Lightning Network estará disponible próximamente. 
+                  Estamos configurando la infraestructura necesaria para ofrecer 
+                  transacciones instantáneas y económicas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ethereum -->
+        <div class="crypto-card">
+          <div class="crypto-header">
+            <div class="crypto-icon">
+              <i class="fa-brands fa-ethereum"></i>
+            </div>
+            <div class="crypto-info">
+              <h3>Ethereum (ETH)</h3>
+              <p class="crypto-description">Plataforma blockchain líder para aplicaciones descentralizadas</p>
+            </div>
+          </div>
+          <div class="wallet-container">
+            <div class="qr-section">
+              <img src="/imagenes/QR-wallet-eth.avif" alt="QR Ethereum" class="qr-image">
+              <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'Ethereum (ETH)')" aria-label="Expandir QR Ethereum">
+                <i class="fas fa-expand-alt"></i>
+              </button>
+            </div>
+            <div class="wallet-details">
+              <div class="wallet-field">
+                <label>Red:</label>
+                <span>Ethereum (ETH)</span>
+              </div>
+              <div class="wallet-field">
+                <label>Redes compatibles:</label>
+                <div class="network-info">
+                  <span class="network-primary">Ethereum Mainnet</span>
+                  <div class="network-compatibility">
+                    <div class="compatibility-note">
+                      <i class="fas fa-info-circle"></i>
+                      <span><strong>Misma dirección para todas las redes:</strong> Puedes enviar desde cualquier red de Ethereum (Polygon, Arbitrum, Optimism, BSC, etc.) usando esta misma dirección.</span>
+                    </div>
+                    <div class="compatible-networks">
+                      <span class="network-tag">Polygon</span>
+                      <span class="network-tag">Arbitrum</span>
+                      <span class="network-tag">Optimism</span>
+                      <span class="network-tag">BSC</span>
+                      <span class="network-tag">Avalanche</span>
+                      <span class="network-tag">Fantom</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="wallet-field">
+                <label>Dirección:</label>
+                <div class="address-container">
+                  <code class="wallet-address">0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D</code>
+                  <button class="copy-btn" onclick="copyToClipboard('0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D')">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- USDT -->
+        <div class="crypto-card">
+          <div class="crypto-header">
+            <div class="crypto-icon usdt-icon">
+              <i class="fa-solid fa-dollar-sign"></i>
+            </div>
+            <div class="crypto-info">
+              <h3>Tether (USDT)</h3>
+              <p class="crypto-description">Stablecoin vinculada al dólar estadounidense</p>
+            </div>
+          </div>
+          <div class="wallet-container">
+            <div class="qr-section">
+              <img src="/imagenes/QR-wallet-eth.avif" alt="QR USDT" class="qr-image">
+              <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'Tether (USDT)')" aria-label="Expandir QR USDT">
+                <i class="fas fa-expand-alt"></i>
+              </button>
+            </div>
+            <div class="wallet-details">
+              <div class="wallet-field">
+                <label>Red:</label>
+                <span>Ethereum (ERC-20)</span>
+              </div>
+              <div class="wallet-field">
+                <label>Redes compatibles:</label>
+                <div class="network-info">
+                  <span class="network-primary">Ecosistema Ethereum</span>
+                  <div class="usdt-compatibility">
+                    <div class="compatibility-note">
+                      <i class="fas fa-info-circle"></i>
+                      <span><strong>USDT disponible en múltiples redes:</strong> Aunque USDT existe en varias blockchains, actualmente solo aceptamos depósitos desde redes del ecosistema Ethereum.</span>
+                    </div>
+                    <div class="compatible-networks">
+                      <span class="network-tag">Ethereum</span>
+                      <span class="network-tag">Polygon</span>
+                      <span class="network-tag">Arbitrum</span>
+                      <span class="network-tag">Optimism</span>
+                      <span class="network-tag">BSC</span>
+                      <span class="network-tag">Avalanche</span>
+                    </div>
+                    <div class="network-limitation">
+                      <div class="limitation-note">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span><strong>Importante:</strong> No aceptamos USDT desde Tron (TRC-20), Solana, u otras redes fuera del ecosistema Ethereum.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="wallet-field">
+                <label>Dirección:</label>
+                <div class="address-container">
+                  <code class="wallet-address">0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D</code>
+                  <button class="copy-btn" onclick="copyToClipboard('0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D')">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- USDC -->
+        <div class="crypto-card">
+          <div class="crypto-header">
+            <div class="crypto-icon usdc-icon">
+              <i class="fa-solid fa-dollar-sign"></i>
+            </div>
+            <div class="crypto-info">
+              <h3>USD Coin (USDC)</h3>
+              <p class="crypto-description">Stablecoin regulada vinculada al dólar estadounidense</p>
+            </div>
+          </div>
+          <div class="wallet-container">
+            <div class="qr-section">
+              <img src="/imagenes/QR-wallet-eth.avif" alt="QR USDC" class="qr-image">
+              <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'USD Coin (USDC)')" aria-label="Expandir QR USDC">
+                <i class="fas fa-expand-alt"></i>
+              </button>
+            </div>
+            <div class="wallet-details">
+              <div class="wallet-field">
+                <label>Red:</label>
+                <span>Ethereum (ERC-20)</span>
+              </div>
+              <div class="wallet-field">
+                <label>Redes compatibles:</label>
+                <div class="network-info">
+                  <span class="network-primary">Ecosistema Ethereum</span>
+                  <div class="usdt-compatibility">
+                    <div class="compatibility-note">
+                      <i class="fas fa-info-circle"></i>
+                      <span><strong>USDC disponible en múltiples redes:</strong> Aunque USDC existe en varias blockchains, actualmente solo aceptamos depósitos desde redes del ecosistema Ethereum.</span>
+                    </div>
+                    <div class="compatible-networks">
+                      <span class="network-tag">Ethereum</span>
+                      <span class="network-tag">Polygon</span>
+                      <span class="network-tag">Arbitrum</span>
+                      <span class="network-tag">Optimism</span>
+                      <span class="network-tag">BSC</span>
+                      <span class="network-tag">Avalanche</span>
+                    </div>
+                    <div class="network-limitation">
+                      <div class="limitation-note">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span><strong>Importante:</strong> No aceptamos USDC desde Tron (TRC-20), Solana, o otras redes fuera del ecosistema Ethereum.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="wallet-field">
+                <label>Dirección:</label>
+                <div class="address-container">
+                  <code class="wallet-address">0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D</code>
+                  <button class="copy-btn" onclick="copyToClipboard('0x4BDd3fA65827AD938494cBdfACcEC8b0b9d7BA6D')">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Litecoin -->
+        <div class="crypto-card">
+          <div class="crypto-header">
+            <div class="crypto-icon">
+              <i class="fa-solid fa-litecoin-sign"></i>
+            </div>
+            <div class="crypto-info">
+              <h3>Litecoin (LTC)</h3>
+              <p class="crypto-description">Criptomoneda de transacciones rápidas y bajas comisiones</p>
+            </div>
+          </div>
+          <div class="wallet-container">
+            <div class="qr-section">
+              <img src="/imagenes/QR-wallet-ltc.avif" alt="QR Litecoin" class="qr-image">
+              <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'Litecoin (LTC)')" aria-label="Expandir QR Litecoin">
+                <i class="fas fa-expand-alt"></i>
+              </button>
+            </div>
+            <div class="wallet-details">
+              <div class="wallet-field">
+                <label>Red:</label>
+                <span>Litecoin (LTC)</span>
+              </div>
+              <div class="wallet-field">
+                <label>Dirección:</label>
+                <div class="address-container">
+                  <code class="wallet-address">ltc1qgjp96l4awlk2ztukqkexcs2d03wa3rmxg72gje</code>
+                  <button class="copy-btn" onclick="copyToClipboard('ltc1qgjp96l4awlk2ztukqkexcs2d03wa3rmxg72gje')">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección de donaciones a través de páginas especializadas -->
+      <div class="specialized-donations">
+        <div class="specialized-header">
+          <i class="fas fa-globe"></i>
+          <h3>¿Te resulta complicado usar tu wallet?</h3>
+        </div>
+        <div class="specialized-content">
+          <p>Si no estás familiarizado con el proceso de donación por criptomonedas o prefieres una alternativa más sencilla, puedes utilizar nuestra página especializada que te guiará paso a paso.</p>
+          <div class="platform-options">
+            <div class="platform-card">
+              <div class="platform-icon">
+                <i class="fas fa-coins"></i>
+              </div>
+              <div class="platform-info">
+                <h4>Plataforma de Donaciones</h4>
+                <p>Interfaz intuitiva con guías paso a paso para realizar donaciones de forma segura y sencilla.</p>
+              </div>
+              <div class="qr-section">
+                <img src="/imagenes/QR-donaciones.avif" alt="QR para donaciones" class="qr-image">
+                <button class="qr-expand-btn" onclick="expandQR('/imagenes/QR-donaciones.avif', 'Plataforma de Donaciones')" aria-label="Expandir QR Plataforma">
+                  <i class="fas fa-expand-alt"></i>
+                </button>
+              </div>
+              <a target="_blank" href="https://cwallet.com/t/S1UK2A7R" class="platform-btn">
+                <i class="fas fa-external-link-alt"></i>
+                Ir a la Plataforma
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta de advertencia de riesgos -->
+      <div class="risk-warning">
+        <div class="warning-header">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h3>Advertencia Importante</h3>
+        </div>
+        <div class="warning-content">
+          <p><strong>Riesgos asociados a las transferencias de criptomonedas:</strong></p>
+          <ul>
+            <li>Las transacciones de criptomonedas son <strong>irreversibles</strong>. Una vez enviadas, no pueden ser canceladas.</li>
+            <li>Verifica <strong>múltiples veces</strong> la dirección de destino antes de enviar cualquier cantidad.</li>
+            <li>Asegúrate de usar la <strong>red correcta</strong> para cada criptomoneda (ej: ERC-20 para USDT en Ethereum).</li>
+            <li>Las donaciones son <strong>voluntarias</strong> y no garantizan beneficios especiales en la comunidad.</li>
+            <li>Considera las <strong>comisiones de red</strong> al realizar tu donación.</li>
+          </ul>
+          <div class="warning-note">
+            <i class="fas fa-info-circle"></i>
+            Si tienes dudas sobre el proceso, contacta a un administrador antes de realizar la donación.
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de navegación horizontales -->
+      <div class="nav-buttons">
+        <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+        </div>
+        <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+        </a>
+      </div>
+    </div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+  </div> <!-- Cierre del main-content -->
+
+  <!-- COMPONENTE THEME HELP -->
+  <div data-include="/componentes/theme-help.html"></div>
+
+  <!-- COMPONENTE CONTEXT MENU -->
+  <div data-include="/componentes/context-menu.html"></div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <!-- SCRIPT CARGADOR DE COMPONENTES MODULARES -->
+  <script src="/componentes/cargador.js"></script>
+  <!-- SCRIPT DE SOPORTE HECKS-BOT -->
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <!-- SCRIPT DE NOTICIAS -->
+  <script src="/pwa/noticias.js"></script>
+  <!-- SCRIPT DE PANTALLA CARGA -->
+  <script src="/pwa/javascript.js"></script>
+
+  <script>
+    // --- Lógicas de Copiar Wallet / Clipboard ---
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(function() {
+        showNotification('Dirección copiada al portapapeles', 'success');
+        
+        const button = event.target.closest('.copy-btn');
+        if (button) {
+          const originalIcon = button.innerHTML;
+          button.innerHTML = '<i class="fas fa-check"></i>';
+          button.style.backgroundColor = '#10B981';
+          button.style.color = 'white';
+          
+          setTimeout(function() {
+            button.innerHTML = originalIcon;
+            button.style.backgroundColor = '#FFD1A9';
+            button.style.color = '#374151';
+          }, 2000);
+        }
+      }).catch(function(err) {
+        console.error('Error al copiar: ', err);
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        showNotification('Dirección copiada al portapapeles', 'success');
+        
+        const button = event.target.closest('.copy-btn');
+        if (button) {
+          const originalIcon = button.innerHTML;
+          button.innerHTML = '<i class="fas fa-check"></i>';
+          button.style.backgroundColor = '#10B981';
+          button.style.color = 'white';
+          
+          setTimeout(function() {
+            button.innerHTML = originalIcon;
+            button.style.backgroundColor = '#FFD1A9';
+            button.style.color = '#374151';
+          }, 2000);
+        }
+      });
+    }
+
+    // Función para mostrar notificaciones emergentes
+    function showNotification(message, type = 'success') {
+      const container = document.getElementById('notification-container');
+      if (!container) return;
+      
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        <span>${message}</span>
+      `;
+      
+      container.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 100);
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          if (container.contains(notification)) {
+            container.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // --- Lógicas del Modal de QR ---
+    function expandQR(imageSrc, title) {
+      const modal = document.getElementById('qrModal');
+      const modalImage = document.getElementById('qrModalImage');
+      const modalTitle = document.getElementById('qrModalTitle');
+      
+      if (modal && modalImage && modalTitle) {
+        modalImage.src = imageSrc;
+        modalTitle.textContent = title;
+        modal.classList.add('show');
+        document.body.classList.add('modal-open');
+        
+        const closeBtn = document.getElementById('qrModalClose');
+        if (closeBtn) {
+          setTimeout(() => {
+            closeBtn.focus();
+          }, 300);
+        }
+      }
+    }
+
+    function closeQRModal() {
+      const modal = document.getElementById('qrModal');
+      if (modal) {
+        modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+      }
+    }
+
+    // Event listeners para el modal y carga inicial
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('qrModal');
+      const closeBtn = document.getElementById('qrModalClose');
+      
+      if (modal && closeBtn) {
+        closeBtn.addEventListener('click', closeQRModal);
+        
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal) {
+            closeQRModal();
+          }
+        });
+        
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && modal.classList.contains('show')) {
+            closeQRModal();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

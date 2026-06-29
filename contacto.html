@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Contacto | CGN</title>
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+
+  <!-- CSS Modulares -->
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="text-gray-800 transition-colors duration-300 min-h-screen">
+
+  <script>
+    // Cargar el tema instantáneamente para evitar parpadeo blanco
+    (function () {
+      const tema = localStorage.getItem('preferencia-tema');
+      const root = document.documentElement;
+      if (tema === 'oscuro') root.setAttribute('data-theme', 'dark');
+      else if (tema === 'automatico') {
+        const h = new Date().getHours();
+        if (h >= 20 || h < 7) root.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+
+    <div data-include="/componentes/header.html"></div>
+
+    <div class="main-container">
+
+      <!-- Aviso PWA -->
+      <div id="install-prompt">
+        ¡Te recomendamos instalar nuestra PWA para una mejor experiencia!
+      </div>
+
+      <div data-include="/componentes/install-modal.html"></div>
+
+      <div class="content-container custom-container"
+        style="max-width: 1200px; margin: 2rem auto; padding: 2rem; border-radius: 0.5rem; background-color: var(--bg-primary, white); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+        <h1 class="page-title">Contáctanos</h1>
+        <p class="info-text text-center mb-8">
+          ¡Nos encantaría saber de ti! Si tienes alguna pregunta, comentario o simplemente quieres saludar, no dudes en
+          ponerte en contacto con nosotros.
+        </p>
+        <section class="mb-8">
+          <h2 class="section-title">Información de Contacto</h2>
+          <p class="info-text">
+            <strong>Correo electrónico:</strong>
+            <a href="mailto:soporteclubgaming@gmail.com"
+              class="text-blue-600 hover:text-blue-800 underline">soporteclubgaming@gmail.com</a>
+          </p>
+          <p class="info-text">
+            <strong>Redes sociales:</strong> Síguenos en nuestras redes para estar al tanto de las últimas novedades:
+            <a href="https://whatsapp.com/channel/0029Vad404cKQuJGXZERG13V" class="social-link">WhatsApp</a>.
+          </p>
+
+          <div data-include="/componentes/banner-contacto.html"></div>
+
+        </section>
+        <section class="mb-8">
+          <h2 class="section-title">Horarios de Atención</h2>
+          <div id="horariosAtencionCard" class="p-6 rounded-lg bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700/80 transition-all duration-300">
+            <div id="horariosCargando" class="flex flex-col items-center justify-center py-6">
+              <div class="loading-spinner mb-2"></div>
+              <p class="info-text text-sm text-gray-500 dark:text-gray-400">Determinando tu ubicación y convirtiendo horarios...</p>
+            </div>
+            <div id="horariosContenido" class="hidden">
+              <div class="mb-4 flex flex-wrap items-center gap-2">
+                <span id="userLocationBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-800 dark:bg-orange-950/40 dark:text-orange-300">
+                  <i class="fas fa-map-marker-alt text-orange-500"></i>
+                  <span id="userLocationText">Detectando ubicación...</span>
+                </span>
+                <button id="btnToggleUbicacion" class="text-xs text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300 underline transition-all duration-200 focus:outline-none hidden">
+                  ¿Lectura incorrecta? Activar ubicación aproximada
+                </button>
+              </div>
+              <div id="horariosLista" class="space-y-3">
+                <!-- Se inyecta de forma dinámica -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Botones de navegación horizontales -->
+        <div class="nav-buttons">
+          <div id="backButton" class="nav-button">
+            <i class="fas fa-arrow-left"></i> Volver
+          </div>
+          <a href="/categorias.html" class="nav-button">
+            <i class="fas fa-list"></i> Ver Categorías
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div data-include="/componentes/footer.html"></div>
+    <div data-include="/componentes/bottom-bar.html"></div>
+    <div data-include="/componentes/panel-expansion.html"></div>
+    <div data-include="/componentes/chat-overlay.html"></div>
+    <div data-include="/componentes/theme-help.html"></div>
+    <div data-include="/componentes/context-menu.html"></div>
+
+  </div> <!-- Fin main-content -->
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <!-- Framework Modular Indexado -->
+  <script src="/componentes/cargador.js"></script>
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <script src="/pwa/noticias.js"></script>
+  <script src="/pwa/javascript.js"></script>
+
+  <!-- Lógica Horaria Propia -->
+  <script src="/js/raiz/contacto.js"></script>
+</body>
+
+</html>

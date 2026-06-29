@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Nuestro Equipo | CGN</title>
+
+  <!-- CSS Modulares de la plataforma -->
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+
+  <!-- Script bloqueante ultraligero para aplicar tema de inmediato (sin flash blanco) -->
+  <script>
+    (function () {
+      try {
+        const temaGlobal = localStorage.getItem('preferencia-tema');
+        const root = document.documentElement;
+        if (temaGlobal === 'oscuro') {
+          root.setAttribute('data-theme', 'dark');
+        } else if (temaGlobal === 'automatico' || !temaGlobal) {
+          const hora = new Date().getHours();
+          const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (hora >= 20 || hora < 7 || prefiereOscuro) {
+            root.setAttribute('data-theme', 'dark');
+          }
+        }
+      } catch (e) {
+        console.error('Error al aplicar tema en socios.html', e);
+      }
+    })();
+  </script>
+
+  <style>
+    /* Estilos específicos para la página de socios si se requieren */
+  </style>
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+    
+    <div class="content-container">
+      <h1 class="page-main-title">Conoce a Nuestro Equipo</h1>
+      <p class="page-subtitle">
+        Las personas apasionadas detrás de nuestro proyecto, dedicadas a ofrecerte la mejor experiencia.
+      </p>
+
+      <!-- Sección Fundadores -->
+      <h2 class="section-heading">Fundadores</h2>
+      <div class="persona-entry">
+        <div class="persona-header">
+          <div class="persona-image-placeholder">
+            <img src="/icons/Luis.avif" alt="Luis | RIVZX23">
+          </div>
+          <div class="persona-name-role-container">
+            <div style="display: flex; align-items: center; margin-bottom: 0.25rem;">
+              <img src="https://flagsapi.com/MX/shiny/32.png" alt="México" class="persona-flag" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="flag-placeholder" style="display:none;">MX</div>
+              <h3 class="persona-name">Luis | RIVZX23</h3>
+            </div>
+            <p class="persona-role">Fundador, Admin y Desarrollador Principal de la CMD.</p>
+          </div>
+        </div>
+        <p class="persona-bio">
+          El visionario detrás de nuestra plataforma. Con más de <span id="years-of-experience"></span> años de experiencia en proyectos como este, su pasión es transformar ideas complejas en soluciones elegantes y funcionales.
+        </p>
+        <div class="social-links">
+          <a target="_blank" href="https://signal.me/#eu/2oONO8NbLC6OcRLKtYjnpInXTv4kTryhHETBdMGebWnbyjgkOKFA8ZjNieXOxERl" title="Signal"><i class="bi bi-signal"></i></a>
+          <a target="_blank" href="https://t.me/luisRZI" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+          <a target="_blank" href="https://x.com/LuisMz07244222?s=09" title="X"><i class="bi bi-twitter-x"></i></a>
+        </div>
+      </div>
+
+      <div class="persona-entry">
+        <div class="persona-header">
+          <div class="persona-image-placeholder">
+            <img src="/icons/Denji.avif" alt="Denji">
+          </div>
+          <div class="persona-name-role-container">
+            <div style="display: flex; align-items: center; margin-bottom: 0.25rem;">
+              <img src="https://flagsapi.com/VE/shiny/32.png" alt="Venezuela" class="persona-flag" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="flag-placeholder" style="display:none;">VE</div>
+              <h3 class="persona-name">Denji</h3>
+            </div>
+            <p class="persona-role">Co-Fundador y admin en los primeros años</p>
+          </div>
+        </div>
+        <p class="persona-bio">
+          Fue uno de los encargados de la actividad en las etapas iniciales. Se aseguraba de, entre otras cosas, que nuestra primera versión del servidor de MC funcionará sin problemas, allá por 2022...
+        </p>
+      </div>
+
+      <div class="persona-entry">
+        <div class="persona-header">
+          <div class="persona-image-placeholder">
+            <i class="fas fa-user fa-2x"></i>
+          </div>
+          <div class="persona-name-role-container">
+            <div style="display: flex; align-items: center; margin-bottom: 0.25rem;">
+              <img src="https://flagsapi.com/CO/shiny/32.png" alt="Colombia" class="persona-flag" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="flag-placeholder" style="display:none;">CO</div>
+              <h3 class="persona-name">Christian</h3>
+            </div>
+            <p class="persona-role">Co-Fundador y admin en los primeros meses</p>
+          </div>
+        </div>
+        <p class="persona-bio">
+          Christian es el otro co-fundador que fue de gran ayuda para el crecimiento inicial. Encargado principalmente en la administración de un par de grupos. 
+        </p>
+      </div>
+      
+      <hr class="section-divider">
+
+      <!-- Sección Colaboradores Clave -->
+      <h2 class="section-heading">Colaboradores Clave</h2>
+      <div class="persona-entry">
+        <div class="persona-header">
+          <div class="persona-image-placeholder">
+            <img src="/icons/Wilson.avif" alt="Wilson">
+          </div>
+          <div class="persona-name-role-container">
+            <div style="display: flex; align-items: center; margin-bottom: 0.25rem;">
+              <img src="https://flagsapi.com/AR/shiny/32.png" alt="Argentina" class="persona-flag" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="flag-placeholder" style="display:none;">AR</div>
+              <h3 class="persona-name">Wilson</h3>
+            </div>
+            <p class="persona-role">Área de Marketing y Comunicación</p>
+          </div>
+        </div>
+        <p class="persona-bio">
+          Wilson fue una de las voces públicas de nuestro proyecto.
+        </p>
+      </div>
+
+      <div class="persona-entry">
+        <div class="persona-header">
+          <div class="persona-image-placeholder">
+            <img src="/icons/Bn.avif" alt="Benjamin Gómez">
+          </div>
+          <div class="persona-name-role-container">
+            <div style="display: flex; align-items: center; margin-bottom: 0.25rem;">
+              <img src="https://flagsapi.com/HN/shiny/32.png" alt="Honduras" class="persona-flag" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+              <div class="flag-placeholder" style="display:none;">HN</div>
+              <h3 class="persona-name">Benjamin Gómez</h3>
+            </div>
+            <p class="persona-role">Área de Soporte Técnico y actividad</p>
+          </div>
+        </div>
+        <p class="persona-bio">
+          El encargado de que todo estuviera bien en los grupos sin ningún tipo de problemas. Pieza vital para las actividades iniciales.
+        </p>
+      </div>
+      
+      <!-- Botones de navegación horizontales -->
+      <div class="nav-buttons">
+        <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+        </div>
+        <a href="/contacto.html" class="nav-button">
+          <i class="fas fa-envelope"></i> Contactar
+        </a>
+        <a href="/ser-admin.html" class="nav-button">
+          <i class="fas fa-users"></i> Unirse
+        </a>
+      </div>
+    </div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+  </div> <!-- Cierre del main-content -->
+
+  <!-- COMPONENTE THEME HELP -->
+  <div data-include="/componentes/theme-help.html"></div>
+
+  <!-- COMPONENTE CONTEXT MENU -->
+  <div data-include="/componentes/context-menu.html"></div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <!-- SCRIPT CARGADOR DE COMPONENTES MODULARES -->
+  <script src="/componentes/cargador.js"></script>
+  <!-- SCRIPT DE SOPORTE HECKS-BOT -->
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <!-- SCRIPT DE NOTICIAS -->
+  <script src="/pwa/noticias.js"></script>
+  <!-- SCRIPT DE PANTALLA CARGA -->
+  <script src="/pwa/javascript.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Años de experiencia del fundador
+      const startDate = new Date('2022-01-01T00:00:00');
+      const currentDate = new Date();
+      const diffTime = Math.abs(currentDate - startDate);
+      const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365.25));
+
+      const yearsElement = document.getElementById('years-of-experience');
+      if (yearsElement) {
+        yearsElement.textContent = diffYears;
+      }
+
+      // Botón volver inteligente
+      const backButton = document.getElementById('backButton');
+      if (backButton) {
+        backButton.addEventListener('click', function() {
+          if (document.referrer && document.referrer !== window.location.href) {
+            window.history.back();
+          } else {
+            window.location.href = '/index.html';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

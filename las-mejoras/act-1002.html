@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Act 1,002 | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Aquí se pueden agregar estilos específicos de la plantilla si es necesario */
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+
+    <div class="content-container">
+    <h1 class="page-title">Actualización a la v2.5</h1>
+    <!-- Sección de actualización reutilizable -->
+    <div class="update-container">
+      <div class="update-tag-row">
+        <span class="update-tag added">
+          <i class="fas fa-plus-circle"></i> AÑADIDO
+        </span>
+        <span class="update-tag date">
+          <i class="far fa-calendar-alt"></i> 7 de octubre del 2025
+        </span>
+      </div>
+      <hr class="update-divider">
+      <p class="info-text">Actualización grande.</p>
+      <p class="info-text">20</p>
+
+       <h2 class="update-subtitle">Mejoras en el analizador de las tablas de clasificación</h2>
+      <ul class="update-list">
+       <li>Diseño adaptado para móviles.</li>
+       <li>Diseños mejorados para la tabla.</li>
+       <li>Detección automatica de pais para mejor claridad.</li>
+       <li>Los usuarios de Guadalajara México ahora tienen un diseño de bandera propio.</li>
+      </ul>
+
+      <h2 class="update-subtitle">Error solucionado en página de Redes</h2>
+      <ul class="update-list">
+       <li>Los botones de las tres tarjetas iniciales ahora se muestran sin errores visuales de ningun tipo en modo oscuro.</li>
+      </ul>
+
+      <h2 class="update-subtitle">Nuevas entradas para la categoria de admins</h2>
+      <ul class="update-list">
+       <li>3 nuevas entradas han sido listadas en esta categoria para expandir las cosas que puedes hacer desde aquí.</li>
+      </ul>
+
+       <h2 class="update-subtitle">Personalización aumentada</h2>
+      <ul class="update-list">
+       <li>La barra de desplazamiento por la página ahora tiene un estilo y color moderno.</li>
+       <li>Los estilos al seleccionar texto ahora estan adaptados al tema.</li>
+      </ul>
+
+       <h2 class="update-subtitle">Navegación mejorada</h2>
+      <ul class="update-list">
+       <li>Nuevo panel de índice en todas las páginas.</li>
+       <li>Posibilidad de desplazamiento a todas las secciones de las páginas, con soporte para modo oscuro.</li>
+      </ul>
+
+       <h2 class="update-subtitle">Nuevo menu contextual</h2>
+      <ul class="update-list">
+       <li>Un menu contextual esta disponible en todas las entradas de la página.</li>
+       <li>4 opciones disponibles:<br>1️⃣ Ver favoritos<br>2️⃣ Agregar a favoritos<br>3️⃣ Ajustes<br>4️⃣ Recargar página</li>
+       <li>Pulsasión larga desde moviles en cualquier parte de la pantalla para desplegarlo. Desde pc se activa con doble clic izquierdo o pulsando "M" tanto para abrirlo como para cerrarlo.</li>
+      </ul>
+
+       <h2 class="update-subtitle">Agregar a favoritos</h2>
+      <ul class="update-list">
+       <li>Ahora puedes agregar a favoritos tus páginas preferidas desde el menu contextual.</li>
+       <li>Puedes acceder al panel de favoritos desde el menu contextual.</li>
+       <li>Creado un panel de gestión de favoritos, desde ahí puedes acceder a las páginas marcadas o eliminarlas de favoritos.</li>
+      </ul>
+
+      <h2 class="update-subtitle">Nueva sección Legal</h2>
+      <ul class="update-list">
+       <li>3 nuevas entradas han sido listadas en esta categoria para expandir nuestras políticas.</li>
+       <li>El acceso a todas nuestras políticas se ha sentralizado en una página, la cual es accesible desde el pie de página de todas las páginas.</li>
+      </ul>
+
+      <br>
+
+      <h2 class="update-subtitle">¿Qué sigue?</h2>
+      <p>Mucho...</p>
+
+    </div>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  </div>
+
+    <!-- COMPONENTE UPDATE MODAL -->
+    <div data-include="/componentes/update-modal.html"></div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <script src="/componentes/cargador.js"></script>
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+  </div>
+</body>
+</html>

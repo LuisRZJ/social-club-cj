@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Categorías | CGN</title>
+
+  <!-- CSS Modulares de la plataforma -->
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+
+  <!-- Script bloqueante ultraligero para aplicar tema de inmediato (sin flash blanco) -->
+  <script>
+    (function () {
+      try {
+        const temaGlobal = localStorage.getItem('preferencia-tema');
+        const root = document.documentElement;
+        if (temaGlobal === 'oscuro') {
+          root.setAttribute('data-theme', 'dark');
+        } else if (temaGlobal === 'automatico' || !temaGlobal) {
+          const hora = new Date().getHours();
+          const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (hora >= 20 || hora < 7 || prefiereOscuro) {
+            root.setAttribute('data-theme', 'dark');
+          }
+        }
+      } catch (e) {
+        console.error('Error al aplicar tema en categorias.html', e);
+      }
+    })();
+  </script>
+
+  <style>
+    /* Estilos base de la página de categorías */
+    .content-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      background-color: var(--bg-secondary, white);
+      color: var(--text-primary, #374151);
+      box-shadow: 0 4px 6px -1px var(--shadow-primary, rgba(0, 0, 0, 0.1)), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      flex: 1;
+    }
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    .info-text {
+      color: #4B5563;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .nav-button {
+      background-color: #FFD1A9;
+      color: #374151;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nav-button:hover {
+      background-color: #ffb07a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    .nav-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .nav-button i {
+      margin-right: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .nav-button {
+        width: 100%;
+      }
+    }
+
+    /* Estilos específicos de categorías */
+    .h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #FFD1A9;
+      position: relative;
+    }
+    .h1::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: #ffb07a;
+    }
+    .categories-intro {
+      text-align: center;
+      color: #4B5563;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      max-width: 800px;
+      margin: 0 auto 3rem;
+    }
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .category-card {
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .category-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+    }
+    .category-banner {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 3.5rem;
+      position: relative;
+    }
+    .category-banner i {
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .category-card.comunidad .category-banner {
+      background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+    }
+    .category-card.minecraft .category-banner {
+      background: linear-gradient(135deg, #10B981, #047857);
+    }
+    .category-card.reglas .category-banner {
+      background: linear-gradient(135deg, #F59E0B, #B45309);
+    }
+    .category-card.administracion .category-banner {
+      background: linear-gradient(135deg, #EF4444, #B91C1C);
+    }
+    .category-content {
+      padding: 1.5rem;
+      background-color: #ffffff;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .category-content h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 0.75rem;
+    }
+    .category-description {
+      color: #4B5563;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+    .category-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .category-link i {
+      margin-left: 0.5rem;
+      transition: transform 0.2s ease;
+    }
+    .category-link:hover i {
+      transform: translateX(4px);
+    }
+    .category-card.comunidad .category-link {
+      background-color: #EFF6FF;
+      color: #2563EB;
+    }
+    .category-card.comunidad .category-link:hover {
+      background-color: #2563EB;
+      color: white;
+    }
+    .category-card.minecraft .category-link {
+      background-color: #ECFDF5;
+      color: #059669;
+    }
+    .category-card.minecraft .category-link:hover {
+      background-color: #059669;
+      color: white;
+    }
+    .category-card.reglas .category-link {
+      background-color: #FFFBEB;
+      color: #D97706;
+    }
+    .category-card.reglas .category-link:hover {
+      background-color: #D97706;
+      color: white;
+    }
+    .category-card.administracion .category-link {
+      background-color: #FEF2F2;
+      color: #DC2626;
+    }
+    .category-card.administracion .category-link:hover {
+      background-color: #DC2626;
+      color: white;
+    }
+    .entries-indicator {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .edit-instruction {
+      background-color: #F9FAFB;
+      border-left: 4px solid #FFD1A9;
+      padding: 1.5rem;
+      border-radius: 0.375rem;
+      margin-top: 3rem;
+      color: #374151;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .edit-instruction h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .edit-instruction p {
+      margin-bottom: 0.75rem;
+    }
+    .edit-instruction code {
+      background-color: #E5E7EB;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.25rem;
+      font-family: monospace;
+      font-size: 0.9em;
+      color: #1F2937;
+    }
+
+    /* === ESTILOS PARA LA PÁGINA DE CATEGORÍAS EN MODO OSCURO === */
+    [data-theme="dark"] .h1 {
+      color: #f3f4f6 !important;
+      border-bottom-color: #FFD1A9 !important;
+    }
+    [data-theme="dark"] .categories-intro {
+      color: #f3f4f6 !important;
+    }
+    [data-theme="dark"] .category-card {
+      background: linear-gradient(145deg, #23232a, #1a1a1f) !important;
+      border: 1px solid rgba(255, 209, 169, 0.3) !important;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+    }
+    [data-theme="dark"] .category-card:hover {
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4) !important;
+    }
+    [data-theme="dark"] .category-content {
+      background-color: #23232a !important;
+    }
+    [data-theme="dark"] .category-content h2 {
+      color: #f3f4f6 !important;
+    }
+    [data-theme="dark"] .category-description {
+      color: #f3f4f6 !important;
+    }
+    [data-theme="dark"] .entries-indicator {
+      background: rgba(0, 0, 0, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    [data-theme="dark"] .edit-instruction {
+      background: #23232a !important;
+      color: #f3f4f6 !important;
+      border-left: 4px solid #FFD1A9 !important;
+    }
+    [data-theme="dark"] .edit-instruction h3 {
+      color: #FFD1A9 !important;
+    }
+    [data-theme="dark"] .edit-instruction code {
+      background: rgba(255, 209, 169, 0.2) !important;
+      color: #f3f4f6 !important;
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+    
+    <!-- COMPONENTE INSTALL MODAL PWA -->
+    <div data-include="/componentes/install-modal.html"></div>
+
+    <div class="content-container">
+      <h1 class="h1">Categorías</h1>
+      <p class="categories-intro">
+        Explora nuestras categorías principales donde encontrarás todo lo que necesitas sobre la Comunidad CGN. 
+        Desde información sobre Minecraft hasta las reglas y administración, todo organizado para tu conveniencia.
+      </p>
+      
+      <div class="categories-grid">
+        <!-- Tarjeta Comunidad -->
+        <div class="category-card comunidad">
+          <div class="category-banner">
+            <div class="entries-indicator">
+              <i class="fas fa-file-alt"></i>
+              <span class="entries-count">3</span> entradas
+            </div>
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="category-content">
+            <h2>Comunidad</h2>
+            <p class="category-description">
+              Conoce a nuestra comunidad, participa en eventos, foros y grupos. Conecta con otros miembros y forma parte de esta gran familia virtual.
+            </p>
+            <a href="/categorias-comunidad.html" class="category-link">
+              Explorar Comunidad <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Tarjeta Minecraft -->
+        <div class="category-card minecraft">
+          <div class="category-banner">
+            <div class="entries-indicator">
+              <i class="fas fa-file-alt"></i>
+              <span class="entries-count">1</span> entrada
+            </div>
+            <i class="fas fa-cube"></i>
+          </div>
+          <div class="category-content">
+            <h2>Minecraft</h2>
+            <p class="category-description">
+              Todo sobre nuestro servidor de Minecraft. Tutoriales, guías, eventos, actualizaciones y cómo conectarte para disfrutar de la experiencia CGN.
+            </p>
+            <a href="/categorias-mc.html" class="category-link">
+              Explorar Minecraft <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Tarjeta Reglas -->
+        <div class="category-card reglas">
+          <div class="category-banner">
+            <div class="entries-indicator">
+              <i class="fas fa-file-alt"></i>
+              <span class="entries-count">1</span> entrada
+            </div>
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="category-content">
+            <h2>Reglas</h2>
+            <p class="category-description">
+              Conoce las normas de nuestra comunidad. Mantén un ambiente respetuoso y agradable para todos siguiendo nuestras pautas de convivencia.
+            </p>
+            <a href="/categorias-reglas.html" class="category-link">
+              Ver Reglas <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Tarjeta Administración -->
+        <div class="category-card administracion">
+          <div class="category-banner">
+            <div class="entries-indicator">
+              <i class="fas fa-file-alt"></i>
+              <span class="entries-count">9</span> entradas
+            </div>
+            <i class="fas fa-user-shield"></i>
+          </div>
+          <div class="category-content">
+            <h2>Administración</h2>
+            <p class="category-description">
+              Información para administradores y moderadores. Recursos, herramientas y protocolos para mantener nuestra comunidad organizada y segura.
+            </p>
+            <a href="/categorias-admins.html" class="category-link">
+              Área de Admin <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Botones de navegación horizontales -->
+      <div class="nav-buttons">
+        <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+        </div>
+        <a href="/index.html" class="nav-button">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+      </div>
+    </div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+  </div> <!-- Cierre del main-content -->
+
+  <!-- COMPONENTE THEME HELP -->
+  <div data-include="/componentes/theme-help.html"></div>
+
+  <!-- COMPONENTE CONTEXT MENU -->
+  <div data-include="/componentes/context-menu.html"></div>
+
+  <!-- PARTE AUXILIAR, FALTA DE JS -->
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+  </noscript>
+
+  <!-- SCRIPT CARGADOR DE COMPONENTES MODULARES -->
+  <script src="/componentes/cargador.js"></script>
+  <!-- SCRIPT DE SOPORTE HECKS-BOT -->
+  <script src="/HECKS-BOT/javascript.js"></script>
+  <!-- SCRIPT DE NOTICIAS -->
+  <script src="/pwa/noticias.js"></script>
+  <!-- SCRIPT DE PANTALLA CARGA -->
+  <script src="/pwa/javascript.js"></script>
+
+  <script>
+    document.addEventListener('componentesCargados', function() {
+      // Animación de las tarjetas al cargar
+      const cards = document.querySelectorAll('.category-card');
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px)';
+          card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          
+          setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, 100);
+        }, index * 150);
+      });
+    });
+  </script>
+</body>
+</html>ist.remove('active');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

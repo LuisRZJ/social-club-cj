@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Panel CS | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Aquí se pueden agregar estilos específicos de la plantilla si es necesario */
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+
+    <div class="content-container">
+      <h1 class="page-title">Tablas de clasificación</h1>
+      
+      <!-- Tarjeta para acceder al panel de WhatsApp -->
+      <div class="whatsapp-panel-card">
+        <div class="whatsapp-card-header">
+          <div class="whatsapp-icon">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <div class="whatsapp-title">
+            <h3>Panel de WhatsApp</h3>
+            <p>Accede a las clasificaciones detalladas de nuestros grupos de WhatsApp</p>
+          </div>
+        </div>
+        <div class="whatsapp-card-content">
+          <p>Explora las tablas de clasificación específicas de cada grupo de WhatsApp, donde podrás ver:</p>
+          <ul>
+            <li><i class="fas fa-check"></i> Ranking de usuarios más activos</li>
+            <li><i class="fas fa-check"></i> Estadísticas mensuales detalladas</li>
+            <li><i class="fas fa-check"></i> Historial de actividad por grupo</li>
+            <li><i class="fas fa-check"></i> Comparativas entre diferentes grupos</li>
+          </ul>
+        </div>
+        <div class="whatsapp-card-action">
+          <a href="/clasificaciones/panel-WA.html" class="whatsapp-btn">
+            <i class="fas fa-external-link-alt"></i>
+            Acceder al Panel
+          </a>
+        </div>
+      </div>
+
+      <!-- Elemento de próximamente -->
+      <div class="coming-soon-card">
+        <div class="coming-soon-header">
+          <div class="coming-soon-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="coming-soon-title">
+            <h3>Próximamente</h3>
+            <p>Nuevas plataformas en desarrollo</p>
+          </div>
+        </div>
+        <div class="coming-soon-content">
+          <p>Estamos trabajando para expandir las clasificaciones a <strong>nuevas plataformas</strong> en el futuro. La disponibilidad dependerá tanto de nuestras capacidades técnicas como de las <strong>políticas y APIs</strong> de cada plataforma.</p>
+          <div class="platform-preview">
+            <div class="platform-item">
+              <i class="fab fa-discord"></i>
+              <span>Discord</span>
+            </div>
+            <div class="platform-item">
+              <i class="fab fa-telegram"></i>
+              <span>Telegram</span>
+            </div>
+            <div class="platform-item">
+              <i class="fas fa-shield-alt"></i>
+              <span>Signal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr style="margin: 3rem 0; border: none; height: 2px; background: linear-gradient(90deg, transparent, #FFD1A9, transparent); border-radius: 1px;">
+
+      <!-- Información sobre las tablas de clasificación -->
+      <div class="info-section">
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <div class="info-content">
+            <h3>¿Cómo funcionan las clasificaciones?</h3>
+            <p>Nuestras tablas de clasificación se basan en el <strong>nivel de actividad</strong> de los usuarios, específicamente en la cantidad de <strong>mensajes enviados</strong> durante el último mes terminado. Esto nos permite identificar y reconocer a los miembros más activos de nuestra comunidad.</p>
+          </div>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="info-content">
+            <h3>Acceso universal</h3>
+            <p>Todas las tablas de clasificación son <strong>completamente accesibles</strong> para todos los miembros de la comunidad. Los datos se actualizan mensualmente y reflejan la actividad del mes anterior, proporcionando una visión transparente y justa de la participación de cada usuario.</p>
+          </div>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <div class="info-content">
+            <h3>Actualización mensual</h3>
+            <p>Las clasificaciones se actualizan al <strong>inicio de cada mes</strong>, mostrando los resultados del mes anterior. Esto garantiza que todos los usuarios tengan la misma oportunidad de destacar y que las clasificaciones reflejen la actividad real de la comunidad.</p>
+          </div>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-gift"></i>
+          </div>
+          <div class="info-content">
+            <h3>Participa en dinámicas y sorteos</h3>
+            <p>Los datos de estas clasificaciones pueden ser utilizados por los <strong>administradores</strong> para organizar dinámicas, sorteos y eventos especiales. Por eso te recomendamos <strong>participar activamente</strong> en las conversaciones para aumentar tus posibilidades cuando se realicen estas actividades. ¡Tu actividad cuenta!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leyenda legal -->
+      <div class="legal-notice">
+        <p>
+          <i class="fas fa-shield-alt"></i>
+          El uso de datos de actividad para clasificaciones y dinámicas se rige por nuestra 
+          <a href="/Legal/politica-de-privacidad.html" target="_blank">Política de Privacidad</a>
+        </p>
+      </div>
+
+      <!-- Botones de navegación horizontales -->
+      <div class="nav-buttons">
+        <div id="backButton" class="nav-button">
+            <i class="fas fa-arrow-left"></i> Volver
+        </div>
+        <a href="/categorias.html" class="nav-button">
+            <i class="fas fa-list"></i> Ver Categorías
+        </a>
+      </div>
+
+    </div>
+
+    <!-- COMPONENTE UPDATE MODAL -->
+    <div data-include="/componentes/update-modal.html"></div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <script src="/componentes/cargador.js"></script>
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+    
+  </div>
+</body>
+</html>

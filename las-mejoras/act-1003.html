@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Act 1,003 | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    
+    code {
+      background-color: var(--code-bg, #f3f4f6);
+      color: var(--code-color, #d97706);
+      padding: 0.125rem 0.375rem;
+      border-radius: 0.25rem;
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85em;
+      border: 1px solid var(--code-border, #e5e7eb);
+      word-break: break-word;
+      transition: all 0.2s ease;
+    }
+    
+    [data-theme="dark"] code {
+      --code-bg: #1e1e24;
+      --code-color: #f97316;
+      --code-border: #374151;
+    }
+    
+    /* Efecto hover sutil para la interactividad visual premium */
+    code:hover {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      border-color: var(--code-border-hover, #ffb07a);
+    }
+    [data-theme="dark"] code:hover {
+      --code-border-hover: #ea580c;
+    }
+    
+    /* Resaltar partes con énfasis fuertes */
+    .update-list li strong {
+      color: var(--emphasis-color, #1f2937);
+      font-weight: 600;
+    }
+    [data-theme="dark"] .update-list li strong {
+      --emphasis-color: #f3f4f6;
+    }
+
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+
+    <div class="content-container">
+      <h1 class="page-title">Actualización a la v3.0 (V3)</h1>
+      
+      <!-- Sección de actualización reutilizable -->
+      <div class="update-container">
+        <div class="update-tag-row">
+          <span class="update-tag added">
+            <i class="fas fa-plus-circle"></i> AÑADIDO
+          </span>
+          <span class="update-tag date">
+            <i class="far fa-calendar-alt"></i> 27 de junio del 2026
+          </span>
+        </div>
+        <hr class="update-divider">
+        
+        <p class="info-text">Gran salto arquitectónico y de rendimiento del sitio web. Todo el proyecto se ha migrado a una arquitectura modular dinámica.</p>
+        <p class="info-text">En esta actualización nos centramos en eliminar redundancias masivas de código y unificar las lógicas globales del sistema para brindar una experiencia de usuario sumamente veloz y fluida.</p>
+
+        <h2 class="update-subtitle">Arquitectura Modular Dinámica Unificada</h2>
+        <ul class="update-list">
+          <li><strong>Cargador Dinámico Asíncrono:</strong> Los componentes repetitivos (Header, Footer, Barra flotante de navegación, Panel de acciones extra, Chat de Soporte Hecks Bot, Menú de temas y Menú contextual) ahora se cargan asíncronamente desde la carpeta <code>/componentes/</code> usando <code>cargador.js</code>.</li>
+          <li><strong>Optimización Masiva:</strong> Reducción de más de 20,000 líneas de código duplicado e inline de estilos y lógicas JavaScript a través de todas las subpáginas informativas, herramientas de texto, paneles legales y de clasificación.</li>
+        </ul>
+
+        <h2 class="update-subtitle">Sincronización del Sistema de Temas</h2>
+        <ul class="update-list">
+          <li><strong>Prevención de Flash Blanco:</strong> Implementado un script de lectura ultrarrápido y bloqueante en la cabecera que lee el tema guardado (<code>preferencia-tema</code> en localStorage) y aplica el modo de color directamente en la etiqueta raíz <code>&lt;html&gt;</code> antes de que el contenido comience a renderizarse.</li>
+          <li><strong>Modos de Color Avanzados:</strong> Se mantiene soporte absoluto e instantáneo para el modo Claro, Oscuro, Automático (basado en la hora del día) y de Eficiencia (ahorro de batería o preferencias de energía).</li>
+        </ul>
+
+        <h2 class="update-subtitle">Corrección y Optimización del Bot Hecks</h2>
+        <ul class="update-list">
+          <li><strong>Fin de la barra de pie fantasma:</strong> Se corrigió un bug visual crítico donde el footer del chat bot se duplicaba en el DOM, provocando que se renderizara una barra gris oscura vacía en el fondo de las páginas incluso cuando el chat estaba cerrado.</li>
+          <li><strong>Carga y Vinculación Asíncrona:</strong> La lógica interactiva de Hecks Bot se asocia limpiamente al evento <code>componentesCargados</code> una vez que el DOM está verdaderamente completo.</li>
+        </ul>
+
+        <h2 class="update-subtitle">Teletipo (Ticker) de Noticias Fluido</h2>
+        <ul class="update-list">
+          <li><strong>Desplazamiento Continuo Correcto:</strong> Se corrigió la animación de desplazamiento del teletipo superior en <code>pwa/componentes.css</code> que trasladaba el texto a <code>-10200px</code> (lo que provocaba que se quedara en el vacío la mayor parte del tiempo). Ahora utiliza <code>-100%</code>, permitiendo un flujo continuo y natural acorde al tamaño del texto.</li>
+          <li><strong>Ajuste de Velocidad:</strong> La velocidad se aumentó ligeramente de 120s a 35s por ciclo para hacer la lectura más dinámica y cómoda.</li>
+        </ul>
+
+        <h2 class="update-subtitle">Migración Completa de Herramientas y Clasificaciones</h2>
+        <ul class="update-list">
+          <li><strong>Herramientas Fase 2:</strong> Todas las herramientas interactivas (Editor de Texto, Extractor ZIP, PDF, QR, etc.) han sido adaptadas de manera limpia al evento <code>componentesCargados</code> sin romper sus bibliotecas locales (<code>jsPDF</code>, <code>JSZip</code>, etc.).</li>
+          <li><strong>Clasificaciones Fase 4:</strong> Todos los paneles de control y las 8 subpáginas del ranking de WhatsApp cargan dinámicamente y procesan la lógica del chat local (<code>tabla-cs.js</code> y <code>equivalencias.js</code>) de forma coordinada.</li>
+        </ul>
+
+        <h2 class="update-subtitle">Salto Oficial a la Versión V3 (Pantallas de Carga)</h2>
+        <ul class="update-list">
+          <li><strong>Actualización de Versión en Bloque:</strong> Modificamos la etiqueta de versión de carga (<code>&lt;div class="loading-version"&gt;</code>) a la **V3** en los 62 archivos HTML de la plataforma, oficializando el gran salto tecnológico del proyecto.</li>
+        </ul>
+
+        <h2 class="update-subtitle">Optimización PWA y Reubicación de Service Worker</h2>
+        <ul class="update-list">
+          <li><strong>Ampliación de Alcance (Scope):</strong> Trasladamos el archivo <code>service-worker.js</code> de la subcarpeta <code>/pwa/</code> a la raíz del proyecto (<code>/service-worker.js</code>). Esto expandió su alcance de control de red e interceptación al 100% de las rutas bajo el dominio (incluyendo la raíz <code>index.html</code> y las subpáginas informativas).</li>
+          <li><strong>Precaché Expandido V3:</strong> Configuramos el evento <code>install</code> para descargar e instalar en el caché del usuario de forma inmediata los archivos más importantes (CSS modular de temas y componentes, cargadores asíncronos y componentes dinámicos HTML).</li>
+        </ul>
+
+        <h2 class="update-subtitle">Horarios Dinámicos con Precisión de Ciudad y Alternancia</h2>
+        <ul class="update-list">
+          <li><strong>Geolocalización por IP Client-Side:</strong> Rediseñamos la sección de horarios en <code>contacto.html</code> y <code>js/raiz/contacto.js</code> en una única tarjeta unificada. Ahora consulta asíncronamente <code>freeipapi.com</code> para determinar la ciudad, el país y la zona horaria del usuario para ajustar los horarios de atención inline.</li>
+          <li><strong>Botón de Alternancia de Respaldo:</strong> Agregamos el botón <code>btnToggleUbicacion</code> para alternar a la ubicación estimada basada en la zona horaria del sistema de su propio dispositivo (ideal si usa VPN o en caso de errores de lectura de IP), guardando la preferencia persistentemente en <code>localStorage</code>.</li>
+        </ul>
+
+        <h2 class="update-subtitle">Transparencia y Actualización Legal</h2>
+        <ul class="update-list">
+          <li><strong>Cláusula de Geolocalización:</strong> Añadimos la sección 6 (Servicios de Terceros y Geolocalización) en la Política de Privacidad (<code>Legal/politica-de-privacidad.html</code>) para notificar formalmente el procesamiento de datos IP anónimo, el procesamiento 100% client-side (sin almacenamiento en nuestros servidores) y la posibilidad de optar por la exclusión manual de geolocalización.</li>
+        </ul>
+
+        <h2 class="update-subtitle">Omisión de Anuncios Internos en PWA</h2>
+        <ul class="update-list">
+          <li><strong>Doble Capa de Omisión (Bypass):</strong> Implementamos una funcionalidad para que los usuarios que utilicen el sitio a través de la PWA no tengan que visualizar anuncios intersticiales intermedios al navegar por secciones locales:
+            <br>
+            - <strong>Primera Capa (Intercepción de clics):</strong> Se modificó <code>pwa/javascript.js</code> para interceptar en la fase de captura los clics en enlaces dirigidos a <code>anuncio.html</code>. Si se ejecuta como PWA y el destino es local, la navegación se redirige directamente.
+            <br>
+            - <strong>Segunda Capa (Redirección instantánea):</strong> En <code>js/anuncios/anuncio.js</code>, si un usuario accede directamente a la URL de anuncios desde la PWA con un destino local, la página lo detecta e inmediatamente realiza un bypass redirigiéndolo, sin cargar recursos pesados ni mostrar el temporizador.
+          </li>
+        </ul>
+
+        <h2 class="update-subtitle">Ampliación de Carrusel de Bienvenida</h2>
+        <ul class="update-list">
+          <li><strong>Inclusión Completa de Fondos e Imágenes de Ambiente:</strong> Actualizamos el script de inicio <code>js/raiz/index.js</code> para incluir en el ciclo de rotación aleatoria todas las imágenes de fondos (como <code>Fondo-basico7.avif</code> y <code>Fondo-basico8.avif</code>) y de ambiente (como <code>62637-Guadalajara.avif</code>) almacenadas físicamente en la carpeta <code>/imagenes/</code>, omitiendo únicamente los códigos QR.</li>
+        </ul>
+
+        <br>
+        <h2 class="update-subtitle">¿Qué sigue?</h2>
+        <p class="info-text">Como siempre, seguiremos buscando formas de expandir las capacidades de esta comunidad. ¡Muchas gracias por el apoyo de siempre!</p>
+      </div>
+
+      <!-- Botones de navegación horizontales -->
+      <div class="nav-buttons">
+        <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+        </div>
+        <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+        </a>
+      </div>
+    </div>
+
+    <!-- COMPONENTE UPDATE MODAL -->
+    <div data-include="/componentes/update-modal.html"></div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+      <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <!-- SCRIPT CARGADOR DE COMPONENTES MODULARES -->
+    <script src="/componentes/cargador.js"></script>
+    <!-- SCRIPT DE SOPORTE HECKS-BOT -->
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <!-- SCRIPT DE NOTICIAS -->
+    <script src="/pwa/noticias.js"></script>
+    <!-- SCRIPT DE PANTALLA CARGA -->
+    <script src="/pwa/javascript.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Botón "Volver" inteligente
+        const backButton = document.getElementById('backButton');
+        if (backButton) {
+          backButton.addEventListener('click', function() {
+            if (document.referrer && document.referrer !== window.location.href) {
+              window.history.back();
+            } else {
+              window.location.href = '/index.html';
+            }
+          });
+        }
+      });
+    </script>
+  </div>
+</body>
+</html>

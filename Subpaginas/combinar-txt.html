@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Combinador txt | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Aquí se pueden agregar estilos específicos de la plantilla si es necesario */
+    html,
+    body {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100%;
+    }
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+  
+  <div class="content-container">
+    <h1 class="page-title">Combinar txt</h1>
+    
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  <!-- Contenedor principal del combinador -->
+  <div class="chat-combiner-container">
+    <h2 class="chat-combiner-title">
+      <i class="fab fa-whatsapp"></i> Combinador de Chats de WhatsApp
+    </h2>
+    <p class="chat-combiner-subtitle">
+      Combina dos archivos de historial de chat de WhatsApp en uno solo. 
+      El archivo complementario se agregará al final del archivo base para crear una conversación completa.
+    </p>
+
+    <!-- Sección de carga de archivos -->
+    <div class="file-upload-section">
+      <!-- Archivo base -->
+      <div class="file-upload-card" id="baseFileCard">
+        <div class="file-upload-icon">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h3 class="file-upload-title">Archivo Base</h3>
+        <p class="file-upload-description">
+          Selecciona el archivo principal de chat que servirá como base para la combinación.
+        </p>
+        <button class="file-upload-btn" onclick="document.getElementById('baseFileInput').click()">
+          <i class="fas fa-upload"></i> Seleccionar Archivo
+        </button>
+        <input type="file" id="baseFileInput" class="file-input-hidden" accept=".txt" onchange="handleFileSelect('base', this)">
+      </div>
+
+      <!-- Archivo complementario -->
+      <div class="file-upload-card" id="complementFileCard">
+        <div class="file-upload-icon">
+          <i class="fas fa-file-plus"></i>
+        </div>
+        <h3 class="file-upload-title">Archivo Complementario</h3>
+        <p class="file-upload-description">
+          Selecciona el archivo adicional que se agregará al final del archivo base.
+        </p>
+        <button class="file-upload-btn" onclick="document.getElementById('complementFileInput').click()">
+          <i class="fas fa-upload"></i> Seleccionar Archivo
+        </button>
+        <input type="file" id="complementFileInput" class="file-input-hidden" accept=".txt" onchange="handleFileSelect('complement', this)">
+      </div>
+    </div>
+
+    <!-- Mensajes informativos -->
+    <div id="infoMessages"></div>
+
+    <!-- Sección de acciones -->
+    <div class="combine-actions">
+      <button id="combineBtn" class="combine-btn" disabled onclick="combineFiles()">
+        <i class="fas fa-code-branch"></i> Combinar Archivos
+      </button>
+    </div>
+
+    <!-- Sección de progreso -->
+    <div class="progress-section" id="progressSection">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-text" id="progressText">Procesando archivos...</div>
+    </div>
+
+    <!-- Sección de resultados -->
+    <div class="result-section" id="resultSection">
+      <div class="result-card">
+        <div class="result-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h3 class="result-title">¡Combinación Exitosa!</h3>
+        <p class="result-description">
+          Los archivos han sido combinados correctamente. Puedes descargar el archivo resultante.
+        </p>
+        
+        <div class="result-stats" id="resultStats">
+          <!-- Las estadísticas se agregarán dinámicamente -->
+        </div>
+        
+        <a href="#" id="downloadBtn" class="download-btn" download="chat_combinado.txt">
+          <i class="fas fa-download"></i> Descargar Archivo Combinado
+        </a>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+
+
+    <!-- COMPONENTE UPDATE MODAL -->
+    <div data-include="/componentes/update-modal.html"></div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <script src="/componentes/cargador.js"></script>
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+    <script src="combinar-txt.js"></script>
+</body>
+</html>

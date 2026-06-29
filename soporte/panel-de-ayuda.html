@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Centro de Ayuda | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Aquí se pueden agregar estilos específicos de la plantilla si es necesario */
+
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+  
+  <div class="content-container">
+    <h1 class="page-title">Centro de Ayuda</h1>
+    <h2 class="page-subtitle" style="margin-bottom: 2.5rem; color: var(--text-secondary); font-size: 1.25rem; font-weight: 500; text-align: center;">
+      Encuentra respuestas, guías y soporte para cualquier duda o problema relacionado con la comunidad. Este centro de ayuda te conecta con recursos, soporte automatizado y atención personalizada.
+    </h2>
+    <!-- Secciones principales del centro de ayuda -->
+    <div class="help-center-sections">
+      <!-- Guías y recursos -->
+      <div class="help-section-card help-section-guides">
+        <div class="help-section-icon"><i class="fas fa-book"></i></div>
+        <div class="help-section-content">
+          <h3>Guías y Recursos</h3>
+          <p>Accede a tutoriales, manuales y recursos útiles para resolver dudas frecuentes.</p>
+          <a href="/soporte/panel-guias.html" class="help-section-btn">Ir a Guías <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <!-- Bot de soporte -->
+      <div class="help-section-card help-section-bot">
+        <div class="help-section-icon"><i class="fas fa-robot"></i></div>
+        <div class="help-section-content">
+          <h3>Soporte Automático</h3>
+          <p>Chatea con nuestro bot para recibir ayuda inmediata sobre temas comunes.</p>
+          <a href="/HECKS-BOT/chat-soporte.html" class="help-section-btn">Ir al Bot <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <!-- Contacto técnico -->
+      <div class="help-section-card help-section-contact">
+        <div class="help-section-icon"><i class="fas fa-envelope-open-text"></i></div>
+        <div class="help-section-content">
+          <h3>Contacto Técnico</h3>
+          <p>¿No encontraste solución? Contacta con nuestro equipo para consultas avanzadas.</p>
+          <a href="/contacto.html" class="help-section-btn">Ir a Contacto <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <!-- FAQ -->
+      <div class="help-section-card help-section-faq">
+        <div class="help-section-icon"><i class="fas fa-question-circle"></i></div>
+        <div class="help-section-content">
+          <h3>Preguntas Frecuentes (FAQ)</h3>
+          <p>Consulta las respuestas a las dudas más habituales de la comunidad.</p>
+          <a href="/faq.html" class="help-section-btn">Ir a FAQ <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  </div>
+
+        <!-- COMPONENTE UPDATE MODAL -->
+        <div data-include="/componentes/update-modal.html"></div>
+
+        <!-- COMPONENTE FOOTER -->
+        <div data-include="/componentes/footer.html"></div>
+
+        <!-- COMPONENTE FIXED BAR -->
+        <div data-include="/componentes/bottom-bar.html"></div>
+
+        <!-- COMPONENTE PANEL EXPANSION -->
+        <div data-include="/componentes/panel-expansion.html"></div>
+
+        <!-- COMPONENTE CHAT OVERLAY -->
+        <div data-include="/componentes/chat-overlay.html"></div>
+
+        <!-- COMPONENTE THEME HELP -->
+        <div data-include="/componentes/theme-help.html"></div>
+
+        <!-- COMPONENTE CONTEXT MENU -->
+        <div data-include="/componentes/context-menu.html"></div>
+
+        <!-- PARTE AUXILIAR, FALTA DE JS -->
+        <noscript>
+            <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+        </noscript>
+
+        <script src="/componentes/cargador.js"></script>
+        <script src="/HECKS-BOT/javascript.js"></script>
+        <script src="/pwa/noticias.js"></script>
+        <script src="/pwa/javascript.js"></script>
+  </div> <!-- Cierre del main-content -->
+ </body>
+ </html>
+</body>
+</html>

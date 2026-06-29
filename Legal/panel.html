@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD1A9">
+  <title>Panel | CGN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Aquí se pueden agregar estilos específicos de la plantilla si es necesario */
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="/icons/Logo-CGN.avif">
+  <link rel="stylesheet" href="/HECKS-BOT/estilos.css">
+  <link rel="stylesheet" href="/pwa/estilos.css">
+  <link rel="stylesheet" href="/pwa/temas.css">
+  <link rel="stylesheet" href="/pwa/componentes.css">
+  <link rel="stylesheet" href="/pwa/panel-de-acciones/estilos-PA.css">
+</head>
+<body class="text-gray-800">
+
+  <!-- Overlay de carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div style="position: relative;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando scripts...</div>
+    </div>
+    <div class="loading-version">V3</div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content" id="mainContent">
+    <!-- COMPONENTE HEADER -->
+    <div data-include="/componentes/header.html"></div>
+
+    <div class="content-container">
+    <h1 class="page-title">Apartados Legales de la Comunidad</h1>
+
+    <div class="legal-sections-container">
+      <!-- Sección de Política de Cookies -->
+      <section class="legal-section">
+        <h2 class="section-title">Política de Cookies</h2>
+        <p class="section-description">Información detallada sobre el uso de cookies en nuestro sitio web, cómo las utilizamos para mejorar tu experiencia y tus opciones para gestionarlas. Es fundamental para entender cómo se recopilan y utilizan tus datos de navegación.</p>
+        <a href="/Legal/politica-de-cookies.html" class="nav-button">
+          <i class="fas fa-cookie-bite"></i> Ver Política de Cookies
+        </a>
+      </section>
+
+      <!-- Sección de Política de Privacidad -->
+      <section class="legal-section">
+        <h2 class="section-title">Política de Privacidad</h2>
+        <p class="section-description">Descubre cómo protegemos tu información personal. Esta sección explica qué datos recopilamos, cómo los usamos, con quién los compartimos y tus derechos sobre ellos. Tu privacidad es nuestra prioridad.</p>
+        <a href="/Legal/politica-de-privacidad.html" class="nav-button">
+          <i class="fas fa-user-shield"></i> Ver Política de Privacidad
+        </a>
+      </section>
+
+      <!-- Sección de Términos y Condiciones del Bot de Discord -->
+      <section class="legal-section">
+        <h2 class="section-title">Términos y Condiciones del Bot de Discord</h2>
+        <p class="section-description">Conoce las normas y directrices que rigen el uso de nuestro bot de Discord. Aquí se detallan los comportamientos permitidos y prohibidos, así como las responsabilidades al interactuar con el bot dentro de la comunidad.</p>
+        <a href="/Legal/terminos-bot-ds.html" class="nav-button">
+          <i class="fab fa-discord"></i> Ver Términos del Bot
+        </a>
+      </section>
+    </div>
+
+    <!-- Botones de navegación horizontales -->
+    <div class="nav-buttons">
+      <div id="backButton" class="nav-button">
+          <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <a href="/categorias.html" class="nav-button">
+          <i class="fas fa-list"></i> Ver Categorías
+      </a>
+  </div>
+
+  </div>
+
+    <!-- COMPONENTE UPDATE MODAL -->
+    <div data-include="/componentes/update-modal.html"></div>
+
+    <!-- COMPONENTE FOOTER -->
+    <div data-include="/componentes/footer.html"></div>
+
+    <!-- COMPONENTE FIXED BAR -->
+    <div data-include="/componentes/bottom-bar.html"></div>
+
+    <!-- COMPONENTE PANEL EXPANSION -->
+    <div data-include="/componentes/panel-expansion.html"></div>
+
+    <!-- COMPONENTE CHAT OVERLAY -->
+    <div data-include="/componentes/chat-overlay.html"></div>
+
+    <!-- COMPONENTE THEME HELP -->
+    <div data-include="/componentes/theme-help.html"></div>
+
+    <!-- COMPONENTE CONTEXT MENU -->
+    <div data-include="/componentes/context-menu.html"></div>
+
+    <!-- PARTE AUXILIAR, FALTA DE JS -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/respaldo/js-desactivado.html" />
+    </noscript>
+
+    <script src="/componentes/cargador.js"></script>
+    <script src="/HECKS-BOT/javascript.js"></script>
+    <script src="/pwa/noticias.js"></script>
+    <script src="/pwa/javascript.js"></script>
+  </div>
+</body>
+</html>
